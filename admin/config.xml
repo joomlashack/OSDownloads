@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<config>
+	<fieldset name="component"
+		label="COM_OSDOWNLOADS_FIELDSET_CONFIG_MAILCHIMP"
+		>
+		<field name="connect_mailchimp" type="radio" default="0" label="Connect to mailchimp" >
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
+		<field name="mailchimp_api" type="text" default="" label="Mailchimp API" />
+		<field name="list_id" type="text" default="" label="List id" />
+		
+	</fieldset>
+	<fieldset name="download"
+		label="Download"
+		>
+		<field name="thankyoupage" type="editor" default="" filter="safehtml" label="Thank you page" />
+		<field name="width" type="text" default="300" label="Popup width" />
+		<field name="height" type="text" default="150" label="Popup height" />
+		
+	</fieldset>
+	<fieldset
+		name="permissions"
+		label="JCONFIG_PERMISSIONS_LABEL"
+		description="JCONFIG_PERMISSIONS_DESC"
+		>
+
+		<field
+			name="rules"
+			type="rules"
+			label="JCONFIG_PERMISSIONS_LABEL"
+			class="inputbox"
+			validate="rules"
+			filter="rules"
+			component="com_osdownloads"
+			section="component" />
+	</fieldset>
+</config>

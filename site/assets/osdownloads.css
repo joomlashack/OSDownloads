@@ -1,0 +1,43 @@
+.seperator
+{
+	border-bottom:1px dotted #999999;
+	margin-bottom:10px;
+	margin-top:5px;
+}
+
+.category_children .seperator
+{
+	border:none;
+}
+
+.sub_title
+{
+	padding-bottom:20px;
+}
+
+.readmore
+{
+	float:right;
+}
+
+.clr
+{
+	clear:both;
+}
+
+.reference .readmore
+{
+	float:left;
+	margin-right:10px;
+}
+
+.btn_download
+{
+	margin-top:10px;
+}
+
+.btn_download .readmore
+{
+	float:none;
+}
+

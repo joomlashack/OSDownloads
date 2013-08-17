@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="COM_OSDOWNLOADS_FILE_VIEW_DEFAULT_TITLE">
+		<message>
+			<![CDATA[]]>
+		</message>
+	</layout>
+	<fields name="params">
+		<fieldset name="basic" label="OSDOWNLOADS_OPTIONS" addfieldpath="/components/com_osdownloads/models/fields">
+			<field name="document_id" type="modal_document" size="1" default="" label="OSDOWNLOADS_FILE" />
+			<field name="show_download_count" type="radio" default="0" label="OSDOWNLOADS_SHOW_DOWNLOAD_COUNT" >
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</field>
+			<field name="show_category" type="radio" default="0" label="OSDOWNLOADS_SHOW_CATEGORY" >
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</field>
+		</fieldset>
+	</fields>
+</metadata>
+

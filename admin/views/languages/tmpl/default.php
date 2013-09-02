@@ -9,7 +9,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
-<form action="index.php?option=com_osdownloads" method="post" name="adminForm">
+<form action="index.php?option=com_osdownloads" method="post" name="adminForm" id="adminForm">
 	<table border="0">
     	<tr>
         	<td>

@@ -10,7 +10,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.application.component.view');
 
-class OSDownloadsViewEmails extends JView
+class OSDownloadsViewEmails extends JViewLegacy
 {
 
 	function display($tpl = null)

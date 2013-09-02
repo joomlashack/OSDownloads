@@ -10,7 +10,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.controller');
 
-class OSDownloadsControllerEmails extends JController
+class OSDownloadsControllerEmails extends JControllerLegacy
 	{
 		public function delete(){
 		$id_arr = Jrequest::getVar('cid');
@@ -19,6 +19,6 @@ class OSDownloadsControllerEmails extends JController
 		$query = "DELETE FROM #__osdownloads_emails WHERE id IN (".$str_id.")";
 		$db->setQuery($query);
 		$db->query();
-		$this->setRedirect("index.php?option=com_osdownloads&view=emails");
+		$this->setRedirect("index.php?option=com_osdownloads&view=emails", JText::_("Email is deleted"));
 	}
 } 

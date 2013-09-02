@@ -8,7 +8,7 @@
 // no direct access
 defined('_JEXEC') or die;
 
-require_once JPATH_COMPONENT.DS.'controller.php';
+require_once JPATH_COMPONENT.'/controller.php';
 
 $doc = JFactory::getDocument();
 $doc->addStyleSheet(JURI::Root(). "components/com_osdownloads/assets/osdownloads.css");

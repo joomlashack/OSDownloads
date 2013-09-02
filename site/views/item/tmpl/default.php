@@ -13,7 +13,7 @@ $params 			= clone($mainframe->getParams('com_osdownloads'));
 
 ?>
 <div class="contentopen">
-	<form method="post">
+	<form method="post" id="adminForm" name="adminForm">
         <h4><?php echo($this->item->name);?></h4>
         <?php if ($this->params->get("show_category", 0)):?>
             <div class="cate_info">
@@ -71,8 +71,8 @@ $params 			= clone($mainframe->getParams('com_osdownloads'));
 <script>
 window.addEvent('domready', function() {
 
-	$("btn_download").addEvent('click', function (e) {
-		new Event(e).stop();
+	$("btn_download").addEvent('click', function(e) {
+		(e).stop();
 		if (Validate())
 		{
 			var request = this.href;

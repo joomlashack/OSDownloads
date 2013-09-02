@@ -10,7 +10,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.controller');
 
-class OSDownloadsController extends JController
+class OSDownloadsController extends JControllerLegacy
 {
 
 	function __construct( $default = array())
@@ -28,7 +28,7 @@ class OSDownloadsController extends JController
 	
 	function executePlugin($item, $email, $mailchimp_api, $list_id)
 	{
-		require_once("classes".DS."MCAPI.class.php");
+		require_once("classes"."/MCAPI.class.php");
 		
 		$mc = new MCAPI($mailchimp_api);
 		$merge_vars = array();		
@@ -38,9 +38,9 @@ class OSDownloadsController extends JController
 	
 	function getdownloadlink()
 	{
-		JTable::addIncludePath(JPATH_COMPONENT.DS.'tables');
-		$emailrow	= & JTable::getInstance('email', 'Table');
-		$item 		= & JTable::getInstance('document', 'Table');
+		JTable::addIncludePath(JPATH_COMPONENT.'/tables');
+		$emailrow	= & JTable::getInstance('Email', 'OsdownloadsTable');
+		$item 		= & JTable::getInstance('Document', 'OsdownloadsTable');
 		$item->load(JRequest::getVar("id"));
 		
 		$mainframe 			= & JFactory::getApplication();
@@ -49,22 +49,23 @@ class OSDownloadsController extends JController
 		$mailchimp_api		= $params->get("mailchimp_api", 0);
 		$list_id			= $params->get("list_id", 0);
 		$email = JRequest::getVar("email");
-		
+
 		if ($mailchimp && $email)
 			$this->executePlugin($item, $email, $mailchimp_api, $list_id);
-		
+			
 		if ($email)
 		{
 			//$db->setQuery("SELECT id FROM #__osdownloads_emails WHERE email='{$email}'");
 			//if (!$db->loadResult())
 			{
 				$emailrow->email 			= $email;
+			
 				$emailrow->document_id 	= $item->id;
-				$emailrow->downloaded_date = JFactory::getDate()->toMySQL();
+				$emailrow->downloaded_date = JFactory::getDate()->toSQL();
 				$emailrow->store();
 			}
 		}
-		
+	
 		JRequest::setVar("layout", "download");
 		JRequest::setVar("view", "item");
 		$this->display();

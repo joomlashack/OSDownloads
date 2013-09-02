@@ -10,14 +10,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.application.component.view');
 
-class OSDownloadsViewFiles extends JView
+class OSDownloadsViewFiles extends JViewLegacy
 {
 
 	function display($tpl = null)
 	{
 		global $option;
 		$mainframe = & JFactory::getApplication();
-		
+		$this->flt = new JObject();		
 		$limit							= $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int' );
 		$limitstart						= $mainframe->getUserStateFromRequest( 'osdownloads.request.limitstart', 'limitstart', 0, 'int' );
 		$this->flt->search 				= $mainframe->getUserStateFromRequest( 'osdownloads.document.request.search', 'search' );
@@ -58,6 +58,7 @@ class OSDownloadsViewFiles extends JView
 		$lists = array();
 		$lists['order_Dir']	= $filter_order_Dir;
 		$lists['order']		= $filter_order; 
+
 
 		$this->assignRef('lists',		$lists); 
 		$this->assignRef("items", 		$items);

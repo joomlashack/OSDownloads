@@ -15,8 +15,28 @@ $editor = &JFactory::getEditor();
 
 $index = strpos($this->item->file_path, "_");
 $realname = substr($this->item->file_path, $index + 1);
+
+	function category($name, $extension, $selected = null, $javascript = null, $order = null, $size = 1, $sel_cat = 1)
+	{
+		// Deprecation warning.
+		JLog::add('JList::category is deprecated.', JLog::WARNING, 'deprecated');
+
+		$categories = JHtml::_('category.options', $extension);
+		if ($sel_cat)
+		{
+			array_unshift($categories, JHtml::_('select.option', '0', JText::_('JOPTION_SELECT_CATEGORY')));
+		}
+
+		$category = JHtml::_(
+			'select.genericlist', $categories, $name, 'class="inputbox" size="' . $size . '" ' . $javascript, 'value', 'text',
+			$selected
+		);
+
+		return $category;
+	}
+
 ?>
-<form action="index.php?option=com_osdownloads" method="post" name="adminForm" enctype="multipart/form-data">
+<form action="<?php echo(JRoute::_("index.php?option=com_osdownloads"));?>" method="post" name="adminForm" enctype="multipart/form-data" id="adminForm">
 	<table width="100%">
     	<tr>
         	<td width="90"><?php echo(JText::_("Name"));?></td>
@@ -37,9 +57,9 @@ $realname = substr($this->item->file_path, $index + 1);
             </td>
         </tr>
     	<tr>
-        	<td><?php echo(JText::_("Category"));?></td>
-        	<td>
-            	<?php echo(JHTML::_('list.category',  'cate_id', 'com_osdownloads', $this->item->cate_id));?>
+        	<td><?php echo(JText::_("Category"));?></td>      	
+            <td>          
+          		<?php echo category('cate_id', 'com_osdownloads', $this->item->cate_id, $javascript = null, 'title', $size = 1, $sel_cat = 1); ?>
             </td>
         </tr>
     	<tr>

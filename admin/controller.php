@@ -10,8 +10,9 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.controller');
 
-class OSDownloadsController extends JController
+class OSDownloadsController extends JControllerLegacy
 {
+	protected $default_view = "files";
 
 	function __construct( $default = array())
 	{

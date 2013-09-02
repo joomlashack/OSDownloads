@@ -8,7 +8,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-class TableEmail extends JTable
+class OsDownloadsTableEmail extends JTable
 {
 	var $id;
 	var $email;

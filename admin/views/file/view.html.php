@@ -10,19 +10,22 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.application.component.view');
 
-class OSDownloadsViewFile extends JView
+
+class OSDownloadsViewFile extends JViewLegacy
 {
 
 	function display($tpl = null)
 	{
-		JTable::addIncludePath(JPATH_COMPONENT.DS.'tables');
+		error_reporting(E_ALL);
+		JTable::addIncludePath(JPATH_COMPONENT.'/tables');
+
 		
 		$mainframe 	= & JFactory::getApplication();		
 		$cid = JRequest::getVar("cid");
 		
 		if (is_array($cid))
 			$cid = $cid[0];
-		$item = JTable::getInstance("document", "Table" );
+		$item = JTable::getInstance("document", "OsdownloadsTable" );
 		$item->load($cid);
 			
 		if ($item->description_1)
@@ -30,6 +33,8 @@ class OSDownloadsViewFile extends JView
 		else
 			$item->description_1 = $item->brief;
 		
+
+
 		$this->assignRef("item", $item);
 		
 		$this->addToolbar();

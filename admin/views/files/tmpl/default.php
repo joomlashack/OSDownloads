@@ -1,18 +1,33 @@
 <?php
-/**
- * @version 1.0.0
- * @author Open Source Training (www.ostraining.com)
- * @copyright (C) 2011- Open Source Training
- * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
-**/
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
 $listOrder	= $this->lists['order'];
 $listDirn	= $this->lists['order_Dir'];
 $saveOrder	= $listOrder == 'documents.ordering'; 
+
+function category($name, $extension, $selected = null, $javascript = null, $order = null, $size = 1, $sel_cat = 1)
+	{
+		// Deprecation warning.
+		JLog::add('JList::category is deprecated.', JLog::WARNING, 'deprecated');
+
+		$categories = JHtml::_('category.options', $extension);
+		if ($sel_cat)
+		{
+			array_unshift($categories, JHtml::_('select.option', '0', JText::_('JOPTION_SELECT_CATEGORY')));
+		}
+
+		$category = JHtml::_(
+			'select.genericlist', $categories, $name, 'class="inputbox" size="' . $size . '" ' . $javascript, 'value', 'text',
+			$selected
+		);
+
+		return $category;
+	}
+
 ?>
-<form action="index.php?option=com_osdownloads" method="post" name="adminForm">
+<form action="index.php?option=com_osdownloads" method="post" name="adminForm" id="adminForm">
     <table>
         <tr>
             <td align="left" width="100%">
@@ -21,16 +36,18 @@ $saveOrder	= $listOrder == 'documents.ordering';
                 <button onclick="this.form.submit();"><?php echo JText::_( 'Go' ); ?></button>
                 <button onclick="document.getElementById('search').value='';this.form.getElementById('cate_id').value='';this.form.submit();"><?php echo JText::_( 'Reset' ); ?></button>
             </td>
-            <td nowrap="nowrap">
-            	<?php echo(JHTML::_('list.category',  'flt_cate_id', 'com_osdownloads', $this->flt->cate_id, "onchange='this.form.submit();'"));?>
-                <?php //JHTML::_('grid.state',  $filter_state );?>
+          <td nowrap="nowrap">          
+          		<?php echo category('flt_cate_id', 'com_osdownloads', $this->flt->cate_id, "onchange='this.form.submit();'", 'title', $size = 1, $sel_cat = 1); ?>
+                                <?php //JHTML::_('grid.state',  $filter_state );?>
+
             </td>
         </tr>
     </table>
 	<table class="adminlist" width="100%" border="0">
         <thead>
+        
             <tr> 
-                <th width="20" align="center"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count( $this->items ); ?>);" />  </th>
+                <th width=1%"><input type="checkbox" onclick="Joomla.checkAll(this)" title="check All" value="" name="checkall-toggle" /> </th>
                 <th style="min-width:200px;"><?php echo JHTML::_('grid.sort',   JText::_('Name'), 'documents.name', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
                 <th style="min-width:200px;"><?php echo JHTML::_('grid.sort',   JText::_('Category'), 'cate.title', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
                 <th width="50"><?php echo JHTML::_('grid.sort',   JText::_('Downloaded'), 'documents.downloaded', @$this->lists['order_Dir'], @$this->lists['order'] ); ?></th>
@@ -58,8 +75,8 @@ $saveOrder	= $listOrder == 'documents.ordering';
 					$checked 	= JHTML::_('grid.checkedout', $item, $i ); 
                 ?>
                     <tr class="row<?php echo $i % 2; ?>"> 
-                    	<td><?php echo $checked; ?></td>
-                        <td><a href="index.php?option=com_osdownloads&view=file&cid[]=<?php echo($item->id);?>"><?php echo ($item->name); ?></a></td>
+                    	<td valign="top" nowrap="nowrap"><?php echo $checked; ?></td>
+                        <td valign="top" nowrap="nowrap"><a href="index.php?option=com_osdownloads&view=file&cid[]=<?php echo($item->id);?>"><?php echo ($item->name); ?></a></td>
                         <td valign="top" nowrap="nowrap"><?php echo($item->cate_name);?></td>
                         <td valign="top" nowrap="nowrap"><?php echo($item->downloaded);?></td>
                         <td valign="top" nowrap="nowrap"><?php echo($published);?></td>

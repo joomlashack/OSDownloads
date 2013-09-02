@@ -10,7 +10,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.controller');
 
-class OSDownloadsControllerLanguage extends JController
+class OSDownloadsControllerLanguage extends JControllerLegacy
 {
 
 	function __construct( $default = array())
@@ -34,7 +34,7 @@ class OSDownloadsControllerLanguage extends JController
 		$defines = JRequest::getVar("defines", '', 'post', 'string', JREQUEST_ALLOWRAW);
 		
 		$file = $language_code . ".com_osdownloads.ini";
-		$lang_file = JPath::clean(JPATH_SITE.DS."language".DS.$language_code.DS.$file);
+		$lang_file = JPath::clean(JPATH_SITE."/language/".$language_code."/".$file);
 		
 		$lines = array();
 		foreach ($defines as $key => $value)

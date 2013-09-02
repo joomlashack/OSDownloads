@@ -7,8 +7,29 @@
 **/
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+function category($name, $extension, $selected = null, $javascript = null, $order = null, $size = 1, $sel_cat = 1)
+	{
+		// Deprecation warning.
+		JLog::add('JList::category is deprecated.', JLog::WARNING, 'deprecated');
+
+		$categories = JHtml::_('category.options', $extension);
+		if ($sel_cat)
+		{
+			array_unshift($categories, JHtml::_('select.option', '0', JText::_('JOPTION_SELECT_CATEGORY')));
+		}
+
+		$category = JHtml::_(
+			'select.genericlist', $categories, $name, 'class="inputbox" size="' . $size . '" ' . $javascript, 'value', 'text',
+			$selected
+		);
+
+		return $category;
+	}
+
+
 ?>
-<form action="index.php?option=com_osdownloads&view=emails" method="post" name="adminForm">
+<form action="index.php?option=com_osdownloads&view=emails" method="post" name="adminForm" id="adminForm">
     <table>
         <tr>
             <td align="left" width="100%">
@@ -18,7 +39,9 @@ defined('_JEXEC') or die( 'Restricted access' );
                 <button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'Reset' ); ?></button>
             </td>
             <td nowrap="nowrap">
-            	<?php echo(JHTML::_('list.category',  'cate_id', 'com_osdownloads', $this->flt->cate_id, "onchange='this.form.submit();'"));?>
+            	<?php echo category('cate_id', 'com_osdownloads', $this->flt->cate_id, "onchange='this.form.submit();'", 'title', $size = 1, $sel_cat = 1); ?>
+                                <?php //JHTML::_('grid.state',  $filter_state );?>
+
             </td>
         </tr>
     </table>
@@ -43,7 +66,7 @@ defined('_JEXEC') or die( 'Restricted access' );
                 <?php foreach ($this->items as $i => $item) : 
                 ?>
                     <tr class="row<?php echo $i % 2; ?>"> 
-                    	<td valign="top" nowrap="nowrap"><?php echo JHTML::_('grid.id',$id,$item->id);?></td>
+                    	<td valign="top" nowrap="nowrap"><?php echo JHTML::_('grid.id',$i,$item->id);?></td>
                         <td valign="top" nowrap="nowrap"><?php echo($item->email);?></td>
                         <td valign="top" nowrap="nowrap"><?php echo($item->doc_name);?></td>
                         <td valign="top" nowrap="nowrap"><?php echo($item->cate_name);?></td>

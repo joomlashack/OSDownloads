@@ -10,12 +10,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.application.component.view');
 
-class OSDownloadsViewItem extends JView
+class OSDownloadsViewItem extends JViewLegacy
 {
 
 	function display($tpl = null)
 	{
-		JTable::addIncludePath(JPATH_COMPONENT.DS.'tables');
+		JTable::addIncludePath(JPATH_COMPONENT.'/tables');
 		
 		$mainframe 			= JFactory::getApplication();
 		$params 			= clone($mainframe->getParams('com_osdownloads')); 

@@ -8,7 +8,7 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-class TableDocument extends JTable
+class OsdownloadsTableDocument extends JTable
 {
 	var $id;
 	var $cate_id;

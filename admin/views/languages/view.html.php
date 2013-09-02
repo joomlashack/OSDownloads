@@ -10,7 +10,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.application.component.view');
 
-class OSDownloadsViewLanguages extends JView
+class OSDownloadsViewLanguages extends JViewLegacy
 {
 	function display($tpl = null)
 	{
@@ -30,12 +30,12 @@ class OSDownloadsViewLanguages extends JView
 		
 		$file = $lang . ".com_osdownloads.ini";
 		
-		$lang_file = JPath::clean(JPATH_SITE.DS."language".DS.$lang.DS.$file);
+		$lang_file = JPath::clean(JPATH_SITE."/language"."/".$lang."/".$file);
 		if (!JFile::exists($lang_file))
 		{
 			foreach ($languages as $language)
 			{
-				$lang_file = JPath::clean(JPATH_SITE.DS."language".DS.$language->element.DS.$language->element.".com_osdownloads.ini");
+				$lang_file = JPath::clean(JPATH_SITE."/language"."/".$language->element."/".$language->element.".com_osdownloads.ini");
 				if (JFile::exists($lang_file)) 
 					break;
 			}

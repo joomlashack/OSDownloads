@@ -10,7 +10,7 @@ $mainframe 			= JFactory::getApplication();
 $params 			= clone($mainframe->getParams('com_osdownloads')); 
 $NumberOfColumn 	= $params->get("number_of_column", 1);
 ?>
-<form action="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id=".JRequest::getVar("id")."&Itemid=".JRequest::getVar("Itemid")));?>" method="post" name="adminForm">
+<form action="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id=".JRequest::getVar("id")."&Itemid=".JRequest::getVar("Itemid")));?>" method="post" name="adminForm" id="adminForm">
     <div class="contentopen">
         <h3>
             <?php for ($i = count($this->paths) - 1; $i >= 0; $i--):?>
@@ -23,7 +23,8 @@ $NumberOfColumn 	= $params->get("number_of_column", 1);
                 <?php endif;?>
             <?php endfor;?>
         </h3>
-        <div class="sub_title"><?php echo($this->paths[0]->description);?></div>
+        <div class="sub_title">
+		<?php echo($this->paths[0]->description);?></div>
         
         <?php if ($this->children):?>
             <div class="category_children">

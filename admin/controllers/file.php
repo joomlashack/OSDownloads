@@ -10,7 +10,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.controller');
 
-class OSDownloadsControllerFile extends JController
+class OSDownloadsControllerFile extends JControllerLegacy
 {
 
 	function __construct( $default = array())
@@ -23,19 +23,16 @@ class OSDownloadsControllerFile extends JController
 		$this->registerTask( 'orderdown', 		'reorder' ); 
 	}
 	
- 	function display()
-	{
-		parent::display();
-	}
+
 	
 	function save()
 	{
 		JRequest::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
-		JTable::addIncludePath(JPATH_COMPONENT.DS.'tables');
+		JTable::addIncludePath(JPATH_COMPONENT.'/tables');
 		jimport('joomla.filesystem.file'); 
 		jimport('joomla.filesystem.folder'); 
 		
-		$row 	= & JTable::getInstance('document', 'Table');
+		$row 	= & JTable::getInstance('Document', 'OsdownloadsTable');
 		$post 	= JRequest::get('post');
 	
 		$row->bind($post);
@@ -69,14 +66,14 @@ class OSDownloadsControllerFile extends JController
 		
 		if (isset($file["name"]) && $file["name"])
 		{
-			if ($post["old_file"] && JFile::exists(JPath::clean(JPATH_SITE.DS."media".DS."OSDownloads".DS.$post["old_file"])))
-				unlink(JPath::clean(JPATH_SITE.DS."media".DS."OSDownloads".DS.$post["old_file"]));
+			if ($post["old_file"] && JFile::exists(JPath::clean(JPATH_SITE."/media"."/OSDownloads/".$post["old_file"])))
+				unlink(JPath::clean(JPATH_SITE."/media"."/OSDownloads/".$post["old_file"]));
 			
-			if (!JFolder::exists(JPath::clean(JPATH_SITE.DS."media".DS."OSDownloads")))
-				JFolder::create(JPath::clean(JPATH_SITE.DS."media".DS."OSDownloads"));
+			if (!JFolder::exists(JPath::clean(JPATH_SITE."/media"."/OSDownloads")))
+				JFolder::create(JPath::clean(JPATH_SITE."/media"."/OSDownloads"));
 			
 			$timestamp = mktime();
-			$filepath = JPath::clean(JPATH_SITE.DS."media".DS."OSDownloads".DS.$timestamp."_".$file["name"]);
+			$filepath = JPath::clean(JPATH_SITE."/media"."/OSDownloads/".$timestamp."_".$file["name"]);
 			$row->file_path = $timestamp."_".$file["name"];
 			JFile::upload($file["tmp_name"], $filepath);
 		}
@@ -135,7 +132,7 @@ class OSDownloadsControllerFile extends JController
 		$rows = $db->loadObjectList();
 		foreach ($rows as $item)
 		{
-			$filepath = JPath::clean(JPATH_SITE.DS."media".DS."OSDownloads".DS.$item->file_path);
+			$filepath = JPath::clean(JPATH_SITE."/media"."/OSDownloads/".$item->file_path);
 			if (JFile::exists($filepath))
 				JFile::delete($filepath);
 		}
@@ -161,7 +158,7 @@ class OSDownloadsControllerFile extends JController
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
-		JTable::addIncludePath(JPATH_COMPONENT.DS.'tables');
+		JTable::addIncludePath(JPATH_COMPONENT.'/tables');
 
 		// Initialize some variables
 		$db		=& JFactory::getDBO();
@@ -174,7 +171,7 @@ class OSDownloadsControllerFile extends JController
 		}
 
 		$total		= count( $cid );
-		$row 		= & JTable::getInstance('document', 'Table');
+		$row 		= & JTable::getInstance('Document', 'OsdownloadsTable');
 		$groupings = array();
 
 		$order 		= JRequest::getVar( 'order', array(0), 'post', 'array' );
@@ -209,7 +206,7 @@ class OSDownloadsControllerFile extends JController
 	function reorder()
 	{
 		global $mainframe;
-		JTable::addIncludePath(JPATH_COMPONENT.DS.'tables');
+		JTable::addIncludePath(JPATH_COMPONENT.'/tables');
 
 		// Check for request forgeries
 		JRequest::checkToken() or jexit( 'Invalid Token' );
@@ -227,7 +224,7 @@ class OSDownloadsControllerFile extends JController
 			return JError::raiseWarning( 500, 'No items selected' );
 		}
 
-		$row 		= & JTable::getInstance('document', 'Table');
+		$row 		= & JTable::getInstance('Document', 'OsdownloadsTable');
 		$row->load( (int) $cid[0] );
 
 		$row->move( $inc, 'cate_id = '.$db->Quote( $row->cate_id ) );

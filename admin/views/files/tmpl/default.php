@@ -13,7 +13,6 @@ $listDirn	= $this->lists['order_Dir'];
 $saveOrder	= $listOrder == 'documents.ordering'; 
 ?>
 <form action="index.php?option=com_osdownloads" method="post" name="adminForm">
-
     <table>
         <tr>
             <td align="left" width="100%">
@@ -60,7 +59,7 @@ $saveOrder	= $listOrder == 'documents.ordering';
                 ?>
                     <tr class="row<?php echo $i % 2; ?>"> 
                     	<td><?php echo $checked; ?></td>
-                        <td><a href="index.php?option=com_osdownloads&view=file&cid=<?php echo($item->id);?>"><?php echo ($item->name); ?></a></td>
+                        <td><a href="index.php?option=com_osdownloads&view=file&cid[]=<?php echo($item->id);?>"><?php echo ($item->name); ?></a></td>
                         <td valign="top" nowrap="nowrap"><?php echo($item->cate_name);?></td>
                         <td valign="top" nowrap="nowrap"><?php echo($item->downloaded);?></td>
                         <td valign="top" nowrap="nowrap"><?php echo($published);?></td>

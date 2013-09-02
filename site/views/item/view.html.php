@@ -17,11 +17,11 @@ class OSDownloadsViewItem extends JView
 	{
 		JTable::addIncludePath(JPATH_COMPONENT.DS.'tables');
 		
-		$mainframe 			= & JFactory::getApplication();
+		$mainframe 			= JFactory::getApplication();
 		$params 			= clone($mainframe->getParams('com_osdownloads')); 
 		$id 				= $params->get("document_id");
 		
-		$db 	= & JFactory::getDBO();
+		$db 	= JFactory::getDBO();
 		
 		if (JRequest::getVar("id"))
 			$id = JRequest::getVar("id");
@@ -52,9 +52,7 @@ class OSDownloadsViewItem extends JView
 	
 	function buildPath(& $paths, $id)
 	{
-		if ($id == 0)
-			return;
-		$db 	= & JFactory::getDBO();
+		$db 	= JFactory::getDBO();
 		$db->setQuery("SELECT * FROM #__categories WHERE extension='com_osdownloads' AND id = " . $id);
 		$cate = $db->loadObject();
 		if ($cate)

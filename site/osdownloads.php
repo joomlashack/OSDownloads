@@ -8,8 +8,6 @@
 // no direct access
 defined('_JEXEC') or die;
 
-
-
 require_once JPATH_COMPONENT.DS.'controller.php';
 
 $doc = JFactory::getDocument();

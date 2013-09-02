@@ -17,13 +17,13 @@ class OSDownloadsViewFile extends JView
 	{
 		JTable::addIncludePath(JPATH_COMPONENT.DS.'tables');
 		
-		$mainframe 	= & JFactory::getApplication();
-		$cid 		= JRequest::getVar("cid");
+		$mainframe 	= & JFactory::getApplication();		
+		$cid = JRequest::getVar("cid");
 		
-		$item 		= & JTable::getInstance('document', 'Table');
-		
-		if ($cid){
-			$item->load($cid[0] . $cid[1] . $cid[2]);}
+		if (is_array($cid))
+			$cid = $cid[0];
+		$item = JTable::getInstance("document", "Table" );
+		$item->load($cid);
 			
 		if ($item->description_1)
 			$item->description_1 = $item->brief . "<hr id=\"system-readmore\" />" . $item->description_1;

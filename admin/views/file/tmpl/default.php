@@ -43,36 +43,6 @@ $realname = substr($this->item->file_path, $index + 1);
             </td>
         </tr>
     	<tr>
-        	<td><?php echo(JText::_("Parent id"));?></td>
-        	<td>
-            	<?php
-				$db = JFactory::getDBO();
-				$db->setQuery("SELECT * FROM #__osdownloads_documents WHERE parent_id = 0 AND id <> '{$this->item->id}'");
-				$rows = $db->loadObjectList();
-				?>
-                <select name="parent_id">
-                	<option>None</option>
-                    <?php foreach ($rows as $item):?>
-                    	<option value="<?php echo($item->id);?>" <?php if ($this->item->parent_id == $item->id) echo('selected="selected"');?> ><?php echo($item->name ." - ".$item->cms_version);?></option>
-                    <?php endforeach;?>
-                </select>
-            </td>
-        </tr>
-    	<tr>
-        	<td><?php echo(JText::_("CMS verion"));?></td>
-        	<td><input type="text" name="cms_version" value="<?php echo $this->item->cms_version; ?>" style="width:200px" /></td>
-        </tr>
-    	<tr>
-        	<td valign="top"><?php echo(JText::_("Picture"));?></td>
-        	<td>
-            	<?php if ($this->item->picture):?>
-                	<div><img src="<?php echo(JURI::root()."media/OSDownloads/".$this->item->picture);?>" /></div>
-                    <input type="hidden" name="old_picture" value="<?php echo($this->item->picture);?>" />
-                <?php endif;?>
-            	<input type="file" name="picture" />
-            </td>
-        </tr>
-    	<tr>
         	<td valign="top"><?php echo(JText::_("Description 1"));?></td>
         	<td><?php echo $editor->display( 'description_1',  $this->item->description_1 , '100%', '200', '75', '20' ); ?></td>
         </tr>

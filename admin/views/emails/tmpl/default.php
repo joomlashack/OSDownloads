@@ -24,7 +24,8 @@ defined('_JEXEC') or die( 'Restricted access' );
     </table>
 	<table class="adminlist" width="100%" border="0">
         <thead>
-            <tr> 
+            <tr>
+            <th width="2%"><input type="checkbox" onclick="Joomla.checkAll(this)" title="check All" value="" name="checkall-toggle" /> </th>
                 <th style="min-width:200px;"><?php echo JHTML::_('grid.sort',   JText::_('Name'), 'email.email', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
                 <th style="min-width:200px;"><?php echo JHTML::_('grid.sort',   JText::_('File'), 'document.name', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
                 <th style="min-width:200px;"><?php echo JHTML::_('grid.sort',   JText::_('Category'), 'cate.title', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
@@ -42,6 +43,7 @@ defined('_JEXEC') or die( 'Restricted access' );
                 <?php foreach ($this->items as $i => $item) : 
                 ?>
                     <tr class="row<?php echo $i % 2; ?>"> 
+                    	<td valign="top" nowrap="nowrap"><?php echo JHTML::_('grid.id',$id,$item->id);?></td>
                         <td valign="top" nowrap="nowrap"><?php echo($item->email);?></td>
                         <td valign="top" nowrap="nowrap"><?php echo($item->doc_name);?></td>
                         <td valign="top" nowrap="nowrap"><?php echo($item->cate_name);?></td>

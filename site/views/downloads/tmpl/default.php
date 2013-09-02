@@ -35,9 +35,8 @@ $NumberOfColumn 	= $params->get("number_of_column", 1);
                 	<?php
 					if (!in_array($item->access, $groups))
 						continue;
-					$i++;
 					?>
-                    <div class="item<?php echo($i % $NumberOfColumn);?>">
+                    <div class="item<?php echo($i % $NumberOfColumn);?> cate_<?php echo($item->id);?>">
                         <h4><a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$item->id}"."&Itemid=".JRequest::getVar("Itemid")));?>"><?php echo($item->title . " (" . $item->total_doc .")");?></a></h4>
                         <div class="item_content">
                             <?php echo($item->description);?>
@@ -47,28 +46,26 @@ $NumberOfColumn 	= $params->get("number_of_column", 1);
 			            <div class="seperator"></div>
                         <div class="clr"></div>
                     <?php endif;?>
+                    <?php $i++;?>
                 <?php endforeach;?>
                 <div class="clr"></div>
             </div>
         <?php endif;?>
         
         <?php foreach($this->items as $i => $item):?>
-        	<div class="download_list_item">
-            	<?php if ($item->picture):?>
-            		<div style="float:left; margin-right:20px; width:150px;"><img src="<?php echo(JURI::root()."media/OSDownloads/".$item->picture);?>" style="border:1px solid #dedede" /></div>
-                <?php endif;?>
-                <div style="<?php if ($item->picture) echo("float:left; width:460px");?>; padding-right:10px;">
-                    <h4><a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$item->id."&Itemid=".JRequest::getVar("Itemid")));?>"><?php echo($item->name);?></a></h4>
-                    <div class="item_content">
-						<?php echo($item->brief);?>
-                        <div style="float:right"><a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$item->id."&Itemid=".JRequest::getVar("Itemid")));?>">
-                           Go to download area &raquo;
-                        </a> 
-                        </div>                   
-                    </div>
-                </div>
-                <div class="clr"></div>
-            </div>
+			<div class="item_<?php echo($item->id);?>">
+		        <h4><a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$item->id."&Itemid=".JRequest::getVar("Itemid")));?>"><?php echo($item->name);?></a></h4>
+		        <div class="item_content"><?php echo($item->brief);?></div>
+		        <div class="readmore_wrapper">
+		        	<div class="readmore">
+		            	<a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$item->id."&Itemid=".JRequest::getVar("Itemid")));?>">
+		            		<?php echo(JText::_("Read more"));?>
+		            	</a>
+					</div>
+		            <div class="clr"></div>
+				</div>
+		        <div class="seperator"></div>
+			</div>
         <?php endforeach;?>
         <div class="clr"></div>
         <div><?php echo $this->pagination->getPagesCounter(); ?></div>

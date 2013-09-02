@@ -80,23 +80,6 @@ class OSDownloadsControllerFile extends JController
 			$row->file_path = $timestamp."_".$file["name"];
 			JFile::upload($file["tmp_name"], $filepath);
 		}
-
-		$file 				= JRequest::getVar("picture", '', "files");
-		$file["name"] 		= JFile::makeSafe($file["name"]);
-		
-		if (isset($file["name"]) && $file["name"])
-		{
-			if ($post["old_picture"] && JFile::exists(JPath::clean(JPATH_SITE.DS."media".DS."OSDownloads".DS.$post["old_picture"])))
-				unlink(JPath::clean(JPATH_SITE.DS."media".DS."OSDownloads".DS.$post["old_picture"]));
-			
-			if (!JFolder::exists(JPath::clean(JPATH_SITE.DS."media".DS."OSDownloads")))
-				JFolder::create(JPath::clean(JPATH_SITE.DS."media".DS."OSDownloads"));
-			
-			$timestamp = mktime();
-			$filepath = JPath::clean(JPATH_SITE.DS."media".DS."OSDownloads".DS.$timestamp."_".$file["name"]);
-			$row->picture = $timestamp."_".$file["name"];
-			JFile::upload($file["tmp_name"], $filepath);
-		}
 		
 		$row->store();
 		switch ($this->getTask()) 

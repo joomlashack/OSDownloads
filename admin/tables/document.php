@@ -40,7 +40,7 @@ class OsdownloadsTableDocument extends JTable
         parent::__construct('#__osdownloads_documents', 'id', $_db);
     }
 
-    public function store($updateNulls = null)
+    public function store($updateNulls = false)
     {
         if (!$this->id) {
             $this->downloaded = 0;

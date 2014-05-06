@@ -35,12 +35,12 @@ class OsdownloadsTableDocument extends JTable
     var $published;
     var $ordering;
 
-    function __construct(&$_db)
+    public function __construct(&$_db)
     {
         parent::__construct('#__osdownloads_documents', 'id', $_db);
     }
 
-    function store()
+    public function store($updateNulls = null)
     {
         if (!$this->id) {
             $this->downloaded = 0;
@@ -48,8 +48,8 @@ class OsdownloadsTableDocument extends JTable
         if (isset($this->alias) && isset($this->name) && $this->alias == "") {
             $this->alias = preg_replace("/ /", "-", strtolower($this->name));
         }
-        $this->alias = JApplication::stringURLSafe($this->alias);
-        parent::store();
-    }
+        $this->alias = JApplicationHelper::stringURLSafe($this->alias);
 
+        return parent::store($updateNulls);
+    }
 }

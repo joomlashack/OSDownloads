@@ -43,7 +43,7 @@ defined('_JEXEC') or die( 'Restricted access' );
                 <?php foreach ($this->items as $i => $item) : 
                 ?>
                     <tr class="row<?php echo $i % 2; ?>"> 
-                    	<td valign="top" nowrap="nowrap"><?php echo JHTML::_('grid.id',$id,$item->id);?></td>
+                    	<td valign="top" nowrap="nowrap"><?php echo JHTML::_('grid.id',$i,$item->id);?></td>
                         <td valign="top" nowrap="nowrap"><?php echo($item->email);?></td>
                         <td valign="top" nowrap="nowrap"><?php echo($item->doc_name);?></td>
                         <td valign="top" nowrap="nowrap"><?php echo($item->cate_name);?></td>

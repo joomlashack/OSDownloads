@@ -33,12 +33,12 @@ class OsdownloadsTableDocument extends JTable
 	var $published;
 	var $ordering;
 
-	function __construct( &$_db )
+	public function __construct( &$_db )
 	{
 		parent::__construct( '#__osdownloads_documents', 'id', $_db );
 	}
 
-	function store()
+	public function store($updateNulls = null)
 	{
 		if (!$this->id)
 		{
@@ -48,7 +48,7 @@ class OsdownloadsTableDocument extends JTable
 		{
 			$this->alias = preg_replace("/ /", "-", strtolower($this->name));
 		}
-		parent::store();
+		return parent::store($updateNulls);
 	}
 
 }

@@ -39,11 +39,11 @@ class OSDownloadsController extends JControllerLegacy
 	function getdownloadlink()
 	{
 		JTable::addIncludePath(JPATH_COMPONENT.'/tables');
-		$emailrow	= & JTable::getInstance('Email', 'OsdownloadsTable');
-		$item 		= & JTable::getInstance('Document', 'OsdownloadsTable');
+		$emailrow	= JTable::getInstance('Email', 'OsdownloadsTable');
+		$item 		= JTable::getInstance('Document', 'OsdownloadsTable');
 		$item->load(JRequest::getVar("id"));
 		
-		$mainframe 			= & JFactory::getApplication();
+		$mainframe 			= JFactory::getApplication();
 		$params 			= clone($mainframe->getParams('com_osdownloads')); 
 		$mailchimp 			= $params->get("connect_mailchimp", 0);
 		$mailchimp_api		= $params->get("mailchimp_api", 0);
@@ -74,7 +74,7 @@ class OSDownloadsController extends JControllerLegacy
 	function download()
 	{
 		$id 	= JRequest::getVar("id");
-		$db		= & JFactory::getDBO();
+		$db		= JFactory::getDBO();
 
 		$query	= "UPDATE #__osdownloads_documents SET downloaded = downloaded + 1 WHERE id = {$id}";
 		$db->setQuery($query);

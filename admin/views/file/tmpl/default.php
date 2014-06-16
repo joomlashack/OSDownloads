@@ -11,7 +11,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 JHtml::_('behavior.tooltip');
 
 JFilterOutput::objectHTMLSafe($this->item); 
-$editor = &JFactory::getEditor(); 
+$editor = JFactory::getEditor(); 
 
 $index = strpos($this->item->file_path, "_");
 $realname = substr($this->item->file_path, $index + 1);

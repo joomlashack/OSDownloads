@@ -20,7 +20,7 @@ class OSDownloadsViewFile extends JViewLegacy
 		JTable::addIncludePath(JPATH_COMPONENT.'/tables');
 
 		
-		$mainframe 	= & JFactory::getApplication();		
+		$mainframe 	= JFactory::getApplication();		
 		$cid = JRequest::getVar("cid");
 		
 		if (is_array($cid))

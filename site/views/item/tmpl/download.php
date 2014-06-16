@@ -8,7 +8,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$mainframe 			= & JFactory::getApplication();
+$mainframe 			= JFactory::getApplication();
 $params 			= clone($mainframe->getParams('com_osdownloads')); 
 $thankyoupage 	= $params->get("thankyoupage", "Thank you for your downloading");
 

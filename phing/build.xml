@@ -1,46 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="OS Training plugin Builder" default="package" basedir="../">
-    <!-- The short name/folder must be set appropriately -->
-    <property name="app.name.short" value="osdownloads"/>
-    <property name="app.folder" value="content"/>
+<project name="OS Training Joomla Phing Builder" default="package">
+    <!-- version for this build file -->
+    <property name="build.version" value="1.1.0"/>
+    <echo message="Version ${build.version} for Joomla! extensions"/>
 
-    <!-- The following depend on folder structure -->
-    <property name="package.folder" value="${phing.dir}/packages"/>
-    <property name="app.source" value="src"/>
-    <property name="version.file" value="${phing.dir}/version.txt"/>
-    <property name="local.path" value=""/>
+    <taskdef name="setversion" classname="phingext.SetversionTask" />
+    <taskdef name="getversion" classname="phingext.GetVersionTask"/>
 
-    <!-- Derived properties: shouldn't have to change -->
-    <property name="app.name.long" value="plg_${app.folder}_${app.name.short}"/>
-    <property name="app.manifest" value="${app.source}/${app.name.short}.xml"/>
-    <loadfile file="${version.file}" property="app.version"/>
+    <property name="project.root" value=".."/>
+    <property name="dir.packages" value="packages"/>
 
-    <property name="package.file" value="${app.name.long}.zip"/>
-
-    <!-- all the above can be overridden in the properties file -->
-    <available file="${phing.dir}/build.properties" property="build.properties.exists" value="1"/>
+    <!-- load project properties and allow overriding/setting by individual devs -->
+    <property file="build.properties"/>
     <if>
-        <equals arg1="${build.properties.exists}" arg2="1"/>
+        <available file="${project.root}/build.properties" property="project.build.custom"/>
         <then>
-            <property file="${phing.dir}/build.properties" override="true"/>
+            <property file="${project.root}/build.properties" override="true"/>
         </then>
     </if>
 
-    <!-- version for this build file -->
-    <property name="build.version" value="1.0.0"/>
-    <echo message="Version ${build.version} for Joomla! plugins"/>
+    <property name="app.jtype" value=""/>
+    <property name="app.name.short" value=""/>
+    <property name="app.version" value=""/>
 
-    <target name="new-release" description="Update version/creation and create package">
-        <phingcall target="update-version"/>
+    <property name="app.source" value="${project.root}/src"/>
+
+    <property name="app.name.long" value="${app.jtype}_${app.name.short}"/>
+    <property name="app.manifest" value="${app.source}/${app.jtype}_${app.name.short}.xml"/>
+    <property name="package.file" value="${app.name.long}.zip"/>
+
+    <!-- Accept either long-form or short-form manifest file name -->
+    <if>
+        <available file="${app.manifest}" property="app.manifest.exists"/>
+        <then/>
+        <else>
+            <property name="app.manifest" value="${app.source}/${app.name.short}.xml" override="true"/>
+        </else>
+    </if>
+
+    <getversion file="${app.manifest}" property="app.version"/>
+
+    <!-- Create New Release and package -->
+    <target name="new-release" description="Update version/creation and create IDed package">
+        <input
+                propertyName="release.type"
+                validArgs="major,minor,bugfix"
+                message="Current Version ${app.version}"/>
+
+        <setversion releasetype="${release.type}" file="${app.manifest}" property="app.version"/>
         <phingcall target="update-creation"/>
-        <xmlproperty file="${app.manifest}" prefix="manifest" keepRoot="false"/>
-        <property name="manifest.version" value="" override="false"/>
 
         <phingcall target="package">
-            <property name="package.file" value="${app.name.long}_${manifest.version}.zip"/>
+            <property name="package.file" value="${app.name.long}_${app.version}.zip"/>
         </phingcall>
     </target>
 
+    <!-- Create Current Release and package -->
     <target name="current-release" description="Generate package file for current version">
         <xmlproperty file="${app.manifest}" prefix="manifest" keepRoot="false"/>
         <property name="manifest.version" value="" override="false"/>
@@ -49,99 +64,34 @@
         </phingcall>
     </target>
 
+    <!-- Create Package without identifying version info -->
     <target name="package" description="Create installation package file">
-        <property name="package.path" value="${package.folder}/${package.file}"/>
+        <property name="package.path" value="${dir.packages}/${package.file}"/>
         <available file="${package.path}" property="package.path.exists" value="1"/>
         <if>
             <equals arg1="${package.path.exists}" arg2="1"/>
             <then>
-                <delete file="${package.folder}/${package.file}"/>
+                <delete file="${dir.packages}/${package.file}"/>
             </then>
         </if>
-        <zip destfile="${package.folder}/${package.file}" includeemptydirs="true" basedir="${app.source}"/>
+        <zip destfile="${dir.packages}/${package.file}" includeemptydirs="true" basedir="${app.source}"/>
     </target>
 
+    <!-- Update creation date in Joomla manifest file -->
     <target name="update-creation" description="Update creation date">
-        <property name="find.creation" value=""><![CDATA[<creationDate>.*</creationDate>]]></property>
-        <property name="replace.creation" value=""><![CDATA[<creationDate>${build.time}</creationDate>]]></property>
+        <tstamp prefix="creation"/>
 
-        <tstamp>
-            <format property="build.time" pattern="%B %d, %Y"/>
-        </tstamp>
+        <property name="creation.find" value=""><![CDATA[<creationDate>.*</creationDate>]]></property>
+        <property name="creation.replace" value=""><![CDATA[<creationDate>${creation.TODAY}</creationDate>]]></property>
 
         <reflexive file="${app.manifest}">
             <filterchain>
                 <replaceregexp>
-                    <regexp pattern="${find.creation}" replace="${replace.creation}"/>
+                    <!--suppress PhingDomInspection -->
+                    <regexp pattern="${creation.find}" replace="${creation.replace}"/>
                 </replaceregexp>
             </filterchain>
         </reflexive>
-        <echo message="Creation Date: ${build.time}"/>
-    </target>
-
-    <target name="update-version" description="Update version #">
-        <available property="version.file.exists" file="${version.file}" value="1"/>
-        <if>
-            <equals arg1="${version.file.exists}" arg2="1"/>
-            <then>
-                <input propertyName="release.type" validArgs="major,minor,bug">
-                    <![CDATA[Current Version ${app.version}]]>
-                </input>
-                <if>
-                    <equals arg1="${release.type}" arg2="major" casesensitive="false"/>
-                    <then>
-                        <version releasetype="Major" file="${version.file}" property="app.version"/>
-                    </then>
-                    <elseif>
-                        <equals arg1="${release.type}" arg2="minor" casesensitive="false"/>
-                        <then>
-                            <version releasetype="Minor" file="${version.file}" property="app.version"/>
-                        </then>
-                    </elseif>
-                    <elseif>
-                        <equals arg1="${release.type}" arg2="bug" casesensitive="false"/>
-                        <then>
-                            <version releasetype="Bugfix" file="${version.file}" property="app.version"/>
-                        </then>
-                    </elseif>
-                </if>
-            </then>
-        </if>
-
-        <property name="find.version" value=""><![CDATA[<version>.*</version>]]></property>
-        <property name="replace.version" value=""><![CDATA[<version>${app.version}</version>]]></property>
-
-        <reflexive file="${app.manifest}">
-            <filterchain>
-                <replaceregexp>
-                    <regexp pattern="${find.version}" replace="${replace.version}"/>
-                </replaceregexp>
-            </filterchain>
-        </reflexive>
-
-        <echo message="New Version: ${app.version}"/>
-    </target>
-
-    <target name="copy" description="Copy to local development server">
-        <echo message="${phing.project.name} - Copying to ${local.path}"/>
-
-        <available file="${local.path}" property="local.path.exists" value="1"/>
-        <if>
-            <or>
-                <not>
-                    <equals arg1="${local.path.exists}" arg2="1"/>
-                </not>
-                <equals arg1="${local.path}" arg2=""/>
-            </or>
-            <then>
-                <fail>You must set the local.path property to a valid directory in your build.properties file</fail>
-            </then>
-        </if>
-
-        <copy todir="${local.path}/plugins/${app.folder}/${app.name.short}">
-            <fileset dir="${app.source}">
-                <include name="**/**"/>
-            </fileset>
-        </copy>
+        <echo message="Creation Date: ${creation.TODAY}"/>
     </target>
 </project>

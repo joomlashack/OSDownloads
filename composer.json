@@ -1,0 +1,20 @@
+{
+    "name"             : "OSTraining/OSDownloads",
+    "description"      : "OSDownloads",
+    "minimum-stability": "stable",
+    "license"          : "GPL-2+",
+    "type"             : "joomla.component",
+    "extra"            : {
+        "element": "com_osdownloads",
+        "name":    "OSDownloads"
+    },
+    "authors"          : [
+        {
+            "name" : "Open Source Training",
+            "email": "info@ostraining.com"
+        }
+    ],
+    "require"          : {
+        "php"       : ">= 5.3"
+    }
+}

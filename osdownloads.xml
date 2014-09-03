@@ -59,16 +59,16 @@
 		<sql>
 			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
 		</sql>
-	</install>	
+	</install>
 	<uninstall> <!-- Runs on uninstall -->
 		<sql>
 			<file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
 		</sql>
-	</uninstall>	
+	</uninstall>
 	<installfile>install.osdownload.php</installfile>
 
 	<updateservers>
-		<server type="extension" priority="1" name="OSDownloads Updates"><![CDATA[http://updates.ostraining.com/osdownloads.xml]]></server>
+	    <server type="extension" priority="1" name="OSDownloads Component"><![CDATA[http://deploy.ostraining.com/updates/joomla/com_osdownloads.xml]]></server>
 	</updateservers>
-	
+
 </extension>

@@ -3,6 +3,7 @@
 .*
 *~
 !.gitignore
+!.gitkeep
 
 # Icon must ends with two \r.
 Icon
@@ -41,6 +42,11 @@ dist/
 nbdist/
 nbactions.xml
 nb-configuration.xml
+
+# Phing #
+#########
+phing/packages/*
+!.gitkeep
 
 # misc other files #
 ####################

@@ -41,3 +41,15 @@
 	float:none;
 }
 
+.osdownloads-pagination > ul {
+    list-style: none;
+}
+
+.osdownloads-pagination > ul li {
+    display: inline;
+}
+
+.osdownloads-pagination > ul > li:before {
+    content: none !important; /* Overrides enthusiastic templates */
+}
+

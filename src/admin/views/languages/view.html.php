@@ -14,29 +14,29 @@ class OSDownloadsViewLanguages extends JViewLegacy
 {
 	function display($tpl = null)
 	{
-		jimport('joomla.filesystem.file'); 
-		
-		$db = & JFactory::getDBO();
+		jimport('joomla.filesystem.file');
+
+		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$query->select('a.*');
 		$query->from('`#__extensions` AS a');
 		$query->where('a.client_id = 0 AND a.type = "language"');
 		$db->setQuery($query);
 		$languages = $db->loadObjectList();
-		
+
 		$lang = $languages[0]->element;
 		if (JRequest::getVar("language_code"))
 			$lang = JRequest::getVar("language_code");
-		
+
 		$file = $lang . ".com_osdownloads.ini";
-		
+
 		$lang_file = JPath::clean(JPATH_SITE."/language"."/".$lang."/".$file);
 		if (!JFile::exists($lang_file))
 		{
 			foreach ($languages as $language)
 			{
 				$lang_file = JPath::clean(JPATH_SITE."/language"."/".$language->element."/".$language->element.".com_osdownloads.ini");
-				if (JFile::exists($lang_file)) 
+				if (JFile::exists($lang_file))
 					break;
 			}
 		}
@@ -45,30 +45,30 @@ class OSDownloadsViewLanguages extends JViewLegacy
 		{
 			$content = JFile::read($lang_file);
 			$lines = preg_split("/\n/", $content);
-			
+
 			foreach ($lines as $line)
 			{
 				if (strlen(trim($line)))
 				{
 					list($key, $value) = preg_split("/=/", $line);
-					$value = substr($line, strlen($key) + 1);	
+					$value = substr($line, strlen($key) + 1);
 					$defines[$key] = trim(preg_replace("/\"/", "", $value));
 				}
 			}
 		}
-		
-		$this->assignRef("languages", $languages);		
-		$this->assignRef("defines", $defines);		
+
+		$this->assignRef("languages", $languages);
+		$this->assignRef("defines", $defines);
 		$this->assignRef("lang", $lang);
 		$this->addToolbar();
 		parent::display($tpl);
-		
+
 	}
 
 	protected function addToolbar()
 	{
 		JToolBarHelper::title(JText::_('COM_OSDOWNLOAD_SUBMENU_LANGUAGES'));
 		JToolBarHelper::apply('language.apply', 'JTOOLBAR_APPLY');
-	}	
+	}
 }
 ?>

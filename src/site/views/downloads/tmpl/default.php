@@ -70,6 +70,7 @@ $NumberOfColumn 	= $params->get("number_of_column", 1);
         <?php endforeach;?>
         <div class="clr"></div>
         <div><?php echo $this->pagination->getPagesCounter(); ?></div>
+        <div class="osdownloads-pagination"><?php echo $this->pagination->getPagesLinks(); ?></div>
     </div>
     
 </form>

@@ -11,7 +11,7 @@ $params 			= clone($mainframe->getParams('com_osdownloads'));
 $NumberOfColumn 	= $params->get("number_of_column", 1);
 ?>
 <form action="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id=".JRequest::getVar("id")."&Itemid=".JRequest::getVar("Itemid")));?>" method="post" name="adminForm" id="adminForm">
-    <div class="contentopen">
+    <div class="contentopen osdownloads-container">
         <h3>
             <?php for ($i = count($this->paths) - 1; $i >= 0; $i--):?>
                 <?php if ($i):?>

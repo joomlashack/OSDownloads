@@ -35,10 +35,10 @@ class OSDownloadsControllerFile extends JControllerLegacy
 
         $row->bind($post);
 
-        $text 				= JRequest::getVar('description_1', '', 'post', 'string', JREQUEST_ALLOWRAW);
-        $text				= str_replace('<br>', '<br />', $text);
-        $pattern 			= '#<hr\s+id=("|\')system-readmore("|\')\s*\/*>#i';
-        $tagPos				= preg_match($pattern, $text);
+        $text    = JRequest::getVar('description_1', '', 'post', 'string', JREQUEST_ALLOWRAW);
+        $text    = str_replace('<br>', '<br />', $text);
+        $pattern = '#<hr\s+id=("|\')system-readmore("|\')\s*\/*>#i';
+        $tagPos  = preg_match($pattern, $text);
         if ($tagPos == 0) {
             $row->brief	= $text;
             $row->description_1 = "";
@@ -46,18 +46,18 @@ class OSDownloadsControllerFile extends JControllerLegacy
             list($row->brief, $row->description_1) = preg_split($pattern, $text, 2);
         }
 
-        $text 				= JRequest::getVar('description_2', '', 'post', 'string', JREQUEST_ALLOWRAW);
-        $text				= str_replace('<br>', '<br />', $text);
+        $text               = JRequest::getVar('description_2', '', 'post', 'string', JREQUEST_ALLOWRAW);
+        $text               = str_replace('<br>', '<br />', $text);
         $row->description_2 = $text;
-        $text 				= JRequest::getVar('description_3', '', 'post', 'string', JREQUEST_ALLOWRAW);
-        $text				= str_replace('<br>', '<br />', $text);
+        $text               = JRequest::getVar('description_3', '', 'post', 'string', JREQUEST_ALLOWRAW);
+        $text               = str_replace('<br>', '<br />', $text);
         $row->description_3 = $text;
-        $row->show_email 	= isset($row->show_email);
+        $row->show_email    = isset($row->show_email);
         $row->require_email = isset($row->require_email);
         $row->require_agree = isset($row->require_agree);
 
-        $file 				= JRequest::getVar("file", '', "files");
-        $file["name"] 		= JFile::makeSafe($file["name"]);
+        $file         = JRequest::getVar("file", '', "files");
+        $file["name"] = JFile::makeSafe($file["name"]);
 
         if (isset($file["name"]) && $file["name"]) {
             if ($post["old_file"] && JFile::exists(JPath::clean(JPATH_SITE."/media"."/OSDownloads/".$post["old_file"]))) {

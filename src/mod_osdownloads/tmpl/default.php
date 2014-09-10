@@ -31,11 +31,11 @@ if ((bool)$module->showtitle) {
                 <p><?php echo $file->description_1; ?></p>
                 <p>
                     <?php if ($linkTo === 'download') : ?>
-                        <a class="modOSDownloadsButton" href="index.php?option=com_osdownloads&task=getdownloadlink&tmpl=component&Itemid=<?php echo $itemId; ?>&id=<?php echo $file->id; ?>" data-direct-page="<?php echo $file->direct_page; ?>">
+                        <a class="modOSDownloadsButton uk-button uk-button-primary ost-showcase-button" href="<?php echo JRoute::_('index.php?option=com_osdownloads&task=getdownloadlink&tmpl=component&Itemid=' . $itemId . '&id=' . $file->id); ?>" data-direct-page="<?php echo $file->direct_page; ?>">
                             <?php echo $params->get('link_label', JText::_('MOD_OSDOWNLOADS_DOWNLOAD')); ?>
                         </a>
                     <?php else: ?>
-                        <a class="modOSDownloadsButton" href="index.php?option=com_osdownloads&view=item&Itemid=<?php echo $itemId; ?>&id=<?php echo $file->id; ?>" data-direct-page="<?php echo $file->direct_page; ?>">
+                        <a class="modOSDownloadsButton uk-button uk-button-primary ost-showcase-button" href="<?php JRoute::_('index.php?option=com_osdownloads&view=item&Itemid=' . $itemId . '&id=' . $file->id); ?>" data-direct-page="<?php echo $file->direct_page; ?>">
                             <?php echo $params->get('link_label', JText::_('MOD_OSDOWNLOADS_READ_MORE')); ?>
                         </a>
                     <?php endif; ?>

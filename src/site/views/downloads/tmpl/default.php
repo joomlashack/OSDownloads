@@ -2,12 +2,12 @@
 /**
  * @version 1.0.0
  * @author Open Source Training (www.ostraining.com)
- * @copyright (C) 2011- Open Source Training
+ * @copyright (C) 2014 Open Source Training
  * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
 **/
 defined('_JEXEC') or die( 'Restricted access' );
 $mainframe 			= JFactory::getApplication();
-$params 			= clone($mainframe->getParams('com_osdownloads')); 
+$params 			= clone($mainframe->getParams('com_osdownloads'));
 $NumberOfColumn 	= $params->get("number_of_column", 1);
 ?>
 <form action="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id=".JRequest::getVar("id")."&Itemid=".JRequest::getVar("Itemid")));?>" method="post" name="adminForm" id="adminForm">
@@ -25,13 +25,13 @@ $NumberOfColumn 	= $params->get("number_of_column", 1);
         </h1>
         <div class="sub_title">
 		<?php echo($this->paths[0]->description);?></div>
-        
+
         <?php if ($this->children):?>
             <div class="category_children">
-                <?php 
+                <?php
 				$i = 0;
 				$user = JFactory::getUser();
-				$groups = $user->getAuthorisedViewLevels(); 
+				$groups = $user->getAuthorisedViewLevels();
 				foreach($this->children as $item):?>
                 	<?php
 					if (!in_array($item->access, $groups))
@@ -52,7 +52,7 @@ $NumberOfColumn 	= $params->get("number_of_column", 1);
                 <div class="clr"></div>
             </div>
         <?php endif;?>
-        
+
         <?php foreach($this->items as $i => $item):?>
 			<div class="item_<?php echo($item->id);?>">
 		        <h3><a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$item->id."&Itemid=".JRequest::getVar("Itemid")));?>"><?php echo($item->name);?></a></h3>
@@ -72,5 +72,5 @@ $NumberOfColumn 	= $params->get("number_of_column", 1);
         <div><?php echo $this->pagination->getPagesCounter(); ?></div>
         <div class="osdownloads-pagination"><?php echo $this->pagination->getPagesLinks(); ?></div>
     </div>
-    
+
 </form>

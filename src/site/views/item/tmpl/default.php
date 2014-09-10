@@ -2,14 +2,14 @@
 /**
  * @version 1.0.0
  * @author Open Source Training (www.ostraining.com)
- * @copyright (C) 2011- Open Source Training
+ * @copyright (C) 2014 Open Source Training
  * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
 **/
 defined('_JEXEC') or die( 'Restricted access' );
 JHTML::_('behavior.modal');
 
 $mainframe 			= JFactory::getApplication();
-$params 			= clone($mainframe->getParams('com_osdownloads')); 
+$params 			= clone($mainframe->getParams('com_osdownloads'));
 
 ?>
 <div class="contentopen osdownloads-container">
@@ -49,11 +49,11 @@ $params 			= clone($mainframe->getParams('com_osdownloads'));
         <?php if ($this->item->brief || $this->item->description_1):?>
 	        <div class="description1"><?php echo($this->item->brief . $this->item->description_1);?></div>
         <?php endif;?>
-        
+
         <?php if ($this->item->require_email || $this->item->show_email):?>
             <div class="osdownloadsemail"><?php echo(JText::_("Email"));?> <?php if ($this->item->require_email):?>(*)<?php endif;?>: <input type="text" name="require_email" id="require_email" /></div>
         <?php endif;?>
-        
+
 		<?php if ($this->item->description_2):?>
 	        <div class="description2"><?php echo($this->item->description_2);?></div>
         <?php endif;?>

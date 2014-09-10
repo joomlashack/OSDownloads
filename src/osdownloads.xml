@@ -2,8 +2,8 @@
 <extension type="component" version="3.0.2" method="upgrade">
     <name>com_osdownloads</name>
     <author>OSTraining.com</author>
-    <creationDate>September 2011</creationDate>
-    <copyright>Copyright (C) 2011 OSTraining.com</copyright>
+    <creationDate>September 2014</creationDate>
+    <copyright>Copyright (C) 2014 OSTraining.com</copyright>
     <license>GPL v3</license>
     <authorEmail>info@ostraining.com</authorEmail>
     <authorUrl>http://www.ostraining.com</authorUrl>

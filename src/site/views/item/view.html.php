@@ -47,6 +47,15 @@ class OSDownloadsViewItem extends JViewLegacy
         $this->assignRef("paths", $paths);
         $this->assignRef("params", $params);
 
+        // Check if the file should come from an external URL
+        if (!empty($item->file_url)) {
+            $downloadUrl = $item->file_url;
+        } else {
+            $downloadUrl = "index.php?option=com_osdownloads&task=download&tmpl=component&id={$item->id}";
+        }
+        $downloadUrl = JRoute::_($downloadUrl);
+        $this->assignRef('download_url', $downloadUrl);
+
         parent::display($tpl);
     }
 

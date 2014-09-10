@@ -55,6 +55,7 @@ class OSDownloadsControllerFile extends JControllerLegacy
         $row->show_email    = isset($row->show_email);
         $row->require_email = isset($row->require_email);
         $row->require_agree = isset($row->require_agree);
+        $row->file_url      = JRequest::getVar('file_url', '', 'post', 'string');
 
         $file         = JRequest::getVar("file", '', "files");
         $file["name"] = JFile::makeSafe($file["name"]);

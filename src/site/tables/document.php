@@ -29,6 +29,7 @@ class OsdownloadsTableDocument extends JTable
     public $other_name;
     public $other_link;
     public $file_path;
+    public $file_url;
     public $downloaded;
     public $published;
     public $ordering;

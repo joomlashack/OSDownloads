@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS `#__osdownloads_documents` (
   `other_name` varchar(100) NOT NULL,
   `other_link` varchar(100) NOT NULL,
   `file_path` varchar(100) NOT NULL,
+  `file_url` varchar(255) NOT NULL,
   `downloaded` int(11) NOT NULL,
   `direct_page` varchar(250) NOT NULL,
   `parent_id` int(11) NOT NULL,

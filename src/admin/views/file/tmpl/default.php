@@ -16,7 +16,7 @@ $editor = JFactory::getEditor();
 $index = strpos($this->item->file_path, "_");
 $realname = substr($this->item->file_path, $index + 1);
 
-    public function category($name, $extension, $selected = null, $javascript = null, $order = null, $size = 1, $sel_cat = 1)
+    function category($name, $extension, $selected = null, $javascript = null, $order = null, $size = 1, $sel_cat = 1)
     {
         // Deprecation warning.
         JLog::add('JList::category is deprecated.', JLog::WARNING, 'deprecated');
@@ -54,6 +54,10 @@ $realname = substr($this->item->file_path, $index + 1);
                 <?php endif;?>
                 <input type="file" name="file" />
             </td>
+        </tr>
+        <tr>
+            <td><?php echo(JText::_("File URL"));?></td>
+            <td><input type="text" name="file_url" value="<?php echo $this->item->file_url; ?>" style="width:200px" /></td>
         </tr>
         <tr>
             <td><?php echo(JText::_("Category"));?></td>

@@ -65,6 +65,11 @@
             <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
         </sql>
     </uninstall>
+    <update>
+        <schemas>
+            <schemapath type="mysql" charset="utf8">sql/updates/mysql</schemapath>
+        </schemas>
+    </update>
     <installfile>install.osdownload.php</installfile>
 
     <updateservers>

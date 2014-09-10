@@ -9,7 +9,7 @@
 
     <property name="project.root" value=".."/>
     <property name="dir.packages" value="packages"/>
-    <property name="dir.build" value="{dir.packages}/_build"/>
+    <property name="dir.build" value="${dir.packages}/_build"/>
 
     <!-- load project properties and allow overriding/setting by individual devs -->
     <property file="build.properties"/>

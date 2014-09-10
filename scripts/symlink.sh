@@ -58,6 +58,8 @@ create_symlink com_osdownloads/admin/language/en-GB/en-GB.com_osdownloads.sys.in
 create_symlink com_osdownloads/admin/language/en-GB/en-GB.com_osdownloads.ini administrator/language/en-GB/en-GB.com_osdownloads.ini
 create_symlink com_osdownloads/site/language/en-GB/en-GB.com_osdownloads.sys.ini language/en-GB/en-GB.com_osdownloads.sys.ini
 create_symlink com_osdownloads/site/language/en-GB/en-GB.com_osdownloads.ini language/en-GB/en-GB.com_osdownloads.ini
+create_symlink mod_osdownloads modules/mod_osdownloads
+create_symlink mod_osdownloads/languages/en-GB/en-GB.mod_osdownloads.ini language/en-GB/en-GB.mod_osdownloads.ini
 
 echo "Links created successfully"
 exit

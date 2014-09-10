@@ -9,6 +9,7 @@
 
     <property name="project.root" value=".."/>
     <property name="dir.packages" value="packages"/>
+    <property name="dir.build" value="{dir.packages}/_build"/>
 
     <!-- load project properties and allow overriding/setting by individual devs -->
     <property file="build.properties"/>
@@ -74,7 +75,16 @@
                 <delete file="${dir.packages}/${package.file}"/>
             </then>
         </if>
-        <zip destfile="${dir.packages}/${package.file}" includeemptydirs="true" basedir="${app.source}"/>
+
+        <mkdir dir="${dir.build}" />
+
+        <zip destfile="${dir.build}/com_osdownloads.zip" includeemptydirs="true" basedir="${app.source}/com_osdownloads"/>
+        <zip destfile="${dir.build}/mod_osdownloads.zip" includeemptydirs="true" basedir="${app.source}/mod_osdownloads"/>
+        <copy file="${app.source}/pkg_osdownloads.xml" tofile="${dir.build}/pkg_osdownloads.xml" overwrite="true"/>
+
+        <zip destfile="${dir.packages}/${package.file}" includeemptydirs="true" basedir="${dir.build}"/>
+
+        <delete dir="${dir.build}" />
     </target>
 
     <!-- Update creation date in Joomla manifest file -->

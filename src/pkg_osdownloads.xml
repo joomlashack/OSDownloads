@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="package" version="2.5.5">
+    <name>OSDownloads Installation Bundle</name>
+    <author>OSTraining</author>
+    <packagename>osdownloads</packagename>
+    <creationDate>September, 2014</creationDate>
+    <packager>OSTraining</packager>
+    <packagerurl>http://ostraining.com</packagerurl>
+    <copyright>Copyright (C) 2011, 2014 OSTraining.com. All rights reserved.</copyright>
+    <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+    <version>1.0.17</version>
+    <description>OSDownloads Installation Bundle - OSDownloads is an extension to help you manage your downloads. It allows you to easily provide downloads in exchange for emails, which can in turn be automatically imported in MailChimp upon download.</description>
+
+    <files>
+        <file type="component" id="com_osdownloads">com_osdownloads.zip</file>
+        <file type="module" id="mod_osdownloads">mod_osdownloads.zip</file>
+    </files>
+</extension>

@@ -3,8 +3,6 @@
 SITE_PATH=$1
 CODE_PATH=$2
 
-EXTENSION_NAME="osdownloads"
-
 if [ -z $SITE_PATH ]; then
     echo "Please enter the path to the root of your Joomla! install: "
     read SITE_PATH
@@ -23,7 +21,7 @@ if [ -z $CODE_PATH ]; then
         PARENT=$(dirname $CWD)
         CODE_PATH=$PARENT/src
         if [ ! -d $CODE_PATH ]; then
-            echo "Could not find code path.  Please enter path to the code directory of the $EXTENSION_NAME repository:"
+            echo "Could not find code path.  Please enter path to the code directory of the extension repository:"
             read CODE_PATH
             if [ ! -d $CODE_PATH ]; then
                 echo "Path to code not found"
@@ -54,12 +52,12 @@ create_symlink () {
     echo ""
 }
 
-create_symlink site components/$EXTENSION_NAME
-create_symlink admin administrator/components/$EXTENSION_NAME
-create_symlink admin/language/en-GB/en-GB.$EXTENSION_NAME.sys.ini administrator/language/en-GB/en-GB.$EXTENSION_NAME.sys.ini
-create_symlink admin/language/en-GB/en-GB.$EXTENSION_NAME.ini administrator/language/en-GB/en-GB.$EXTENSION_NAME.ini
-create_symlink site/language/en-GB/en-GB.$EXTENSION_NAME.sys.ini language/en-GB/en-GB.$EXTENSION_NAME.sys.ini
-create_symlink site/language/en-GB/en-GB.$EXTENSION_NAME.ini language/en-GB/en-GB.$EXTENSION_NAME.ini
+create_symlink site components/com_osdownloads
+create_symlink admin administrator/components/com_osdownloads
+create_symlink admin/language/en-GB/en-GB.com_osdownloads.sys.ini administrator/language/en-GB/en-GB.com_osdownloads.sys.ini
+create_symlink admin/language/en-GB/en-GB.com_osdownloads.ini administrator/language/en-GB/en-GB.com_osdownloads.ini
+create_symlink site/language/en-GB/en-GB.com_osdownloads.sys.ini language/en-GB/en-GB.com_osdownloads.sys.ini
+create_symlink site/language/en-GB/en-GB.com_osdownloads.ini language/en-GB/en-GB.com_osdownloads.ini
 
 echo "Links created successfully"
 exit

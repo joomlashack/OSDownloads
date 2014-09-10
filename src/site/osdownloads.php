@@ -12,9 +12,7 @@ require_once JPATH_COMPONENT.'/controller.php';
 
 $doc = JFactory::getDocument();
 $doc->addStyleSheet(JURI::Root(). "components/com_osdownloads/assets/osdownloads.css");
-	
-$controller	= new OSDownloadsController( ); 
+
+$controller	= new OSDownloadsController();
 $controller->execute(JRequest::getCmd('task', 'display'));
 $controller->redirect();
-
-?>

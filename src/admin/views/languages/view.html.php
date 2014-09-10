@@ -12,63 +12,59 @@ jimport('joomla.application.component.view');
 
 class OSDownloadsViewLanguages extends JViewLegacy
 {
-	function display($tpl = null)
-	{
-		jimport('joomla.filesystem.file');
+    public function display($tpl = null)
+    {
+        jimport('joomla.filesystem.file');
 
-		$db = JFactory::getDBO();
-		$query = $db->getQuery(true);
-		$query->select('a.*');
-		$query->from('`#__extensions` AS a');
-		$query->where('a.client_id = 0 AND a.type = "language"');
-		$db->setQuery($query);
-		$languages = $db->loadObjectList();
+        $db = JFactory::getDBO();
+        $query = $db->getQuery(true);
+        $query->select('a.*');
+        $query->from('`#__extensions` AS a');
+        $query->where('a.client_id = 0 AND a.type = "language"');
+        $db->setQuery($query);
+        $languages = $db->loadObjectList();
 
-		$lang = $languages[0]->element;
-		if (JRequest::getVar("language_code"))
-			$lang = JRequest::getVar("language_code");
+        $lang = $languages[0]->element;
+        if (JRequest::getVar("language_code")) {
+            $lang = JRequest::getVar("language_code");
+        }
 
-		$file = $lang . ".com_osdownloads.ini";
+        $file = $lang . ".com_osdownloads.ini";
 
-		$lang_file = JPath::clean(JPATH_SITE."/language"."/".$lang."/".$file);
-		if (!JFile::exists($lang_file))
-		{
-			foreach ($languages as $language)
-			{
-				$lang_file = JPath::clean(JPATH_SITE."/language"."/".$language->element."/".$language->element.".com_osdownloads.ini");
-				if (JFile::exists($lang_file))
-					break;
-			}
-		}
-		$defines = array();
-		if (JFile::exists($lang_file))
-		{
-			$content = JFile::read($lang_file);
-			$lines = preg_split("/\n/", $content);
+        $lang_file = JPath::clean(JPATH_SITE."/language"."/".$lang."/".$file);
+        if (!JFile::exists($lang_file)) {
+            foreach ($languages as $language) {
+                $lang_file = JPath::clean(JPATH_SITE."/language"."/".$language->element."/".$language->element.".com_osdownloads.ini");
+                if (JFile::exists($lang_file)) {
+                    break;
+                }
+            }
+        }
+        $defines = array();
+        if (JFile::exists($lang_file)) {
+            $content = JFile::read($lang_file);
+            $lines = preg_split("/\n/", $content);
 
-			foreach ($lines as $line)
-			{
-				if (strlen(trim($line)))
-				{
-					list($key, $value) = preg_split("/=/", $line);
-					$value = substr($line, strlen($key) + 1);
-					$defines[$key] = trim(preg_replace("/\"/", "", $value));
-				}
-			}
-		}
+            foreach ($lines as $line) {
+                if (strlen(trim($line))) {
+                    list($key, $value) = preg_split("/=/", $line);
+                    $value = substr($line, strlen($key) + 1);
+                    $defines[$key] = trim(preg_replace("/\"/", "", $value));
+                }
+            }
+        }
 
-		$this->assignRef("languages", $languages);
-		$this->assignRef("defines", $defines);
-		$this->assignRef("lang", $lang);
-		$this->addToolbar();
-		parent::display($tpl);
+        $this->assignRef("languages", $languages);
+        $this->assignRef("defines", $defines);
+        $this->assignRef("lang", $lang);
+        $this->addToolbar();
+        parent::display($tpl);
 
-	}
+    }
 
-	protected function addToolbar()
-	{
-		JToolBarHelper::title(JText::_('COM_OSDOWNLOAD_SUBMENU_LANGUAGES'));
-		JToolBarHelper::apply('language.apply', 'JTOOLBAR_APPLY');
-	}
+    protected function addToolbar()
+    {
+        JToolBarHelper::title(JText::_('COM_OSDOWNLOAD_SUBMENU_LANGUAGES'));
+        JToolBarHelper::apply('language.apply', 'JTOOLBAR_APPLY');
+    }
 }
-?>

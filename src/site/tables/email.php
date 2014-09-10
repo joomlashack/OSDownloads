@@ -10,15 +10,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class OsdownloadsTableEmail extends JTable
 {
-	var $id;
-	var $email;
-	var $document_id;
-	var $downloaded_date;
+    public $id;
+    public $email;
+    public $document_id;
+    public $downloaded_date;
 
-	function __construct( &$_db )
-	{
-		parent::__construct( '#__osdownloads_emails', 'id', $_db );
-	}
-
+    public function __construct(&$_db)
+    {
+        parent::__construct('#__osdownloads_emails', 'id', $_db);
+    }
 }
-?>

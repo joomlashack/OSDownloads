@@ -10,46 +10,43 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class OsdownloadsTableDocument extends JTable
 {
-	var $id;
-	var $cate_id;
-	var $documents;
-	var $name;
-	var $alias;
-	var $brief;
-	var $description_1;
-	var $description_2;
-	var $show_email;
-	var $require_email;
-	var $require_agree;
-	var $download_text;
-	var $download_color;
-	var $documentation_link;
-	var $demo_link;
-	var $support_link;
-	var $other_name;
-	var $other_link;
-	var $file_path;
-	var $downloaded;
-	var $published;
-	var $ordering;
+    public $id;
+    public $cate_id;
+    public $documents;
+    public $name;
+    public $alias;
+    public $brief;
+    public $description_1;
+    public $description_2;
+    public $show_email;
+    public $require_email;
+    public $require_agree;
+    public $download_text;
+    public $download_color;
+    public $documentation_link;
+    public $demo_link;
+    public $support_link;
+    public $other_name;
+    public $other_link;
+    public $file_path;
+    public $downloaded;
+    public $published;
+    public $ordering;
 
-	public function __construct( &$_db )
-	{
-		parent::__construct( '#__osdownloads_documents', 'id', $_db );
-	}
+    public function __construct(&$_db)
+    {
+        parent::__construct('#__osdownloads_documents', 'id', $_db);
+    }
 
-	public function store($updateNulls = null)
-	{
-		if (!$this->id)
-		{
-			$this->downloaded = 0;
-		}
-		if (isset($this->alias) && isset($this->name) && $this->alias == "")
-		{
-			$this->alias = preg_replace("/ /", "-", strtolower($this->name));
-		}
-		return parent::store($updateNulls);
-	}
+    public function store($updateNulls = null)
+    {
+        if (!$this->id) {
+            $this->downloaded = 0;
+        }
+        if (isset($this->alias) && isset($this->name) && $this->alias == "") {
+            $this->alias = preg_replace("/ /", "-", strtolower($this->name));
+        }
 
+        return parent::store($updateNulls);
+    }
 }
-?>

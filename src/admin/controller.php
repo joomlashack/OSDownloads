@@ -12,31 +12,29 @@ jimport('joomla.application.component.controller');
 
 class OSDownloadsController extends JControllerLegacy
 {
-	protected $default_view = "files";
+    protected $default_view = "files";
 
-	public function __construct( $default = array())
-	{
-		parent::__construct( $default );
+    public function __construct($default = array())
+    {
+        parent::__construct($default);
 
-		$this->registerTask( 'cancel', 			'display');
-		$this->registerTask( 'file' , 			'display' );
-	}
+        $this->registerTask('cancel', 'display');
+        $this->registerTask('file', 'display');
+    }
 
- 	public function display($cachable = false, $urlparams = array())
-	{
-		require_once JPATH_COMPONENT.'/helpers/osdownloads.php';
-		OSDownloadsHelper::addSubmenu(JRequest::getCmd('view', 'files'));
+    public function display($cachable = false, $urlparams = array())
+    {
+        require_once JPATH_COMPONENT.'/helpers/osdownloads.php';
+        OSDownloadsHelper::addSubmenu(JRequest::getCmd('view', 'files'));
 
-		$view = JRequest::getVar("view", "files");
-		JRequest::setVar("view", $view);
-		switch($this->getTask())
-		{
-			case "file":
-				JRequest::setVar('view', 'file');
-				break;
-		}
-		parent::display();
-	}
+        $view = JRequest::getVar("view", "files");
+        JRequest::setVar("view", $view);
+        switch ($this->getTask()) {
+            case "file":
+                JRequest::setVar('view', 'file');
+                break;
+        }
 
-
+        parent::display();
+    }
 }

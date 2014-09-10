@@ -10,35 +10,35 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
 <form action="index.php?option=com_osdownloads" method="post" name="adminForm" id="adminForm">
-	<table border="0">
-    	<tr>
-        	<td>
-            	<select name="language_code" onchange="this.form.submit();">
-                	<?php foreach ($this->languages as $language):?>
-                    	<option value="<?php echo($language->element);?>" <?php if ($this->lang == $language->element) echo('selected="selected"');?> ><?php echo($language->name);?></option>
+    <table border="0">
+        <tr>
+            <td>
+                <select name="language_code" onchange="this.form.submit();">
+                    <?php foreach ($this->languages as $language):?>
+                        <option value="<?php echo($language->element);?>" <?php if ($this->lang == $language->element) echo('selected="selected"');?> ><?php echo($language->name);?></option>
                     <?php endforeach;?>
                 </select>
             </td>
         </tr>
     </table>
-	<table border="0">
-    	<thead>
-        	<tr>
-            	<th><?php echo(JText::_('Key'));?></th>
-            	<th><?php echo(JText::_('Value'));?></th>
+    <table border="0">
+        <thead>
+            <tr>
+                <th><?php echo(JText::_('Key'));?></th>
+                <th><?php echo(JText::_('Value'));?></th>
             </tr>
         </thead>
         <tbody>
-			<?php foreach ($this->defines as $key => $value):?>
+            <?php foreach ($this->defines as $key => $value):?>
                 <tr>
                     <td><?php echo($key);?></td>
                     <td><input type="text" name="defines['<?php echo($key);?>']" value="<?php echo($value);?>" size="150" /></td>
-                </tr>            
+                </tr>
             <?php endforeach;?>
-    	</tbody>
+        </tbody>
     </table>
-	<input type="hidden" name="option" value="com_osdownloads" />
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="view" value="languages" />
-	<?php echo JHTML::_( 'form.token' ); ?>
+    <input type="hidden" name="option" value="com_osdownloads" />
+    <input type="hidden" name="task" value="" />
+    <input type="hidden" name="view" value="languages" />
+    <?php echo JHTML::_( 'form.token' ); ?>
 </form>

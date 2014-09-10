@@ -9,23 +9,23 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 function category($name, $extension, $selected = null, $javascript = null, $order = null, $size = 1, $sel_cat = 1)
-	{
-		// Deprecation warning.
-		JLog::add('JList::category is deprecated.', JLog::WARNING, 'deprecated');
+    {
+        // Deprecation warning.
+        JLog::add('JList::category is deprecated.', JLog::WARNING, 'deprecated');
 
-		$categories = JHtml::_('category.options', $extension);
-		if ($sel_cat)
-		{
-			array_unshift($categories, JHtml::_('select.option', '0', JText::_('JOPTION_SELECT_CATEGORY')));
-		}
+        $categories = JHtml::_('category.options', $extension);
+        if ($sel_cat)
+        {
+            array_unshift($categories, JHtml::_('select.option', '0', JText::_('JOPTION_SELECT_CATEGORY')));
+        }
 
-		$category = JHtml::_(
-			'select.genericlist', $categories, $name, 'class="inputbox" size="' . $size . '" ' . $javascript, 'value', 'text',
-			$selected
-		);
+        $category = JHtml::_(
+            'select.genericlist', $categories, $name, 'class="inputbox" size="' . $size . '" ' . $javascript, 'value', 'text',
+            $selected
+        );
 
-		return $category;
-	}
+        return $category;
+    }
 
 
 ?>
@@ -39,13 +39,13 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                 <button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'Reset' ); ?></button>
             </td>
             <td nowrap="nowrap">
-            	<?php echo category('cate_id', 'com_osdownloads', $this->flt->cate_id, "onchange='this.form.submit();'", 'title', $size = 1, $sel_cat = 1); ?>
+                <?php echo category('cate_id', 'com_osdownloads', $this->flt->cate_id, "onchange='this.form.submit();'", 'title', $size = 1, $sel_cat = 1); ?>
                                 <?php //JHTML::_('grid.state',  $filter_state );?>
 
             </td>
         </tr>
     </table>
-	<table class="adminlist" width="100%" border="0">
+    <table class="adminlist" width="100%" border="0">
         <thead>
             <tr>
             <th width="2%"><input type="checkbox" onclick="Joomla.checkAll(this)" title="check All" value="" name="checkall-toggle" /> </th>
@@ -61,12 +61,12 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                         <?php echo $this->pagination->getListFooter(); ?>
                     </td>
                 </tr>
-            </tfoot>     
-            <tbody> 
-                <?php foreach ($this->items as $i => $item) : 
+            </tfoot>
+            <tbody>
+                <?php foreach ($this->items as $i => $item) :
                 ?>
-                    <tr class="row<?php echo $i % 2; ?>"> 
-                    	<td valign="top" nowrap="nowrap"><?php echo JHTML::_('grid.id',$i,$item->id);?></td>
+                    <tr class="row<?php echo $i % 2; ?>">
+                        <td valign="top" nowrap="nowrap"><?php echo JHTML::_('grid.id',$i,$item->id);?></td>
                         <td valign="top" nowrap="nowrap"><?php echo($item->email);?></td>
                         <td valign="top" nowrap="nowrap"><?php echo($item->doc_name);?></td>
                         <td valign="top" nowrap="nowrap"><?php echo($item->cate_name);?></td>
@@ -74,13 +74,13 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                         <td valign="top" nowrap="nowrap"><?php echo($item->id);?></td>
                     </tr>
                 <?php endforeach;?>
-            </tbody>        
+            </tbody>
         </thead>
     </table>
-	<input type="hidden" name="option" value="com_osdownloads" />
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
-	<?php echo JHTML::_( 'form.token' ); ?>
+    <input type="hidden" name="option" value="com_osdownloads" />
+    <input type="hidden" name="task" value="" />
+    <input type="hidden" name="boxchecked" value="0" />
+    <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
+    <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
+    <?php echo JHTML::_( 'form.token' ); ?>
 </form>

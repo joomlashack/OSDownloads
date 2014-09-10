@@ -12,11 +12,8 @@ jimport('joomla.application.component.controller');
 
 class OSDownloadsControllerFiles extends JControllerLegacy
 {
-	function __construct( $default = array())
-	
-	{
-		parent::__construct( $default );
-
-	}
-	
-} 
+    public function __construct($default = array())
+    {
+        parent::__construct($default);
+    }
+}

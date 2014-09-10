@@ -10,7 +10,7 @@
 		</field>
 		<field name="mailchimp_api" type="text" default="" label="Mailchimp API" />
 		<field name="list_id" type="text" default="" label="List id" />
-		
+
 	</fieldset>
 	<fieldset name="download"
 		label="Download"
@@ -18,7 +18,7 @@
 		<field name="thankyoupage" type="editor" default="" filter="safehtml" label="Thank you page" />
 		<field name="width" type="text" default="300" label="Popup width" />
 		<field name="height" type="text" default="150" label="Popup height" />
-		
+
 	</fieldset>
 	<fieldset
 		name="permissions"

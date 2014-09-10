@@ -3,9 +3,9 @@
     "description"      : "OSDownloads",
     "minimum-stability": "stable",
     "license"          : "GPL-2+",
-    "type"             : "joomla.component",
+    "type"             : "joomla.package",
     "extra"            : {
-        "element": "com_osdownloads",
+        "element": "pkg_osdownloads",
         "name":    "OSDownloads"
     },
     "authors"          : [

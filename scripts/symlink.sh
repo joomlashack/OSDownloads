@@ -52,12 +52,12 @@ create_symlink () {
     echo ""
 }
 
-create_symlink site components/com_osdownloads
-create_symlink admin administrator/components/com_osdownloads
-create_symlink admin/language/en-GB/en-GB.com_osdownloads.sys.ini administrator/language/en-GB/en-GB.com_osdownloads.sys.ini
-create_symlink admin/language/en-GB/en-GB.com_osdownloads.ini administrator/language/en-GB/en-GB.com_osdownloads.ini
-create_symlink site/language/en-GB/en-GB.com_osdownloads.sys.ini language/en-GB/en-GB.com_osdownloads.sys.ini
-create_symlink site/language/en-GB/en-GB.com_osdownloads.ini language/en-GB/en-GB.com_osdownloads.ini
+create_symlink com_osdownloads/site components/com_osdownloads
+create_symlink com_osdownloads/admin administrator/components/com_osdownloads
+create_symlink com_osdownloads/admin/language/en-GB/en-GB.com_osdownloads.sys.ini administrator/language/en-GB/en-GB.com_osdownloads.sys.ini
+create_symlink com_osdownloads/admin/language/en-GB/en-GB.com_osdownloads.ini administrator/language/en-GB/en-GB.com_osdownloads.ini
+create_symlink com_osdownloads/site/language/en-GB/en-GB.com_osdownloads.sys.ini language/en-GB/en-GB.com_osdownloads.sys.ini
+create_symlink com_osdownloads/site/language/en-GB/en-GB.com_osdownloads.ini language/en-GB/en-GB.com_osdownloads.ini
 
 echo "Links created successfully"
 exit

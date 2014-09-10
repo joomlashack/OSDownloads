@@ -73,7 +73,7 @@
     <installfile>install.osdownload.php</installfile>
 
     <updateservers>
-        <server type="extension" priority="1" name="OSDownloads Component"><![CDATA[http://deploy.ostraining.com/updates/joomla/com_osdownloads.xml]]></server>
+        <server type="extension" priority="1" name="OSDownloads Component"><![CDATA[http://deploy.ostraining.com/updates/joomla/pkg_osdownloads.xml]]></server>
     </updateservers>
 
 </extension>

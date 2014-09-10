@@ -12,9 +12,9 @@ $mainframe 			= JFactory::getApplication();
 $params 			= clone($mainframe->getParams('com_osdownloads')); 
 
 ?>
-<div class="contentopen">
+<div class="contentopen osdownloads-container">
 	<form method="post" id="adminForm" name="adminForm">
-        <h4><?php echo($this->item->name);?></h4>
+        <h1><?php echo($this->item->name);?></h1>
         <?php if ($this->params->get("show_category", 0)):?>
             <div class="cate_info">
                 Category:

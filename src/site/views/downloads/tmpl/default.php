@@ -11,8 +11,8 @@ $params 			= clone($mainframe->getParams('com_osdownloads'));
 $NumberOfColumn 	= $params->get("number_of_column", 1);
 ?>
 <form action="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id=".JRequest::getVar("id")."&Itemid=".JRequest::getVar("Itemid")));?>" method="post" name="adminForm" id="adminForm">
-    <div class="contentopen">
-        <h3>
+    <div class="contentopen osdownloads-container">
+        <h1>
             <?php for ($i = count($this->paths) - 1; $i >= 0; $i--):?>
                 <?php if ($i):?>
                     <a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$this->paths[$i]->id}"."&Itemid=".JRequest::getVar("Itemid")));?>">
@@ -22,7 +22,7 @@ $NumberOfColumn 	= $params->get("number_of_column", 1);
                     </a> <span class="divider">::</span>
                 <?php endif;?>
             <?php endfor;?>
-        </h3>
+        </h1>
         <div class="sub_title">
 		<?php echo($this->paths[0]->description);?></div>
         
@@ -38,7 +38,7 @@ $NumberOfColumn 	= $params->get("number_of_column", 1);
 						continue;
 					?>
                     <div class="item<?php echo($i % $NumberOfColumn);?> cate_<?php echo($item->id);?>">
-                        <h4><a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$item->id}"."&Itemid=".JRequest::getVar("Itemid")));?>"><?php echo($item->title . " (" . $item->total_doc .")");?></a></h4>
+                        <h3><a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$item->id}"."&Itemid=".JRequest::getVar("Itemid")));?>"><?php echo($item->title . " (" . $item->total_doc .")");?></a></h3>
                         <div class="item_content">
                             <?php echo($item->description);?>
                         </div>
@@ -55,7 +55,7 @@ $NumberOfColumn 	= $params->get("number_of_column", 1);
         
         <?php foreach($this->items as $i => $item):?>
 			<div class="item_<?php echo($item->id);?>">
-		        <h4><a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$item->id."&Itemid=".JRequest::getVar("Itemid")));?>"><?php echo($item->name);?></a></h4>
+		        <h3><a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$item->id."&Itemid=".JRequest::getVar("Itemid")));?>"><?php echo($item->name);?></a></h3>
 		        <div class="item_content"><?php echo($item->brief);?></div>
 		        <div class="readmore_wrapper">
 		        	<div class="readmore">

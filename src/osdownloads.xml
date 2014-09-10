@@ -1,74 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="3.0.2" method="upgrade">
-	<name>com_osdownloads</name>
-	<author>OSTraining.com</author>
-	<creationDate>September 2011</creationDate>
-	<copyright>Copyright (C) 2011 OSTraining.com</copyright>
-	<license>GPL v3</license>
-	<authorEmail>info@ostraining.com</authorEmail>
-	<authorUrl>http://www.ostraining.com</authorUrl>
-	<version>1.0.17</version>
-	<description>OSDownloads is an extension to help you manage your downloads. It allows you to easily provide downloads in exchange for emails, which can in turn be automatically imported in MailChimp upon download.</description>
+    <name>com_osdownloads</name>
+    <author>OSTraining.com</author>
+    <creationDate>September 2011</creationDate>
+    <copyright>Copyright (C) 2011 OSTraining.com</copyright>
+    <license>GPL v3</license>
+    <authorEmail>info@ostraining.com</authorEmail>
+    <authorUrl>http://www.ostraining.com</authorUrl>
+    <version>1.0.17</version>
+    <description>OSDownloads is an extension to help you manage your downloads. It allows you to easily provide downloads in exchange for emails, which can in turn be automatically imported in MailChimp upon download.</description>
 
-	<files folder="site">
-		<filename>controller.php</filename>
-		<filename>index.html</filename>
-		<filename>osdownloads.php</filename>
-		<filename>router.php</filename>
-		<folder>assets</folder>
-		<folder>classes</folder>
-		<folder>models</folder>
-		<folder>tables</folder>
-		<folder>views</folder>
-	</files>
-	<languages folder="site">
-		<language tag="en-GB">language/en-GB.com_osdownloads.ini
-		</language>
-		<language tag="en-GB">language/en-GB.com_osdownloads.sys.ini
-		</language>
-	</languages>
+    <files folder="site">
+        <filename>controller.php</filename>
+        <filename>index.html</filename>
+        <filename>osdownloads.php</filename>
+        <filename>router.php</filename>
+        <folder>assets</folder>
+        <folder>classes</folder>
+        <folder>models</folder>
+        <folder>tables</folder>
+        <folder>views</folder>
+    </files>
+    <languages folder="site">
+        <language tag="en-GB">language/en-GB.com_osdownloads.ini
+        </language>
+        <language tag="en-GB">language/en-GB.com_osdownloads.sys.ini
+        </language>
+    </languages>
 
-	<administration>
-		<menu img="class:component">OSDownloads</menu>
-		<submenu>
-			<menu link="option=com_osdownloads&amp;view=files" view="files" img="class:component"	alt="OSDownloads/Files">Files</menu>
-			<menu link="option=com_categories&amp;extension=com_osdownloads" view="categories" img="class:component" alt="OSDownloads/Categories">Categories</menu>
-			<menu link="option=com_osdownloads&amp;view=emails" view="emails" img="class:component"	alt="OSDownloads/Emails">Emails</menu>
-			<menu link="option=com_osdownloads&amp;view=languages" view="languages" img="class:component"	alt="OSDownloads/Languages">Languages</menu>
-		</submenu>
-		<files folder="admin">
-			<filename>access.xml</filename>
-			<filename>config.xml</filename>
-			<filename>controller.php</filename>
-			<filename>index.html</filename>
-			<filename>osdownloads.php</filename>
-			<folder>controllers</folder>
-			<folder>helpers</folder>
-			<folder>sql</folder>
-			<folder>tables</folder>
-			<folder>views</folder>
-		</files>
-		<languages folder="admin">
-			<language tag="en-GB">language/en-GB.com_osdownloads.ini
-			</language>
-			<language tag="en-GB">language/en-GB.com_osdownloads.sys.ini
-			</language>
-		</languages>
-	</administration>
-	<install> <!-- Runs on install -->
-		<sql>
-			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
-		</sql>
-	</install>
-	<uninstall> <!-- Runs on uninstall -->
-		<sql>
-			<file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
-		</sql>
-	</uninstall>
-	<installfile>install.osdownload.php</installfile>
+    <administration>
+        <menu img="class:component">OSDownloads</menu>
+        <submenu>
+            <menu link="option=com_osdownloads&amp;view=files" view="files" img="class:component"   alt="OSDownloads/Files">Files</menu>
+            <menu link="option=com_categories&amp;extension=com_osdownloads" view="categories" img="class:component" alt="OSDownloads/Categories">Categories</menu>
+            <menu link="option=com_osdownloads&amp;view=emails" view="emails" img="class:component" alt="OSDownloads/Emails">Emails</menu>
+            <menu link="option=com_osdownloads&amp;view=languages" view="languages" img="class:component"   alt="OSDownloads/Languages">Languages</menu>
+        </submenu>
+        <files folder="admin">
+            <filename>access.xml</filename>
+            <filename>config.xml</filename>
+            <filename>controller.php</filename>
+            <filename>index.html</filename>
+            <filename>osdownloads.php</filename>
+            <folder>controllers</folder>
+            <folder>helpers</folder>
+            <folder>sql</folder>
+            <folder>tables</folder>
+            <folder>views</folder>
+        </files>
+        <languages folder="admin">
+            <language tag="en-GB">language/en-GB.com_osdownloads.ini
+            </language>
+            <language tag="en-GB">language/en-GB.com_osdownloads.sys.ini
+            </language>
+        </languages>
+    </administration>
+    <install> <!-- Runs on install -->
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+        </sql>
+    </install>
+    <uninstall> <!-- Runs on uninstall -->
+        <sql>
+            <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+        </sql>
+    </uninstall>
+    <installfile>install.osdownload.php</installfile>
 
-	<updateservers>
-	    <server type="extension" priority="1" name="OSDownloads Component"><![CDATA[http://deploy.ostraining.com/updates/joomla/com_osdownloads.xml]]></server>
-	</updateservers>
+    <updateservers>
+        <server type="extension" priority="1" name="OSDownloads Component"><![CDATA[http://deploy.ostraining.com/updates/joomla/com_osdownloads.xml]]></server>
+    </updateservers>
 
 </extension>

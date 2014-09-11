@@ -15,4 +15,9 @@
         <file type="component" id="com_osdownloads">com_osdownloads.zip</file>
         <file type="module" id="mod_osdownloads">mod_osdownloads.zip</file>
     </files>
+
+    <updateservers>
+        <server type="extension" priority="1" name="OSDownloads"><![CDATA[https://deploy.ostraining.com/updates/joomla/pkg_osdownloads.xml]]></server>
+    </updateservers>
+
 </extension>

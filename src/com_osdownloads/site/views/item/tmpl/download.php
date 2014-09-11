@@ -10,7 +10,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $mainframe 			= JFactory::getApplication();
 $params 			= clone($mainframe->getParams('com_osdownloads'));
-$thankyoupage 	= $params->get("thankyoupage", "Thank you for your downloading");
+$thankyoupage 	= $params->get("thankyoupage", "Thank you");
 
 $email = trim(JRequest::getVar("email"));
 if ($this->item->require_email && !preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $email)) {

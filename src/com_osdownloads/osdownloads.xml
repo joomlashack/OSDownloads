@@ -52,22 +52,19 @@
 
     <install> <!-- Runs on install -->
         <sql>
-            <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
-            <file driver="mysqli" charset="utf8">sql/install.mysql.utf8.sql</file>
+            <file driver="mysql" charset="utf8">sql/install/mysql/install.sql</file>
         </sql>
     </install>
 
     <uninstall> <!-- Runs on uninstall -->
         <sql>
-            <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
-            <file driver="mysqli" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+            <file driver="mysql" charset="utf8">sql/install/mysql/uninstall.sql</file>
         </sql>
     </uninstall>
 
     <update>
         <schemas>
             <schemapath type="mysql" charset="utf8">sql/updates/mysql</schemapath>
-            <schemapath type="mysqli" charset="utf8">sql/updates/mysql</schemapath>
         </schemas>
     </update>
 

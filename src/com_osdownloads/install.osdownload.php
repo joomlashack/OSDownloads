@@ -18,7 +18,7 @@ jimport('joomla.filesystem.file');
 
 function com_install()
 {
-    $db =& JFactory::getDBO();
+    $db = JFactory::getDBO();
     $db->setQuery("SHOW COLUMNS FROM #__osdownloads_documents");
     $rows = $db->loadObjectList();
     $db_version = "1.0.0";
@@ -82,5 +82,4 @@ function com_install()
             $db->query();
         }
     }
-
 }

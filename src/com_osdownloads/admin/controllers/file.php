@@ -30,8 +30,8 @@ class OSDownloadsControllerFile extends JControllerLegacy
         jimport('joomla.filesystem.file');
         jimport('joomla.filesystem.folder');
 
-        $row     = & JTable::getInstance('Document', 'OsdownloadsTable');
-        $post 	= JRequest::get('post');
+        $row  = JTable::getInstance('Document', 'OsdownloadsTable');
+        $post = JRequest::get('post');
 
         $row->bind($post);
 
@@ -90,7 +90,7 @@ class OSDownloadsControllerFile extends JControllerLegacy
         // Check for request forgeries
         JRequest::checkToken() or jexit('Invalid Token');
 
-        $db 	=& JFactory::getDBO();
+        $db = JFactory::getDBO();
 
         $cid     = JRequest::getVar('cid', array(), '', 'array');
         $publish = ($this->getTask() == 'publish' ? 1 : 0);
@@ -114,8 +114,8 @@ class OSDownloadsControllerFile extends JControllerLegacy
         JRequest::checkToken() or jexit('Invalid Token');
         jimport('joomla.filesystem.file');
 
-        $db 	=& JFactory::getDBO();
-        $cid	= JRequest::getVar('cid', array(), '', 'array');
+        $db  = JFactory::getDBO();
+        $cid = JRequest::getVar('cid', array(), '', 'array');
 
         JArrayHelper::toInteger($cid);
 
@@ -152,20 +152,20 @@ class OSDownloadsControllerFile extends JControllerLegacy
         JTable::addIncludePath(JPATH_COMPONENT.'/tables');
 
         // Initialize some variables
-        $db		=& JFactory::getDBO();
+        $db = JFactory::getDBO();
 
-        $cid 	= JRequest::getVar('cid', array(), 'post', 'array');
+        $cid = JRequest::getVar('cid', array(), 'post', 'array');
         JArrayHelper::toInteger($cid);
 
         if (empty($cid)) {
             return JError::raiseWarning(500, 'No items selected');
         }
 
-        $total		= count($cid);
-        $row 		= & JTable::getInstance('Document', 'OsdownloadsTable');
+        $total = count($cid);
+        $row   = JTable::getInstance('Document', 'OsdownloadsTable');
         $groupings = array();
 
-        $order 		= JRequest::getVar('order', array(0), 'post', 'array');
+        $order = JRequest::getVar('order', array(0), 'post', 'array');
         JArrayHelper::toInteger($order);
 
         // update ordering values
@@ -201,19 +201,19 @@ class OSDownloadsControllerFile extends JControllerLegacy
         JRequest::checkToken() or jexit('Invalid Token');
 
         // Initialize some variables
-        $db		=& JFactory::getDBO();
+        $db = JFactory::getDBO();
 
-        $cid 	= JRequest::getVar('cid', array(), 'post', 'array');
+        $cid = JRequest::getVar('cid', array(), 'post', 'array');
         JArrayHelper::toInteger($cid);
 
-        $task	= $this->getTask();
-        $inc	= ($task == 'orderup' ? -1 : 1);
+        $task = $this->getTask();
+        $inc  = ($task == 'orderup' ? -1 : 1);
 
         if (empty($cid)) {
             return JError::raiseWarning(500, 'No items selected');
         }
 
-        $row 		= & JTable::getInstance('Document', 'OsdownloadsTable');
+        $row = JTable::getInstance('Document', 'OsdownloadsTable');
         $row->load((int) $cid[0]);
 
         $row->move($inc, 'cate_id = '.$db->Quote($row->cate_id));

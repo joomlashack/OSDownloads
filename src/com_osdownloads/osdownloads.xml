@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="2.5.0">
     <name>com_osdownloads</name>
-    <author>OSTraining.com</author>
+    <author>OSTraining</author>
     <creationDate>September 2014</creationDate>
     <copyright>Copyright (C) 2014 OSTraining.com</copyright>
     <license>GPL v3</license>
@@ -12,7 +12,6 @@
 
     <files folder="site">
         <filename>controller.php</filename>
-        <filename>index.html</filename>
         <filename>osdownloads.php</filename>
         <filename>router.php</filename>
         <folder>assets</folder>
@@ -21,11 +20,10 @@
         <folder>tables</folder>
         <folder>views</folder>
     </files>
+
     <languages folder="site">
-        <language tag="en-GB">language/en-GB.com_osdownloads.ini
-        </language>
-        <language tag="en-GB">language/en-GB.com_osdownloads.sys.ini
-        </language>
+        <language tag="en-GB">language/en-GB/en-GB.com_osdownloads.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.com_osdownloads.sys.ini</language>
     </languages>
 
     <administration>
@@ -39,7 +37,6 @@
             <filename>access.xml</filename>
             <filename>config.xml</filename>
             <filename>controller.php</filename>
-            <filename>index.html</filename>
             <filename>osdownloads.php</filename>
             <folder>controllers</folder>
             <folder>helpers</folder>
@@ -48,27 +45,32 @@
             <folder>views</folder>
         </files>
         <languages folder="admin">
-            <language tag="en-GB">language/en-GB.com_osdownloads.ini
-            </language>
-            <language tag="en-GB">language/en-GB.com_osdownloads.sys.ini
-            </language>
+            <language tag="en-GB">language/en-GB/en-GB.com_osdownloads.ini</language>
+            <language tag="en-GB">language/en-GB/en-GB.com_osdownloads.sys.ini</language>
         </languages>
     </administration>
+
     <install> <!-- Runs on install -->
         <sql>
             <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+            <file driver="mysqli" charset="utf8">sql/install.mysql.utf8.sql</file>
         </sql>
     </install>
+
     <uninstall> <!-- Runs on uninstall -->
         <sql>
             <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+            <file driver="mysqli" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
         </sql>
     </uninstall>
+
     <update>
         <schemas>
             <schemapath type="mysql" charset="utf8">sql/updates/mysql</schemapath>
+            <schemapath type="mysqli" charset="utf8">sql/updates/mysql</schemapath>
         </schemas>
     </update>
+
     <installfile>install.osdownload.php</installfile>
 
 </extension>

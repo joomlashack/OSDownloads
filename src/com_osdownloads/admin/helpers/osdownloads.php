@@ -31,11 +31,5 @@ class OSDownloadsHelper
             'index.php?option=com_osdownloads&view=emails',
             $vName == 'emails'
         );
-
-        JSubMenuHelper::addEntry(
-            JText::_('COM_OSDOWNLOAD_SUBMENU_LANGUAGES'),
-            'index.php?option=com_osdownloads&view=languages',
-            $vName == 'languages'
-        );
     }
 }

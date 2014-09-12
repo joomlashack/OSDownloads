@@ -6,7 +6,8 @@
     "type"             : "joomla.package",
     "extra"            : {
         "element": "pkg_osdownloads",
-        "name":    "OSDownloads"
+        "name":    "OSDownloads",
+        "client":  "admin"
     },
     "authors"          : [
         {

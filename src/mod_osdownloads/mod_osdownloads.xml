@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="2.5.0" client="site" method="upgrade">
     <name>OSDownloads</name>
-    <author>OSTraining.com</author>
+    <author>OSTraining</author>
     <creationDate>September 2014</creationDate>
     <copyright>Copyright (C) 2014 OSTraining.com</copyright>
     <license>GPL v3</license>

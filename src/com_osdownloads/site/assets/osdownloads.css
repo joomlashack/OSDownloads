@@ -43,10 +43,12 @@
 
 .osdownloads-pagination > ul {
     list-style: none;
+    margin: 10px 0;
 }
 
 .osdownloads-pagination > ul li {
     display: inline;
+    margin: 0 5px;
 }
 
 .osdownloads-pagination > ul > li:before {

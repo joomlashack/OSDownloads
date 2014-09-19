@@ -51,6 +51,10 @@
     margin: 0 5px;
 }
 
+.osdownloads-pagination > ul li.disabled {
+    display: none;
+}
+
 .osdownloads-pagination > ul > li:before {
     content: none !important; /* Overrides enthusiastic templates */
 }

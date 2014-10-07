@@ -72,7 +72,9 @@ class OSDownloadsController extends JControllerLegacy
 
     public function download()
     {
-        $id = JRequest::getVar("id");
+        $app = JFactory::getApplication();
+
+        $id = $app->input->getVar("id");
         $db = JFactory::getDBO();
 
         $query = "UPDATE `#__osdownloads_documents` SET downloaded = downloaded + 1 WHERE id = {$id}";

@@ -46,6 +46,11 @@ create_symlink () {
         rm -f $DESTINATION_PATH
     fi
 
+    if [ -f $DESTINATION_PATH ]; then
+        echo "Deleting old file: $DESTINATION_PATH"
+        rm -f $DESTINATION_PATH
+    fi
+
     echo "Symlinking: $DESTINATION_PATH"
     ln -s $SOURCE_PATH $DESTINATION_PATH
 

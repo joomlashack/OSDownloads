@@ -14,7 +14,9 @@ class OSDownloadsControllerEmails extends JControllerLegacy
 {
     public function delete()
     {
-        $id_arr = Jrequest::getVar('cid');
+        $app = JFactory::getApplication();
+
+        $id_arr = $app->input->getVar('cid');
         $str_id = implode(',', $id_arr);
         $db = JFactory::getDBO();
         $query = "DELETE FROM `#__osdownloads_emails` WHERE id IN (".$str_id.")";

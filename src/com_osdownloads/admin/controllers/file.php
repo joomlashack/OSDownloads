@@ -61,7 +61,7 @@ class OSDownloadsControllerFile extends JControllerLegacy
         $file["name"] = JFile::makeSafe($file["name"]);
 
         if (isset($file["name"]) && $file["name"]) {
-            if ($post["old_file"] && JFile::exists(JPath::clean(JPATH_SITE."/media"."/OSDownloads/".$post["old_file"]))) {
+            if (isset($post["old_file"]) && JFile::exists(JPath::clean(JPATH_SITE."/media"."/OSDownloads/".$post["old_file"]))) {
                 unlink(JPath::clean(JPATH_SITE."/media"."/OSDownloads/".$post["old_file"]));
             }
 
@@ -69,7 +69,7 @@ class OSDownloadsControllerFile extends JControllerLegacy
                 JFolder::create(JPath::clean(JPATH_SITE."/media"."/OSDownloads"));
             }
 
-            $timestamp = mktime();
+            $timestamp = date("Y-m-d H:i:s",time());
             $filepath = JPath::clean(JPATH_SITE."/media"."/OSDownloads/".$timestamp."_".$file["name"]);
             $row->file_path = $timestamp."_".$file["name"];
             JFile::upload($file["tmp_name"], $filepath);

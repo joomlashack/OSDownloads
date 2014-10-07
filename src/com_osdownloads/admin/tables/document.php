@@ -49,7 +49,12 @@ class OsdownloadsTableDocument extends JTable
         if (isset($this->alias) && isset($this->name) && $this->alias == "") {
             $this->alias = preg_replace("/ /", "-", strtolower($this->name));
         }
-        $this->alias = JApplicationHelper::stringURLSafe($this->alias);
+
+        if (version_compare(JVERSION, '3.0', '>=')) {
+            $this->alias = JApplicationHelper::stringURLSafe($this->alias);
+        } else {
+            $this->alias = JApplication::stringURLSafe($this->alias);
+        }
 
         return parent::store($updateNulls);
     }

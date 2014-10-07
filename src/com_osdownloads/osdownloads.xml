@@ -39,6 +39,7 @@
             <filename>controller.php</filename>
             <filename>osdownloads.php</filename>
             <folder>controllers</folder>
+            <folder>sql</folder>
             <folder>helpers</folder>
             <folder>sql</folder>
             <folder>tables</folder>
@@ -68,6 +69,6 @@
         </schemas>
     </update>
 
-    <installfile>install.osdownload.php</installfile>
+    <scriptfile>install.osdownload.php</scriptfile>
 
 </extension>

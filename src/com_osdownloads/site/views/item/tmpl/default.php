@@ -51,7 +51,7 @@ $params 			= clone($mainframe->getParams('com_osdownloads'));
         <?php endif;?>
 
         <?php if ($this->item->require_email || $this->item->show_email):?>
-            <div class="osdownloadsemail"><?php echo(JText::_("Email"));?> <?php if ($this->item->require_email):?>(*)<?php endif;?>: <input type="text" name="require_email" id="require_email" /></div>
+            <div class="osdownloadsemail"><?php echo(JText::_("Email"));?> <?php if ($this->item->require_email):?>(*)<?php endif;?>: <input type="email" aria-required="true" required name="require_email" id="require_email" /></div>
         <?php endif;?>
 
 		<?php if ($this->item->description_2):?>

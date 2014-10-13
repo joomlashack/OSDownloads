@@ -41,7 +41,6 @@
             <folder>controllers</folder>
             <folder>sql</folder>
             <folder>helpers</folder>
-            <folder>sql</folder>
             <folder>tables</folder>
             <folder>views</folder>
         </files>

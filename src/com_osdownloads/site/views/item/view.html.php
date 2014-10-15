@@ -50,10 +50,10 @@ class OSDownloadsViewItem extends JViewLegacy
         // Check if the file should come from an external URL
         if (!empty($item->file_url)) {
 
-            // Triggers the onGetExternalDownloadLink event
+            // Triggers the onGetOSDownloadsExternalDownloadLink event
             JPluginHelper::importPlugin('osdownloads');
             $dispatcher = JEventDispatcher::getInstance();
-            $dispatcher->trigger('onGetExternalDownloadLink', array(&$item));
+            $dispatcher->trigger('onGetOSDownloadsExternalDownloadLink', array(&$item));
 
             $downloadUrl = $item->file_url;
         } else {

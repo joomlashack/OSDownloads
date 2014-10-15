@@ -12,11 +12,11 @@ OSDownloads is an extension to help you manage your downloads. It allows you to 
 
 I'm sure this still can be improved but here are some initial events:
 
-* onBeforeSaveFile($documentInstance, $isNew)
-* onAfterSaveFile($storedWithSuccess, $documentInstance)
-* onBeforeSaveEmail($emailInstance)
-* onAfterSaveEmail($storedWithSuccess, $emailInstance)
-* onGetExternalDownloadLink($documentInstance)
+* onBeforeOSDownloadsSaveFile($documentInstance, $isNew)
+* onAfterOSDownloadsSaveFile($storedWithSuccess, $documentInstance)
+* onBeforeOSDownloadsSaveEmail($emailInstance)
+* onAfterOSDownloadsSaveEmail($storedWithSuccess, $emailInstance)
+* onGetOSDownloadsExternalDownloadLink($documentInstance)
 
 ## Requirements
 

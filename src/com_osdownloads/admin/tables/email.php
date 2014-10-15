@@ -19,4 +19,21 @@ class OsDownloadsTableEmail extends JTable
     {
         parent::__construct('#__osdownloads_emails', 'id', $_db);
     }
+
+    public function store($updateNulls = false)
+    {
+        // Trigger events to osdownloads plugins
+        JPluginHelper::importPlugin('osdownloads');
+        $dispatcher = JEventDispatcher::getInstance();
+        $pluginResults = $dispatcher->trigger('onBeforeStoreEmail', array(&$this));
+
+        $result = false;
+        if ($pluginResults !== false) {
+            $result = parent::store($updateNulls);
+
+            $dispatcher->trigger('onAfterStoreEmail', array($result, &$this));
+        }
+
+        return $result;
+    }
 }

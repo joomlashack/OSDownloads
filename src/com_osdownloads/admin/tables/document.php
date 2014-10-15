@@ -44,9 +44,13 @@ class OsdownloadsTableDocument extends JTable
 
     public function store($updateNulls = false)
     {
+        $isNew = false;
         if (!$this->id) {
+            // New document
             $this->downloaded = 0;
+            $isNew = true;
         }
+
         if (isset($this->alias) && isset($this->name) && $this->alias == "") {
             $this->alias = preg_replace("/ /", "-", strtolower($this->name));
         }
@@ -57,6 +61,18 @@ class OsdownloadsTableDocument extends JTable
             $this->alias = JApplication::stringURLSafe($this->alias);
         }
 
-        return parent::store($updateNulls);
+        // Trigger events to osdownloads plugins
+        JPluginHelper::importPlugin('osdownloads');
+        $dispatcher = JEventDispatcher::getInstance();
+        $pluginResults = $dispatcher->trigger('onBeforeStoreDocument', array(&$this, $isNew));
+
+        $result = false;
+        if ($pluginResults !== false) {
+            $result = parent::store($updateNulls);
+
+            $dispatcher->trigger('onAfterStoreDocument', array($result, &$this));
+        }
+
+        return $result;
     }
 }

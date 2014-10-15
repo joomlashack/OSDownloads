@@ -6,6 +6,18 @@ OSDownload
 
 OSDownloads is an extension to help you manage your downloads. It allows you to easily provide downloads in exchange for emails, which can in turn be automatically imported in MailChimp upon download.
 
+## OSDownloads Plugins
+
+### Events
+
+I'm sure this still can be improved but here are some initial events:
+
+* onBeforeStoreDocument($documentInstance, $isNew)
+* onAfterStoreDocument($storedWithSuccess, $documentInstance)
+* onBeforeStoreEmail($emailInstance)
+* onAfterStoreEmail($storedWithSuccess, $emailInstance)
+* onGetExternalDownloadLink($documentInstance)
+
 ## Requirements
 
 Joomla 2.5.x or 3.x

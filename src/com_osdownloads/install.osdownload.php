@@ -29,14 +29,16 @@ class Com_OSDownloadsInstallerScript
         $db->setQuery("SHOW COLUMNS FROM #__osdownloads_documents");
         $rows = $db->loadObjectList();
         $db_version = "1.0.0";
-        $has_show_email = false;
+
+        $has_show_email    = false;
         $has_description_3 = false;
-        $has_direct_field = false;
-        $has_file_url = false;
-        $has_parent_id = false;
-        $has_cms_version = false;
-        $has_picture = false;
-        $has_external_ref = false;
+        $has_direct_field  = false;
+        $has_file_url      = false;
+        $has_parent_id     = false;
+        $has_cms_version   = false;
+        $has_picture       = false;
+        $has_external_ref  = false;
+        $has_access        = false;
 
         foreach ($rows as $row) {
 

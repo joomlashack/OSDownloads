@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS `#__osdownloads_documents` (
   `direct_page` VARCHAR(250) NOT NULL,
   `published` INT(11) NOT NULL,
   `ordering` INT(11) NOT NULL,
+  `external_ref`VARCHAR(100),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 

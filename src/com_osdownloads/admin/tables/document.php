@@ -35,6 +35,7 @@ class OsdownloadsTableDocument extends JTable
     public $direct_page;
     public $published = true;
     public $ordering;
+    public $external_ref;
 
     public function __construct(&$_db)
     {

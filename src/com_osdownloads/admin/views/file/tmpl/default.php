@@ -138,6 +138,11 @@ $realname = substr($this->item->file_path, $index + 1);
                 <input type="radio" name="published" value="1" <?php if ($this->item->published) echo('checked="checked"');?> /> <?php echo(JText::_("Yes"));?>
                 <input type="radio" name="published" value="0" <?php if (!$this->item->published) echo('checked="checked"');?> /><?php echo(JText::_("No"));?></td>
         </tr>
+        <tr>
+            <td><?php echo(JText::_("External Reference"));?></td>
+            <td><input type="text" name="external_ref" value="<?php echo $this->item->external_ref; ?>" style="width:500px" />
+            </td>
+        </tr>
     </table>
     <input type="hidden" name="task" value="" />
     <input type="hidden" name="option" value="com_osdownloads" />

@@ -36,6 +36,7 @@ class Com_OSDownloadsInstallerScript
         $has_parent_id = false;
         $has_cms_version = false;
         $has_picture = false;
+        $has_external_ref = false;
 
         foreach ($rows as $row) {
 
@@ -69,6 +70,10 @@ class Com_OSDownloadsInstallerScript
 
             if ($row->Field == 'picture') {
                 $has_picture = true;
+            }
+
+            if ($row->Field == 'external_ref') {
+                $has_external_ref = true;
             }
         }
 
@@ -124,6 +129,11 @@ class Com_OSDownloadsInstallerScript
             $db->query();
         }
 
+        if (!$has_external_ref) {
+            $db->setQuery('ALTER TABLE `#__osdownloads_documents` ADD COLUMN `external_ref` VARCHAR(100);');
+            $db->execute();
+        }
+
         // Remove old columns
         if ($has_parent_id) {
             $db->setQuery('ALTER TABLE `#__osdownloads_documents` DROP COLUMN `parent_id`');
@@ -139,7 +149,6 @@ class Com_OSDownloadsInstallerScript
             $db->setQuery('ALTER TABLE `#__osdownloads_documents` DROP COLUMN `picture`');
             $db->execute();
         }
-
 
         return true;
     }

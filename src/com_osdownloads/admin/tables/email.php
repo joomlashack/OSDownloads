@@ -25,13 +25,13 @@ class OsDownloadsTableEmail extends JTable
         // Trigger events to osdownloads plugins
         JPluginHelper::importPlugin('osdownloads');
         $dispatcher = JEventDispatcher::getInstance();
-        $pluginResults = $dispatcher->trigger('onBeforeStoreEmail', array(&$this));
+        $pluginResults = $dispatcher->trigger('onBeforeSaveEmail', array(&$this));
 
         $result = false;
         if ($pluginResults !== false) {
             $result = parent::store($updateNulls);
 
-            $dispatcher->trigger('onAfterStoreEmail', array($result, &$this));
+            $dispatcher->trigger('onAfterSaveEmail', array($result, &$this));
         }
 
         return $result;

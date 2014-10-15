@@ -64,13 +64,13 @@ class OsdownloadsTableDocument extends JTable
         // Trigger events to osdownloads plugins
         JPluginHelper::importPlugin('osdownloads');
         $dispatcher = JEventDispatcher::getInstance();
-        $pluginResults = $dispatcher->trigger('onBeforeStoreDocument', array(&$this, $isNew));
+        $pluginResults = $dispatcher->trigger('onBeforeSaveFile', array(&$this, $isNew));
 
         $result = false;
         if ($pluginResults !== false) {
             $result = parent::store($updateNulls);
 
-            $dispatcher->trigger('onAfterStoreDocument', array($result, &$this));
+            $dispatcher->trigger('onAfterSaveFile', array($result, &$this));
         }
 
         return $result;

@@ -19,16 +19,6 @@ jimport('joomla.filesystem.file');
 class Com_OSDownloadsInstallerScript
 {
     /**
-     * method to install the component
-     *
-     * @return void
-     */
-    function install($parent)
-    {
-
-    }
-
-    /**
      * method to run after an install/update/uninstall method
      *
      * @return void
@@ -43,7 +33,12 @@ class Com_OSDownloadsInstallerScript
         $has_description_3 = false;
         $has_direct_field = false;
         $has_file_url = false;
+        $has_parent_id = false;
+        $has_cms_version = false;
+        $has_picture = false;
+
         foreach ($rows as $row) {
+
             if ($row->Field == "show_email") {
                 $has_show_email = true;
             }
@@ -59,7 +54,24 @@ class Com_OSDownloadsInstallerScript
             if ($row->Field == "file_url") {
                 $has_file_url = true;
             }
+
+            if ($row->Field == "file_url") {
+                $has_file_url = true;
+            }
+
+            if ($row->Field == 'parent_id') {
+                $has_parent_id = true;
+            }
+
+            if ($row->Field == 'cms_version') {
+                $has_cms_version = true;
+            }
+
+            if ($row->Field == 'picture') {
+                $has_picture = true;
+            }
         }
+
         if ($has_show_email && !$has_description_3) {
             $db_version = "1.0.1";
         }
@@ -111,5 +123,24 @@ class Com_OSDownloadsInstallerScript
             $db->setQuery($sql);
             $db->query();
         }
+
+        // Remove old columns
+        if ($has_parent_id) {
+            $db->setQuery('ALTER TABLE `#__osdownloads_documents` DROP COLUMN `parent_id`');
+            $db->execute();
+        }
+
+        if ($has_cms_version) {
+            $db->setQuery('ALTER TABLE `#__osdownloads_documents` DROP COLUMN `cms_version`');
+            $db->execute();
+        }
+
+        if ($has_picture) {
+            $db->setQuery('ALTER TABLE `#__osdownloads_documents` DROP COLUMN `picture`');
+            $db->execute();
+        }
+
+
+        return true;
     }
 }

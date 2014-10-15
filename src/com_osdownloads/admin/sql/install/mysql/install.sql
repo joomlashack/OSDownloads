@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `#__osdownloads_documents` (
   `published` INT(11) NOT NULL,
   `ordering` INT(11) NOT NULL,
   `external_ref`VARCHAR(100),
+  `access` INT(11) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 

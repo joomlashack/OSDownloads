@@ -66,6 +66,12 @@ $realname = substr($this->item->file_path, $index + 1);
             </td>
         </tr>
         <tr>
+            <td><?php echo JText::_('Access Level'); ?></td>
+            <td>
+                <?php echo JHtml::_('access.level', 'access', $this->item->access, null, array(), 'access'); ?>
+            </td>
+        </tr>
+        <tr>
             <td valign="top"><?php echo(JText::_("Description 1"));?></td>
             <td><?php echo $editor->display( 'description_1',  $this->item->description_1 , '100%', '200', '75', '20' ); ?></td>
         </tr>

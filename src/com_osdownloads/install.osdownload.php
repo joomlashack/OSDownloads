@@ -75,6 +75,10 @@ class Com_OSDownloadsInstallerScript
             if ($row->Field == 'external_ref') {
                 $has_external_ref = true;
             }
+
+            if ($row->Field == 'access') {
+                $has_access = true;
+            }
         }
 
         if ($has_show_email && !$has_description_3) {
@@ -131,6 +135,11 @@ class Com_OSDownloadsInstallerScript
 
         if (!$has_external_ref) {
             $db->setQuery('ALTER TABLE `#__osdownloads_documents` ADD COLUMN `external_ref` VARCHAR(100);');
+            $db->execute();
+        }
+
+        if (!$has_access) {
+            $db->setQuery('ALTER TABLE `#__osdownloads_documents` ADD COLUMN `access` INT(11) NOT NULL DEFAULT 1;');
             $db->execute();
         }
 

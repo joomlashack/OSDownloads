@@ -27,7 +27,7 @@ class OSDownloadsViewItem extends JViewLegacy
             $id = JRequest::getVar("id");
         }
 
-        $query	= "SELECT documents.*, cate.access
+        $query	= "SELECT documents.*, cate.access AS cat_access
                     FROM `#__osdownloads_documents` documents
                     LEFT JOIN `#__categories` cate ON (documents.cate_id = cate.id AND cate.extension='com_osdownloads')
                     WHERE cate.published = 1 AND documents.id = {$id}";
@@ -36,9 +36,17 @@ class OSDownloadsViewItem extends JViewLegacy
         $item = $db->loadObject();
         $user = JFactory::getUser();
         $groups = $user->getAuthorisedViewLevels();
-        if (!$item || !in_array($item->access, $groups)) {
-            JError::raiseWarning(404, JText::_("This download isn't available"));
 
+        if (!$item) {
+            JError::raiseWarning(404, JText::_("This download isn't available"));
+            return;
+        }
+
+        $categoryAuthorized = in_array($item->cat_access, $groups);
+        $itemAuthorized = in_array($item->access, $groups);
+
+        if ((! $categoryAuthorized && ! $itemAuthorized) || ! $itemAuthorized) {
+            JError::raiseWarning(403, JText::_("You don't have permission to download this"));
             return;
         }
 

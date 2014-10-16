@@ -26,7 +26,7 @@ class OSDownloadsViewDownloads extends JViewLegacy
         }
 
         $db 	= JFactory::getDBO();
-        $query	= "SELECT documents.* , cate.published, cate.access
+        $query	= "SELECT documents.* , cate.published, cate.access AS cat_access
                             FROM `#__osdownloads_documents` documents
                             LEFT JOIN `#__categories` cate ON (documents.cate_id = cate.id AND cate.extension='com_osdownloads')
                             WHERE documents.cate_id = {$id} AND documents.published = 1 AND cate.published = 1
@@ -44,7 +44,7 @@ class OSDownloadsViewDownloads extends JViewLegacy
         $user = JFactory::getUser();
         $groups = $user->getAuthorisedViewLevels();
 
-        if ((count($items) && !in_array($items[0]->access, $groups)) || !isset($items)) {
+        if ((count($items) && !in_array($items[0]->cat_access, $groups)) || !isset($items)) {
             JError::raiseWarning(404, JText::_("This category isn't available"));
 
             return;

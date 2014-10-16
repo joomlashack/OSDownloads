@@ -14,8 +14,14 @@ I'm sure this still can be improved but here are some initial events:
 
 * onOSDownloadsBeforeSaveFile($documentInstance, $isNew)
 * onOSDownloadsAfterSaveFile($storedWithSuccess, $documentInstance)
+* onOSDownloadsBeforeDeleteFile($documentInstance, $pk)
+* onOSDownloadsAfterDeleteFile($deletedWithSuccess, $id, $pk);
+
 * onOSDownloadsBeforeSaveEmail($emailInstance)
 * onOSDownloadsAfterSaveEmail($storedWithSuccess, $emailInstance)
+* onOSDownloadsBeforeDeleteEmail($emailInstance, $pk)
+* onOSDownloadsAfterDeleteEmail($deletedWithSuccess, $id, $pk);
+
 * onOSDownloadsGetExternalDownloadLink($documentInstance)
 
 ## Requirements

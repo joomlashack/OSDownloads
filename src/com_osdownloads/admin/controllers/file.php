@@ -112,6 +112,8 @@ class OSDownloadsControllerFile extends JControllerLegacy
     public function delete()
     {
         JRequest::checkToken() or jexit('Invalid Token');
+        JTable::addIncludePath(JPATH_COMPONENT.'/tables');
+
         jimport('joomla.filesystem.file');
 
         $db  = JFactory::getDBO();
@@ -131,14 +133,24 @@ class OSDownloadsControllerFile extends JControllerLegacy
             }
         }
 
-        $query = 'DELETE FROM `#__osdownloads_documents` WHERE id IN ('. $cids .')';
-        $db->setQuery($query);
-        if (!$db->query()) {
-            JError::raiseError(500, $db->getErrorMsg());
-        } else {
-            $query = 'DELETE FROM `#__osdownloads_emails` WHERE document_id IN ('. $cids .')';
-            $db->setQuery($query);
-            $db->query();
+        foreach ($cid as $id) {
+            $document = JTable::getInstance('Document', 'OsdownloadsTable');
+            if (!$document->delete(array('id' => $id))) {
+                JError::raiseError(500, $db->getErrorMsg());
+            } else {
+                $query = 'SELECT id FROM `#__osdownloads_emails` WHERE document_id = '. (int) $id;
+                $db->setQuery($query);
+                $emails = $db->loadObjectList();
+
+                if (!empty($emails)) {
+                    foreach ($emails as $emailId) {
+                        if (!empty($emailId)) {
+                            $email = JTable::getInstance('Email', 'OsdownloadsTable');
+                            $email->delete(array('id' => $emailId->id));
+                        }
+                    }
+                }
+            }
         }
 
         $this->setRedirect('index.php?option=com_osdownloads&view=files', JText::_("Files are deleted"));

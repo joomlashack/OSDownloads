@@ -36,4 +36,23 @@ class OsDownloadsTableEmail extends JTable
 
         return $result;
     }
+
+    public function delete($pk = null)
+    {
+        $id = $this->id;
+
+        // Trigger events to osdownloads plugins
+        JPluginHelper::importPlugin('osdownloads');
+        $dispatcher = JEventDispatcher::getInstance();
+        $pluginResults = $dispatcher->trigger('onOSDownloadsBeforeDeleteEmail', array(&$this, $pk));
+
+        $result = false;
+        if ($pluginResults !== false) {
+            $result = parent::delete($pk);
+
+            $dispatcher->trigger('onOSDownloadsAfterDeleteEmail', array($result, $this->id, $pk));
+        }
+
+        return $result;
+    }
 }

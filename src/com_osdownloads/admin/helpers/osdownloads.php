@@ -32,4 +32,34 @@ class OSDownloadsHelper
             $vName == 'emails'
         );
     }
+
+    /**
+     * Get the files the user has access to, filtering or not by the externalRef.
+     *
+     * @param  int    $userId
+     * @param  string $externalRef
+     * @return array
+     */
+    public static function getAuthorizedFilesForUser($userId, $externalRef = '')
+    {
+        // Flush any JAccess cache
+        JAccess::clearStatics();
+
+        $authorizedViewLevels = JAccess::getAuthorisedViewLevels($userId);
+        $authorizedViewLevels = implode(',', $authorizedViewLevels);
+
+        // Get the files the user has access to and external ref has the suffix .pro
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true)
+            ->select('*')
+            ->from('#__osdownloads_documents')
+            ->where("access IN ($authorizedViewLevels)");
+
+        if ($externalRef !== '') {
+            $query->where('external_ref LIKE "' . $externalRef . '"');
+        }
+        $db->setQuery($query);
+
+        return $db->loadObjectList();
+    }
 }

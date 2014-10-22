@@ -69,7 +69,8 @@ class OSDownloadsControllerFile extends JControllerLegacy
                 JFolder::create(JPath::clean(JPATH_SITE."/media"."/OSDownloads"));
             }
 
-            $timestamp = date("Y-m-d H:i:s",time());
+            //$timestamp = date("Y-m-d H:i:s",time());
+            $timestamp = time();
             $filepath = JPath::clean(JPATH_SITE."/media"."/OSDownloads/".$timestamp."_".$file["name"]);
             $row->file_path = $timestamp."_".$file["name"];
             JFile::upload($file["tmp_name"], $filepath);

@@ -38,7 +38,7 @@ class OSDownloadsViewItem extends JViewLegacy
         $groups = $user->getAuthorisedViewLevels();
 
         if (!$item) {
-            JError::raiseWarning(404, JText::_("This download isn't available"));
+            JError::raiseWarning(404, JText::_("COM_OSDOWNLOADS_THIS_DOWNLOAD_ISN't available"));
             return;
         }
 
@@ -46,7 +46,7 @@ class OSDownloadsViewItem extends JViewLegacy
         $itemAuthorized = in_array($item->access, $groups);
 
         if ((! $categoryAuthorized && ! $itemAuthorized) || ! $itemAuthorized) {
-            JError::raiseWarning(403, JText::_("You don't have permission to download this"));
+            JError::raiseWarning(403, JText::_("COM_OSDOWNLOADS_YOU_DON't have permission to download this"));
             return;
         }
 

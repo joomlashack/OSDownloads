@@ -6,13 +6,13 @@
 		</message>
 	</layout>
 	<fields name="params">
-		<fieldset name="basic" label="OSDOWNLOADS_OPTIONS">
+		<fieldset name="basic" label="COM_OSDOWNLOADS_OPTIONS">
 			<field name="category_id" type="category"
 				extension="com_osdownloads"
-				label="OSDOWNLOAD_CATEGORIES"
+				label="COM_OSDOWNLOADS_CATEGORIES"
 			/>
-			<field name="number_of_column" type="text" size="2" default="" label="OSDOWNLOADS_NUMBER_OF_COLUMN" />
-			<field name="show_download_count" type="radio" default="0" label="OSDOWNLOADS_SHOW_DOWNLOAD_COUNT" >
+			<field name="number_of_column" type="text" size="2" default="" label="COM_OSDOWNLOADS_NUMBER_OF_COLUMN" />
+			<field name="show_download_count" type="radio" default="0" label="COM_OSDOWNLOADS_SHOW_DOWNLOAD_COUNT" >
 				<option value="0">No</option>
 				<option value="1">Yes</option>
 			</field>

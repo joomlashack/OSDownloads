@@ -22,6 +22,6 @@ class OSDownloadsControllerEmails extends JControllerLegacy
         $query = "DELETE FROM `#__osdownloads_emails` WHERE id IN (".$str_id.")";
         $db->setQuery($query);
         $db->query();
-        $this->setRedirect("index.php?option=com_osdownloads&view=emails", JText::_("Email is deleted"));
+        $this->setRedirect("index.php?option=com_osdownloads&view=emails", JText::_("COM_OSDOWNLOADS_EMAIL_IS_DELETED"));
     }
 }

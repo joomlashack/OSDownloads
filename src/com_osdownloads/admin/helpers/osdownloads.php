@@ -12,13 +12,13 @@ class OSDownloadsHelper
     public static function addSubmenu($vName)
     {
         JSubMenuHelper::addEntry(
-            JText::_('COM_OSDOWNLOAD_SUBMENU_FILES'),
+            JText::_('COM_OSDOWNLOADS_SUBMENU_FILES'),
             'index.php?option=com_osdownloads&view=files',
             $vName == 'files'
         );
 
         JSubMenuHelper::addEntry(
-            JText::_('COM_OSDOWNLOAD_SUBMENU_CATEGORIES'),
+            JText::_('COM_OSDOWNLOADS_SUBMENU_CATEGORIES'),
             'index.php?option=com_categories&extension=com_osdownloads',
             $vName == 'categories'
         );
@@ -26,14 +26,14 @@ class OSDownloadsHelper
             JToolBarHelper::title(
                 JText::sprintf(
                     'COM_CATEGORIES_CATEGORIES_TITLE',
-                    JText::_('com_osdownloads')
+                    JText::_('COM_OSDOWNLOADS')
                 ),
                 'osdownloads-categories'
             );
         }
 
         JSubMenuHelper::addEntry(
-            JText::_('COM_OSDOWNLOAD_SUBMENU_EMAILS'),
+            JText::_('COM_OSDOWNLOADS_SUBMENU_EMAILS'),
             'index.php?option=com_osdownloads&view=emails',
             $vName == 'emails'
         );

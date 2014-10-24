@@ -67,7 +67,7 @@ class OSDownloadsViewEmails extends JViewLegacy
 
     protected function addToolbar()
     {
-        JToolBarHelper::title(JText::_('OSDOWNLOADS_EMAILS'));
+        JToolBarHelper::title(JText::_('COM_OSDOWNLOADS_EMAILS'));
         JToolBarHelper::deleteList('Are you sure?', 'emails.delete');
     }
 }

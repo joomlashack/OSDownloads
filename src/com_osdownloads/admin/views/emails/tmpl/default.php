@@ -33,10 +33,10 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
     <table>
         <tr>
             <td align="left" width="100%">
-                <?php echo JText::_( 'Filter' ); ?>:
+                <?php echo JText::_( 'COM_OSDOWNLOADS_FILTER' ); ?>:
                 <input type="text" name="search" id="search" value="<?php echo htmlspecialchars($this->flt->search);?>" class="text_area" onchange="document.adminForm.submit();" />
-                <button onclick="this.form.submit();"><?php echo JText::_( 'Go' ); ?></button>
-                <button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'Reset' ); ?></button>
+                <button onclick="this.form.submit();"><?php echo JText::_( 'COM_OSDOWNLOADS_GO' ); ?></button>
+                <button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'COM_OSDOWNLOADS_RESET' ); ?></button>
             </td>
             <td nowrap="nowrap">
                 <?php echo category('cate_id', 'com_osdownloads', $this->flt->cate_id, "onchange='this.form.submit();'", 'title', $size = 1, $sel_cat = 1); ?>
@@ -49,11 +49,11 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
         <thead>
             <tr>
             <th width="2%"><input type="checkbox" onclick="Joomla.checkAll(this)" title="check All" value="" name="checkall-toggle" /> </th>
-                <th style="min-width:200px;"><?php echo JHTML::_('grid.sort',   JText::_('Name'), 'email.email', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
-                <th style="min-width:200px;"><?php echo JHTML::_('grid.sort',   JText::_('File'), 'document.name', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
-                <th style="min-width:200px;"><?php echo JHTML::_('grid.sort',   JText::_('Category'), 'cate.title', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
-                <th style="min-width:80px;"><?php echo JHTML::_('grid.sort',   JText::_('Date'), 'email.downloaded_date', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
-                <th><?php echo JHTML::_('grid.sort',   JText::_('ID'), 'email.id', @$this->lists['order_Dir'], @$this->lists['order'] ); ?></th>
+                <th style="min-width:200px;"><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_NAME', 'email.email', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
+                <th style="min-width:200px;"><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_FILE', 'document.name', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
+                <th style="min-width:200px;"><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_CATEGORY', 'cate.title', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
+                <th style="min-width:80px;"><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_DATE', 'email.downloaded_date', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
+                <th><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_ID', 'email.id', @$this->lists['order_Dir'], @$this->lists['order'] ); ?></th>
             </tr>
             <tfoot>
                 <tr>

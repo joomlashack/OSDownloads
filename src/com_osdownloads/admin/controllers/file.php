@@ -78,10 +78,10 @@ class OSDownloadsControllerFile extends JControllerLegacy
         $row->store();
         switch ($this->getTask()) {
             case "apply":
-                $this->setRedirect("index.php?option=com_osdownloads&view=file&cid=" . $row->id, JText::_("Document is saved"));
+                $this->setRedirect("index.php?option=com_osdownloads&view=file&cid=" . $row->id, JText::_("COM_OSDOWNLOADS_DOCUMENT_IS_SAVED"));
                 break;
             default:
-                $this->setRedirect("index.php?option=com_osdownloads&view=files", JText::_("Document is saved"));
+                $this->setRedirect("index.php?option=com_osdownloads&view=files", JText::_("COM_OSDOWNLOADS_DOCUMENT_IS_SAVED"));
         }
     }
 
@@ -153,7 +153,7 @@ class OSDownloadsControllerFile extends JControllerLegacy
             }
         }
 
-        $this->setRedirect('index.php?option=com_osdownloads&view=files', JText::_("Files are deleted"));
+        $this->setRedirect('index.php?option=com_osdownloads&view=files', JText::_("COM_OSDOWNLOADS_FILES_ARE_DELETED"));
 
     }
 
@@ -200,7 +200,7 @@ class OSDownloadsControllerFile extends JControllerLegacy
             $row->reorder('cate_id = '.$db->Quote($group));
         }
 
-        $this->setMessage(JText::_('New ordering saved'));
+        $this->setMessage(JText::_('COM_OSDOWNLOADS_NEW_ORDERING_SAVED'));
         $this->setRedirect('index.php?option=com_osdownloads&view=files');
     }
 
@@ -229,7 +229,7 @@ class OSDownloadsControllerFile extends JControllerLegacy
         $row->load((int) $cid[0]);
 
         $row->move($inc, 'cate_id = '.$db->Quote($row->cate_id));
-        $this->setMessage(JText::_('New ordering saved'));
+        $this->setMessage(JText::_('COM_OSDOWNLOADS_NEW_ORDERING_SAVED'));
         $this->setRedirect('index.php?option=com_osdownloads&view=files');
     }
 }

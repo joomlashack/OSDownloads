@@ -15,12 +15,12 @@ $thankyoupage 	= $params->get("thankyoupage", "Thank you");
 $email = trim(JRequest::getVar("email"));
 if ($this->item->require_email && !preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $email)) {
 ?>
-<div class="error"><?php echo(JText::_("Wrong email"));?></div>
+<div class="error"><?php echo(JText::_("COM_OSDOWNLOADS_WRONG_EMAIL"));?></div>
 <?php
 } else {?>
 <div class="contentopen">
     <h1 class="thank"><?php echo($thankyoupage);?></h1>
-    <p class="download_link"><?php echo JText::sprintf("CLICK TO DOWNLOAD FILE", $this->download_url);?>
+    <p class="download_link"><?php echo JText::sprintf("COM_OSDOWNLOADS_CLICK_TO_DOWNLOAD_FILE", $this->download_url);?>
         <meta http-equiv="refresh" content="0;url=<?php echo $this->download_url;?>">
     </p>
 </div>

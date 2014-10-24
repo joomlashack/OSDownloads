@@ -61,7 +61,7 @@ $authorizedAccessLevels = $user->getAuthorisedViewLevels();
     		        <div class="readmore_wrapper">
     		        	<div class="readmore">
     		            	<a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$item->id."&Itemid=".JRequest::getVar("Itemid")));?>">
-    		            		<?php echo(JText::_("Read more"));?>
+    		            		<?php echo(JText::_("COM_OSDOWNLOADS_READ_MORE"));?>
     		            	</a>
     					</div>
     		            <div class="clr"></div>

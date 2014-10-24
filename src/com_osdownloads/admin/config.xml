@@ -4,20 +4,20 @@
 	<fieldset name="component"
 		label="COM_OSDOWNLOADS_FIELDSET_CONFIG_MAILCHIMP"
 		>
-		<field name="connect_mailchimp" type="radio" default="0" label="Connect to mailchimp" >
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+		<field name="connect_mailchimp" type="radio" default="0" label="COM_OSDOWNLOADS_CONNECT_TO_MAILCHIMP" >
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
-		<field name="mailchimp_api" type="text" default="" label="Mailchimp API" />
-		<field name="list_id" type="text" default="" label="List id" />
+		<field name="mailchimp_api" type="text" default="" label="COM_OSDOWNLOADS_MAILCHIMP_API" />
+		<field name="list_id" type="text" default="" label="COM_OSDOWNLOADS_LIST_ID" />
 
 	</fieldset>
 	<fieldset name="download"
-		label="Download"
+		label="COM_OSDOWNLOADS_DOWNLOAD"
 		>
-		<field name="thankyoupage" type="editor" default="" filter="safehtml" label="Thank you page" />
-		<field name="width" type="text" default="300" label="Popup width" />
-		<field name="height" type="text" default="150" label="Popup height" />
+		<field name="thankyoupage" type="editor" default="" filter="safehtml" label="COM_OSDOWNLOADS_THANK_YOU_PAGE" />
+		<field name="width" type="text" default="300" label="COM_OSDOWNLOADS_POPUP_WIDTH" />
+		<field name="height" type="text" default="150" label="COM_OSDOWNLOADS_POPUP_HEIGHT" />
 
 	</fieldset>
 	<fieldset

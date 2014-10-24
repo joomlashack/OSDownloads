@@ -8,7 +8,7 @@
     <packagerurl>https://www.alledia.com</packagerurl>
     <copyright>Copyright (C) 2014 Alledia.com. All rights reserved.</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-    <version>1.0.21</version>
+    <version>1.0.20</version>
     <description>OSDownloads Installation Bundle - OSDownloads is an extension to help you manage your downloads. It allows you to easily provide downloads in exchange for emails, which can in turn be automatically imported in MailChimp upon download.</description>
 
     <files>

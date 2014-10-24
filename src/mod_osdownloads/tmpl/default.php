@@ -8,17 +8,14 @@
 defined('_JEXEC') or die;
 JHTML::_('behavior.modal');
 
+JHtml::_('stylesheet', JUri::base() . 'components/com_osdownloads/assets/osdownloads.css');
+
 $app = JFactory::getApplication();
 $itemId = $app->input->get('Itemid');
 
 $moduleTag = $params->get('module_tag', 'div');
 $headerTag = $params->get('header_tag', 'h3');
 $linkTo    = $params->get('link_to', 'download');
-
-// Title
-if ((bool)$module->showtitle) {
-    echo sprintf('<%s class="%s">%s</%s>', $headerTag, $params->get('header_class'), $module->title, $headerTag);
-}
 
 // Module body
 ?>
@@ -27,7 +24,7 @@ if ((bool)$module->showtitle) {
     <ul>
         <?php foreach ($list as $file) : ?>
             <li>
-                <h3><?php echo $file->name; ?></h3>
+                <h4><?php echo $file->name; ?></h4>
                 <p><?php echo $file->description_1; ?></p>
                 <p>
                     <?php if ($linkTo === 'download') : ?>

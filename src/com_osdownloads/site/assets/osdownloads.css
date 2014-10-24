@@ -65,11 +65,7 @@
     list-style: none;
 }
 .mod_osdownloads ul li{
-    margin: 10px 0;
-}
-.mod_osdownloads ul li p{
-    margin: 10px 0;
-    line-height: 22px;
-    font-size: 14px;
-    font-weight: 400;
+    padding: 5px 0;
+    margin: 0;
+    border-bottom: 1px dotted #999999;
 }

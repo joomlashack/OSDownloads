@@ -59,3 +59,13 @@
     content: none !important; /* Overrides enthusiastic templates */
 }
 
+/* module */
+.mod_osdownloads ul{
+    margin: 0;
+    list-style: none;
+}
+.mod_osdownloads ul li{
+    padding: 5px 0;
+    margin: 0;
+    border-bottom: 1px dotted #999999;
+}

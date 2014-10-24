@@ -1,11 +1,11 @@
 <?php
 /**
- * @version 1.0.0
- * @author Open Source Training (www.ostraining.com)
- * @copyright (C) 2014 Open Source Training
+ * @package   OSDownloads
+ * @contact   www.alledia.com, hello@alledia.com
+ * @copyright 2014 Alledia.com, All rights reserved
  * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
-**/
-// No direct access
+ */
+
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.controller');
@@ -69,7 +69,7 @@ class OSDownloadsControllerFile extends JControllerLegacy
                 JFolder::create(JPath::clean(JPATH_SITE."/media"."/OSDownloads"));
             }
 
-            $timestamp = date("Y-m-d H:i:s",time());
+            $timestamp = md5(microtime());
             $filepath = JPath::clean(JPATH_SITE."/media"."/OSDownloads/".$timestamp."_".$file["name"]);
             $row->file_path = $timestamp."_".$file["name"];
             JFile::upload($file["tmp_name"], $filepath);

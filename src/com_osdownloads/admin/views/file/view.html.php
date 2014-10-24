@@ -1,12 +1,12 @@
 <?php
 /**
- * @version 1.0.0
- * @author Open Source Training (www.ostraining.com)
- * @copyright (C) 2014 Open Source Training
+ * @package   OSDownloads
+ * @contact   www.alledia.com, hello@alledia.com
+ * @copyright 2014 Alledia.com, All rights reserved
  * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
-**/
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+ */
+
+defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 

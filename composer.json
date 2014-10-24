@@ -1,5 +1,5 @@
 {
-    "name"             : "OSTraining/OSDownloads",
+    "name"             : "Alledia/OSDownloads",
     "description"      : "OSDownloads",
     "minimum-stability": "stable",
     "license"          : "GPL-2+",
@@ -11,8 +11,8 @@
     },
     "authors"          : [
         {
-            "name" : "Open Source Training",
-            "email": "info@ostraining.com"
+            "name" : "Alledia.com",
+            "email": "hello@alledia.com"
         }
     ],
     "require"          : {

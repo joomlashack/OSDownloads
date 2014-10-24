@@ -1,4 +1,5 @@
-[![OS Training](http://www.ostraining.com/templates/ostraining/images/logo.png)](http://www.ostraining.com)
+[![Alledia](https://www.alledia.com/images/logo_circle_small.png)](https://www.alledia.com)
+
 OSDownload
 ============
 

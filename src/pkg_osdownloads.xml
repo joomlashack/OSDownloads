@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="package" version="2.5">
     <name>OSDownloads Installation Bundle</name>
-    <author>OSTraining</author>
+    <author>Alledia</author>
     <packagename>osdownloads</packagename>
-    <creationDate>September, 2014</creationDate>
-    <packager>OSTraining</packager>
-    <packagerurl>http://ostraining.com</packagerurl>
-    <copyright>Copyright (C) 2011, 2014 OSTraining.com. All rights reserved.</copyright>
+    <creationDate>October 22 2014</creationDate>
+    <packager>Alledia</packager>
+    <packagerurl>https://www.alledia.com</packagerurl>
+    <copyright>Copyright (C) 2014 Alledia.com. All rights reserved.</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-    <version>1.0.20</version>
+    <version>1.0.21</version>
     <description>OSDownloads Installation Bundle - OSDownloads is an extension to help you manage your downloads. It allows you to easily provide downloads in exchange for emails, which can in turn be automatically imported in MailChimp upon download.</description>
 
     <files>
@@ -17,7 +17,7 @@
     </files>
 
     <updateservers>
-        <server type="extension" priority="1" name="OSDownloads"><![CDATA[https://deploy.ostraining.com/updates/joomla/pkg_osdownloads.xml]]></server>
+        <server type="extension" priority="1" name="OSDownloads"><![CDATA[https://deploy.ostraining.com/client/update/free/stable/pkg_osdownloads]]></server>
     </updateservers>
 
 </extension>

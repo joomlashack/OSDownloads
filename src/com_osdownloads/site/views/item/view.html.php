@@ -21,7 +21,7 @@ class OSDownloadsViewItem extends JViewLegacy
         $params    = clone($mainframe->getParams('com_osdownloads'));
         $id        = $params->get("document_id");
 
-        $db 	= JFactory::getDBO();
+        $db = JFactory::getDBO();
 
         if (JRequest::getVar("id")) {
             $id = JRequest::getVar("id");
@@ -33,8 +33,8 @@ class OSDownloadsViewItem extends JViewLegacy
                     WHERE cate.published = 1 AND documents.id = {$id}";
 
         $db->setQuery($query);
-        $item = $db->loadObject();
-        $user = JFactory::getUser();
+        $item   = $db->loadObject();
+        $user   = JFactory::getUser();
         $groups = $user->getAuthorisedViewLevels();
 
         if (!$item) {
@@ -75,7 +75,7 @@ class OSDownloadsViewItem extends JViewLegacy
 
     public function buildPath(& $paths, $id)
     {
-        $db 	= JFactory::getDBO();
+        $db = JFactory::getDBO();
         $db->setQuery("SELECT * FROM `#__categories` WHERE extension='com_osdownloads' AND id = " . $id);
         $cate = $db->loadObject();
         if ($cate) {

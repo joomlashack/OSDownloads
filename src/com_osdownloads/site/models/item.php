@@ -6,5 +6,4 @@ jimport('joomla.application.component.modelitem');
 
 class OSDownloadsModelItem extends JModelItem
 {
-
 }

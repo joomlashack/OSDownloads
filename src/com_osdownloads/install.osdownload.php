@@ -23,7 +23,7 @@ class Com_OSDownloadsInstallerScript
      *
      * @return void
      */
-    function postflight($type, $parent)
+    public function postflight($type, $parent)
     {
         $db = JFactory::getDBO();
         $db->setQuery("SHOW COLUMNS FROM #__osdownloads_documents");

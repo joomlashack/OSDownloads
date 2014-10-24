@@ -24,8 +24,12 @@ class OSDownloadsHelper
         );
         if ($vName=='categories') {
             JToolBarHelper::title(
-                JText::sprintf('COM_CATEGORIES_CATEGORIES_TITLE', JText::_('com_osdownloads')),
-                   'osdownloads-categories');
+                JText::sprintf(
+                    'COM_CATEGORIES_CATEGORIES_TITLE',
+                    JText::_('com_osdownloads')
+                ),
+                'osdownloads-categories'
+            );
         }
 
         JSubMenuHelper::addEntry(

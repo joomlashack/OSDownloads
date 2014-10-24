@@ -33,7 +33,16 @@ class JFormFieldModal_Document extends JFormFieldList
         foreach ($rows as $item) {
 
             // Create a new option object based on the <option /> element.
-            $tmp = JHtml::_('select.option', (string) $item->id, JText::alt(trim((string) $item->name), preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)), 'value', 'text');
+            $tmp = JHtml::_(
+                'select.option',
+                (string) $item->id,
+                JText::alt(
+                    trim((string) $item->name),
+                    preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)
+                ),
+                'value',
+                'text'
+            );
 
             // Add the option object to the result set.
             $options[] = $tmp;

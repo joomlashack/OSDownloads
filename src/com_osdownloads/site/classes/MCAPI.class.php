@@ -209,100 +209,100 @@ class MCAPI
      *
      * @param string $list_id the list to test segmentation on - get lists using lists()
      * @param array  $options with 2 keys:
-             string "match" controls whether to use AND or OR when applying your options - expects "<strong>any</strong>" (for OR) or "<strong>all</strong>" (for AND)
-             array "conditions" - up to 10 different criteria to apply while segmenting. Each criteria row must contain 3 keys - "<strong>field</strong>", "<strong>op</strong>", and "<strong>value</strong>" - and possibly a fourth, "<strong>extra</strong>", based on these definitions:
-
-            Field = "<strong>date</strong>" : Select based on signup date
-                Valid Op(eration): <strong>eq</strong> (is) / <strong>gt</strong> (after) / <strong>lt</strong> (before)
-                Valid Values:
-                string last_campaign_sent  uses the date of the last campaign sent
-                string campaign_id - uses the send date of the campaign that carriers the Id submitted - see campaigns()
-                string YYYY-MM-DD - any date in the form of YYYY-MM-DD - <em>note:</em> anything that appears to start with YYYY will be treated as a date
-
-            Field = "<strong>last_changed</strong>" : Select based on subscriber record last changed date
-                Valid Op(eration): <strong>eq</strong> (is) / <strong>gt</strong> (after) / <strong>lt</strong> (before)
-                Valid Values:
-                string last_campaign_sent  uses the date of the last campaign sent
-                string campaign_id - uses the send date of the campaign that carriers the Id submitted - see campaigns()
-                string YYYY-MM-DD - any date in the form of YYYY-MM-DD - <em>note:</em> anything that appears to start with YYYY will be treated as a date
-
-            Field = "<strong>interests-X</strong>": where X is the Grouping Id from listInterestGroupings()
-                Valid Op(erations): <strong>one</strong> / <strong>none</strong> / <strong>all</strong>
-                Valid Values: a comma delimited of interest groups for the list - see listInterestGroupings()
-
-            Field = "<strong>aim</strong>"
-                Valid Op(erations): <strong>open</strong> / <strong>noopen</strong> / <strong>click</strong> / <strong>noclick</strong>
-                Valid Values: "<strong>any</strong>" or a valid AIM-enabled Campaign that has been sent
-
-            Field = "<strong>rating</strong>" : allows matching based on list member ratings
-                Valid Op(erations):  <strong>eq</strong> (=) / <strong>ne</strong> (!=) / <strong>gt</strong> (&gt;) / <strong>lt</strong> (&lt;)
-                Valid Values: a number between 0 and 5
-
-            Field = "<strong>ecomm_prod</strong>" or "<strong>ecomm_prod</strong>": allows matching product and category names from purchases
-                Valid Op(erations):
-                 <strong>eq</strong> (=) / <strong>ne</strong> (!=) / <strong>gt</strong> (&gt;) / <strong>lt</strong> (&lt;) / <strong>like</strong> (like '%blah%') / <strong>nlike</strong> (not like '%blah%') / <strong>starts</strong> (like 'blah%') / <strong>ends</strong> (like '%blah')
-                Valid Values: any string
-
-            Field = "<strong>ecomm_spent_one</strong>" or "<strong>ecomm_spent_all</strong>" : allows matching purchase amounts on a single order or all orders
-                Valid Op(erations): <strong>gt</strong> (&gt;) / <strong>lt</strong> (&lt;)
-                Valid Values: a number
-
-            Field = "<strong>ecomm_date</strong>" : allow matching based on order dates
-                Valid Op(eration): <strong>eq</strong> (is) / <strong>gt</strong> (after) / <strong>lt</strong> (before)
-                Valid Values:
-                string last_campaign_sent  uses the date of the last campaign sent
-                string campaign_id - uses the send date of the campaign that carriers the Id submitted - see campaigns()
-                string YYYY-MM-DD - any date in the form of YYYY-MM-DD - <em>note:</em> anything that appears to start with YYYY will be treated as a date
-
-            Field = "<strong>social_gender</strong>" : allows matching against the gender acquired from SocialPro
-                Valid Op(eration): <strong>eq</strong> (is) / <strong>ne</strong> (is not)
-                Valid Values: male, female
-
-            Field = "<strong>social_age</strong>" : allows matching against the age acquired from SocialPro
-                Valid Op(erations):  <strong>eq</strong> (=) / <strong>ne</strong> (!=) / <strong>gt</strong> (&gt;) / <strong>lt</strong> (&lt;)
-                Valid Values: any number
-
-            Field = "<strong>social_influence</strong>" : allows matching against the influence acquired from SocialPro
-                Valid Op(erations):  <strong>eq</strong> (=) / <strong>ne</strong> (!=) / <strong>gt</strong> (&gt;) / <strong>lt</strong> (&lt;)
-                Valid Values: a number between 0 and 5
-
-            Field = "<strong>social_network</strong>" :
-                Valid Op(erations):  <strong>member</strong> (is a member of) / <strong>notmember</strong> (is not a member of)
-                Valid Values: twitter, facebook, myspace, linkedin, flickr
-
-            Field = "<strong>static_segment</strong>" :
-                Valid Op(erations): <strong>eq</strong> (is in) / <strong>ne</strong> (is not in)
-                Valid Values: an int - get from listStaticSegments()
-
-            Field = "<strong>default_location</strong>" : the location we automatically assign to a subscriber based on where we've seen their activity originate
-                Valid Op(erations): <strong>ipgeostate</strong> (within a US state) / <strong>ipgeonotstate</strong> (not within a US state) / <strong>ipgeocountry</strong> (within a country) / <strong>ipgeonotcountry</strong> (not within a country) / <strong>ipgeoin</strong> (within lat/lng parameters) / <strong>ipgeonotin</strong> (not within lat/lng parameters)
-                Valid Values:
-                string ipgeostate/ipgeonotstate  a full US state name (not case sensitive)
-                string ipgeocountry/ipgeonotcountry  an ISO3166 2 digit country code (not case sensitive)
-                int ipgeoin/ipgeonotin a distance in miles centered around a point you must specify by also passing <strong>lat</strong> (latitude) and <strong>lng</strong> (longitude) parameters
-
-            Field = A <strong>Birthday</strong> type Merge Var. Use <strong>Merge0-Merge30</strong> or the <strong>Custom Tag</strong> you've setup for your merge field - see listMergeVars(). Note, Brithday fields can <strong>only</strong> use the operations listed here.
-                Valid Op(erations): <strong>eq</strong> (=) / <strong>starts</strong> (month equals) / <strong>ends</strong> (day equals)
-                Valid Values: Any valid number for the operation being checked.
-
-            Field = A <strong>Zip</strong> type Merge Var. Use <strong>Merge0-Merge30</strong> or the <strong>Custom Tag</strong> you've setup for your merge field - see listMergeVars(). Note, Zip fields can <strong>only</strong> use the operations listed here.
-                Valid Op(erations): <strong>eq</strong> (=) / <strong>ne</strong> (!=) / <strong>geoin</strong> (US only)
-                Valid Values: For <strong>eq</strong> (=) / <strong>ne</strong>, a Zip Code. For <strong>geoin</strong>, a radius in miles
-                Extra Value: Only for <strong>geoin</strong> - the Zip Code to be used as the center point
-
-            Field = An <strong>Address</strong> type Merge Var. Use <strong>Merge0-Merge30</strong> or the <strong>Custom Tag</strong> you've setup for your merge field - see listMergeVars(). Note, Address fields can <strong>only</strong> use the operations listed here.
-                Valid Op(erations): <strong>like</strong> (like '%blah%') / <strong>nlike</strong> (not like '%blah%') / <strong>geoin</strong>
-                Valid Values: For <strong>like</strong> and <strong>nlike</strong>, a string. For <strong>geoin</strong>, a radius in miles
-                Extra Value: Only for <strong>geoin</strong> - the Zip Code to be used as the center point
-
-            Field = A <strong>Number</strong> type Merge Var. Use <strong>Merge0-Merge30</strong> or the <strong>Custom Tag</strong> you've setup for your merge field - see listMergeVars(). Note, Number fields can <strong>only</strong> use the operations listed here.
-                Valid Op(erations): <strong>eq</strong> (=) / <strong>ne</strong> (!=) / <strong>gt</strong> (>) / <strong>lt</strong> (<) /
-                Valid Values: Any valid number.
-
-            Default Field = A Merge Var. Use <strong>Merge0-Merge30</strong> or the <strong>Custom Tag</strong> you've setup for your merge field - see listMergeVars()
-                Valid Op(erations):
-                 <strong>eq</strong> (=) / <strong>ne</strong> (!=) / <strong>gt</strong> (&gt;) / <strong>lt</strong> (&lt;) / <strong>like</strong> (like '%blah%') / <strong>nlike</strong> (not like '%blah%') / <strong>starts</strong> (like 'blah%') / <strong>ends</strong> (like '%blah')
-                Valid Values: any string
+     *        string "match" controls whether to use AND or OR when applying your options - expects "<strong>any</strong>" (for OR) or "<strong>all</strong>" (for AND)
+     *        array "conditions" - up to 10 different criteria to apply while segmenting. Each criteria row must contain 3 keys - "<strong>field</strong>", "<strong>op</strong>", and "<strong>value</strong>" - and possibly a fourth, "<strong>extra</strong>", based on these definitions:
+     *
+     *       Field = "<strong>date</strong>" : Select based on signup date
+     *           Valid Op(eration): <strong>eq</strong> (is) / <strong>gt</strong> (after) / <strong>lt</strong> (before)
+     *           Valid Values:
+     *           string last_campaign_sent  uses the date of the last campaign sent
+     *           string campaign_id - uses the send date of the campaign that carriers the Id submitted - see campaigns()
+     *           string YYYY-MM-DD - any date in the form of YYYY-MM-DD - <em>note:</em> anything that appears to start with YYYY will be treated as a date
+     *
+     *       Field = "<strong>last_changed</strong>" : Select based on subscriber record last changed date
+     *           Valid Op(eration): <strong>eq</strong> (is) / <strong>gt</strong> (after) / <strong>lt</strong> (before)
+     *           Valid Values:
+     *           string last_campaign_sent  uses the date of the last campaign sent
+     *           string campaign_id - uses the send date of the campaign that carriers the Id submitted - see campaigns()
+     *           string YYYY-MM-DD - any date in the form of YYYY-MM-DD - <em>note:</em> anything that appears to start with YYYY will be treated as a date
+     *
+     *       Field = "<strong>interests-X</strong>": where X is the Grouping Id from listInterestGroupings()
+     *           Valid Op(erations): <strong>one</strong> / <strong>none</strong> / <strong>all</strong>
+     *           Valid Values: a comma delimited of interest groups for the list - see listInterestGroupings()
+     *
+     *       Field = "<strong>aim</strong>"
+     *           Valid Op(erations): <strong>open</strong> / <strong>noopen</strong> / <strong>click</strong> / <strong>noclick</strong>
+     *           Valid Values: "<strong>any</strong>" or a valid AIM-enabled Campaign that has been sent
+     *
+     *       Field = "<strong>rating</strong>" : allows matching based on list member ratings
+     *           Valid Op(erations):  <strong>eq</strong> (=) / <strong>ne</strong> (!=) / <strong>gt</strong> (&gt;) / <strong>lt</strong> (&lt;)
+     *           Valid Values: a number between 0 and 5
+     *
+     *       Field = "<strong>ecomm_prod</strong>" or "<strong>ecomm_prod</strong>": allows matching product and category names from purchases
+     *           Valid Op(erations):
+     *            <strong>eq</strong> (=) / <strong>ne</strong> (!=) / <strong>gt</strong> (&gt;) / <strong>lt</strong> (&lt;) / <strong>like</strong> (like '%blah%') / <strong>nlike</strong> (not like '%blah%') / <strong>starts</strong> (like 'blah%') / <strong>ends</strong> (like '%blah')
+     *           Valid Values: any string
+     *
+     *       Field = "<strong>ecomm_spent_one</strong>" or "<strong>ecomm_spent_all</strong>" : allows matching purchase amounts on a single order or all orders
+     *           Valid Op(erations): <strong>gt</strong> (&gt;) / <strong>lt</strong> (&lt;)
+     *           Valid Values: a number
+     *
+     *       Field = "<strong>ecomm_date</strong>" : allow matching based on order dates
+     *           Valid Op(eration): <strong>eq</strong> (is) / <strong>gt</strong> (after) / <strong>lt</strong> (before)
+     *           Valid Values:
+     *           string last_campaign_sent  uses the date of the last campaign sent
+     *           string campaign_id - uses the send date of the campaign that carriers the Id submitted - see campaigns()
+     *           string YYYY-MM-DD - any date in the form of YYYY-MM-DD - <em>note:</em> anything that appears to start with YYYY will be treated as a date
+     *
+     *       Field = "<strong>social_gender</strong>" : allows matching against the gender acquired from SocialPro
+     *           Valid Op(eration): <strong>eq</strong> (is) / <strong>ne</strong> (is not)
+     *           Valid Values: male, female
+     *
+     *       Field = "<strong>social_age</strong>" : allows matching against the age acquired from SocialPro
+     *           Valid Op(erations):  <strong>eq</strong> (=) / <strong>ne</strong> (!=) / <strong>gt</strong> (&gt;) / <strong>lt</strong> (&lt;)
+     *           Valid Values: any number
+     *
+     *       Field = "<strong>social_influence</strong>" : allows matching against the influence acquired from SocialPro
+     *           Valid Op(erations):  <strong>eq</strong> (=) / <strong>ne</strong> (!=) / <strong>gt</strong> (&gt;) / <strong>lt</strong> (&lt;)
+     *           Valid Values: a number between 0 and 5
+     *
+     *       Field = "<strong>social_network</strong>" :
+     *           Valid Op(erations):  <strong>member</strong> (is a member of) / <strong>notmember</strong> (is not a member of)
+     *           Valid Values: twitter, facebook, myspace, linkedin, flickr
+     *
+     *       Field = "<strong>static_segment</strong>" :
+     *           Valid Op(erations): <strong>eq</strong> (is in) / <strong>ne</strong> (is not in)
+     *           Valid Values: an int - get from listStaticSegments()
+     *
+     *       Field = "<strong>default_location</strong>" : the location we automatically assign to a subscriber based on where we've seen their activity originate
+     *           Valid Op(erations): <strong>ipgeostate</strong> (within a US state) / <strong>ipgeonotstate</strong> (not within a US state) / <strong>ipgeocountry</strong> (within a country) / <strong>ipgeonotcountry</strong> (not within a country) / <strong>ipgeoin</strong> (within lat/lng parameters) / <strong>ipgeonotin</strong> (not within lat/lng parameters)
+     *           Valid Values:
+     *           string ipgeostate/ipgeonotstate  a full US state name (not case sensitive)
+     *           string ipgeocountry/ipgeonotcountry  an ISO3166 2 digit country code (not case sensitive)
+     *           int ipgeoin/ipgeonotin a distance in miles centered around a point you must specify by also passing <strong>lat</strong> (latitude) and <strong>lng</strong> (longitude) parameters
+     *
+     *       Field = A <strong>Birthday</strong> type Merge Var. Use <strong>Merge0-Merge30</strong> or the <strong>Custom Tag</strong> you've setup for your merge field - see listMergeVars(). Note, Brithday fields can <strong>only</strong> use the operations listed here.
+     *           Valid Op(erations): <strong>eq</strong> (=) / <strong>starts</strong> (month equals) / <strong>ends</strong> (day equals)
+     *           Valid Values: Any valid number for the operation being checked.
+     *
+     *       Field = A <strong>Zip</strong> type Merge Var. Use <strong>Merge0-Merge30</strong> or the <strong>Custom Tag</strong> you've setup for your merge field - see listMergeVars(). Note, Zip fields can <strong>only</strong> use the operations listed here.
+     *           Valid Op(erations): <strong>eq</strong> (=) / <strong>ne</strong> (!=) / <strong>geoin</strong> (US only)
+     *           Valid Values: For <strong>eq</strong> (=) / <strong>ne</strong>, a Zip Code. For <strong>geoin</strong>, a radius in miles
+     *           Extra Value: Only for <strong>geoin</strong> - the Zip Code to be used as the center point
+     *
+     *       Field = An <strong>Address</strong> type Merge Var. Use <strong>Merge0-Merge30</strong> or the <strong>Custom Tag</strong> you've setup for your merge field - see listMergeVars(). Note, Address fields can <strong>only</strong> use the operations listed here.
+     *           Valid Op(erations): <strong>like</strong> (like '%blah%') / <strong>nlike</strong> (not like '%blah%') / <strong>geoin</strong>
+     *           Valid Values: For <strong>like</strong> and <strong>nlike</strong>, a string. For <strong>geoin</strong>, a radius in miles
+     *           Extra Value: Only for <strong>geoin</strong> - the Zip Code to be used as the center point
+     *
+     *       Field = A <strong>Number</strong> type Merge Var. Use <strong>Merge0-Merge30</strong> or the <strong>Custom Tag</strong> you've setup for your merge field - see listMergeVars(). Note, Number fields can <strong>only</strong> use the operations listed here.
+     *           Valid Op(erations): <strong>eq</strong> (=) / <strong>ne</strong> (!=) / <strong>gt</strong> (>) / <strong>lt</strong> (<) /
+     *           Valid Values: Any valid number.
+     *
+     *       Default Field = A Merge Var. Use <strong>Merge0-Merge30</strong> or the <strong>Custom Tag</strong> you've setup for your merge field - see listMergeVars()
+     *           Valid Op(erations):
+     *            <strong>eq</strong> (=) / <strong>ne</strong> (!=) / <strong>gt</strong> (&gt;) / <strong>lt</strong> (&lt;) / <strong>like</strong> (like '%blah%') / <strong>nlike</strong> (not like '%blah%') / <strong>starts</strong> (like 'blah%') / <strong>ends</strong> (like '%blah')
+     *           Valid Values: any string
      * @return int total The total number of subscribers matching your segmentation options
      */
     public function campaignSegmentTest($list_id, $options)
@@ -325,94 +325,94 @@ class MCAPI
      *
      * @param string $type    the Campaign Type to create - one of "regular", "plaintext", "absplit", "rss", "auto"
      * @param array  $options a hash of the standard options for this campaign :
-            string list_id the list to send this campaign to- get lists using lists()
-            string subject the subject line for your campaign message
-            string from_email the From: email address for your campaign message
-            string from_name the From: name for your campaign message (not an email address)
-            string to_name the To: name recipients will see (not email address)
-            int template_id optional - use this user-created template to generate the HTML content of the campaign (takes precendence over other template options)
-            int gallery_template_id optional - use a template from the public gallery to generate the HTML content of the campaign (takes precendence over base template options)
-            int base_template_id optional - use this a base/start-from-scratch template to generate the HTML content of the campaign
-            int folder_id optional - automatically file the new campaign in the folder_id passed. Get using folders() - note that Campaigns and Autoresponders have separate folder setupsn
-            array tracking optional - set which recipient actions will be tracked, as a struct of boolean values with the following keys: "opens", "html_clicks", and "text_clicks".  By default, opens and HTML clicks will be tracked. Click tracking can not be disabled for Free accounts.
-            string title optional - an internal name to use for this campaign.  By default, the campaign subject will be used.
-            boolean authenticate optional - set to true to enable SenderID, DomainKeys, and DKIM authentication, defaults to false.
-            array analytics optional - if provided, use a struct with "service type" as a key and the "service tag" as a value. Use "google" for Google Analytics, "clicktale" for ClickTale, and "gooal" for Goo.al tracking. The "tag" is any custom text (up to 50 characters) that should be included.
-            boolean auto_footer optional Whether or not we should auto-generate the footer for your content. Mostly useful for content from URLs or Imports
-            boolean inline_css optional Whether or not css should be automatically inlined when this campaign is sent, defaults to false.
-            boolean generate_text optional Whether of not to auto-generate your Text content from the HTML content. Note that this will be ignored if the Text part of the content passed is not empty, defaults to false.
-            boolean auto_tweet optional If set, this campaign will be auto-tweeted when it is sent - defaults to false. Note that if a Twitter account isn't linked, this will be silently ignored.
-            array auto_fb_post optional If set, this campaign will be auto-posted to the page_ids contained in the array. If a Facebook account isn't linked or the account does not have permission to post to the page_ids requested, those failures will be silently ignored.
-            boolean fb_comments optional If true, the Facebook comments (and thus the <a href="http://kb.mailchimp.com/article/i-dont-want-an-archiave-of-my-campaign-can-i-turn-it-off/" target="_blank">archive bar</a> will be displayed. If false, Facebook comments will not be enabled (does not imply no archive bar, see previous link). Defaults to "true".
-            boolean timewarp optional If set, this campaign must be scheduled 24 hours in advance of sending - default to false. Only valid for "regular" campaigns and "absplit" campaigns that split on schedule_time.
-            boolean ecomm360 optional If set, our <a href="http://www.mailchimp.com/blog/ecommerce-tracking-plugin/" target="_blank">Ecommerce360 tracking</a> will be enabled for links in the campaign
-            array crm_tracking optional If set, enable CRM tracking for:<div style="padding-left:15px"><table>
-                array salesforce optional Enable SalesForce push back<div style="padding-left:15px"><table>
-                    bool campaign optional - if true, create a Campaign object and update it with aggregate stats
-                    bool notes  optional - if true, attempt to update Contact notes based on email address</table></div>
-                array highrise optional Enable SalesForce push back<div style="padding-left:15px"><table>
-                    bool campaign optional - if true, create a Kase object and update it with aggregate stats
-                    bool notes  optional - if true, attempt to update Contact notes based on email address</table></div>
-                array capsule optional Enable Capsule push back (only notes are supported)<div style="padding-left:15px"><table>
-                    bool notes optional - if true, attempt to update Contact notes based on email address</table></div></table></div>
-    * @param array $content the content for this campaign - use a struct with the following keys:
-                string html for pasted HTML content
-                string text for the plain-text version
-                string url to have us pull in content from a URL. Note, this will override any other content options - for lists with Email Format options, you'll need to turn on generate_text as well
-                string archive to send a Base64 encoded archive file for us to import all media from. Note, this will override any other content options - for lists with Email Format options, you'll need to turn on generate_text as well
-                string archive_type optional - only necessary for the "archive" option. Supported formats are: zip, tar.gz, tar.bz2, tar, tgz, tbz . If not included, we will default to zip
-
-                If you chose a template instead of pasting in your HTML content, then use "html_" followed by the template sections as keys - for example, use a key of "html_MAIN" to fill in the "MAIN" section of a template.
-    * @param array $segment_opts optional - if you wish to do Segmentation with this campaign this array should contain: see campaignSegmentTest(). It's suggested that you test your options against campaignSegmentTest().
-    * @param array $type_opts optional -
-            For RSS Campaigns this, array should contain:
-                string url the URL to pull RSS content from - it will be verified and must exist
-                string schedule optional one of "daily", "weekly", "monthly" - defaults to "daily"
-                string schedule_hour optional an hour between 0 and 24 - default to 4 (4am <em>local time</em>) - applies to all schedule types
-                string schedule_weekday optional for "weekly" only, a number specifying the day of the week to send: 0 (Sunday) - 6 (Saturday) - defaults to 1 (Monday)
-                string schedule_monthday optional for "monthly" only, a number specifying the day of the month to send (1 - 28) or "last" for the last day of a given month. Defaults to the 1st day of the month
-                array days optional used for "daily" schedules only, an array of the <a href="http://en.wikipedia.org/wiki/ISO-8601#Week_dates" target="_blank">ISO-8601 weekday numbers</a> to send on
-                    bool 1 optional Monday, defaults to true
-                    bool 2 optional Tuesday, defaults to true
-                    bool 3 optional Wednesday, defaults to true
-                    bool 4 optional Thursday, defaults to true
-                    bool 5 optional Friday, defaults to true
-                    bool 6 optional Saturday, defaults to true
-                    bool 7 optional Sunday, defaults to true
-
-            For A/B Split campaigns, this array should contain:
-                string split_test The values to segment based on. Currently, one of: "subject", "from_name", "schedule". NOTE, for "schedule", you will need to call campaignSchedule() separately!
-                string pick_winner How the winner will be picked, one of: "opens" (by the open_rate), "clicks" (by the click rate), "manual" (you pick manually)
-                int wait_units optional the default time unit to wait before auto-selecting a winner - use "3600" for hours, "86400" for days. Defaults to 86400.
-                int wait_time optional the number of units to wait before auto-selecting a winner - defaults to 1, so if not set, a winner will be selected after 1 Day.
-                int split_size optional this is a percentage of what size the Campaign's List plus any segmentation options results in. "schedule" type forces 50%, all others default to 10%
-                string from_name_a optional sort of, required when split_test is "from_name"
-                string from_name_b optional sort of, required when split_test is "from_name"
-                string from_email_a optional sort of, required when split_test is "from_name"
-                string from_email_b optional sort of, required when split_test is "from_name"
-                string subject_a optional sort of, required when split_test is "subject"
-                string subject_b optional sort of, required when split_test is "subject"
-
-            For AutoResponder campaigns, this array should contain:
-                string offset-units one of "hourly", "day", "week", "month", "year" - required
-                string offset-time optional, sort of - the number of units must be a number greater than 0 for signup based autoresponders, ignored for "hourly"
-                string offset-dir either "before" or "after", ignored for "hourly"
-                string event optional "signup" (default) to base this members added to a list, "date", "annual", or "birthday" to base this on merge field in the list, "campaignOpen" or "campaignClicka" to base this on any activity for a campaign, "campaignClicko" to base this on clicks on a specific URL in a campaign, "mergeChanged" to base this on a specific merge field being changed to a specific value
-                string event-datemerge optional sort of, this is required if the event is "date", "annual", "birthday", or "mergeChanged"
-                string campaign_id optional sort of, required for "campaignOpen", "campaignClicka", or "campaignClicko"
-                string campaign_url optional sort of, required for "campaignClicko"
-
-                int schedule_hour The hour of the day - 24 hour format in GMT - the autoresponder should be triggered, ignored for "hourly"
-                boolean use_import_time whether or not imported subscribers (ie, <em>any</em> non-double optin subscribers) will receive
-                array days optional used for "daily" schedules only, an array of the <a href="http://en.wikipedia.org/wiki/ISO-8601#Week_dates" target="_blank">ISO-8601 weekday numbers</a> to send on
-                    bool 1 optional Monday, defaults to true
-                    bool 2 optional Tuesday, defaults to true
-                    bool 3 optional Wednesday, defaults to true
-                    bool 4 optional Thursday, defaults to true
-                    bool 5 optional Friday, defaults to true
-                    bool 6 optional Saturday, defaults to true
-                    bool 7 optional Sunday, defaults to true
-
+     *       string list_id the list to send this campaign to- get lists using lists()
+     *       string subject the subject line for your campaign message
+     *       string from_email the From: email address for your campaign message
+     *       string from_name the From: name for your campaign message (not an email address)
+     *       string to_name the To: name recipients will see (not email address)
+     *       int template_id optional - use this user-created template to generate the HTML content of the campaign (takes precendence over other template options)
+     *       int gallery_template_id optional - use a template from the public gallery to generate the HTML content of the campaign (takes precendence over base template options)
+     *       int base_template_id optional - use this a base/start-from-scratch template to generate the HTML content of the campaign
+     *       int folder_id optional - automatically file the new campaign in the folder_id passed. Get using folders() - note that Campaigns and Autoresponders have separate folder setupsn
+     *       array tracking optional - set which recipient actions will be tracked, as a struct of boolean values with the following keys: "opens", "html_clicks", and "text_clicks".  By default, opens and HTML clicks will be tracked. Click tracking can not be disabled for Free accounts.
+     *       string title optional - an internal name to use for this campaign.  By default, the campaign subject will be used.
+     *       boolean authenticate optional - set to true to enable SenderID, DomainKeys, and DKIM authentication, defaults to false.
+     *       array analytics optional - if provided, use a struct with "service type" as a key and the "service tag" as a value. Use "google" for Google Analytics, "clicktale" for ClickTale, and "gooal" for Goo.al tracking. The "tag" is any custom text (up to 50 characters) that should be included.
+     *       boolean auto_footer optional Whether or not we should auto-generate the footer for your content. Mostly useful for content from URLs or Imports
+     *       boolean inline_css optional Whether or not css should be automatically inlined when this campaign is sent, defaults to false.
+     *       boolean generate_text optional Whether of not to auto-generate your Text content from the HTML content. Note that this will be ignored if the Text part of the content passed is not empty, defaults to false.
+     *       boolean auto_tweet optional If set, this campaign will be auto-tweeted when it is sent - defaults to false. Note that if a Twitter account isn't linked, this will be silently ignored.
+     *       array auto_fb_post optional If set, this campaign will be auto-posted to the page_ids contained in the array. If a Facebook account isn't linked or the account does not have permission to post to the page_ids requested, those failures will be silently ignored.
+     *       boolean fb_comments optional If true, the Facebook comments (and thus the <a href="http://kb.mailchimp.com/article/i-dont-want-an-archiave-of-my-campaign-can-i-turn-it-off/" target="_blank">archive bar</a> will be displayed. If false, Facebook comments will not be enabled (does not imply no archive bar, see previous link). Defaults to "true".
+     *       boolean timewarp optional If set, this campaign must be scheduled 24 hours in advance of sending - default to false. Only valid for "regular" campaigns and "absplit" campaigns that split on schedule_time.
+     *       boolean ecomm360 optional If set, our <a href="http://www.mailchimp.com/blog/ecommerce-tracking-plugin/" target="_blank">Ecommerce360 tracking</a> will be enabled for links in the campaign
+     *       array crm_tracking optional If set, enable CRM tracking for:<div style="padding-left:15px"><table>
+     *           array salesforce optional Enable SalesForce push back<div style="padding-left:15px"><table>
+     *               bool campaign optional - if true, create a Campaign object and update it with aggregate stats
+     *               bool notes  optional - if true, attempt to update Contact notes based on email address</table></div>
+     *           array highrise optional Enable SalesForce push back<div style="padding-left:15px"><table>
+     *               bool campaign optional - if true, create a Kase object and update it with aggregate stats
+     *               bool notes  optional - if true, attempt to update Contact notes based on email address</table></div>
+     *           array capsule optional Enable Capsule push back (only notes are supported)<div style="padding-left:15px"><table>
+     *               bool notes optional - if true, attempt to update Contact notes based on email address</table></div></table></div>
+     * @param array $content the content for this campaign - use a struct with the following keys:
+     *           string html for pasted HTML content
+     *           string text for the plain-text version
+     *           string url to have us pull in content from a URL. Note, this will override any other content options - for lists with Email Format options, you'll need to turn on generate_text as well
+     *           string archive to send a Base64 encoded archive file for us to import all media from. Note, this will override any other content options - for lists with Email Format options, you'll need to turn on generate_text as well
+     *           string archive_type optional - only necessary for the "archive" option. Supported formats are: zip, tar.gz, tar.bz2, tar, tgz, tbz . If not included, we will default to zip
+     *
+     *           If you chose a template instead of pasting in your HTML content, then use "html_" followed by the template sections as keys - for example, use a key of "html_MAIN" to fill in the "MAIN" section of a template.
+     * @param array $segment_opts optional - if you wish to do Segmentation with this campaign this array should contain: see campaignSegmentTest(). It's suggested that you test your options against campaignSegmentTest().
+     * @param array $type_opts optional -
+     *       For RSS Campaigns this, array should contain:
+     *           string url the URL to pull RSS content from - it will be verified and must exist
+     *           string schedule optional one of "daily", "weekly", "monthly" - defaults to "daily"
+     *           string schedule_hour optional an hour between 0 and 24 - default to 4 (4am <em>local time</em>) - applies to all schedule types
+     *           string schedule_weekday optional for "weekly" only, a number specifying the day of the week to send: 0 (Sunday) - 6 (Saturday) - defaults to 1 (Monday)
+     *           string schedule_monthday optional for "monthly" only, a number specifying the day of the month to send (1 - 28) or "last" for the last day of a given month. Defaults to the 1st day of the month
+     *           array days optional used for "daily" schedules only, an array of the <a href="http://en.wikipedia.org/wiki/ISO-8601#Week_dates" target="_blank">ISO-8601 weekday numbers</a> to send on
+     *               bool 1 optional Monday, defaults to true
+     *               bool 2 optional Tuesday, defaults to true
+     *               bool 3 optional Wednesday, defaults to true
+     *               bool 4 optional Thursday, defaults to true
+     *               bool 5 optional Friday, defaults to true
+     *               bool 6 optional Saturday, defaults to true
+     *               bool 7 optional Sunday, defaults to true
+     *
+     *       For A/B Split campaigns, this array should contain:
+     *           string split_test The values to segment based on. Currently, one of: "subject", "from_name", "schedule". NOTE, for "schedule", you will need to call campaignSchedule() separately!
+     *           string pick_winner How the winner will be picked, one of: "opens" (by the open_rate), "clicks" (by the click rate), "manual" (you pick manually)
+     *           int wait_units optional the default time unit to wait before auto-selecting a winner - use "3600" for hours, "86400" for days. Defaults to 86400.
+     *           int wait_time optional the number of units to wait before auto-selecting a winner - defaults to 1, so if not set, a winner will be selected after 1 Day.
+     *           int split_size optional this is a percentage of what size the Campaign's List plus any segmentation options results in. "schedule" type forces 50%, all others default to 10%
+     *           string from_name_a optional sort of, required when split_test is "from_name"
+     *           string from_name_b optional sort of, required when split_test is "from_name"
+     *           string from_email_a optional sort of, required when split_test is "from_name"
+     *           string from_email_b optional sort of, required when split_test is "from_name"
+     *           string subject_a optional sort of, required when split_test is "subject"
+     *           string subject_b optional sort of, required when split_test is "subject"
+     *
+     *       For AutoResponder campaigns, this array should contain:
+     *           string offset-units one of "hourly", "day", "week", "month", "year" - required
+     *           string offset-time optional, sort of - the number of units must be a number greater than 0 for signup based autoresponders, ignored for "hourly"
+     *           string offset-dir either "before" or "after", ignored for "hourly"
+     *           string event optional "signup" (default) to base this members added to a list, "date", "annual", or "birthday" to base this on merge field in the list, "campaignOpen" or "campaignClicka" to base this on any activity for a campaign, "campaignClicko" to base this on clicks on a specific URL in a campaign, "mergeChanged" to base this on a specific merge field being changed to a specific value
+     *           string event-datemerge optional sort of, this is required if the event is "date", "annual", "birthday", or "mergeChanged"
+     *           string campaign_id optional sort of, required for "campaignOpen", "campaignClicka", or "campaignClicko"
+     *           string campaign_url optional sort of, required for "campaignClicko"
+     *
+     *           int schedule_hour The hour of the day - 24 hour format in GMT - the autoresponder should be triggered, ignored for "hourly"
+     *           boolean use_import_time whether or not imported subscribers (ie, <em>any</em> non-double optin subscribers) will receive
+     *           array days optional used for "daily" schedules only, an array of the <a href="http://en.wikipedia.org/wiki/ISO-8601#Week_dates" target="_blank">ISO-8601 weekday numbers</a> to send on
+     *               bool 1 optional Monday, defaults to true
+     *               bool 2 optional Tuesday, defaults to true
+     *               bool 3 optional Wednesday, defaults to true
+     *               bool 4 optional Thursday, defaults to true
+     *               bool 5 optional Friday, defaults to true
+     *               bool 6 optional Saturday, defaults to true
+     *               bool 7 optional Sunday, defaults to true
+     *
      *
      * @return string the ID for the created campaign
      */

@@ -27,7 +27,7 @@ class OSDownloadsViewEmails extends JViewLegacy
         $this->flt->cate_id = $mainframe->getUserStateFromRequest('osdownloads.email.request.cate_id', 'cate_id');
         $filter_order       = $mainframe->getUserStateFromRequest("osdownloads.email.filter_order", 'filter_order', 'email.id', 'cmd');
         $filter_order_Dir   = $mainframe->getUserStateFromRequest("osdownloads.email.filter_order_Dir", 'filter_order_Dir', '', 'word');
-        $db 	= JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query 	= $db->getQuery(true);
 
         $query->select("email.*, document.name AS doc_name, cate.title AS cate_name");

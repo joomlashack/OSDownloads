@@ -25,11 +25,11 @@ class OSDownloadsViewFiles extends JViewLegacy
         $filter_order       = $mainframe->getUserStateFromRequest("osdownloads.document.filter_order",		'filter_order',		'documents.id',	'');
         $filter_order_Dir   = $mainframe->getUserStateFromRequest("osdownloads.document.filter_order_Dir",	'filter_order_Dir',	'asc',		'word');
 
-        $db 	= JFactory::getDBO();
+        $db = JFactory::getDBO();
 
         $query = "SELECT documents.*, cate.title AS cate_name
-                        FROM `#__osdownloads_documents` documents
-                        LEFT OUTER JOIN `#__categories` cate ON (documents.cate_id = cate.id AND cate.extension = 'com_osdownloads')";
+                  FROM `#__osdownloads_documents` documents
+                  LEFT OUTER JOIN `#__categories` cate ON (documents.cate_id = cate.id AND cate.extension = 'com_osdownloads')";
 
         $where = array();
 
@@ -45,9 +45,9 @@ class OSDownloadsViewFiles extends JViewLegacy
         $query .= $where;
 
         if ($filter_order == "documents.ordering") {
-            $orderby 	= ' ORDER BY documents.cate_id, '. $filter_order .' '. $filter_order_Dir;
+            $orderby = ' ORDER BY documents.cate_id, '. $filter_order .' '. $filter_order_Dir;
         } else {
-            $orderby 	= ' ORDER BY '. $filter_order .' '. $filter_order_Dir;
+            $orderby = ' ORDER BY '. $filter_order .' '. $filter_order_Dir;
         }
 
         $db->setQuery($query);

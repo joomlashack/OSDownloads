@@ -25,12 +25,12 @@ class OSDownloadsViewDownloads extends JViewLegacy
             $id = JRequest::getVar("id");
         }
 
-        $db 	= JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query	= "SELECT documents.* , cate.published, cate.access AS cat_access
-                            FROM `#__osdownloads_documents` documents
-                            LEFT JOIN `#__categories` cate ON (documents.cate_id = cate.id AND cate.extension='com_osdownloads')
-                            WHERE documents.cate_id = {$id} AND documents.published = 1 AND cate.published = 1
-                            ORDER BY documents.ordering";
+                   FROM `#__osdownloads_documents` documents
+                   LEFT JOIN `#__categories` cate ON (documents.cate_id = cate.id AND cate.extension='com_osdownloads')
+                   WHERE documents.cate_id = {$id} AND documents.published = 1 AND cate.published = 1
+                   ORDER BY documents.ordering";
 
         $db->setQuery($query);
         $db->query();
@@ -68,7 +68,7 @@ class OSDownloadsViewDownloads extends JViewLegacy
             return;
         }
 
-        $db 	= JFactory::getDBO();
+        $db = JFactory::getDBO();
         $db->setQuery("SELECT * FROM `#__categories` WHERE extension='com_osdownloads' AND id = " . $id);
         $cate = $db->loadObject();
         if ($cate) {

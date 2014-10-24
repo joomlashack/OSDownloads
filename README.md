@@ -11,8 +11,6 @@ OSDownloads is an extension to help you manage your downloads. It allows you to 
 
 ### Events
 
-I'm sure this still can be improved but here are some initial events:
-
 * onOSDownloadsBeforeSaveFile($documentInstance, $isNew)
 * onOSDownloadsAfterSaveFile($storedWithSuccess, $documentInstance)
 * onOSDownloadsBeforeDeleteFile($documentInstance, $pk)

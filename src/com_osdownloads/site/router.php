@@ -45,7 +45,7 @@ function buildPath(& $segments, $id)
         return;
     }
 
-    $db 	= JFactory::getDBO();
+    $db = JFactory::getDBO();
     $db->setQuery("SELECT * FROM `#__categories` WHERE extension='com_osdownloads' AND id = " . $id);
     $cate = $db->loadObject();
 

@@ -59,3 +59,17 @@
     content: none !important; /* Overrides enthusiastic templates */
 }
 
+/* module */
+.mod_osdownloads ul{
+    margin: 0;
+    list-style: none;
+}
+.mod_osdownloads ul li{
+    margin: 10px 0;
+}
+.mod_osdownloads ul li p{
+    margin: 10px 0;
+    line-height: 22px;
+    font-size: 14px;
+    font-weight: 400;
+}

@@ -45,10 +45,17 @@ nb-configuration.xml
 
 # Phing #
 #########
-phing/packages/*
+packages/*
 !.gitkeep
 
 # misc other files #
 ####################
 _notes/
 error_log
+
+config.codekit
+.DS_Store
+phing/.DS_Store
+vendor
+
+build.properties

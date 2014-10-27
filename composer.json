@@ -3,11 +3,13 @@
     "description"      : "OSDownloads",
     "minimum-stability": "stable",
     "license"          : "GPL-2+",
-    "type"             : "joomla.package",
+    "type"             : "joomla.component",
     "extra"            : {
-        "element": "pkg_osdownloads",
-        "name":    "OSDownloads",
-        "client":  "admin"
+        "element"        : "com_osdownloads",
+        "element-short"  : "osdownloads",
+        "name"           : "OSDownloads",
+        "client"         : "admin",
+        "package-license": "free"
     },
     "authors"          : [
         {

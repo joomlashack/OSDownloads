@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="2.5.0" method="upgrade">
+    <name>com_osdownloads</name>
+    <author>Alledia</author>
+    <creationDate>October 27 2014</creationDate>
+    <copyright>Copyright (C) 2014 Alledia.com. All rights reserved.</copyright>
+    <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+    <authorEmail>hello@alledia.com</authorEmail>
+    <authorUrl>https://www.alledia.com</authorUrl>
+    <version>1.1.0</version>
+    <description>OSDownloads is an extension to help you manage your downloads. It allows you to easily provide downloads in exchange for emails, which can in turn be automatically imported in MailChimp upon download.</description>
+
+    <alledia>
+        <element>osdownloads</element>
+        <namespace>OSDownloads</namespace>
+        <license>free</license>
+        <relatedExtensions>
+            <extension
+                type="library"
+                element="allediaframework">AllediaFramework</extension>
+
+            <extension
+                type="plugin"
+                group="system"
+                element="ossystem"
+                publish="true"
+                ordering="first">OSSystem</extension>
+        </relatedExtensions>
+    </alledia>
+
+    <scriptfile>script.installer.php</scriptfile>
+
+    <files folder="site">
+        <filename>controller.php</filename>
+        <filename>osdownloads.php</filename>
+        <filename>router.php</filename>
+        <folder>assets</folder>
+        <folder>classes</folder>
+        <folder>models</folder>
+        <folder>tables</folder>
+        <folder>views</folder>
+        <folder>language</folder>
+    </files>
+
+    <administration>
+        <menu img="class:component">OSDownloads</menu>
+        <submenu>
+            <menu link="option=com_osdownloads&amp;view=files" view="files" img="class:component"   alt="OSDownloads/Files">Files</menu>
+            <menu link="option=com_categories&amp;extension=com_osdownloads" view="categories" img="class:component" alt="OSDownloads/Categories">Categories</menu>
+            <menu link="option=com_osdownloads&amp;view=emails" view="emails" img="class:component" alt="OSDownloads/Emails">Emails</menu>
+        </submenu>
+        <files folder="admin">
+            <filename>access.xml</filename>
+            <filename>config.xml</filename>
+            <filename>controller.php</filename>
+            <filename>osdownloads.php</filename>
+            <folder>controllers</folder>
+            <folder>sql</folder>
+            <folder>helpers</folder>
+            <folder>tables</folder>
+            <folder>views</folder>
+            <folder>language</folder>
+        </files>
+    </administration>
+
+    <install>
+        <sql>
+            <file driver="mysqli" charset="utf8">sql/install/mysql/install.sql</file>
+        </sql>
+    </install>
+
+    <uninstall>
+        <sql>
+            <file driver="mysqli" charset="utf8">sql/install/mysql/uninstall.sql</file>
+        </sql>
+    </uninstall>
+
+    <update>
+        <schemas>
+            <schemapath type="mysql" charset="utf8">sql/updates/mysql</schemapath>
+        </schemas>
+    </update>
+</extension>

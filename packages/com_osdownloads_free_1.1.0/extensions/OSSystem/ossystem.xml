@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="system" method="upgrade">
+    <name>PLG_SYSTEM_OSSYSTEM</name>
+    <author>Alledia</author>
+    <creationDate>October 24 2014</creationDate>
+    <copyright>Copyright (C) 2014 Alledia.com</copyright>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+    <authorEmail>hello@alledia.com</authorEmail>
+    <authorUrl>http://www.alledia.com</authorUrl>
+    <version>1.0.2</version>
+    <description>PLG_SYSTEM_OSSYSTEM_DESCRIPTION</description>
+
+    <alledia>
+        <element publish="true">ossystem</element>
+        <namespace>OSSystem</namespace>
+        <license>free</license>
+
+        <relatedExtensions>
+            <extension
+                type="library"
+                element="allediaframework">AllediaFramework</extension>
+        </relatedExtensions>
+
+        <obsolete>
+            <extension
+                type="plugin"
+                group="system"
+                element="oscarootcertificates"
+                publish="true"
+                ordering="first"
+                >OSCARootCertificates</extension>
+        </obsolete>
+    </alledia>
+
+    <scriptfile>script.installer.php</scriptfile>
+
+    <files>
+        <folder>language</folder>
+        <folder>library</folder>
+        <folder>views</folder>
+        <filename plugin="ossystem">ossystem.php</filename>
+        <filename>bundle.g2.crt</filename>
+        <filename>helper.php</filename>
+        <filename>include.php</filename>
+
+    </files>
+
+    <updateservers>
+        <server type="extension" priority="1" name="OSSystem"><![CDATA[https://deploy.ostraining.com/client/update/free/stable/plg_system_ossystem]]></server>
+    </updateservers>
+</extension>

@@ -1,0 +1,73 @@
+.ost-alert-gopro{
+    background: #ebf7fd;
+    border: 1px solid rgba(45,112,145,0.2);
+    color: #2d7091;
+    padding: 20px;
+    margin: 2px 0 2px -180px;
+    max-width: 380px;
+    text-align: center;
+}
+.ost-alert-gopro a.ost-alert-btn{
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -o-border-radius: 3px;
+    /* 1 */
+    display: inline-block;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    vertical-align: middle;
+    text-decoration: none;
+    text-align: center;
+    /* 2 */
+    border: none;
+    /* 3 */
+    line-height: 40px;
+    /* 4 */
+    min-height: 40px;
+    /* 5 */
+    /* 6 */
+    padding: 0 12px;
+    background: #075c97;
+    color: #ffffff;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+    font-weight: 400;
+    font-size: 14px;
+    -webkit-transition: background 0.2s ease-in-out;
+    transition: background 0.2s ease-in-out;
+}
+.ost-alert-gopro .icon-publish:before{
+    color: #ffffff;
+}
+
+.ost-alert-gopro.no_offset{
+    margin-left: 0;
+    max-width: 100%;
+    text-align: left;
+    padding-left: 0;
+    padding-right: 0;
+    background: transparent;
+    border: none;
+}
+.ost-alert-gopro.no_offset span{
+    float: right;
+    padding-top: 15px;
+}
+
+.alledia-wrapper .alledia-footer {
+    height: 90px;
+    margin-top: 0;
+}
+
+/* Joomla 2 only */
+.ost-alert-gopro.ost-joomla-2{
+    margin-left: 0;
+    display: inline-block;
+}
+
+
+@media (max-width: 480px) {
+    .ost-alert-gopro{
+        margin-left: 0;
+    }
+}

@@ -8,7 +8,7 @@
 defined('_JEXEC') or die;
 JHTML::_('behavior.modal');
 
-JHtml::_('stylesheet', JUri::base() . 'components/com_osdownloads/assets/osdownloads.css');
+JHtml::_('stylesheet', JUri::base() . 'media/com_osdownloads/css/osdownloads.css');
 
 $app = JFactory::getApplication();
 $itemId = $app->input->get('Itemid');
@@ -20,7 +20,7 @@ $linkTo    = $params->get('link_to', 'download');
 // Module body
 ?>
 
-<<?php echo $moduleTag; ?> class="mod_osdownloads<?php echo $params->get('moduleclass_sfx'); ?>">
+<<?php echo $moduleTag; ?> class="mod_osdownloadsfiles<?php echo $params->get('moduleclass_sfx'); ?>">
     <ul>
         <?php foreach ($list as $file) : ?>
             <li>
@@ -29,11 +29,11 @@ $linkTo    = $params->get('link_to', 'download');
                 <p>
                     <?php if ($linkTo === 'download') : ?>
                         <a class="modOSDownloadsButton" href="<?php echo JRoute::_('index.php?option=com_osdownloads&task=getdownloadlink&tmpl=component&Itemid=' . $itemId . '&id=' . $file->id); ?>" data-direct-page="<?php echo $file->direct_page; ?>">
-                            <?php echo $params->get('link_label', JText::_('MOD_OSDOWNLOADS_DOWNLOAD')); ?>
+                            <?php echo $params->get('link_label', JText::_('MOD_OSDOWNLOADSFILES_DOWNLOAD')); ?>
                         </a>
                     <?php else: ?>
                         <a class="modOSDownloadsButton" href="<?php JRoute::_('index.php?option=com_osdownloads&view=item&Itemid=' . $itemId . '&id=' . $file->id); ?>" data-direct-page="<?php echo $file->direct_page; ?>">
-                            <?php echo $params->get('link_label', JText::_('MOD_OSDOWNLOADS_READ_MORE')); ?>
+                            <?php echo $params->get('link_label', JText::_('MOD_OSDOWNLOADSFILES_READ_MORE')); ?>
                         </a>
                     <?php endif; ?>
                 </p>

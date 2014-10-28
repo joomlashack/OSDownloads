@@ -1,7 +1,7 @@
 mkdir:
     - administrator/components/com_osdownloads
     - components/com_osdownloads
-    - modules/mod_osdownloads
+    - modules/mod_osdownloadsfiles
 symlinks:
     - src/admin/controllers administrator/components/com_osdownloads/controllers
     - src/admin/helpers administrator/components/com_osdownloads/helpers
@@ -14,7 +14,6 @@ symlinks:
     - src/admin/controller.php administrator/components/com_osdownloads/controller.php
     - src/admin/osdownloads.php administrator/components/com_osdownloads/osdownloads.php
     - src/osdownloads.xml administrator/components/com_osdownloads/osdownloads.xml
-    - src/site/assets components/com_osdownloads/assets
     - src/site/classes components/com_osdownloads/classes
     - src/site/language components/com_osdownloads/language
     - src/site/models components/com_osdownloads/models
@@ -23,8 +22,9 @@ symlinks:
     - src/site/controller.php components/com_osdownloads/controller.php
     - src/site/osdownloads.php components/com_osdownloads/osdownloads.php
     - src/site/router.php components/com_osdownloads/router.php
-    - src/extensions/mod_osdownloads/languages modules/mod_osdownloads/languages
-    - src/extensions/mod_osdownloads/tmpl modules/mod_osdownloads/tmpl
-    - src/extensions/mod_osdownloads/helper.php modules/mod_osdownloads/helper.php
-    - src/extensions/mod_osdownloads/mod_osdownloads.php modules/mod_osdownloads/mod_osdownloads.php
-    - src/extensions/mod_osdownloads/mod_osdownloads.xml modules/mod_osdownloads/mod_osdownloads.xml
+    - src/media media/com_osdownloads
+    - src/extensions/mod_osdownloadsfiles/language modules/mod_osdownloadsfiles/language
+    - src/extensions/mod_osdownloadsfiles/tmpl modules/mod_osdownloadsfiles/tmpl
+    - src/extensions/mod_osdownloadsfiles/helper.php modules/mod_osdownloadsfiles/helper.php
+    - src/extensions/mod_osdownloadsfiles/mod_osdownloadsfiles.php modules/mod_osdownloadsfiles/mod_osdownloadsfiles.php
+    - src/extensions/mod_osdownloadsfiles/mod_osdownloadsfiles.xml modules/mod_osdownloadsfiles/mod_osdownloadsfiles.xml

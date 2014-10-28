@@ -60,11 +60,11 @@
 }
 
 /* module */
-.mod_osdownloads ul{
+.mod_osdownloadsfiles ul{
     margin: 0;
     list-style: none;
 }
-.mod_osdownloads ul li{
+.mod_osdownloadsfiles ul li{
     padding: 5px 0;
     margin: 0;
     border-bottom: 1px dotted #999999;

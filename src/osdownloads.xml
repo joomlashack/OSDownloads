@@ -25,22 +25,33 @@
                 element="ossystem"
                 publish="true"
                 ordering="first">OSSystem</extension>
+
+            <extension
+                type="module"
+                element="mod_osdownloadsfiles">OSDownloadsFiles</extension>
         </relatedExtensions>
+        <obsolete>
+            <file>administrator/manifests/packages/pkg_osdownloads.xml</file>
+        </obsolete>
     </alledia>
 
     <scriptfile>script.installer.php</scriptfile>
 
     <files folder="site">
-        <filename>controller.php</filename>
-        <filename>osdownloads.php</filename>
-        <filename>router.php</filename>
-        <folder>assets</folder>
         <folder>classes</folder>
         <folder>models</folder>
         <folder>tables</folder>
         <folder>views</folder>
         <folder>language</folder>
+        <filename>controller.php</filename>
+        <filename>osdownloads.php</filename>
+        <filename>router.php</filename>
     </files>
+
+    <media destination="com_osdownloads" folder="admin/media">
+        <folder>css</folder>
+        <folder>js</folder>
+    </media>
 
     <administration>
         <menu img="class:component">OSDownloads</menu>
@@ -50,16 +61,16 @@
             <menu link="option=com_osdownloads&amp;view=emails" view="emails" img="class:component" alt="OSDownloads/Emails">Emails</menu>
         </submenu>
         <files folder="admin">
+            <folder>controllers</folder>
+            <folder>helpers</folder>
+            <folder>language</folder>
+            <folder>sql</folder>
+            <folder>tables</folder>
+            <folder>views</folder>
             <filename>access.xml</filename>
             <filename>config.xml</filename>
             <filename>controller.php</filename>
             <filename>osdownloads.php</filename>
-            <folder>controllers</folder>
-            <folder>sql</folder>
-            <folder>helpers</folder>
-            <folder>tables</folder>
-            <folder>views</folder>
-            <folder>language</folder>
         </files>
     </administration>
 
@@ -80,4 +91,8 @@
             <schemapath type="mysql" charset="utf8">sql/updates/mysql</schemapath>
         </schemas>
     </update>
+
+    <updateservers>
+        <server type="extension" priority="1" name="OSDownloads"><![CDATA[https://deploy.ostraining.com/client/update/free/stable/com_osdownloads]]></server>
+    </updateservers>
 </extension>

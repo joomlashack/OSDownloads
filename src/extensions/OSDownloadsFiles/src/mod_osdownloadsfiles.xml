@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="2.5.0" client="site" method="upgrade">
-    <name>OSDownloads</name>
+    <name>mod_osdownloadsfiles</name>
     <author>Alledia</author>
     <creationDate>October 24 2014</creationDate>
     <copyright>Copyright (C) 2014 Alledia.com</copyright>
@@ -10,15 +10,17 @@
     <version>1.1.0</version>
     <description>This Module shows a list of files from a category</description>
 
-    <languages>
-            <language tag="en-GB">languages/en-GB/en-GB.mod_osdownloads.ini</language>
-    </languages>
+    <alledia>
+        <element>osdownloadsfiles</element>
+        <namespace>OSDownloadsFiles</namespace>
+        <license>free</license>
+    </alledia>
 
     <files>
-        <filename module="mod_osdownloads">mod_osdownloads.php</filename>
+        <filename module="mod_osdownloadsfiles">mod_osdownloadsfiles.php</filename>
         <filename>helper.php</filename>
         <folder>tmpl</folder>
-        <folder>languages</folder>
+        <folder>language</folder>
     </files>
 
     <config>
@@ -27,26 +29,26 @@
                 <field
                     name="category"
                     type="category"
-                    label="MOD_OSDOWNLOADS_FIELD_CATEGORY"
+                    label="MOD_OSDOWNLOADSFILES_FIELD_CATEGORY"
                     extension="com_osdownloads"
-                    description="MOD_OSDOWNLOADS_FIELD_CATEGORY_DESC" />
+                    description="MOD_OSDOWNLOADSFILES_FIELD_CATEGORY_DESC" />
 
                 <field
                     name="link_to"
                     type="radio"
                     class="btn-group"
                     default="download"
-                    label="MOD_OSDOWNLOADS_FIELD_LINK_TO"
-                    description="MOD_OSDOWNLOADS_FIELD_LINK_TO_DESC">
-                        <option value="download">MOD_OSDOWNLOADS_LINK_FILE_DOWNLOAD</option>
-                        <option value="details">MOD_OSDOWNLOADS_LINK_TO_FILE_DESCRIPTION</option>
+                    label="MOD_OSDOWNLOADSFILES_FIELD_LINK_TO"
+                    description="MOD_OSDOWNLOADSFILES_FIELD_LINK_TO_DESC">
+                        <option value="download">MOD_OSDOWNLOADSFILES_LINK_FILE_DOWNLOAD</option>
+                        <option value="details">MOD_OSDOWNLOADSFILES_LINK_TO_FILE_DESCRIPTION</option>
                 </field>
 
                 <field
                     name="link_label"
                     type="text"
-                    label="MOD_OSDOWNLOADS_FIELD_LINK_LABEL"
-                    description="MOD_OSDOWNLOADS_FIELD_LINK_DESC" />
+                    label="MOD_OSDOWNLOADSFILES_FIELD_LINK_LABEL"
+                    description="MOD_OSDOWNLOADSFILES_FIELD_LINK_DESC" />
 
                 <field
                     name="moduleclass_sfx"

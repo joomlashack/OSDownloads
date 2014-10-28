@@ -1,0 +1,23 @@
+{
+    "name"             : "Alledia/OSDownloadsFiles",
+    "description"      : "OSDownloadsFiles",
+    "minimum-stability": "stable",
+    "license"          : "GPL-2+",
+    "type"             : "joomla.module",
+    "extra"            : {
+        "element"        : "mod_osdownloadsfiles",
+        "element-short"  : "osdownloadsfiles",
+        "name"           : "OSDownloadsFiles",
+        "client"         : "site",
+        "package-license": "free"
+    },
+    "authors"          : [
+        {
+            "name" : "Alledia.com",
+            "email": "hello@alledia.com"
+        }
+    ],
+    "require"          : {
+        "php"       : ">= 5.3"
+    }
+}

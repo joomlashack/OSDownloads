@@ -8,13 +8,18 @@
 
 defined('_JEXEC') or die;
 
-require_once 'library/installer/include.php';
+$includePath = __DIR__ . '/admin/library/installer/include.php';
+if (file_exists($includePath)) {
+    require_once $includePath;
+} else {
+    require_once __DIR__ . '/library/installer/include.php';
+}
 
 jimport('joomla.installer.installer');
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
 
-class ComOSDownloadsInstallerScript extends AllediaInstallerAbstract
+class Com_OSDownloadsInstallerScript extends AllediaInstallerAbstract
 {
     /**
      * Method to run after an install/update method
@@ -160,6 +165,11 @@ class ComOSDownloadsInstallerScript extends AllediaInstallerAbstract
             $db->setQuery('ALTER TABLE `#__osdownloads_documents` DROP COLUMN `picture`');
             $db->execute();
         }
+
+        // Remove the old pkg_osdownloads, if existent
+        $query = 'DELETE FROM `#__extensions` WHERE `type`="package" AND `element`="pkg_osdownloads"';
+        $db->setQuery($query);
+        $db->execute();
 
         return true;
     }

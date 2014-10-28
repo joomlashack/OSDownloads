@@ -7,7 +7,7 @@
  */
 defined('_JEXEC') or die();
 
-abstract class ModOSDownloadsHelper
+abstract class ModOSDownloadsFilesHelper
 {
     public static function getList($params)
     {

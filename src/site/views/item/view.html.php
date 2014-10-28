@@ -19,12 +19,12 @@ class OSDownloadsViewItem extends JViewLegacy
 
         $mainframe = JFactory::getApplication();
         $params    = clone($mainframe->getParams('com_osdownloads'));
-        $id        = $params->get("document_id");
+        $id        = (int) $params->get("document_id");
 
         $db = JFactory::getDBO();
 
         if (JRequest::getVar("id")) {
-            $id = JRequest::getVar("id");
+            $id = (int) JRequest::getVar("id");
         }
 
         $query	= "SELECT documents.*, cate.access AS cat_access

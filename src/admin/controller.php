@@ -26,7 +26,7 @@ class OSDownloadsController extends JControllerLegacy
         require_once JPATH_COMPONENT.'/helpers/osdownloads.php';
         OSDownloadsHelper::addSubmenu(JRequest::getCmd('view', 'files'));
 
-        $view = JRequest::getVar("view", "files");
+        $view = JRequest::getCmd("view", "files");
         JRequest::setVar("view", $view);
         switch ($this->getTask()) {
             case "file":

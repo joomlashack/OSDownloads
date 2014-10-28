@@ -17,12 +17,12 @@ class OSDownloadsViewDownloads extends JViewLegacy
     {
         $mainframe  = JFactory::getApplication();
         $params     = clone($mainframe->getParams('com_osdownloads'));
-        $id         = $params->get("category_id", 1);
+        $id         = (int) $params->get("category_id", 1);
         $limit      = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
         $limitstart = $mainframe->getUserStateFromRequest('osdownloads.request.limitstart', 'limitstart', 0, 'int');
 
         if (JRequest::getVar("id")) {
-            $id = JRequest::getVar("id");
+            $id = (int) JRequest::getVar("id");
         }
 
         $db = JFactory::getDBO();
@@ -67,6 +67,8 @@ class OSDownloadsViewDownloads extends JViewLegacy
         if (!$id) {
             return;
         }
+
+        $id = (int) $id;
 
         $db = JFactory::getDBO();
         $db->setQuery("SELECT * FROM `#__categories` WHERE extension='com_osdownloads' AND id = " . $id);

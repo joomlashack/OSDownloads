@@ -11,7 +11,7 @@ JHTML::_('behavior.modal');
 JHtml::_('stylesheet', JUri::base() . 'media/com_osdownloads/css/osdownloads.css');
 
 $app = JFactory::getApplication();
-$itemId = $app->input->get('Itemid');
+$itemId = (int) $app->input->get('Itemid');
 
 $moduleTag = $params->get('module_tag', 'div');
 $headerTag = $params->get('header_tag', 'h3');

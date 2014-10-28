@@ -20,7 +20,7 @@ class OSDownloadsController extends JControllerLegacy
 
     public function display($cachable = false, $urlparams = false)
     {
-        $view = JRequest::getVar("view", "category");
+        $view = JRequest::getCmd("view", "category");
         JRequest::setVar("view", $view);
         parent::display();
     }
@@ -40,7 +40,7 @@ class OSDownloadsController extends JControllerLegacy
 
         $emailrow = JTable::getInstance('Email', 'OsdownloadsTable');
         $item     = JTable::getInstance('Document', 'OsdownloadsTable');
-        $item->load(JRequest::getVar("id"));
+        $item->load((int) JRequest::getVar("id"));
 
         $mainframe     = JFactory::getApplication();
         $params        = clone($mainframe->getParams('com_osdownloads'));
@@ -74,7 +74,7 @@ class OSDownloadsController extends JControllerLegacy
     {
         $app = JFactory::getApplication();
 
-        $id = $app->input->getVar("id");
+        $id = (int) $app->input->getVar("id");
         $db = JFactory::getDBO();
 
         $query = "UPDATE `#__osdownloads_documents` SET downloaded = downloaded + 1 WHERE id = {$id}";

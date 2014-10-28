@@ -45,7 +45,7 @@ class OSDownloadsViewDownloads extends JViewLegacy
         $groups = $user->getAuthorisedViewLevels();
 
         if ((count($items) && !in_array($items[0]->cat_access, $groups)) || !isset($items)) {
-            JError::raiseWarning(404, JText::_("COM_OSDOWNLOADS_THIS_CATEGORY_ISNT_AVAILABLE));
+            JError::raiseWarning(404, JText::_("COM_OSDOWNLOADS_THIS_CATEGORY_ISN't available"));
 
             return;
         }

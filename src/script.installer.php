@@ -22,15 +22,32 @@ jimport('joomla.filesystem.file');
 class Com_OSDownloadsInstallerScript extends AllediaInstallerAbstract
 {
     /**
+     * Flag to set if the old mod_osdownloads is installed
+     * @var boolean
+     */
+    protected $deprecatedModOSDownloadsIsInstalled;
+
+    /**
      * Method to run after an install/update method
      *
      * @return void
      */
     public function postFlight($type, $parent)
     {
+        $db = JFactory::getDBO();
+
+        // Check if mod_osdownloads is installed to show the warning of deprecated
+        $query = $db->getQuery(true)
+            ->select('COUNT(*)')
+            ->from('#__extensions')
+            ->where($db->qn('type') . '=' . $db->q('module'))
+            ->where($db->qn('element') . '=' . $db->q('mod_osdownloads'));
+        $db->setQuery($query);
+        $this->deprecatedModOSDownloadsIsInstalled = (int) $db->loadResult();
+
         parent::postFlight($type, $parent);
 
-        $db = JFactory::getDBO();
+        // Legacy database update
         $db->setQuery("SHOW COLUMNS FROM #__osdownloads_documents");
         $rows = $db->loadObjectList();
         $db_version = "1.0.0";

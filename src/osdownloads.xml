@@ -28,7 +28,7 @@
 
             <extension
                 type="module"
-                element="mod_osdownloadsfiles">OSDownloadsFiles</extension>
+                element="osdownloadsfiles">OSDownloadsFiles</extension>
         </relatedExtensions>
         <obsolete>
             <file>administrator/manifests/packages/pkg_osdownloads.xml</file>

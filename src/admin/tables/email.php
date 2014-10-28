@@ -8,7 +8,9 @@
 
 defined('_JEXEC') or die;
 
-class OsDownloadsTableEmail extends JTable
+require_once __DIR__ . '/abstract.php';
+
+class OsDownloadsTableEmail extends OSDownloadsTableAbstract
 {
     public $id;
     public $email;
@@ -23,8 +25,7 @@ class OsDownloadsTableEmail extends JTable
     public function store($updateNulls = false)
     {
         // Trigger events to osdownloads plugins
-        JPluginHelper::importPlugin('osdownloads');
-        $dispatcher = JEventDispatcher::getInstance();
+        $dispatcher = $this->getDispatcher();
         $pluginResults = $dispatcher->trigger('onOSDownloadsBeforeSaveEmail', array(&$this));
 
         $result = false;
@@ -42,8 +43,7 @@ class OsDownloadsTableEmail extends JTable
         $id = $this->id;
 
         // Trigger events to osdownloads plugins
-        JPluginHelper::importPlugin('osdownloads');
-        $dispatcher = JEventDispatcher::getInstance();
+        $dispatcher = $this->getDispatcher();
         $pluginResults = $dispatcher->trigger('onOSDownloadsBeforeDeleteEmail', array(&$this, $pk));
 
         $result = false;

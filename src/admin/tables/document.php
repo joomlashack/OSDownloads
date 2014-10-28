@@ -8,7 +8,9 @@
 
 defined('_JEXEC') or die;
 
-class OsdownloadsTableDocument extends JTable
+require_once __DIR__ . '/abstract.php';
+
+class OsdownloadsTableDocument extends OSDownloadsTableAbstract
 {
     public $id;
     public $cate_id;
@@ -38,6 +40,13 @@ class OsdownloadsTableDocument extends JTable
     public $external_ref;
     public $access;
 
+    /**
+     * Event dispatcher
+     *
+     * @var JEventDispatcher
+     */
+    protected $dispatcher;
+
     public function __construct(&$_db)
     {
         parent::__construct('#__osdownloads_documents', 'id', $_db);
@@ -63,8 +72,7 @@ class OsdownloadsTableDocument extends JTable
         }
 
         // Trigger events to osdownloads plugins
-        JPluginHelper::importPlugin('osdownloads');
-        $dispatcher = JEventDispatcher::getInstance();
+        $dispatcher = $this->getDispatcher();
         $pluginResults = $dispatcher->trigger('onOSDownloadsBeforeSaveFile', array(&$this, $isNew));
 
         $result = false;
@@ -82,8 +90,7 @@ class OsdownloadsTableDocument extends JTable
         $id = $this->id;
 
         // Trigger events to osdownloads plugins
-        JPluginHelper::importPlugin('osdownloads');
-        $dispatcher = JEventDispatcher::getInstance();
+        $dispatcher = $this->getDispatcher();
         $pluginResults = $dispatcher->trigger('onOSDownloadsBeforeDeleteFile', array(&$this, $pk));
 
         $result = false;

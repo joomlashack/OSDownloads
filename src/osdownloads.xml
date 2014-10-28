@@ -48,6 +48,11 @@
         <filename>router.php</filename>
     </files>
 
+    <languages folder="site/language">
+        <language tag="en-GB">en-GB/en-GB.com_osdownloads.ini</language>
+        <language tag="en-GB">en-GB/en-GB.com_osdownloads.sys.ini</language>
+    </languages>
+
     <media destination="com_osdownloads" folder="admin/media">
         <folder>css</folder>
         <folder>js</folder>
@@ -72,6 +77,10 @@
             <filename>controller.php</filename>
             <filename>osdownloads.php</filename>
         </files>
+        <languages folder="admin/language">
+            <language tag="en-GB">en-GB/en-GB.com_osdownloads.ini</language>
+            <language tag="en-GB">en-GB/en-GB.com_osdownloads.sys.ini</language>
+        </languages>
     </administration>
 
     <install>

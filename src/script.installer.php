@@ -15,10 +15,6 @@ if (file_exists($includePath)) {
     require_once __DIR__ . '/library/installer/include.php';
 }
 
-jimport('joomla.installer.installer');
-jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.file');
-
 class Com_OSDownloadsInstallerScript extends AllediaInstallerAbstract
 {
     /**

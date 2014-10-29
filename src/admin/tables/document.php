@@ -87,15 +87,13 @@ class OsdownloadsTableDocument extends OSDownloadsTableAbstract
 
     public function delete($pk = null)
     {
-        $id = $this->id;
-
         // Trigger events to osdownloads plugins
         $dispatcher = $this->getDispatcher();
         $pluginResults = $dispatcher->trigger('onOSDownloadsBeforeDeleteFile', array(&$this, $pk));
 
         $result = false;
         if ($pluginResults !== false) {
-            $result = parent::delete($pk);
+            $result = parent::delete($pk['id']);
 
             $dispatcher->trigger('onOSDownloadsAfterDeleteFile', array($result, $this->id, $pk));
         }

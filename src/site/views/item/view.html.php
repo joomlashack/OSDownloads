@@ -60,7 +60,13 @@ class OSDownloadsViewItem extends JViewLegacy
 
             // Triggers the onOSDownloadsGetExternalDownloadLink event
             JPluginHelper::importPlugin('osdownloads');
-            $dispatcher = JEventDispatcher::getInstance();
+            if (!isset($this->dispatcher)) {
+                if (version_compare(JVERSION, '3.0', '<')) {
+                    $dispatcher = JDispatcher::getInstance();
+                } else {
+                    $dispatcher = JEventDispatcher::getInstance();
+                }
+            }
             $dispatcher->trigger('onOSDownloadsGetExternalDownloadLink', array(&$item));
 
             $downloadUrl = $item->file_url;

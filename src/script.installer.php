@@ -32,6 +32,9 @@ class Com_OSDownloadsInstallerScript extends AllediaInstallerAbstract
     {
         $db = JFactory::getDBO();
 
+        // The upload destination path has changed, so let's move the files to the new destination
+        $this->moveCurrentUploadedFiles();
+
         // Check if mod_osdownloads is installed to show the warning of deprecated
         $query = $db->getQuery(true)
             ->select('COUNT(*)')
@@ -185,5 +188,46 @@ class Com_OSDownloadsInstallerScript extends AllediaInstallerAbstract
         $db->execute();
 
         return true;
+    }
+
+    /**
+     * Method to move the current files to the new upload folder
+     *
+     * @return void
+     */
+    protected function moveCurrentUploadedFiles()
+    {
+        jimport('joomla.filesystem.folder');
+        jimport('joomla.filesystem.file');
+
+        $oldUploadPath = JPATH_SITE . '/media/OSDownloads';
+        $newUploadPath = JPATH_SITE . '/media/com_osdownloads/files';
+
+        if (JFolder::exists($oldUploadPath)) {
+            $files = JFolder::files($oldUploadPath);
+            if (!empty($files)) {
+                // Move all the files
+                if (!JFolder::exists($newUploadPath)) {
+                    JFolder::create($newUploadPath);
+                }
+
+                foreach ($files as $file) {
+                    $current = "{$oldUploadPath}/{$file}";
+                    $new     = "{$newUploadPath}/{$file}";
+                    $a = JFile::move($current, $new);
+                }
+            }
+
+            // Try to remove the old folder, if it is empty
+            $files = JFolder::files($oldUploadPath);
+            $oldUploadRelativePath = str_replace(JPATH_SITE . DIRECTORY_SEPARATOR, '', $oldUploadPath);
+            $newUploadRelativePath = str_replace(JPATH_SITE . DIRECTORY_SEPARATOR, '', $newUploadPath);
+            if (empty($files)) {
+                JFolder::delete($oldUploadPath);
+                $this->setMessage(JText::sprintf('COM_OSDOWNLOADS_INSTALL_REMOVED_FOLDER', $oldUploadRelativePath, $newUploadRelativePath));
+            } else {
+                $this->setMessage(JText::sprintf('COM_OSDOWNLOADS_INSTALL_COULD_NOT_REMOVE_FOLDER', $oldUploadRelativePath));
+            }
+        }
     }
 }

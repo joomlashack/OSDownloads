@@ -42,7 +42,6 @@
         <folder>models</folder>
         <folder>tables</folder>
         <folder>views</folder>
-        <folder>language</folder>
         <filename>controller.php</filename>
         <filename>osdownloads.php</filename>
         <filename>router.php</filename>
@@ -68,7 +67,6 @@
         <files folder="admin">
             <folder>controllers</folder>
             <folder>helpers</folder>
-            <folder>language</folder>
             <folder>sql</folder>
             <folder>tables</folder>
             <folder>views</folder>

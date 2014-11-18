@@ -11,63 +11,43 @@ class OSDownloadsHelper
 {
     public static function addSubmenu($vName)
     {
-        // Joomla 3.x only in Categories view
-        if (version_compare(JVERSION, '3.0', 'ge') && JFactory::getApplication()->input->getCmd('option') == 'com_categories' ){
-            JHtmlSidebar::addEntry(
-                JText::_('COM_OSDOWNLOADS_SUBMENU_FILES'),
-                'index.php?option=com_osdownloads&view=files',
-                $vName == 'files'
-            );
+        // Joomla 3.x Backward Compatibility
+        if ( version_compare(JVERSION, '3.0', '>') && JFactory::getApplication()->input->getCmd('option') == 'com_categories' ) {
+            $subMenuClass = 'JHtmlSidebar';
+        } else {
+            $subMenuClass = 'JSubMenuHelper';
+        }
+        
+        $subMenuClass::addEntry(
+            JText::_('COM_OSDOWNLOADS_SUBMENU_FILES'),
+            'index.php?option=com_osdownloads&view=files',
+            $vName == 'files'
+        );
 
-            JHtmlSidebar::addEntry(
-                JText::_('COM_OSDOWNLOADS_SUBMENU_CATEGORIES'),
-                'index.php?option=com_categories&extension=com_osdownloads',
-                $vName == 'categories'
-            );
-            if ($vName=='categories') {
-                JToolBarHelper::title(
-                    JText::sprintf(
-                        'COM_CATEGORIES_CATEGORIES_TITLE',
-                        JText::_('COM_OSDOWNLOADS')
-                    ),
-                    'osdownloads-categories'
-                );
-            }
-
-            JHtmlSidebar::addEntry(
-                JText::_('COM_OSDOWNLOADS_SUBMENU_EMAILS'),
-                'index.php?option=com_osdownloads&view=emails',
-                $vName == 'emails'
+        $subMenuClass::addEntry(
+            JText::_('COM_OSDOWNLOADS_SUBMENU_CATEGORIES'),
+            'index.php?option=com_categories&extension=com_osdownloads',
+            $vName == 'categories'
+        );
+        if ($vName=='categories') {
+            JToolBarHelper::title(
+                JText::sprintf(
+                    'COM_CATEGORIES_CATEGORIES_TITLE',
+                    JText::_('COM_OSDOWNLOADS')
+                ),
+                'osdownloads-categories'
             );
         }
-        // Joomla 2.5
-        else{
-            JSubMenuHelper::addEntry(
-                JText::_('COM_OSDOWNLOADS_SUBMENU_FILES'),
-                'index.php?option=com_osdownloads&view=files',
-                $vName == 'files'
-            );
 
-            JSubMenuHelper::addEntry(
-                JText::_('COM_OSDOWNLOADS_SUBMENU_CATEGORIES'),
-                'index.php?option=com_categories&extension=com_osdownloads',
-                $vName == 'categories'
-            );
-            if ($vName=='categories') {
-                JToolBarHelper::title(
-                    JText::sprintf(
-                        'COM_CATEGORIES_CATEGORIES_TITLE',
-                        JText::_('COM_OSDOWNLOADS')
-                    ),
-                    'osdownloads-categories'
-                );
-            }
-
-            JSubMenuHelper::addEntry(
-                JText::_('COM_OSDOWNLOADS_SUBMENU_EMAILS'),
-                'index.php?option=com_osdownloads&view=emails',
-                $vName == 'emails'
-            );
+        $subMenuClass::addEntry(
+            JText::_('COM_OSDOWNLOADS_SUBMENU_EMAILS'),
+            'index.php?option=com_osdownloads&view=emails',
+            $vName == 'emails'
+        );
+        
+        // Load responsive CSS
+        if ( version_compare(JVERSION, '3.0', '>') ) {
+            JHtml::stylesheet( 'media/jui/css/jquery.searchtools.css' );
         }
     }
 

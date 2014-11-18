@@ -27,9 +27,9 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
 
 ?>
 <form action="index.php?option=com_osdownloads" method="post" name="adminForm" id="adminForm">
-    <table>
+    <table width="100%">
         <tr>
-            <td align="left" width="100%">
+            <td>
                 <div class="js-stools clearfix">
                     <div class="clearfix">
                         <div class="btn-wrapper input-append">
@@ -46,10 +46,10 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                     </div>
                 </div>
             </td>
-          <td nowrap="nowrap">
-                  <?php echo category('flt_cate_id', 'com_osdownloads', $this->flt->cate_id, "onchange='this.form.submit();'", 'title', $size = 1, $sel_cat = 1); ?>
-                                <?php //JHTML::_('grid.state',  $filter_state );?>
-
+            <td align="right">
+                <div class="js-stools clearfix">
+                    <?php echo category('flt_cate_id', 'com_osdownloads', $this->flt->cate_id, "onchange='this.form.submit();'", 'title', $size = 1, $sel_cat = 1); ?>
+                </div>
             </td>
         </tr>
     </table>
@@ -58,7 +58,7 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
 
             <tr>
                 <th width="1%" class="hidden-phone"><input type="checkbox" onclick="Joomla.checkAll(this)" title="<?php echo JText::_('COM_OSDOWNLOADS_CHECK_All'); ?>" value="" name="checkall-toggle" /> </th>
-                <th class="has-context"><?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_NAME', 'documents.name', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
+                <th class="has-context span6"><?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_NAME', 'documents.name', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
                 <th><?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_CATEGORY', 'cate.title', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
                 <th class="center nowrap"><?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_DOWNLOADED', 'documents.downloaded', @$this->lists['order_Dir'], @$this->lists['order'] ); ?></th>
                 <th class="center"><?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_PUBLISHED', 'documents.published', @$this->lists['order_Dir'], @$this->lists['order'] ); ?></th>
@@ -85,11 +85,11 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                     $checked 	= JHTML::_('grid.checkedout', $item, $i );
                 ?>
                     <tr class="row<?php echo $i % 2; ?>">
-                        <td valign="top" nowrap="nowrap" class="hidden-phone"><?php echo $checked; ?></td>
-                        <td valign="top" nowrap="nowrap"><a href="index.php?option=com_osdownloads&view=file&cid[]=<?php echo($item->id);?>"><?php echo ($item->name); ?></a></td>
-                        <td valign="top" nowrap="nowrap"><?php echo($item->cate_name);?></td>
-                        <td valign="top" nowrap="nowrap" class="center nowrap"><?php echo($item->downloaded);?></td>
-                        <td valign="top" nowrap="nowrap" class="center"><?php echo($published);?></td>
+                        <td class="hidden-phone"><?php echo $checked; ?></td>
+                        <td class="has-context span6"><a href="index.php?option=com_osdownloads&view=file&cid[]=<?php echo($item->id);?>"><?php echo ($item->name); ?></a></td>
+                        <td><?php echo($item->cate_name);?></td>
+                        <td class="center nowrap"><?php echo($item->downloaded);?></td>
+                        <td class="center"><?php echo($published);?></td>
                         <td class="order hidden-phone">
                             <?php if ($saveOrder) :?>
                                 <?php if ($listDirn == 'asc') : ?>
@@ -103,7 +103,7 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                             <?php $disabled = $saveOrder ?  '' : 'disabled="disabled"'; ?>
                             <input type="text" name="order[]" size="5" value="<?php echo $item->ordering;?>" <?php echo $disabled ?> class="text-area-order span3" />
                         </td>
-                        <td valign="top" nowrap="nowrap" class="hidden-phone"><?php echo($item->id);?></td>
+                        <td class="hidden-phone"><?php echo($item->id);?></td>
                     </tr>
                 <?php endforeach;?>
             </tbody>

@@ -30,30 +30,41 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
 
 ?>
 <form action="index.php?option=com_osdownloads&view=emails" method="post" name="adminForm" id="adminForm">
-    <table>
+    <table width="100%">
         <tr>
-            <td align="left" width="100%">
-                <?php echo JText::_( 'COM_OSDOWNLOADS_FILTER' ); ?>:
-                <input type="text" name="search" id="search" value="<?php echo htmlspecialchars($this->flt->search);?>" class="text_area" onchange="document.adminForm.submit();" />
-                <button onclick="this.form.submit();"><?php echo JText::_( 'COM_OSDOWNLOADS_GO' ); ?></button>
-                <button onclick="document.getElementById('search').value='';this.form.submit();"><?php echo JText::_( 'COM_OSDOWNLOADS_RESET' ); ?></button>
+            <td>
+                <div class="js-stools clearfix">
+                    <div class="clearfix">
+                        <div class="btn-wrapper input-append">
+                            <input type="text" name="search" id="search" placeholder="<?php echo JText::_('JSEARCH_FILTER'); ?>" value="<?php echo htmlspecialchars($this->flt->search);?>" class="text_area" onchange="document.adminForm.submit();" />
+                            <button class="btn hasTooltip" title="" type="submit" data-original-title="Search">
+                                <i class="icon-search"></i>
+                            </button>
+                        </div>
+                        <div class="btn-wrapper">
+                            <button onclick="document.getElementById('search').value='';this.form.getElementById('cate_id').value='';this.form.submit();" class="btn hasTooltip js-stools-btn-clear">
+                                <?php echo JText::_( 'COM_OSDOWNLOADS_RESET' ); ?>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </td>
-            <td nowrap="nowrap">
-                <?php echo category('cate_id', 'com_osdownloads', $this->flt->cate_id, "onchange='this.form.submit();'", 'title', $size = 1, $sel_cat = 1); ?>
-                                <?php //JHTML::_('grid.state',  $filter_state );?>
-
+            <td align="right">
+                <div class="js-stools clearfix">
+                    <?php echo category('cate_id', 'com_osdownloads', $this->flt->cate_id, "onchange='this.form.submit();'", 'title', $size = 1, $sel_cat = 1); ?>
+                </div>
             </td>
         </tr>
     </table>
-    <table class="adminlist" width="100%" border="0">
+    <table class="adminlist table table-striped" width="100%" border="0">
         <thead>
             <tr>
-            <th width="2%"><input type="checkbox" onclick="Joomla.checkAll(this)" title="check All" value="" name="checkall-toggle" /> </th>
-                <th style="min-width:200px;"><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_NAME', 'email.email', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
-                <th style="min-width:200px;"><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_FILE', 'document.name', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
-                <th style="min-width:200px;"><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_CATEGORY', 'cate.title', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
-                <th style="min-width:80px;"><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_DATE', 'email.downloaded_date', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
-                <th><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_ID', 'email.id', @$this->lists['order_Dir'], @$this->lists['order'] ); ?></th>
+                <th class="hidden-phone"><input type="checkbox" onclick="Joomla.checkAll(this)" title="check All" value="" name="checkall-toggle" /> </th>
+                <th class="has-context span6"><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_NAME', 'email.email', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
+                <th><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_FILE', 'document.name', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
+                <th><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_CATEGORY', 'cate.title', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
+                <th><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_DATE', 'email.downloaded_date', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
+                <th class="hidden-phone"><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_ID', 'email.id', @$this->lists['order_Dir'], @$this->lists['order'] ); ?></th>
             </tr>
             <tfoot>
                 <tr>
@@ -66,12 +77,12 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                 <?php foreach ($this->items as $i => $item) :
                 ?>
                     <tr class="row<?php echo $i % 2; ?>">
-                        <td valign="top" nowrap="nowrap"><?php echo JHTML::_('grid.id',$i,$item->id);?></td>
-                        <td valign="top" nowrap="nowrap"><?php echo($item->email);?></td>
-                        <td valign="top" nowrap="nowrap"><?php echo($item->doc_name);?></td>
-                        <td valign="top" nowrap="nowrap"><?php echo($item->cate_name);?></td>
-                        <td valign="top" nowrap="nowrap"><?php echo(JHTML::_("date", $item->downloaded_date, "d-m-Y H:m:s"));?></td>
-                        <td valign="top" nowrap="nowrap"><?php echo($item->id);?></td>
+                        <td class="hidden-phone"><?php echo JHTML::_('grid.id',$i,$item->id);?></td>
+                        <td class="has-context span6"><?php echo($item->email);?></td>
+                        <td><?php echo($item->doc_name);?></td>
+                        <td><?php echo($item->cate_name);?></td>
+                        <td class="small"><?php echo(JHTML::_("date", $item->downloaded_date, "d-m-Y H:m:s"));?></td>
+                        <td class="hidden-phone"><?php echo($item->id);?></td>
                     </tr>
                 <?php endforeach;?>
             </tbody>

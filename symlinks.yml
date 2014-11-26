@@ -28,3 +28,4 @@ symlinks:
     - src/extensions/OSDownloadsFiles/helper.php modules/mod_osdownloadsfiles/helper.php
     - src/extensions/OSDownloadsFiles/mod_osdownloadsfiles.php modules/mod_osdownloadsfiles/mod_osdownloadsfiles.php
     - src/extensions/OSDownloadsFiles/mod_osdownloadsfiles.xml modules/mod_osdownloadsfiles/mod_osdownloadsfiles.xml
+    - src/media media/com_osdownloads

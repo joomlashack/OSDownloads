@@ -55,6 +55,7 @@
     <media destination="com_osdownloads" folder="media">
         <folder>css</folder>
         <folder>js</folder>
+        <folder>images</folder>
     </media>
 
     <administration>
@@ -70,6 +71,8 @@
             <folder>sql</folder>
             <folder>tables</folder>
             <folder>views</folder>
+            <folder>language</folder>
+            <folder>library</folder>
             <filename>access.xml</filename>
             <filename>config.xml</filename>
             <filename>controller.php</filename>

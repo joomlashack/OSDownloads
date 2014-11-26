@@ -15,21 +15,24 @@ class OSDownloadsViewDownloads extends JViewLegacy
 
     public function display($tpl = null)
     {
-        $mainframe  = JFactory::getApplication();
-        $params     = clone($mainframe->getParams('com_osdownloads'));
-        $id         = (int) $params->get("category_id", 1);
+        $mainframe   = JFactory::getApplication();
+        $params      = clone($mainframe->getParams('com_osdownloads'));
+        $categoryIDs = (array) $params->get("category_id");
+
         $limit      = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
         $limitstart = $mainframe->getUserStateFromRequest('osdownloads.request.limitstart', 'limitstart', 0, 'int');
 
         if (JRequest::getVar("id")) {
-            $id = (int) JRequest::getVar("id");
+            $categoryIDs = (array) JRequest::getVar("id");
         }
 
         $db = JFactory::getDBO();
-        $query	= "SELECT documents.* , cate.published, cate.access AS cat_access
+        $categoryIDsStr = implode(',', $categoryIDs);
+
+        $query = "SELECT documents.* , cate.published, cate.access AS cat_access
                    FROM `#__osdownloads_documents` documents
                    LEFT JOIN `#__categories` cate ON (documents.cate_id = cate.id AND cate.extension='com_osdownloads')
-                   WHERE documents.cate_id = {$id} AND documents.published = 1 AND cate.published = 1
+                   WHERE documents.cate_id IN ({$categoryIDsStr}) AND documents.published = 1 AND cate.published = 1
                    ORDER BY documents.ordering";
 
         $db->setQuery($query);
@@ -50,9 +53,9 @@ class OSDownloadsViewDownloads extends JViewLegacy
             return;
         }
 
-        $this->buildPath($paths, $id);
+        $this->buildPath($paths, $categoryIDs);
 
-        $db->setQuery("SELECT cate.*, (SELECT COUNT(id) FROM `#__osdownloads_documents` document WHERE document.cate_id = cate.id AND document.published = 1) AS total_doc FROM `#__categories` cate WHERE cate.extension='com_osdownloads' AND cate.published = 1 AND cate.parent_id = " . $id);
+        $db->setQuery("SELECT cate.*, (SELECT COUNT(id) FROM `#__osdownloads_documents` document WHERE document.cate_id = cate.id AND document.published = 1) AS total_doc FROM `#__categories` cate WHERE cate.extension='com_osdownloads' AND cate.published = 1 AND cate.parent_id IN ({$categoryIDsStr})");
         $children = $db->loadObjectList();
 
         $this->assignRef("items", $items);
@@ -62,23 +65,25 @@ class OSDownloadsViewDownloads extends JViewLegacy
         parent::display($tpl);
     }
 
-    public function buildPath(& $paths, $id)
+    public function buildPath(& $paths, $categoryIDs)
     {
-        if (!$id) {
+        if (empty($categoryIDs)) {
             return;
         }
 
-        $id = (int) $id;
+        foreach ($categoryIDs as $id) {
+            $db = JFactory::getDBO();
+            $db->setQuery("SELECT * FROM `#__categories` WHERE extension='com_osdownloads' AND id = " . $id);
+            $cate = $db->loadObject();
 
-        $db = JFactory::getDBO();
-        $db->setQuery("SELECT * FROM `#__categories` WHERE extension='com_osdownloads' AND id = " . $id);
-        $cate = $db->loadObject();
-        if ($cate) {
-            $paths[] = $cate;
+            if ($cate) {
+                $paths[] = $cate;
+            }
+
+            if ($cate && $cate->parent_id) {
+                $this->buildPath($paths, array($cate->parent_id));
+            }
         }
 
-        if ($cate && $cate->parent_id) {
-            $this->buildPath($paths, $cate->parent_id);
-        }
     }
 }

@@ -29,3 +29,5 @@ symlinks:
     - src/extensions/OSDownloadsFiles/mod_osdownloadsfiles.php modules/mod_osdownloadsfiles/mod_osdownloadsfiles.php
     - src/extensions/OSDownloadsFiles/mod_osdownloadsfiles.xml modules/mod_osdownloadsfiles/mod_osdownloadsfiles.xml
     - src/media media/com_osdownloads
+    - src/admin/language/en-GB/en-GB.com_osdownloads.ini administrator/language/en-GB/en-GB.com_osdownloads.ini
+    - src/admin/language/en-GB/en-GB.com_osdownloads.sys.ini administrator/language/en-GB/en-GB.com_osdownloads.sys.ini

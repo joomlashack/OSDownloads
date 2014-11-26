@@ -15,7 +15,7 @@
 			<field name="include_child_category"
 				type="radio"
 				default="0"
-				label="Show child categories" >
+				label="COM_OSDOWNLOADS_SHOW_CHILD_CATEGORIES" >
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
 			</field>
@@ -37,7 +37,7 @@
 			<field name="show_category"
 				type="radio"
 				default="0"
-				label="Show category of file" >
+				label="COM_OSDOWNLOADS_SHOW_CATEGORY" >
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
 			</field>
@@ -45,7 +45,7 @@
 			<field name="show_category_filter"
 				type="radio"
 				default="0"
-				label="Show category filter" >
+				label="COM_OSDOWNLOADS_SHOW_CATEGORY_FILTER" >
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
 			</field>

@@ -8,14 +8,16 @@
 
 defined('_JEXEC') or die;
 
-$includePath = __DIR__ . '/admin/library/installer/include.php';
+$includePath = __DIR__ . '/admin/library/Installer/include.php';
 if (file_exists($includePath)) {
     require_once $includePath;
 } else {
-    require_once __DIR__ . '/library/installer/include.php';
+    require_once __DIR__ . '/library/Installer/include.php';
 }
 
-class Com_OSDownloadsInstallerScript extends AllediaInstallerAbstract
+use Alledia\Installer\AbstractScript;
+
+class Com_OSDownloadsInstallerScript extends AbstractScript
 {
     /**
      * Flag to set if the old mod_osdownloads is installed

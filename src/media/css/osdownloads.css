@@ -60,12 +60,20 @@
 }
 
 /* module */
-.mod_osdownloadsfiles ul{
+.osdownloads-container ul,
+.mod_osdownloadsfiles ul {
     margin: 0;
     list-style: none;
 }
-.mod_osdownloadsfiles ul li{
+
+.mod_osdownloadsfiles ul li {
     padding: 5px 0;
     margin: 0;
     border-bottom: 1px dotted #999999;
+}
+
+.osdownloads-container .category_filter li {
+    display: inline-block;
+    font-size: 20px;
+    padding-right: 5px;
 }

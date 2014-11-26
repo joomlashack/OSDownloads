@@ -11,14 +11,43 @@
 				multiple="true"
 				extension="com_osdownloads"
 				label="COM_OSDOWNLOADS_CATEGORIES" />
-			<field name="number_of_column" type="text" size="2" default="" label="COM_OSDOWNLOADS_NUMBER_OF_COLUMN" />
-			<field name="show_download_count" type="radio" default="0" label="COM_OSDOWNLOADS_SHOW_DOWNLOAD_COUNT" >
-				<option value="0">No</option>
-				<option value="1">Yes</option>
+
+			<field name="include_child_category"
+				type="radio"
+				default="0"
+				label="Show child categories" >
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
 			</field>
-			<field name="show_category" type="radio" default="0" label="Show category of file" >
-				<option value="0">No</option>
-				<option value="1">Yes</option>
+
+			<field name="number_of_column"
+				type="text"
+				size="2"
+				default=""
+				label="COM_OSDOWNLOADS_NUMBER_OF_COLUMN" />
+
+			<field name="show_download_count"
+				type="radio"
+				default="0"
+				label="COM_OSDOWNLOADS_SHOW_DOWNLOAD_COUNT" >
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+			<field name="show_category"
+				type="radio"
+				default="0"
+				label="Show category of file" >
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+			<field name="show_category_filter"
+				type="radio"
+				default="0"
+				label="Show category filter" >
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
 			</field>
 		</fieldset>
 	</fields>

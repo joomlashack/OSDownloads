@@ -15,75 +15,113 @@ class OSDownloadsViewDownloads extends JViewLegacy
 
     public function display($tpl = null)
     {
-        $mainframe   = JFactory::getApplication();
-        $params      = clone($mainframe->getParams('com_osdownloads'));
+        $app         = JFactory::getApplication();
+        $db          = JFactory::getDBO();
+        $params      = clone($app->getParams('com_osdownloads'));
         $categoryIDs = (array) $params->get("category_id");
 
-        $limit      = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-        $limitstart = $mainframe->getUserStateFromRequest('osdownloads.request.limitstart', 'limitstart', 0, 'int');
+        $limit      = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int');
+        $limitstart = $app->getUserStateFromRequest('osdownloads.request.limitstart', 'limitstart', 0, 'int');
 
-        if (JRequest::getVar("id")) {
-            $categoryIDs = (array) JRequest::getVar("id");
+        // Paths
+        $paths = array();
+        $id = JRequest::getVar("id", null, 'default', 'int');
+        if (!empty($id)) {
+            $this->buildPath($paths, $id);
+
+            $categoryIDs = (array) $id;
         }
 
-        $db = JFactory::getDBO();
         $categoryIDsStr = implode(',', $categoryIDs);
 
-        $query = "SELECT documents.* , cate.published, cate.access AS cat_access
-                   FROM `#__osdownloads_documents` documents
-                   LEFT JOIN `#__categories` cate ON (documents.cate_id = cate.id AND cate.extension='com_osdownloads')
-                   WHERE documents.cate_id IN ({$categoryIDsStr}) AND documents.published = 1 AND cate.published = 1
-                   ORDER BY documents.ordering";
+        $query = "SELECT d.*,
+                      c.published as cat_published,
+                      c.access AS cat_access
+                  FROM `#__osdownloads_documents` AS d
+                  LEFT JOIN `#__categories` AS c ON (d.cate_id = c.id AND c.extension='com_osdownloads')
+                  WHERE d.cate_id IN ({$categoryIDsStr})
+                      AND d.published = 1
+                      AND c.published = 1
+                  ORDER BY d.ordering";
 
+        // Pagination
         $db->setQuery($query);
         $db->query();
+
         $total = $db->getNumRows();
 
         jimport('joomla.html.pagination');
         $pagination = new JPagination($total, $limitstart, $limit);
+
+        // Items
         $db->setQuery($query, $pagination->limitstart, $pagination->limit);
         $items = $db->loadObjectList();
 
         $user = JFactory::getUser();
         $groups = $user->getAuthorisedViewLevels();
 
-        if ((count($items) && !in_array($items[0]->cat_access, $groups)) || !isset($items)) {
+        if (!isset($items) || (count($items) && !in_array($items[0]->cat_access, $groups))) {
             JError::raiseWarning(404, JText::_("COM_OSDOWNLOADS_THIS_CATEGORY_ISNT_AVAILABLE"));
 
             return;
         }
 
-        $this->buildPath($paths, $categoryIDs);
+        // Children categories
+        $children = array();
+        if (!empty($id) && $params->get('include_child_category', 0)) {
+            $query = "SELECT cate.*,
+                        (SELECT COUNT(id)
+                          FROM `#__osdownloads_documents` document
+                          WHERE document.cate_id = cate.id AND document.published = 1
+                        ) AS total_doc
+                      FROM `#__categories` cate
+                      WHERE cate.extension='com_osdownloads'
+                        AND cate.published = 1
+                        AND cate.parent_id IN ({$categoryIDsStr})";
+            $db->setQuery($query);
+            $children = $db->loadObjectList();
+        }
 
-        $db->setQuery("SELECT cate.*, (SELECT COUNT(id) FROM `#__osdownloads_documents` document WHERE document.cate_id = cate.id AND document.published = 1) AS total_doc FROM `#__categories` cate WHERE cate.extension='com_osdownloads' AND cate.published = 1 AND cate.parent_id IN ({$categoryIDsStr})");
-        $children = $db->loadObjectList();
+        // Categories
+        $query = "SELECT *
+                  FROM `#__categories`
+                  WHERE extension='com_osdownloads'
+                    AND published = 1
+                    AND id IN ({$categoryIDsStr})";
+        $db->setQuery($query);
+        $categories = $db->loadObjectList();
 
+        // Category filter
+        $showCategoryFilter = $params->get('show_category_filter', false);
+
+        $this->assignRef("categories", $categories);
+        $this->assignRef("showCategoryFilter", $showCategoryFilter);
+        $this->assignRef("children", $children);
         $this->assignRef("items", $items);
         $this->assignRef("paths", $paths);
-        $this->assignRef("children", $children);
         $this->assignRef("pagination", $pagination);
         parent::display($tpl);
     }
 
-    public function buildPath(& $paths, $categoryIDs)
+    public function buildPath(&$paths, $categoryID)
     {
-        if (empty($categoryIDs)) {
+        if (empty($categoryID)) {
             return;
         }
 
-        foreach ($categoryIDs as $id) {
-            $db = JFactory::getDBO();
-            $db->setQuery("SELECT * FROM `#__categories` WHERE extension='com_osdownloads' AND id = " . $id);
-            $cate = $db->loadObject();
+        $db = JFactory::getDBO();
+        $db->setQuery("SELECT *
+                       FROM `#__categories`
+                       WHERE extension='com_osdownloads'
+                           AND id = " . $db->q((int) $categoryID));
+        $category = $db->loadObject();
 
-            if ($cate) {
-                $paths[] = $cate;
-            }
-
-            if ($cate && $cate->parent_id) {
-                $this->buildPath($paths, array($cate->parent_id));
-            }
+        if ($category) {
+            $paths[] = $category;
         }
 
+        if ($category && $category->parent_id) {
+            $this->buildPath($paths, $category->parent_id);
+        }
     }
 }

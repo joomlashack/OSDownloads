@@ -28,14 +28,14 @@ $authorizedAccessLevels = $user->getAuthorisedViewLevels();
             <?php endfor;?>
         </h1>
         <div class="sub_title">
-		<?php echo($this->paths[0]->description);?></div>
+        <?php echo($this->paths[0]->description);?></div>
 
         <?php if ($this->children):?>
             <div class="category_children">
                 <?php
-				$i = 0;
-				foreach($this->children as $item):?>
-                	<?php if (in_array($item->cat_access, $authorizedAccessLevels)) : ?>
+                $i = 0;
+                foreach($this->children as $item):?>
+                    <?php if (in_array($item->cat_access, $authorizedAccessLevels)) : ?>
                         <div class="item<?php echo($i % $NumberOfColumn);?> cate_<?php echo($item->id);?>">
                             <h3><a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$item->id}"."&Itemid=".JRequest::getVar("Itemid")));?>"><?php echo($item->title . " (" . $item->total_doc .")");?></a></h3>
                             <div class="item_content">
@@ -43,7 +43,7 @@ $authorizedAccessLevels = $user->getAuthorisedViewLevels();
                             </div>
                         </div>
                         <?php if ($NumberOfColumn && $i % $NumberOfColumn == $NumberOfColumn - 1):?>
-    			            <div class="seperator"></div>
+                            <div class="seperator"></div>
                             <div class="clr"></div>
                         <?php endif;?>
                         <?php $i++;?>
@@ -55,19 +55,19 @@ $authorizedAccessLevels = $user->getAuthorisedViewLevels();
 
         <?php foreach($this->items as $i => $item):?>
             <?php if (in_array($item->access, $authorizedAccessLevels)) : ?>
-    			<div class="item_<?php echo($item->id);?>">
-    		        <h3><a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$item->id."&Itemid=".JRequest::getVar("Itemid")));?>"><?php echo($item->name);?></a></h3>
-    		        <div class="item_content"><?php echo($item->brief);?></div>
-    		        <div class="readmore_wrapper">
-    		        	<div class="readmore">
-    		            	<a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$item->id."&Itemid=".JRequest::getVar("Itemid")));?>">
-    		            		<?php echo(JText::_("COM_OSDOWNLOADS_READ_MORE"));?>
-    		            	</a>
-    					</div>
-    		            <div class="clr"></div>
-    				</div>
-    		        <div class="seperator"></div>
-    			</div>
+                <div class="item_<?php echo($item->id);?>">
+                    <h3><a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$item->id."&Itemid=".JRequest::getVar("Itemid")));?>"><?php echo($item->name);?></a></h3>
+                    <div class="item_content"><?php echo($item->brief);?></div>
+                    <div class="readmore_wrapper">
+                        <div class="readmore">
+                            <a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$item->id."&Itemid=".JRequest::getVar("Itemid")));?>">
+                                <?php echo(JText::_("COM_OSDOWNLOADS_READ_MORE"));?>
+                            </a>
+                        </div>
+                        <div class="clr"></div>
+                    </div>
+                    <div class="seperator"></div>
+                </div>
             <?php endif; ?>
         <?php endforeach;?>
         <div class="clr"></div>

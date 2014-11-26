@@ -8,7 +8,7 @@
         "element"        : "com_osdownloads",
         "element-short"  : "osdownloads",
         "name"           : "OSDownloads",
-        "client"         : "admin",
+        "client"         : "administrator",
         "package-license": "free"
     },
     "authors"          : [

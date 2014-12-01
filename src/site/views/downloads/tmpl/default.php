@@ -17,15 +17,26 @@ $authorizedAccessLevels = $user->getAuthorisedViewLevels();
 <form action="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id=".JRequest::getVar("id")."&Itemid=".JRequest::getVar("Itemid")));?>" method="post" name="adminForm" id="adminForm">
     <div class="contentopen osdownloads-container">
         <?php if ($this->showCategoryFilter && count($this->categories) > 1) : ?>
-            <ul class="category_filter">
-                <?php foreach ($this->categories as $category) : ?>
-                    <li>
-                        <a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$category->id}"."&Itemid=".JRequest::getVar("Itemid")));?>">
-                            <?php echo $category->title; ?>
-                        </a>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
+            <div class="category_filter">
+                <?php
+                $i = 0;
+                foreach($this->categories as $category):?>
+                    <?php if (in_array($category->access, $authorizedAccessLevels)) : ?>
+                        <div class="item<?php echo($i % $NumberOfColumn);?> cate_<?php echo($category->id);?>">
+                            <h3><a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$category->id}"."&Itemid=".JRequest::getVar("Itemid")));?>"><?php echo($category->title);?></a></h3>
+                            <div class="item_content">
+                                <?php echo($category->description);?>
+                            </div>
+                        </div>
+                        <?php if ($NumberOfColumn && $i % $NumberOfColumn == $NumberOfColumn - 1):?>
+                            <div class="seperator"></div>
+                            <div class="clr"></div>
+                        <?php endif;?>
+                        <?php $i++;?>
+                    <?php endif; ?>
+                <?php endforeach;?>
+                <div class="clr"></div>
+            </div>
         <?php endif; ?>
 
         <?php if (!empty($this->paths)) : ?>
@@ -47,29 +58,6 @@ $authorizedAccessLevels = $user->getAuthorisedViewLevels();
                 <?php echo($this->paths[0]->description);?>
             </div>
         <?php endif; ?>
-
-        <?php if (!empty($this->children)):?>
-            <div class="category_children">
-                <?php
-                $i = 0;
-                foreach($this->children as $item):?>
-                    <?php if (in_array($item->access, $authorizedAccessLevels)) : ?>
-                        <div class="item<?php echo($i % $NumberOfColumn);?> cate_<?php echo($item->id);?>">
-                            <h3><a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$item->id}"."&Itemid=".JRequest::getVar("Itemid")));?>"><?php echo($item->title . " (" . $item->total_doc .")");?></a></h3>
-                            <div class="item_content">
-                                <?php echo($item->description);?>
-                            </div>
-                        </div>
-                        <?php if ($NumberOfColumn && $i % $NumberOfColumn == $NumberOfColumn - 1):?>
-                            <div class="seperator"></div>
-                            <div class="clr"></div>
-                        <?php endif;?>
-                        <?php $i++;?>
-                    <?php endif; ?>
-                <?php endforeach;?>
-                <div class="clr"></div>
-            </div>
-        <?php endif;?>
 
         <?php foreach($this->items as $item):?>
             <?php if (in_array($item->access, $authorizedAccessLevels)) : ?>

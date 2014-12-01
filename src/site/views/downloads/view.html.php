@@ -15,10 +15,11 @@ class OSDownloadsViewDownloads extends JViewLegacy
 
     public function display($tpl = null)
     {
-        $app         = JFactory::getApplication();
-        $db          = JFactory::getDBO();
-        $params      = clone($app->getParams('com_osdownloads'));
-        $categoryIDs = (array) $params->get("category_id");
+        $app                    = JFactory::getApplication();
+        $db                     = JFactory::getDBO();
+        $params                 = clone($app->getParams('com_osdownloads'));
+        $categoryIDs            = (array) $params->get("category_id");
+        $includeChildCategories = (bool) $params->get('include_child_category', 0);
 
         $limit      = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int');
         $limitstart = $app->getUserStateFromRequest('osdownloads.request.limitstart', 'limitstart', 0, 'int');
@@ -34,12 +35,18 @@ class OSDownloadsViewDownloads extends JViewLegacy
 
         $categoryIDsStr = implode(',', $categoryIDs);
 
+        $extraWhere = '';
+        if ($includeChildCategories) {
+            $extraWhere = " OR c.parent_id IN ({$categoryIDsStr}) ";
+        }
+
         $query = "SELECT d.*,
                       c.published as cat_published,
                       c.access AS cat_access
                   FROM `#__osdownloads_documents` AS d
                   LEFT JOIN `#__categories` AS c ON (d.cate_id = c.id AND c.extension='com_osdownloads')
-                  WHERE d.cate_id IN ({$categoryIDsStr})
+                  WHERE (d.cate_id IN ({$categoryIDsStr})
+                      {$extraWhere} )
                       AND d.published = 1
                       AND c.published = 1
                   ORDER BY d.ordering";
@@ -66,28 +73,14 @@ class OSDownloadsViewDownloads extends JViewLegacy
             return;
         }
 
-        // Children categories
-        $children = array();
-        if (!empty($id) && $params->get('include_child_category', 0)) {
-            $query = "SELECT cate.*,
-                        (SELECT COUNT(id)
-                          FROM `#__osdownloads_documents` document
-                          WHERE document.cate_id = cate.id AND document.published = 1
-                        ) AS total_doc
-                      FROM `#__categories` cate
-                      WHERE cate.extension='com_osdownloads'
-                        AND cate.published = 1
-                        AND cate.parent_id IN ({$categoryIDsStr})";
-            $db->setQuery($query);
-            $children = $db->loadObjectList();
-        }
-
         // Categories
         $query = "SELECT *
-                  FROM `#__categories`
+                  FROM `#__categories` AS c
                   WHERE extension='com_osdownloads'
                     AND published = 1
-                    AND id IN ({$categoryIDsStr})";
+                    AND (id IN ({$categoryIDsStr})
+                        {$extraWhere}
+                    )";
         $db->setQuery($query);
         $categories = $db->loadObjectList();
 
@@ -96,7 +89,6 @@ class OSDownloadsViewDownloads extends JViewLegacy
 
         $this->assignRef("categories", $categories);
         $this->assignRef("showCategoryFilter", $showCategoryFilter);
-        $this->assignRef("children", $children);
         $this->assignRef("items", $items);
         $this->assignRef("paths", $paths);
         $this->assignRef("pagination", $pagination);

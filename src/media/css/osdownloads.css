@@ -5,7 +5,11 @@
 	margin-top:5px;
 }
 
-.category_children .seperator
+.category_filter {
+    margin-bottom: 30px;
+}
+
+.category_filter .seperator
 {
 	border:none;
 }

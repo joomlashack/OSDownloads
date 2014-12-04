@@ -74,7 +74,14 @@ class OSDownloadsViewDownloads extends JViewLegacy
         }
 
         // Categories
-        $query = "SELECT *
+        $groupsStr = implode(',', $groups);
+        $query = "SELECT *,
+                  (
+                    SELECT COUNT(*)
+                    FROM `#__osdownloads_documents` AS d
+                    WHERE d.cate_id = c.id
+                        AND d.access IN ({$groupsStr})
+                  ) AS total_doc
                   FROM `#__categories` AS c
                   WHERE extension='com_osdownloads'
                     AND published = 1

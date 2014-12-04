@@ -23,7 +23,16 @@ $authorizedAccessLevels = $user->getAuthorisedViewLevels();
                 foreach($this->categories as $category):?>
                     <?php if (in_array($category->access, $authorizedAccessLevels)) : ?>
                         <div class="item<?php echo($i % $NumberOfColumn);?> cate_<?php echo($category->id);?>">
-                            <h3><a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$category->id}"."&Itemid=".JRequest::getVar("Itemid")));?>"><?php echo($category->title);?></a></h3>
+                            <h3>
+                                <a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$category->id}"."&Itemid=".JRequest::getVar("Itemid")));?>">
+                                    <?php echo($category->title);?>
+                                    <?php if ((bool) $params->get('show_documents_counter', 0)) : ?>
+                                        <span>
+                                            (<?php echo $category->total_doc; ?>)
+                                        </span>
+                                    <?php endif; ?>
+                                </a>
+                            </h3>
                             <div class="item_content">
                                 <?php echo($category->description);?>
                             </div>

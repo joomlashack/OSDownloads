@@ -16,38 +16,6 @@ $authorizedAccessLevels = $user->getAuthorisedViewLevels();
 ?>
 <form action="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id=".JRequest::getVar("id")."&Itemid=".JRequest::getVar("Itemid")));?>" method="post" name="adminForm" id="adminForm">
     <div class="contentopen osdownloads-container">
-        <?php if ($this->showCategoryFilter && count($this->categories) > 1) : ?>
-            <div class="category_filter">
-                <?php
-                $i = 0;
-                foreach($this->categories as $category):?>
-                    <?php if (in_array($category->access, $authorizedAccessLevels)) : ?>
-                        <div class="item<?php echo($i % $NumberOfColumn);?> cate_<?php echo($category->id);?>">
-                            <h3>
-                                <a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$category->id}"."&Itemid=".JRequest::getVar("Itemid")));?>">
-                                    <?php echo($category->title);?>
-                                    <?php if ((bool) $params->get('show_documents_counter', 0)) : ?>
-                                        <span>
-                                            (<?php echo $category->total_doc; ?>)
-                                        </span>
-                                    <?php endif; ?>
-                                </a>
-                            </h3>
-                            <div class="item_content">
-                                <?php echo($category->description);?>
-                            </div>
-                        </div>
-                        <?php if ($NumberOfColumn && $i % $NumberOfColumn == $NumberOfColumn - 1):?>
-                            <div class="seperator"></div>
-                            <div class="clr"></div>
-                        <?php endif;?>
-                        <?php $i++;?>
-                    <?php endif; ?>
-                <?php endforeach;?>
-                <div class="clr"></div>
-            </div>
-        <?php endif; ?>
-
         <?php if (!empty($this->paths)) : ?>
             <h2>
                 <?php for ($i = count($this->paths) - 1; $i >= 0; $i--):?>
@@ -68,23 +36,58 @@ $authorizedAccessLevels = $user->getAuthorisedViewLevels();
             </div>
         <?php endif; ?>
 
-        <?php foreach($this->items as $item):?>
-            <?php if (in_array($item->access, $authorizedAccessLevels)) : ?>
-                <div class="item_<?php echo($item->id);?>">
-                    <h3><a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$item->id."&Itemid=".JRequest::getVar("Itemid")));?>"><?php echo($item->name);?></a></h3>
-                    <div class="item_content"><?php echo($item->brief);?></div>
-                    <div class="readmore_wrapper">
-                        <div class="readmore">
-                            <a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$item->id."&Itemid=".JRequest::getVar("Itemid")));?>">
-                                <?php echo(JText::_("COM_OSDOWNLOADS_READ_MORE"));?>
-                            </a>
+        <?php if ($this->showCategoryFilter && count($this->categories) > 1) : ?>
+            <div class="category_filter">
+                <?php
+                $i = 0;
+                foreach($this->categories as $category):?>
+                    <?php if (in_array($category->access, $authorizedAccessLevels)
+                        && $this->paths[0]->id !== $category->id) : ?>
+                        <div class="item<?php echo($i % $NumberOfColumn);?> cate_<?php echo($category->id);?>">
+                            <h3>
+                                <a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$category->id}"."&Itemid=".JRequest::getVar("Itemid")));?>">
+                                    <?php echo($category->title);?>
+                                    <?php if ((bool) $params->get('show_documents_counter', 0)) : ?>
+                                        <span>
+                                            (<?php echo (int) $this->totalDocuments[$category->id]; ?>)
+                                        </span>
+                                    <?php endif; ?>
+                                </a>
+                            </h3>
+                            <div class="item_content">
+                                <?php echo($category->description);?>
+                            </div>
                         </div>
-                        <div class="clr"></div>
+                        <?php if ($NumberOfColumn && $i % $NumberOfColumn == $NumberOfColumn - 1):?>
+                            <div class="seperator"></div>
+                            <div class="clr"></div>
+                        <?php endif;?>
+                        <?php $i++;?>
+                    <?php endif; ?>
+                <?php endforeach;?>
+                <div class="clr"></div>
+            </div>
+        <?php endif; ?>
+
+        <?php if (!empty($this->items)) : ?>
+            <?php foreach($this->items as $item):?>
+                <?php if (in_array($item->access, $authorizedAccessLevels)) : ?>
+                    <div class="item_<?php echo($item->id);?>">
+                        <h3><a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$item->id."&Itemid=".JRequest::getVar("Itemid")));?>"><?php echo($item->name);?></a></h3>
+                        <div class="item_content"><?php echo($item->brief);?></div>
+                        <div class="readmore_wrapper">
+                            <div class="readmore">
+                                <a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$item->id."&Itemid=".JRequest::getVar("Itemid")));?>">
+                                    <?php echo(JText::_("COM_OSDOWNLOADS_READ_MORE"));?>
+                                </a>
+                            </div>
+                            <div class="clr"></div>
+                        </div>
+                        <div class="seperator"></div>
                     </div>
-                    <div class="seperator"></div>
-                </div>
-            <?php endif; ?>
-        <?php endforeach;?>
+                <?php endif; ?>
+            <?php endforeach;?>
+        <?php endif; ?>
         <div class="clr"></div>
         <div><?php echo $this->pagination->getPagesCounter(); ?></div>
         <div class="osdownloads-pagination"><?php echo $this->pagination->getPagesLinks(); ?></div>

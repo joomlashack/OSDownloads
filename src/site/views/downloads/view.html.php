@@ -15,18 +15,27 @@ class OSDownloadsViewDownloads extends JViewLegacy
 
     public function display($tpl = null)
     {
-        $app                    = JFactory::getApplication();
-        $db                     = JFactory::getDBO();
-        $params                 = clone($app->getParams('com_osdownloads'));
-        $categoryIDs            = (array) $params->get("category_id");
-        $includeChildCategories = (bool) $params->get('include_child_category', 0);
+        $app                 = JFactory::getApplication();
+        $db                  = JFactory::getDBO();
+        $params              = clone($app->getParams('com_osdownloads'));
+        $categoryIDs         = (array) $params->get("category_id");
+        $includeChildFiles   = (bool) $params->get('include_child_files', 0);
+        $showChildCategories = (bool) $params->get('show_child_categories', 1);
 
         $limit      = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int');
         $limitstart = $app->getUserStateFromRequest('osdownloads.request.limitstart', 'limitstart', 0, 'int');
 
         // Paths
         $paths = array();
+
         $id = JRequest::getVar("id", null, 'default', 'int');
+
+        if (empty($id)) {
+            if (count($categoryIDs) == 1) {
+                $id = $categoryIDs[0];
+            }
+        }
+
         if (!empty($id)) {
             $this->buildPath($paths, $id);
 
@@ -36,7 +45,7 @@ class OSDownloadsViewDownloads extends JViewLegacy
         $categoryIDsStr = implode(',', $categoryIDs);
 
         $extraWhere = '';
-        if ($includeChildCategories) {
+        if ($includeChildFiles) {
             $extraWhere = " OR c.parent_id IN ({$categoryIDsStr}) ";
         }
 
@@ -74,14 +83,13 @@ class OSDownloadsViewDownloads extends JViewLegacy
         }
 
         // Categories
+        $extraWhere = '';
+        if ($showChildCategories) {
+            $extraWhere = " OR c.parent_id IN ({$categoryIDsStr}) ";
+        }
+
         $groupsStr = implode(',', $groups);
-        $query = "SELECT *,
-                  (
-                    SELECT COUNT(*)
-                    FROM `#__osdownloads_documents` AS d
-                    WHERE d.cate_id = c.id
-                        AND d.access IN ({$groupsStr})
-                  ) AS total_doc
+        $query = "SELECT *
                   FROM `#__categories` AS c
                   WHERE extension='com_osdownloads'
                     AND published = 1
@@ -91,6 +99,11 @@ class OSDownloadsViewDownloads extends JViewLegacy
         $db->setQuery($query);
         $categories = $db->loadObjectList();
 
+        // Documents counter
+        if ((bool) $params->get('show_documents_counter', 0)) {
+            $totalDocuments = $this->countDocuments($categoryIDs);
+        }
+
         // Category filter
         $showCategoryFilter = $params->get('show_category_filter', false);
 
@@ -99,6 +112,8 @@ class OSDownloadsViewDownloads extends JViewLegacy
         $this->assignRef("items", $items);
         $this->assignRef("paths", $paths);
         $this->assignRef("pagination", $pagination);
+        $this->assignRef("totalDocuments", $totalDocuments);
+
         parent::display($tpl);
     }
 
@@ -122,5 +137,57 @@ class OSDownloadsViewDownloads extends JViewLegacy
         if ($category && $category->parent_id) {
             $this->buildPath($paths, $category->parent_id);
         }
+    }
+
+    protected function countDocuments($categoryIDs)
+    {
+        $db = JFactory::getDbo();
+
+        $total = array();
+
+        foreach ($categoryIDs as $id) {
+            // Get all the categories tree
+            $ids       = array($id);
+            $uniqueIDs = array();
+
+            // Get child categories "recursively"
+            do {
+                $query = 'SELECT id
+                          FROM `#__categories`
+                          WHERE parent_id IN (' . implode(',', $ids) . ')';
+                $db->setQuery($query);
+                $childIDs = $db->loadObjectList();
+
+                $ids       = array_merge($ids, $childIDs);
+                array_walk($ids, array($this, 'objectToIntBasedOnId'));
+
+                $uniqueIDs = array_unique($ids);
+            } while ($ids !== $uniqueIDs);
+
+            if (!empty($uniqueIDs)) {
+                foreach ($uniqueIDs as $uid) {
+                    // Count the documents
+                    $query = "SELECT COUNT(*)
+                              FROM `#__osdownloads_documents`
+                              WHERE cate_id = " . $db->q($uid);
+                    $db->setQuery($query);
+
+                    $total[$uid] = (int) $db->loadResult();
+                }
+            }
+        }
+
+        var_dump($total);
+
+        return $total;
+    }
+
+    protected static function objectToIntBasedOnId(&$item)
+    {
+        if (is_object($item)) {
+            $item = $item->id;
+        }
+
+        $item = (int) $item;
     }
 }

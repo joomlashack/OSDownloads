@@ -99,11 +99,6 @@ class OSDownloadsViewDownloads extends JViewLegacy
         $db->setQuery($query);
         $categories = $db->loadObjectList();
 
-        // Documents counter
-        if ((bool) $params->get('show_documents_counter', 0)) {
-            $totalDocuments = $this->countDocuments($categoryIDs);
-        }
-
         // Category filter
         $showCategoryFilter = $params->get('show_category_filter', false);
 
@@ -112,7 +107,6 @@ class OSDownloadsViewDownloads extends JViewLegacy
         $this->assignRef("items", $items);
         $this->assignRef("paths", $paths);
         $this->assignRef("pagination", $pagination);
-        $this->assignRef("totalDocuments", $totalDocuments);
 
         parent::display($tpl);
     }
@@ -137,57 +131,5 @@ class OSDownloadsViewDownloads extends JViewLegacy
         if ($category && $category->parent_id) {
             $this->buildPath($paths, $category->parent_id);
         }
-    }
-
-    protected function countDocuments($categoryIDs)
-    {
-        $db = JFactory::getDbo();
-
-        $total = array();
-
-        foreach ($categoryIDs as $id) {
-            // Get all the categories tree
-            $ids       = array($id);
-            $uniqueIDs = array();
-
-            // Get child categories "recursively"
-            do {
-                $query = 'SELECT id
-                          FROM `#__categories`
-                          WHERE parent_id IN (' . implode(',', $ids) . ')';
-                $db->setQuery($query);
-                $childIDs = $db->loadObjectList();
-
-                $ids       = array_merge($ids, $childIDs);
-                array_walk($ids, array($this, 'objectToIntBasedOnId'));
-
-                $uniqueIDs = array_unique($ids);
-            } while ($ids !== $uniqueIDs);
-
-            if (!empty($uniqueIDs)) {
-                foreach ($uniqueIDs as $uid) {
-                    // Count the documents
-                    $query = "SELECT COUNT(*)
-                              FROM `#__osdownloads_documents`
-                              WHERE cate_id = " . $db->q($uid);
-                    $db->setQuery($query);
-
-                    $total[$uid] = (int) $db->loadResult();
-                }
-            }
-        }
-
-        var_dump($total);
-
-        return $total;
-    }
-
-    protected static function objectToIntBasedOnId(&$item)
-    {
-        if (is_object($item)) {
-            $item = $item->id;
-        }
-
-        $item = (int) $item;
     }
 }

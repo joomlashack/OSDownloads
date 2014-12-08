@@ -47,11 +47,6 @@ $authorizedAccessLevels = $user->getAuthorisedViewLevels();
                             <h3>
                                 <a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$category->id}"."&Itemid=".JRequest::getVar("Itemid")));?>">
                                     <?php echo($category->title);?>
-                                    <?php if ((bool) $params->get('show_documents_counter', 0)) : ?>
-                                        <span>
-                                            (<?php echo (int) $this->totalDocuments[$category->id]; ?>)
-                                        </span>
-                                    <?php endif; ?>
                                 </a>
                             </h3>
                             <div class="item_content">

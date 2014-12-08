@@ -41,7 +41,6 @@ class OSDownloadsViewDownloads extends JViewLegacy
 
             $categoryIDs = (array) $id;
         }
-
         $categoryIDsStr = implode(',', $categoryIDs);
 
         $extraWhere = '';
@@ -102,6 +101,8 @@ class OSDownloadsViewDownloads extends JViewLegacy
         // Category filter
         $showCategoryFilter = $params->get('show_category_filter', false);
 
+        $this->buildBreadcrumbs($paths);
+
         $this->assignRef("categories", $categories);
         $this->assignRef("showCategoryFilter", $showCategoryFilter);
         $this->assignRef("items", $items);
@@ -130,6 +131,20 @@ class OSDownloadsViewDownloads extends JViewLegacy
 
         if ($category && $category->parent_id) {
             $this->buildPath($paths, $category->parent_id);
+        }
+    }
+
+    protected function buildBreadcrumbs($paths) {
+        $app     = JFactory::getApplication();
+        $pathway = $app->getPathway();
+        $itemID  = JRequest::getVar("Itemid", null, 'default', 'int');
+
+        $countPaths = count($paths) - 1;
+        for ($i = $countPaths; $i >= 0; $i--) {
+            $pathway->addItem(
+                $paths[$i]->title,
+                JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$paths[$i]->id}"."&Itemid={$itemID}")
+            );
         }
     }
 }

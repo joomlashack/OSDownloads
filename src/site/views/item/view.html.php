@@ -51,6 +51,9 @@ class OSDownloadsViewItem extends JViewLegacy
         }
 
         $this->buildPath($paths, $item->cate_id);
+
+        $this->buildBreadcrumbs($paths, $item);
+
         $this->assignRef("item", $item);
         $this->assignRef("paths", $paths);
         $this->assignRef("params", $params);
@@ -91,5 +94,21 @@ class OSDownloadsViewItem extends JViewLegacy
         if ($cate && $cate->parent_id) {
             $this->buildPath($paths, $cate->parent_id);
         }
+    }
+
+    protected function buildBreadcrumbs($paths, $item) {
+        $app     = JFactory::getApplication();
+        $pathway = $app->getPathway();
+        $itemID  = JRequest::getVar("Itemid", null, 'default', 'int');
+
+        $countPaths = count($paths) - 1;
+        for ($i = $countPaths; $i >= 0; $i--) {
+            $pathway->addItem(
+                $paths[$i]->title,
+                JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$paths[$i]->id}"."&Itemid={$itemID}")
+            );
+        }
+
+        $pathway->addItem($item->name, '');
     }
 }

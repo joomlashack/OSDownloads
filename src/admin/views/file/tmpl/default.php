@@ -71,18 +71,53 @@ $realname = substr($this->item->file_path, $index + 1);
                 <?php echo JHtml::_('access.level', 'access', $this->item->access, null, array(), 'access'); ?>
             </td>
         </tr>
-        <tr>
-            <td valign="top"><?php echo(JText::_("COM_OSDOWNLOADS_DESCRIPTION_1h"));?></td>
-            <td><?php echo $editor->display( 'description_1',  $this->item->description_1 , '100%', '200', '75', '20' ); ?></td>
-        </tr>
-        <tr>
-            <td valign="top"><?php echo(JText::_("COM_OSDOWNLOADS_DESCRIPTION_2h"));?></td>
-            <td><?php echo $editor->display( 'description_2',  $this->item->description_2 , '100%', '200', '75', '20' ); ?></td>
-        </tr>
-        <tr>
-            <td valign="top"><?php echo(JText::_("COM_OSDOWNLOADS_DESCRIPTION_3h"));?></td>
-            <td><?php echo $editor->display( 'description_3',  $this->item->description_3 , '100%', '200', '75', '20' ); ?></td>
-        </tr>
+
+        <?php if (version_compare(JVERSION, '3.0', '>=')) : ?>
+            <tr>
+                <td>
+                    <?php echo JText::_("COM_OSDOWNLOADS_DESCRIPTIONS"); ?>
+                </td>
+                <td>
+                    <?php echo JHtml::_('bootstrap.startTabSet', 'descrTabs', array('active' => 'description_1_tab')); ?>
+
+                    <?php echo JHtml::_('bootstrap.addTab', 'descrTabs', 'description_1_tab', JText::_("COM_OSDOWNLOADS_DESCRIPTION_1h")); ?>
+                    <?php echo $editor->display( 'description_1',  $this->item->description_1 , '100%', '200', '75', '20' ); ?>
+                    <?php echo JHtml::_('bootstrap.endTab'); ?>
+
+                    <?php echo JHtml::_('bootstrap.addTab', 'descrTabs', 'description_2_tab', JText::_("COM_OSDOWNLOADS_DESCRIPTION_2h")); ?>
+                    <?php echo $editor->display( 'description_2',  $this->item->description_2 , '100%', '200', '75', '20' ); ?>
+                    <?php echo JHtml::_('bootstrap.endTab'); ?>
+
+                    <?php echo JHtml::_('bootstrap.addTab', 'descrTabs', 'description_3_tab', JText::_("COM_OSDOWNLOADS_DESCRIPTION_3h")); ?>
+                    <?php echo $editor->display( 'description_3',  $this->item->description_3 , '100%', '200', '75', '20' ); ?>
+                    <?php echo JHtml::_('bootstrap.endTab'); ?>
+
+                    <?php echo JHtml::_('bootstrap.endTabSet'); ?>
+                </td>
+            </tr>
+        <?php else : ?>
+            <tr>
+                <td>
+                    <?php echo JText::_("COM_OSDOWNLOADS_DESCRIPTIONS"); ?>
+                </td>
+
+                <td>
+                    <?php echo JHtml::_('tabs.start', 'descrTabs', array('useCookie'=>1));?>
+
+                    <?php echo JHtml::_('tabs.panel', JText::_("COM_OSDOWNLOADS_DESCRIPTION_1h"), 'description_1_tab'); ?>
+                    <?php echo $editor->display( 'description_1',  $this->item->description_1 , '100%', '200', '75', '20' ); ?>
+
+                    <?php echo JHtml::_('tabs.panel', JText::_("COM_OSDOWNLOADS_DESCRIPTION_2h"), 'description_2_tab'); ?>
+                    <?php echo $editor->display( 'description_2',  $this->item->description_2 , '100%', '200', '75', '20' ); ?>
+
+                    <?php echo JHtml::_('tabs.panel', JText::_("COM_OSDOWNLOADS_DESCRIPTION_3h"), 'description_3_tab'); ?>
+                    <?php echo $editor->display( 'description_3',  $this->item->description_3 , '100%', '200', '75', '20' ); ?>
+
+                    <?php echo JHtml::_('tabs.end');?>
+                </td>
+            </tr>
+        <?php endif; ?>
+
         <tr>
             <td><?php echo(JText::_("COM_OSDOWNLOADS_EMAIL"));?> </td>
             <td>

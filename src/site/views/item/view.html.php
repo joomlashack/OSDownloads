@@ -27,17 +27,18 @@ class OSDownloadsViewItem extends JViewLegacy
             $id = (int) JRequest::getVar("id");
         }
 
-        $query	= "SELECT documents.*, cate.access AS cat_access
+        $query  = "SELECT documents.*, cate.access AS cat_access
                     FROM `#__osdownloads_documents` documents
                     LEFT JOIN `#__categories` cate ON (documents.cate_id = cate.id AND cate.extension='com_osdownloads')
                     WHERE cate.published = 1 AND documents.id = {$id}";
 
         $db->setQuery($query);
         $item   = $db->loadObject();
+
         $user   = JFactory::getUser();
         $groups = $user->getAuthorisedViewLevels();
 
-        if (!$item) {
+        if (! $item || ! (bool) $item->published) {
             JError::raiseWarning(404, JText::_("COM_OSDOWNLOADS_THIS_DOWNLOAD_ISNT_AVAILABLE"));
             return;
         }

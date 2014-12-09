@@ -77,10 +77,6 @@ class OSDownloadsController extends JControllerLegacy
         $id = (int) $app->input->getVar("id");
         $db = JFactory::getDBO();
 
-        $query = "UPDATE `#__osdownloads_documents` SET downloaded = downloaded + 1 WHERE id = {$id}";
-        $db->setQuery($query);
-        $db->query();
-
         $query	= "SELECT documents.*
                     FROM `#__osdownloads_documents` documents
                     WHERE documents.id = {$id}";
@@ -94,8 +90,8 @@ class OSDownloadsController extends JControllerLegacy
         header("Content-Type: application/force-download");
         header('Content-Description: File Transfer');
         header("Content-Disposition: attachment; filename=\"".$realname."\";");
-        @readfile($file);
 
         exit();
     }
+        @readfile($file);
 }

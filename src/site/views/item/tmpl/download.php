@@ -8,9 +8,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$mainframe 			= JFactory::getApplication();
-$params 			= clone($mainframe->getParams('com_osdownloads'));
-$thankyoupage 	= $params->get("thankyoupage", "Thank you");
+$mainframe    = JFactory::getApplication();
+$params       = clone($mainframe->getParams('com_osdownloads'));
+$thankyoupage = $params->get("thankyoupage", "Thank you");
+
+$db = JFactory::getDBO();
+$query = "UPDATE `#__osdownloads_documents` SET downloaded = downloaded + 1 WHERE id = {$this->item->id}";
+$db->setQuery($query);
+$db->query();
 
 $email = trim(JRequest::getVar("email"));
 if ($this->item->require_email && !preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $email)) {

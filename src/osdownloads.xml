@@ -54,7 +54,6 @@
 
     <media destination="com_osdownloads" folder="media">
         <folder>css</folder>
-        <folder>js</folder>
     </media>
 
     <administration>
@@ -67,6 +66,7 @@
         <files folder="admin">
             <folder>controllers</folder>
             <folder>helpers</folder>
+            <folder>library</folder>
             <folder>sql</folder>
             <folder>tables</folder>
             <folder>views</folder>

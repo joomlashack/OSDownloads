@@ -1,6 +1,6 @@
 [![Alledia](https://www.alledia.com/images/logo_circle_small.png)](https://www.alledia.com)
 
-OSDownload
+OSDownloads
 ============
 
 ## About

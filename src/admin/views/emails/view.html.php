@@ -51,7 +51,7 @@ class OSDownloadsViewEmails extends JViewLegacy
         jimport('joomla.html.pagination');
         $pagination = new JPagination($total, $limitstart, $limit);
         $db->setQuery($query, $pagination->limitstart, $pagination->limit);
-        $items = $db->loadObjectList();
+        $items = (array) $db->loadObjectList();
 
         $lists = array();
         $lists['order_Dir'] = $filter_order_Dir;

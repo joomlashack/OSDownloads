@@ -104,7 +104,20 @@ $realname = substr($this->item->file_path, $index + 1);
         </tr>
         <tr>
             <td><?php echo(JText::_("COM_OSDOWNLOADS_DOWNLOAD_COLOR"));?></td>
-            <td><input type="text" name="download_color" value="<?php echo $this->item->download_color; ?>" /></td>
+            <td>
+                <?php if (version_compare(JVERSION, '3.0', '>=')) : ?>
+                    <?php
+                        require_once JPATH_SITE . '/libraries/joomla/form/fields/color.php';
+                        $field = new JFormFieldColor();
+                        $field->value = $this->item->download_color;
+                        $field->name  = 'download_color';
+
+                        echo $field->input;
+                    ?>
+                <?php else : ?>
+                    <input type="text" name="download_color" value="<?php echo $this->item->download_color; ?>" />
+                <?php endif; ?>
+            </td>
         </tr>
         <tr>
             <td><?php echo(JText::_("COM_OSDOWNLOADS_DOCUMENTATION_LINK"));?></td>

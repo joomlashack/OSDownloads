@@ -54,7 +54,6 @@
 
     <media destination="com_osdownloads" folder="media">
         <folder>css</folder>
-        <folder>js</folder>
         <folder>images</folder>
     </media>
 

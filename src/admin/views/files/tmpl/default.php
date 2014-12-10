@@ -5,7 +5,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $listOrder = $this->lists['order'];
 $listDirn  = $this->lists['order_Dir'];
-$saveOrder = $listOrder == 'documents.ordering';
+$saveOrder = $listOrder === 'documents.ordering';
+
+if ($saveOrder)
+{
+    $saveOrderingUrl = 'index.php?option=com_oscontent&task=documents.saveOrderAjax&tmpl=component';
+    JHtml::_('sortablelist.sortable', 'documentList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+}
 
 function category($name, $extension, $selected = null, $javascript = null, $order = null, $size = 1, $sel_cat = 1)
 {
@@ -26,6 +32,25 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
 }
 
 ?>
+
+<script type="text/javascript">
+    Joomla.orderTable = function()
+    {
+        table = document.getElementById("sortTable");
+        direction = document.getElementById("directionTable");
+        order = table.options[table.selectedIndex].value;
+        if (order != '<?php echo $listOrder; ?>')
+        {
+            dirn = 'asc';
+        }
+        else
+        {
+            dirn = direction.options[direction.selectedIndex].value;
+        }
+        Joomla.tableOrdering(order, dirn, '');
+    }
+</script>
+
 <form action="index.php?option=com_osdownloads" method="post" name="adminForm" id="adminForm">
     <table width="100%">
         <tr>
@@ -53,49 +78,83 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
             </td>
         </tr>
     </table>
-    <table class="adminlist table table-striped" width="100%" border="0">
+    <table class="adminlist table table-striped" id="documentList" width="100%" border="0">
         <thead>
             <tr>
+                <?php if (version_compare(JVERSION, '3.0', '>=')) : ?>
+                    <th width="1%" class="nowrap center hidden-phone">
+                        <?php echo JHtml::_('searchtools.sort', '', 'documents.ordering', @$this->lists['order_Dir'], @$this->lists['order'], null, 'asc', 'JGRID_HEADING_ORDERING', 'icon-menu-2'); ?>
+                    </th>
+                <?php endif; ?>
                 <th width="1%" class="hidden-phone"><input type="checkbox" onclick="Joomla.checkAll(this)" title="<?php echo JText::_('COM_OSDOWNLOADS_CHECK_All'); ?>" value="" name="checkall-toggle" /> </th>
-                <th class="has-context span6"><?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_NAME', 'documents.name', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
+                <th class="has-context span6">
+                    <?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_NAME', 'documents.name', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+                </th>
                 <th><?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_CATEGORY', 'cate.title', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
                 <th class="center nowrap"><?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_DOWNLOADED', 'documents.downloaded', @$this->lists['order_Dir'], @$this->lists['order'] ); ?></th>
                 <th class="center"><?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_PUBLISHED', 'documents.published', @$this->lists['order_Dir'], @$this->lists['order'] ); ?></th>
-                <th class="hidden-phone">
-                    <?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ORDERING', 'documents.ordering', $listDirn, $listOrder); ?>
-                    <?php if ($saveOrder) :?>
-                        <?php echo JHtml::_('grid.order', $this->items, 'filesave.png', 'file.saveorder'); ?>
-                    <?php endif; ?>
-                </th>
+                <?php if (version_compare(JVERSION, '3.0', '<')) : ?>
+                    <th class="hidden-phone">
+                        <?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ORDERING', 'documents.ordering', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                        <?php if ($saveOrder) :?>
+                            <?php echo JHtml::_('grid.order', $this->items, 'filesave.png', 'file.saveorder'); ?>
+                        <?php endif; ?>
+                    </th>
+                <?php endif; ?>
                 <th class="hidden-phone center"><?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_ID', 'documents.id', @$this->lists['order_Dir'], @$this->lists['order'] ); ?></th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($this->items as $i => $item) :
                 $item->checked_out = false;
-                $ordering	= ($listOrder == 'documents.ordering');
-                $published 	= JHTML::_('grid.published', $item, $i, 'tick.png', 'publish_x.png', 'file.');
-                $checked 	= JHTML::_('grid.checkedout', $item, $i );
+                $ordering   = ($listOrder == 'documents.ordering');
+                $published  = JHTML::_('grid.published', $item, $i, 'tick.png', 'publish_x.png', 'file.');
+                $checked    = JHTML::_('grid.checkedout', $item, $i );
+                // $canChange  = $user->authorise('core.edit.state', 'com_content.article.'.$item->id) && $canCheckin;
+                $canChange  = true;
             ?>
                 <tr class="row<?php echo $i % 2; ?>">
+                    <?php if (version_compare(JVERSION, '3.0', '>=')) : ?>
+                        <td class="order nowrap center hidden-phone">
+                            <?php
+                            $iconClass = '';
+                            if (!$canChange)
+                            {
+                                $iconClass = ' inactive';
+                            }
+                            elseif (!$saveOrder)
+                            {
+                                $iconClass = ' inactive tip-top hasTooltip" title="' . JHtml::tooltipText('JORDERINGDISABLED');
+                            }
+                            ?>
+                            <span class="sortable-handler<?php echo $iconClass ?>">
+                                <i class="icon-menu"></i>
+                            </span>
+                            <?php if ($canChange && $saveOrder) : ?>
+                                <input type="text" style="display:none" name="order[]" size="5" value="<?php echo $item->ordering; ?>" class="width-20 text-area-order " />
+                            <?php endif; ?>
+                        </td>
+                    <?php endif; ?>
                     <td class="hidden-phone"><?php echo $checked; ?></td>
                     <td class="has-context span6"><a href="index.php?option=com_osdownloads&view=file&cid[]=<?php echo($item->id);?>"><?php echo ($item->name); ?></a></td>
                     <td><?php echo($item->cate_name);?></td>
                     <td class="center nowrap"><?php echo($item->downloaded);?></td>
                     <td class="center"><?php echo($published);?></td>
-                    <td class="order hidden-phone">
-                        <?php if ($saveOrder) :?>
-                            <?php if ($listDirn == 'asc') : ?>
-                                <span><?php echo $this->pagination->orderUpIcon($i, ($item->cate_id == @$this->items[$i-1]->cate_id), 'file.orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-                                <span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, ($item->cate_id == @$this->items[$i+1]->cate_id), 'file.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
-                            <?php elseif ($listDirn == 'desc') : ?>
-                                <span><?php echo $this->pagination->orderUpIcon($i, ($item->cate_id == @$this->items[$i-1]->cate_id), 'file.orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-                                <span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, ($item->cate_id == @$this->items[$i+1]->cate_id), 'file.orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+                    <?php if (version_compare(JVERSION, '3.0', '<')) : ?>
+                        <td class="order hidden-phone">
+                            <?php if ($saveOrder) :?>
+                                <?php if ($listDirn == 'asc') : ?>
+                                    <span><?php echo $this->pagination->orderUpIcon($i, ($item->cate_id == @$this->items[$i-1]->cate_id), 'file.orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
+                                    <span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, ($item->cate_id == @$this->items[$i+1]->cate_id), 'file.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+                                <?php elseif ($listDirn == 'desc') : ?>
+                                    <span><?php echo $this->pagination->orderUpIcon($i, ($item->cate_id == @$this->items[$i-1]->cate_id), 'file.orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
+                                    <span><?php echo $this->pagination->orderDownIcon($i, $this->pagination->total, ($item->cate_id == @$this->items[$i+1]->cate_id), 'file.orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+                                <?php endif; ?>
                             <?php endif; ?>
-                        <?php endif; ?>
-                        <?php $disabled = $saveOrder ?  '' : 'disabled="disabled"'; ?>
-                        <input type="text" name="order[]" size="5" value="<?php echo $item->ordering;?>" <?php echo $disabled ?> class="text-area-order span3" />
-                    </td>
+                            <?php $disabled = $saveOrder ?  '' : 'disabled="disabled"'; ?>
+                            <input type="text" name="order[]" size="5" value="<?php echo $item->ordering;?>" <?php echo $disabled ?> class="text-area-order span3" />
+                        </td>
+                    <?php endif; ?>
                     <td class="hidden-phone center"><?php echo($item->id);?></td>
                 </tr>
             <?php endforeach;?>

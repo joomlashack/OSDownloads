@@ -1,8 +1,9 @@
+/* OSDOWNLOADS */
 .seperator
 {
-	border-bottom:1px dotted #999999;
-	margin-bottom:10px;
-	margin-top:5px;
+    border-bottom:1px dotted #999999;
+    margin-bottom:10px;
+    margin-top:5px;
 }
 
 .category_filter {
@@ -11,38 +12,38 @@
 
 .category_filter .seperator
 {
-	border:none;
+    border:none;
 }
 
 .sub_title
 {
-	padding-bottom:20px;
+    padding-bottom:20px;
 }
 
 .readmore
 {
-	float:right;
+    float:right;
 }
 
 .clr
 {
-	clear:both;
+    clear:both;
 }
 
 .reference .readmore
 {
-	float:left;
-	margin-right:10px;
+    float:left;
+    margin-right:10px;
 }
 
 .btn_download
 {
-	margin-top:10px;
+    margin-top:10px;
 }
 
 .btn_download .readmore
 {
-	float:none;
+    float:none;
 }
 
 .osdownloads-pagination > ul {
@@ -80,4 +81,103 @@
     display: inline-block;
     font-size: 20px;
     padding-right: 5px;
+}
+
+/*  --------------------------------------------------
+Reveal Modals
+-------------------------------------------------- */
+
+.reveal-modal-bg {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background: #000;
+    z-index: 100;
+    display: none;
+    top: 0;
+    left: 0;
+    }
+
+.reveal-modal {
+    visibility: hidden;
+    top: 100px;
+    left: 50%;
+    margin-left: -300px;
+    width: 520px;
+    background: #eee url(modal-gloss.png) no-repeat -200px -80px;
+    position: absolute;
+    z-index: 101;
+    padding: 30px 40px 34px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -moz-box-shadow: 0 0 10px rgba(0,0,0,.4);
+    -webkit-box-shadow: 0 0 10px rgba(0,0,0,.4);
+    box-shadow: 0 0 10px rgba(0,0,0,.4);
+    }
+
+.reveal-modal.small         { width: 200px; margin-left: -140px;}
+.reveal-modal.medium        { width: 400px; margin-left: -240px;}
+.reveal-modal.large         { width: 600px; margin-left: -340px;}
+.reveal-modal.xlarge        { width: 800px; margin-left: -440px;}
+
+.reveal-modal .close-reveal-modal {
+    font-size: 22px;
+    line-height: .5;
+    position: absolute;
+    top: 8px;
+    right: 11px;
+    color: #aaa;
+    text-shadow: 0 -1px 1px rbga(0,0,0,.6);
+    font-weight: bold;
+    cursor: pointer;
+    }
+/*
+
+NOTES
+
+Close button entity is &#215;
+
+Example markup
+
+<div id="myModal" class="reveal-modal">
+    <h2>Awesome. I have it.</h2>
+    <p class="lead">Your couch.  I it's mine.</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ultrices aliquet placerat. Duis pulvinar orci et nisi euismod vitae tempus lorem consectetur. Duis at magna quis turpis mattis venenatis eget id diam. </p>
+    <a class="close-reveal-modal">&#215;</a>
+</div>
+
+*/
+
+.reveal-modal iframe {
+    border: 0;
+    width: 100%;
+}
+
+@media screen and (max-width: 320px) {
+    .reveal-modal {
+        width: 280px !important;
+        margin-left: -120px !important;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .reveal-modal {
+        width: 480px !important;
+        margin-left: -280px !important;
+    }
+}
+
+@media screen and (max-width: 580px) {
+    .reveal-modal {
+        width: 380px !important;
+        margin-left: -230px !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .reveal-modal {
+        width: 280px !important;
+        margin-left: -180px !important;
+    }
 }

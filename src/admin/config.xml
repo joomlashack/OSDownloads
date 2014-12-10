@@ -16,8 +16,17 @@
 		label="COM_OSDOWNLOADS_DOWNLOAD"
 		>
 		<field name="thankyoupage" type="editor" default="" filter="safehtml" label="COM_OSDOWNLOADS_THANK_YOU_PAGE" />
-		<field name="width" type="text" default="300" label="COM_OSDOWNLOADS_POPUP_WIDTH" />
-		<field name="height" type="text" default="150" label="COM_OSDOWNLOADS_POPUP_HEIGHT" />
+
+		<field name="popup_animation" type="radio" default="fadeAndPop" class="btn-group" label="COM_OSDOWNLOADS_POPUP_ANIMATION" >
+			<option value="none">COM_OSDOWNLOADS_NONE</option>
+			<option value="fade">COM_OSDOWNLOADS_ANIMATION_FADE</option>
+			<option value="fadeAndPop">COM_OSDOWNLOADS_ANIMATION_FADE_AND_POP</option>
+		</field>
+
+		<field name="load_jquery" type="radio" default="0" class="btn-group" label="COM_OSDOWNLOADS_LOAD_JQUERY" >
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 
 	</fieldset>
 	<fieldset

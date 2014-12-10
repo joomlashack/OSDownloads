@@ -17,6 +17,15 @@ $query = "UPDATE `#__osdownloads_documents` SET downloaded = downloaded + 1 WHER
 $db->setQuery($query);
 $db->query();
 
+?>
+
+<style>
+    body {
+        background: none transparent !important;
+    }
+</style>
+
+<?php
 $email = trim(JRequest::getVar("email"));
 if ($this->item->require_email && !preg_match("/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/", $email)) {
 ?>

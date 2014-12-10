@@ -16,6 +16,7 @@ if ($this->params->get('load_jquery', false)) {
     $doc->addScript('media/com_osdownloads/js/jquery.js');
 }
 
+$doc->addScript('media/com_osdownloads/js/jquery.browser.min.js');
 $doc->addScript('media/com_osdownloads/js/jquery.reveal.min.js');
 $doc->addScript('media/com_osdownloads/js/jquery.iframe-auto-height.min.js');
 

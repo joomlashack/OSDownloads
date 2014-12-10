@@ -15,7 +15,6 @@ class OSDownloadsViewFile extends JViewLegacy
 
     public function display($tpl = null)
     {
-        error_reporting(E_ALL);
         JTable::addIncludePath(JPATH_COMPONENT.'/tables');
 
         $mainframe 	= JFactory::getApplication();
@@ -36,6 +35,7 @@ class OSDownloadsViewFile extends JViewLegacy
         $this->assignRef("item", $item);
 
         $this->addToolbar();
+
         parent::display($tpl);
     }
 

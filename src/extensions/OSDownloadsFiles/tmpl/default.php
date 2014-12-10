@@ -20,6 +20,10 @@ $doc       = JFactory::getDocument();
 
 // Module body
 
+if ($params->get('load_jquery', false)) {
+    $doc->addScript('media/com_osdownloads/js/jquery.js');
+}
+
 $doc->addScript('media/com_osdownloads/js/jquery.reveal.min.js');
 $doc->addScript('media/com_osdownloads/js/jquery.iframe-auto-height.js');
 ?>

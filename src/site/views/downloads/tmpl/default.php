@@ -41,8 +41,7 @@ $authorizedAccessLevels = $user->getAuthorisedViewLevels();
                 <?php
                 $i = 0;
                 foreach($this->categories as $category):?>
-                    <?php if (in_array($category->access, $authorizedAccessLevels)
-                        && $this->paths[0]->id !== $category->id) : ?>
+                    <?php if (in_array($category->access, $authorizedAccessLevels)) : ?>
                         <div class="item<?php echo($i % $NumberOfColumn);?> cate_<?php echo($category->id);?>">
                             <h3>
                                 <a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$category->id}"."&Itemid=".JRequest::getVar("Itemid")));?>">

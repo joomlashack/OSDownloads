@@ -122,6 +122,11 @@
       // for use by webkit only
       var loadCounter = 0;
 
+      // Fix issue with unloaded iframes
+      if (this.contentDocument === null && this.contentWindow === null) {
+        return false;
+      }
+
       var iframeDoc = this.contentDocument || this.contentWindow.document;
 
       // resizeHeight

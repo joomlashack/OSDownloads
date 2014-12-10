@@ -87,7 +87,7 @@ $doc->addScript('media/com_osdownloads/js/jquery.iframe-auto-height.min.js');
 <script>
 (function ($) {
     $(function() {
-        $('.auto-height').iframeAutoHeight({
+        $('iframe.auto-height').iframeAutoHeight({
             heightOffset: 10
         });
 

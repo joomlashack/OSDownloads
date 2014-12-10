@@ -16,8 +16,12 @@ $itemId = (int) $app->input->get('Itemid');
 $moduleTag = $params->get('module_tag', 'div');
 $headerTag = $params->get('header_tag', 'h3');
 $linkTo    = $params->get('link_to', 'download');
+$doc       = JFactory::getDocument();
 
 // Module body
+
+$doc->addScript('media/com_osdownloads/js/jquery.reveal.min.js');
+$doc->addScript('media/com_osdownloads/js/jquery.iframe-auto-height.js');
 ?>
 
 <<?php echo $moduleTag; ?> class="mod_osdownloadsfiles<?php echo $params->get('moduleclass_sfx'); ?>">
@@ -43,30 +47,52 @@ $linkTo    = $params->get('link_to', 'download');
 </<?php echo $moduleTag; ?>>
 
 <?php if ($linkTo === 'download') : ?>
-    <script>
-    window.addEvent('domready', function() {
-        $$(".modOSDownloadsButton").each(function(el) {
-            var directPage = function() {
-                var dp = el.get('data-direct-page');
+    <div id="modosdownloads-popup-iframe" class="reveal-modal">
+        <iframe src="" class="auto-height" scrolling="no"></iframe>
+        <a class="close-reveal-modal">&#215;</a>
+    </div>
 
-                if (dp) {
-                    window.location = el.get('data-direct-page');
-                }
-            };
+    <?php if ($linkTo === 'download') : ?>
+        <script>
+            (function ($) {
+                $(function() {
+                    $('iframe.auto-height').iframeAutoHeight({
+                        heightOffset: 10
+                    });
 
-            el.addEvent('click', function(e) {
-                (e).stop();
+                    function showModal(selector) {
+                        $(selector).reveal({
+                             animation: '<?php echo $params->get("popup_animation", "fade"); ?>',
+                             animationspeed: 200,
+                             closeonbackgroundclick: true,
+                             dismissmodalclass: 'close-reveal-modal'
+                        });
+                    }
 
-                SqueezeBox.open(el.get('href'), {
-                    onClose: function onClose() {
-                        directPage();
-                    },
-                    handler: 'iframe',
-                    size: {x: <?php echo($params->get("width", 350));?>, y: <?php echo($params->get("height", 150));?>}
+                    $(".modOSDownloadsButton").each(function(index, el) {
+                        var directPage = function() {
+                            var dp = $(el).data('direct-page');
+
+                            if (dp) {
+                                window.location = dp;
+                            }
+                        };
+
+                        $(el).on('click', function(event) {
+                            event.preventDefault();
+
+                            var url = this.href;
+
+                            var $iframe = $('#modosdownloads-popup-iframe iframe');
+                            $iframe.attr('src', url);
+
+                            setTimeout(function timeourShowModal() {
+                                showModal('#modosdownloads-popup-iframe');
+                            }, 500);
+                        });
+                    });
                 });
-            });
-        });
-
-    });
-    </script>
+            })(jQuery);
+        </script>
+    <?php endif; ?>
 <?php endif;

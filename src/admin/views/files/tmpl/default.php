@@ -7,10 +7,12 @@ $listOrder = $this->lists['order'];
 $listDirn  = $this->lists['order_Dir'];
 $saveOrder = $listOrder === 'documents.ordering';
 
-if ($saveOrder)
-{
-    $saveOrderingUrl = 'index.php?option=com_oscontent&task=documents.saveOrderAjax&tmpl=component';
-    JHtml::_('sortablelist.sortable', 'documentList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+if (version_compare(JVERSION, '3.0', '>=')) {
+    if ($saveOrder)
+    {
+        $saveOrderingUrl = 'index.php?option=com_oscontent&task=documents.saveOrderAjax&tmpl=component';
+        JHtml::_('sortablelist.sortable', 'documentList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+    }
 }
 
 function category($name, $extension, $selected = null, $javascript = null, $order = null, $size = 1, $sel_cat = 1)

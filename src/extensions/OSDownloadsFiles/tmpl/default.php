@@ -24,9 +24,11 @@ if ($params->get('load_jquery', false)) {
     $doc->addScript('media/com_osdownloads/js/jquery.js');
 }
 
-$doc->addScript('media/com_osdownloads/js/jquery.browser.min.js');
-$doc->addScript('media/com_osdownloads/js/jquery.reveal.min.js');
-$doc->addScript('media/com_osdownloads/js/jquery.iframe-auto-height.js');
+if ($linkTo === 'download') {
+    $doc->addScript('media/com_osdownloads/js/jquery.browser.min.js');
+    $doc->addScript('media/com_osdownloads/js/jquery.reveal.min.js');
+    $doc->addScript('media/com_osdownloads/js/jquery.iframe-auto-height.js');
+}
 ?>
 
 <<?php echo $moduleTag; ?> class="mod_osdownloadsfiles<?php echo $params->get('moduleclass_sfx'); ?>">

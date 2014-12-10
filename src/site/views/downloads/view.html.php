@@ -94,7 +94,8 @@ class OSDownloadsViewDownloads extends JViewLegacy
                     AND published = 1
                     AND (id IN ({$categoryIDsStr})
                         {$extraWhere}
-                    )";
+                    )
+                  ORDER BY c.lft ASC";
         $db->setQuery($query);
         $categories = $db->loadObjectList();
 

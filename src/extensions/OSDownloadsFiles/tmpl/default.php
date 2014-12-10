@@ -40,7 +40,7 @@ $doc->addScript('media/com_osdownloads/js/jquery.iframe-auto-height.js');
                             <?php echo $params->get('link_label', JText::_('MOD_OSDOWNLOADSFILES_DOWNLOAD')); ?>
                         </a>
                     <?php else: ?>
-                        <a class="modOSDownloadsButton" href="<?php JRoute::_('index.php?option=com_osdownloads&view=item&Itemid=' . $itemId . '&id=' . $file->id); ?>" data-direct-page="<?php echo $file->direct_page; ?>">
+                        <a class="modOSDownloadsButton" href="<?php echo JRoute::_('index.php?option=com_osdownloads&view=item&Itemid=' . $itemId . '&id=' . $file->id); ?>" data-direct-page="<?php echo $file->direct_page; ?>">
                             <?php echo $params->get('link_label', JText::_('MOD_OSDOWNLOADSFILES_READ_MORE')); ?>
                         </a>
                     <?php endif; ?>

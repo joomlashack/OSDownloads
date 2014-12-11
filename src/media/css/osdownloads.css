@@ -154,6 +154,10 @@ Example markup
     width: 100%;
 }
 
+.reveal-modal ul li {
+    list-style: none;
+}
+
 @media screen and (max-width: 320px) {
     .reveal-modal {
         width: 280px !important;

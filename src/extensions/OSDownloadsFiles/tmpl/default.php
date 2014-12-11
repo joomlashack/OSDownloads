@@ -63,6 +63,9 @@ if ($linkTo === 'download') {
         <script>
             (function ($) {
                 $(function() {
+                    // Move the popup container to the body
+                    $('.reveal-modal').appendTo($('body'));
+
                     $('iframe.auto-height').iframeAutoHeight({
                         heightOffset: 10
                     });

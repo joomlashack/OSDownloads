@@ -92,6 +92,9 @@ $doc->addScript('media/com_osdownloads/js/jquery.iframe-auto-height.min.js');
 <script>
 (function ($) {
     $(function() {
+        // Move the popup container to the body
+        $('.reveal-modal').appendTo($('body'));
+
         $('iframe.auto-height').iframeAutoHeight({
             heightOffset: 10
         });

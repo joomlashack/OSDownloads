@@ -31,6 +31,10 @@ $db->query();
     div#main {
         background: none transparent !important;
     }
+
+    div#main {
+        min-height: 0 !important;
+    }
 </style>
 
 <div id="osdownloads-thankyou">

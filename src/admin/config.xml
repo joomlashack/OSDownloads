@@ -17,7 +17,7 @@
 		>
 		<field name="thankyoupage" type="editor" default="" filter="safehtml" label="COM_OSDOWNLOADS_THANK_YOU_PAGE" />
 
-		<field name="popup_animation" type="radio" default="fadeAndPop" class="btn-group" label="COM_OSDOWNLOADS_POPUP_ANIMATION" >
+		<field name="popup_animation" type="radio" default="fade" class="btn-group" label="COM_OSDOWNLOADS_POPUP_ANIMATION" >
 			<option value="none">COM_OSDOWNLOADS_NONE</option>
 			<option value="fade">COM_OSDOWNLOADS_ANIMATION_FADE</option>
 			<option value="fadeAndPop">COM_OSDOWNLOADS_ANIMATION_FADE_AND_POP</option>

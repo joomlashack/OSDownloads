@@ -59,36 +59,71 @@ $doc->addScript('media/com_osdownloads/js/jquery.iframe-auto-height.min.js');
             <div class="description1"><?php echo($this->item->brief . $this->item->description_1);?></div>
         <?php endif;?>
 
-        <?php if ($this->item->require_email || $this->item->show_email):?>
-            <div class="osdownloadsemail"><?php echo(JText::_("COM_OSDOWNLOADS_EMAIL"));?> <?php if ($this->item->require_email):?>(*)<?php endif;?>: <input type="email" aria-required="true" required name="require_email" id="require_email" /></div>
-        <?php endif;?>
-
         <?php if ($this->item->description_2):?>
             <div class="description2"><?php echo($this->item->description_2);?></div>
         <?php endif;?>
         <div class="osdownloadsactions">
-            <?php if ($this->item->require_agree):?>
-                <div><input type="checkbox" name="require_agree" id="require_agree" /> * <?php echo(JText::_("COM_OSDOWNLOADS_DOWNLOAD_TERM"));?></div>
-            <?php endif;?>
             <div class="btn_download">
-                <a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&task=getdownloadlink&tmpl=component&Itemid=".JRequest::getVar("Itemid")."&id={$this->item->id}"));?>"  id="btn_download" style="color:<?php echo($this->item->download_color);?>"  class="readmore"><span><?php echo($this->item->download_text ? $this->item->download_text : JText::_("COM_OSDOWNLOADS_DOWNLOAD"));?></span></a>
+                <a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&task=getdownloadlink&tmpl=component&Itemid=".JRequest::getVar("Itemid")."&id={$this->item->id}"));?>"  id="btn_download1" style="color:<?php echo($this->item->download_color);?>"  class="readmore"><span><?php echo($this->item->download_text ? $this->item->download_text : JText::_("COM_OSDOWNLOADS_DOWNLOAD"));?></span></a>
             </div>
         </div>
         <div><?php echo($this->item->description_3);?></div>
     </form>
 </div>
 
-<div id="osdownloads-popup-warning" class="reveal-modal">
-     <h1 class="title"><?php echo JText::_('COM_OSDOWNLOADS_WARNING'); ?></h1>
-     <p>
-         <ul class="messages"></ul>
-     </p>
-     <a class="close-reveal-modal">&#215;</a>
-</div>
+<?php if ($this->item->require_email || $this->item->show_email || $this->item->require_agree) : ?>
+    <div id="osdownloads-requirements" class="reveal-modal">
+        <h1 class="title"><?php echo JText::_('COM_OSDOWNLOADS_BEFORE_DOWNLOAD'); ?></h1>
+
+        <?php if ($this->item->show_email || $this->item->require_email) :?>
+            <div class="osdownloadsemail">
+                <?php if ($this->item->require_email) : ?>
+                    <p>
+                        <?php echo JText::_('COM_OSDOWNLOADS_YOU_HAVE_INPUT_CORRECT_EMAIL_TO_GET_DOWNLOAD_LINK'); ?>
+                    </p>
+                <?php endif; ?>
+
+                <label for="require_email">
+                    <span>
+                        <?php echo(JText::_("COM_OSDOWNLOADS_EMAIL")); ?><?php echo $this->item->require_email ? '*' : ''; ?>:
+                    </span>
+                    <input type="email" aria-required="true" required name="require_email" id="require_email" />
+                </label>
+                <div class="error" style="display: none;" id="osdownloads-error-invalid-email">
+                    <?php echo JText::_("COM_OSDOWNLOADS_INVALID_EMAIL"); ?>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <?php if ($this->item->require_agree):?>
+            <div>
+                <label for="require_agree">
+                    <input type="checkbox" name="require_agree" id="require_agree" />
+                    <span>
+                        * <?php echo(JText::_("COM_OSDOWNLOADS_DOWNLOAD_TERM"));?>
+                    </span>
+                </label>
+            </div>
+            <div class="error" style="display: none;" id="osdownloads-error-agree-terms">
+                <?php echo JText::_("COM_OSDOWNLOADS_YOU_HAVE_AGREE_TERMS_TO_DOWNLOAD_THIS"); ?>
+            </div>
+        <?php endif;?>
+
+        <a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&task=getdownloadlink&tmpl=component&Itemid=".JRequest::getVar("Itemid")."&id={$this->item->id}"));?>"  id="btn_download_continue" style="color:<?php echo($this->item->download_color);?>"  class="readmore">
+            <span>
+                <?php echo JText::_("COM_OSDOWNLOADS_CONTINUE"); ?>
+            </span>
+        </a>
+
+        <a class="close-reveal-modal">&#215;</a>
+    </div>
+<?php endif;?>
+
 <div id="osdownloads-popup-iframe" class="reveal-modal">
      <iframe src="" class="auto-height" scrolling="no"></iframe>
      <a class="close-reveal-modal">&#215;</a>
 </div>
+
 <script>
 (function ($) {
     $(function() {
@@ -101,51 +136,59 @@ $doc->addScript('media/com_osdownloads/js/jquery.iframe-auto-height.min.js');
 
         function isValidForm() {
             var exp = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/,
-                msg = [];
+                errorElement = null,
+                hasError = false;
 
             <?php if ($this->item->require_agree) : ?>
+                errorElement = $('#osdownloads-error-agree-terms');
+
                 if (! $("#require_agree").is(':checked')) {
-                    msg.push("<?php echo JText::_("COM_OSDOWNLOADS_YOU_HAVE_AGREE_TERMS_TO_DOWNLOAD_THIS"); ?>");
+                    hasError = true;
+                    errorElement.show();
+                } else {
+                    errorElement.hide();
                 }
             <?php endif; ?>
 
             <?php if ($this->item->require_email) : ?>
+                errorElement = $('#osdownloads-error-invalid-email');
+
                 var email = $("#require_email").val().trim();
 
                 if (email === "" || ! exp.test(email)) {
-                    msg.push("<?php echo JText::_("COM_OSDOWNLOADS_YOU_HAVE_INPUT_CORRECT_EMAIL_TO_GET_DOWNLOAD_LINK"); ?>");
+                    hasError = true;
+                    errorElement.show();
+                } else {
+                    errorElement.hide();
                 }
-            <?php else:?>
-                if ($("#require_email").length > 0) {
+            <?php else : ?>
+                <?php if ($this->item->show_email) : ?>
+                    errorElement = $('#osdownloads-error-invalid-email');
+
                     var email = $("#require_email").val().trim();
 
                     if (email != "" && ! exp.test(email)) {
-                        msg.push("<?php echo JText::_("COM_OSDOWNLOADS_YOU_MUST_INPUT_CORRECT_EMAIL_TO_GET_DOWNLOAD_LINK"); ?>");
+                        hasError = true;
+                        errorElement.show();
+                    } else {
+                        errorElement.hide();
                     }
-                }
+                <?php endif; ?>
             <?php endif;?>
-            if (msg.length > 0) {
-                var $messageContainer = $('#osdownloads-popup-warning .messages');
-                $messageContainer.html('');
 
-                for (var i = 0; i < msg.length; i++) {
-                    $messageContainer.append($('<li>' + msg[i] + '</li>'));
-                }
-
-                showModal('#osdownloads-popup-warning', true);
-
+            if (hasError) {
                 return false;
             }
 
             return true;
         }
 
-        function showModal(selector) {
+        function showModal(selector, onClose) {
             $(selector).reveal({
                  animation: '<?php echo $params->get("popup_animation", "fade"); ?>',
                  animationspeed: 200,
                  closeonbackgroundclick: true,
-                 dismissmodalclass: 'close-reveal-modal'
+                 dismissmodalclass: 'close-reveal-modal',
             });
         }
 
@@ -155,22 +198,45 @@ $doc->addScript('media/com_osdownloads/js/jquery.iframe-auto-height.min.js');
             <?php endif;?>
         }
 
-        $("#btn_download").on('click', function(event) {
+        function download(elem) {
+            var url = elem.href;
+
+            if ($("#require_email").length > 0) {
+                url += "&email=" + $("#require_email").val().trim();
+            }
+
+            var $iframe = $('#osdownloads-popup-iframe iframe');
+            $iframe.attr('src', url);
+
+            // Close the requirements popup
+            $(elem).trigger('reveal:close');
+
+            setTimeout(function timeourShowModal() {
+                showModal('#osdownloads-popup-iframe');
+            }, 500);
+        }
+
+        $("#btn_download1").on('click', function(event) {
+            event.preventDefault();
+
+            <?php if ($this->item->show_email || $this->item->require_email || $this->item->require_agree) : ?>
+                showModal('#osdownloads-requirements');
+                $('#osdownloads-requirements').on('reveal:close', function() {
+                    // Clean fields
+                    $('#require_email').val('');
+                    $('#require_agree').attr('checked', false);
+                    $('.reveal-modal .error').hide();
+                });
+            <?php else : ?>
+                download(this);
+            <?php endif; ?>
+        });
+
+        $("#btn_download_continue").on('click', function(event) {
             event.preventDefault();
 
             if (isValidForm()) {
-                var url = this.href;
-
-                if ($("#require_email").length > 0) {
-                    url += "&email=" + $("#require_email").val().trim();
-                }
-
-                var $iframe = $('#osdownloads-popup-iframe iframe');
-                $iframe.attr('src', url);
-
-                setTimeout(function timeourShowModal() {
-                    showModal('#osdownloads-popup-iframe');
-                }, 500);
+                download(this);
             }
         });
     });

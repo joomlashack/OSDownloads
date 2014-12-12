@@ -163,6 +163,10 @@ Example markup
     width: 97%;
 }
 
+.reveal-modal h1 {
+    margin-bottom: 30px;
+}
+
 .reveal-modal input[type="checkbox"] {
     margin-right: 5px;
     margin-top: -2px;

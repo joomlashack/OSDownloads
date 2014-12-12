@@ -50,11 +50,6 @@
                     label="MOD_OSDOWNLOADSFILES_FIELD_LINK_LABEL"
                     description="MOD_OSDOWNLOADSFILES_FIELD_LINK_DESC" />
 
-                <field name="load_jquery" type="radio" default="0" class="btn-group" label="MOD_OSDOWNLOADS_LOAD_JQUERY" >
-                    <option value="0">JNO</option>
-                    <option value="1">JYES</option>
-                </field>
-
                 <field
                     name="moduleclass_sfx"
                     type="text"

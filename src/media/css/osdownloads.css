@@ -154,8 +154,22 @@ Example markup
     width: 100%;
 }
 
-.reveal-modal ul li {
-    list-style: none;
+.reveal-modal .error {
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+.reveal-modal input[type="email"] {
+    width: 97%;
+}
+
+.reveal-modal h1 {
+    margin-bottom: 30px;
+}
+
+.reveal-modal input[type="checkbox"] {
+    margin-right: 5px;
+    margin-top: -2px;
 }
 
 @media screen and (max-width: 320px) {

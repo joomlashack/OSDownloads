@@ -6,46 +6,79 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 defined('_JEXEC') or die;
-JHTML::_('behavior.modal');
 
-JHtml::_('stylesheet', JUri::base() . 'media/com_osdownloads/css/osdownloads.css');
+jimport('joomla.application.component.helper');
 
-$app = JFactory::getApplication();
+$app    = JFactory::getApplication();
+$doc    = JFactory::getDocument();
 $itemId = (int) $app->input->get('Itemid');
 
 $moduleTag = $params->get('module_tag', 'div');
 $headerTag = $params->get('header_tag', 'h3');
 $linkTo    = $params->get('link_to', 'download');
-$doc       = JFactory::getDocument();
+
+$comParams = JComponentHelper::getParams('com_osdownloads');
+
+$showEmail    = false;
+$requireEmail = false;
+$requireAgree = false;
+
+// Load language from component
+JFactory::getLanguage()->load('com_osdownloads');
 
 // Module body
 
-if ($params->get('load_jquery', false)) {
+$doc->addStylesheet(JUri::base() . 'media/com_osdownloads/css/osdownloads.css');
+
+if ($comParams->get('load_jquery', false)) {
     $doc->addScript('media/com_osdownloads/js/jquery.js');
 }
 
 if ($linkTo === 'download') {
-    $doc->addScript('media/com_osdownloads/js/jquery.browser.min.js');
-    $doc->addScript('media/com_osdownloads/js/jquery.reveal.min.js');
-    $doc->addScript('media/com_osdownloads/js/jquery.iframe-auto-height.js');
+    $doc->addScript('media/com_osdownloads/js/jquery.osdownload.bundle.min.js', 'text/javascript', true);
 }
 ?>
 
-<<?php echo $moduleTag; ?> class="mod_osdownloadsfiles<?php echo $params->get('moduleclass_sfx'); ?>">
+<<?php echo $moduleTag; ?> class="mod_osdownloadsfiles<?php echo $params->get('moduleclass_sfx'); ?>" id="mod_osdownloads_<?php echo $module->id; ?>">
     <ul>
         <?php foreach ($list as $file) : ?>
+            <?php
+            if ($file->show_email) {
+                $showEmail = true;
+            }
+
+            if ($file->require_email) {
+                $requireEmail = true;
+            }
+
+            if ($file->require_agree) {
+                $requireAgree = true;
+            }
+            ?>
             <li>
                 <h4><?php echo $file->name; ?></h4>
                 <p><?php echo $file->description_1; ?></p>
                 <p>
                     <?php if ($linkTo === 'download') : ?>
-                        <a class="modOSDownloadsButton" href="<?php echo JRoute::_('index.php?option=com_osdownloads&task=getdownloadlink&tmpl=component&Itemid=' . $itemId . '&id=' . $file->id); ?>" data-direct-page="<?php echo $file->direct_page; ?>">
-                            <?php echo $params->get('link_label', JText::_('MOD_OSDOWNLOADSFILES_DOWNLOAD')); ?>
+                        <a
+                            href="<?php echo JRoute::_('index.php?option=com_osdownloads&task=getdownloadlink&tmpl=component&Itemid=' . $itemId . '&id=' . $file->id); ?>"
+                            class="modosdownloadsDownloadButton"
+                            style="color:<?php echo $file->download_color;?>"
+                            data-direct-page="<?php echo $file->direct_page; ?>"
+                            data-show-email="<?php echo $file->show_email; ?>"
+                            data-require-email="<?php echo $file->require_email; ?>"
+                            data-require-agree="<?php echo $file->require_agree; ?>"
+                            data-id="<?php echo $file->id; ?>"
+                            >
+                            <span>
+                                <?php echo $params->get('link_label', JText::_('MOD_OSDOWNLOADSFILES_DOWNLOAD')); ?>
+                            </span>
                         </a>
                     <?php else: ?>
-                        <a class="modOSDownloadsButton" href="<?php echo JRoute::_('index.php?option=com_osdownloads&view=item&Itemid=' . $itemId . '&id=' . $file->id); ?>" data-direct-page="<?php echo $file->direct_page; ?>">
+                        <a class="modosdownloadsDownloadButton readmore" href="<?php echo JRoute::_('index.php?option=com_osdownloads&view=item&Itemid=' . $itemId . '&id=' . $file->id); ?>" data-direct-page="<?php echo $file->direct_page; ?>">
                             <?php echo $params->get('link_label', JText::_('MOD_OSDOWNLOADSFILES_READ_MORE')); ?>
                         </a>
+                        <br clear="all" />
                     <?php endif; ?>
                 </p>
             </li>
@@ -54,55 +87,62 @@ if ($linkTo === 'download') {
 </<?php echo $moduleTag; ?>>
 
 <?php if ($linkTo === 'download') : ?>
-    <div id="modosdownloads-popup-iframe" class="reveal-modal">
-        <iframe src="" class="auto-height" scrolling="no"></iframe>
-        <a class="close-reveal-modal">&#215;</a>
-    </div>
+    <?php if ($requireEmail || $showEmail || $requireAgree) : ?>
+        <div id="modosdownloads<?php echo $module->id; ?>RequirementsPopup" class="reveal-modal">
+            <h1 class="title"><?php echo JText::_('COM_OSDOWNLOADS_BEFORE_DOWNLOAD'); ?></h1>
 
-    <?php if ($linkTo === 'download') : ?>
-        <script>
-            (function ($) {
-                $(function() {
-                    // Move the popup container to the body
-                    $('.reveal-modal').appendTo($('body'));
+            <div id="modosdownloads<?php echo $module->id; ?>EmailGroup" class="osdownloadsemail" style="display: none;">
 
-                    $('iframe.auto-height').iframeAutoHeight({
-                        heightOffset: 10
-                    });
+                <p id="modosdownloads<?php echo $module->id; ?>RequiredEmailMessage" style="display: none;">
+                    <?php echo JText::_('COM_OSDOWNLOADS_YOU_HAVE_INPUT_CORRECT_EMAIL_TO_GET_DOWNLOAD_LINK'); ?>
+                </p>
 
-                    function showModal(selector) {
-                        $(selector).reveal({
-                             animation: '<?php echo $params->get("popup_animation", "fade"); ?>',
-                             animationspeed: 200,
-                             closeonbackgroundclick: true,
-                             dismissmodalclass: 'close-reveal-modal'
-                        });
-                    }
+                <label for="modosdownloads<?php echo $module->id; ?>RequireEmail">
+                    <span>
+                        <?php echo(JText::_("COM_OSDOWNLOADS_EMAIL")); ?>:
+                    </span>
+                    <input type="email" aria-required="true" required name="require_email" id="modosdownloads<?php echo $module->id; ?>RequireEmail" />
+                </label>
 
-                    $(".modOSDownloadsButton").each(function(index, el) {
-                        var directPage = function() {
-                            var dp = $(el).data('direct-page');
+                <div class="error" style="display: none;" id="modosdownloads<?php echo $module->id; ?>ErrorInvalidEmail">
+                    <?php echo JText::_("COM_OSDOWNLOADS_INVALID_EMAIL"); ?>
+                </div>
+            </div>
 
-                            if (dp) {
-                                window.location = dp;
-                            }
-                        };
+            <div id="modosdownloads<?php echo $module->id; ?>AgreeGroup" class="osdownloadsagree" style="display: none;">
+                <label for="modosdownloads<?php echo $module->id; ?>RequireAgree">
+                    <input type="checkbox" name="require_agree" id="modosdownloads<?php echo $module->id; ?>RequireAgree" />
+                    <span>
+                        * <?php echo(JText::_("COM_OSDOWNLOADS_DOWNLOAD_TERM"));?>
+                    </span>
+                </label>
 
-                        $(el).on('click', function(event) {
-                            event.preventDefault();
+                <div class="error" style="display: none;" id="modosdownloads<?php echo $module->id; ?>ErrorAgreeTerms">
+                    <?php echo JText::_("COM_OSDOWNLOADS_YOU_HAVE_AGREE_TERMS_TO_DOWNLOAD_THIS"); ?>
+                </div>
+            </div>
 
-                            var url = this.href;
+            <a href="#"  id="modosdownloads<?php echo $module->id; ?>DownloadContinue" class="readmore">
+                <span>
+                    <?php echo JText::_("COM_OSDOWNLOADS_CONTINUE"); ?>
+                </span>
+            </a>
 
-                            var $iframe = $('#modosdownloads-popup-iframe iframe');
-                            $iframe.attr('src', url);
+            <a class="close-reveal-modal">&#215;</a>
+        </div>
+    <?php endif;?>
 
-                            setTimeout(function timeourShowModal() {
-                                showModal('#modosdownloads-popup-iframe');
-                            }, 500);
-                        });
-                    });
+    <script>
+        (function ($) {
+
+            $(function modosdownloadsDomReady() {
+                $('#mod_osdownloads_<?php echo $module->id; ?> .modosdownloadsDownloadButton').osdownloads({
+                    animation: '<?php echo $comParams->get("popup_animation", "fade"); ?>',
+                    elementsPrefix: 'modosdownloads<?php echo $module->id; ?>',
+                    popupElementId: 'modosdownloads<?php echo $module->id; ?>RequirementsPopup'
                 });
-            })(jQuery);
-        </script>
-    <?php endif; ?>
+            });
+
+        })(jQuery);
+    </script>
 <?php endif;

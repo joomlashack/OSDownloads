@@ -79,7 +79,7 @@ class OSDownloadsController extends JControllerLegacy
 
         $query = "SELECT documents.*
                   FROM `#__osdownloads_documents` documents
-                  WHERE documents.id = {$id}";
+                  WHERE documents.id = " . $db->q($id);
 
         $db->setQuery($query);
         $item = $db->loadObject();

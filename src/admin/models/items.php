@@ -8,9 +8,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-require_once __DIR__ . '/abstract/item.php';
+require_once __DIR__ . '/abstract/items.php';
 
-class OSDownloadsModelItem extends OSDownloadsModelItemAbstract
+class OSDownloadsModelItems extends OSDownloadsModelItemsAbstract
 {
 
 }

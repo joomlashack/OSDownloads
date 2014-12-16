@@ -5,12 +5,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $listOrder = $this->lists['order'];
 $listDirn  = $this->lists['order_Dir'];
-$saveOrder = $listOrder === 'documents.ordering';
+$saveOrder = $listOrder === 'doc.ordering';
 
 if (version_compare(JVERSION, '3.0', '>=')) {
     if ($saveOrder)
     {
-        $saveOrderingUrl = 'index.php?option=com_oscontent&task=documents.saveOrderAjax&tmpl=component';
+        $saveOrderingUrl = 'index.php?option=com_osdownloads&task=files.saveOrderAjax&tmpl=component';
         JHtml::_('sortablelist.sortable', 'documentList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
     }
 }
@@ -60,7 +60,7 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                 <div class="js-stools clearfix">
                     <div class="clearfix">
                         <div class="btn-wrapper input-append">
-                            <input type="text" name="search" id="search" placeholder="<?php echo JText::_('JSEARCH_FILTER'); ?>" value="<?php echo htmlspecialchars($this->flt->search);?>" class="text_area" onchange="document.adminForm.submit();" />
+                            <input type="text" name="search" id="search" placeholder="<?php echo JText::_('JSEARCH_FILTER'); ?>" value="<?php echo htmlspecialchars($this->filter->search);?>" class="text_area" onchange="document.adminForm.submit();" />
                             <button class="btn hasTooltip" title="" type="submit" data-original-title="Search">
                                 <?php echo JText::_( 'COM_OSDOWNLOADS_GO' ); ?>
                             </button>
@@ -75,7 +75,7 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
             </td>
             <td align="right">
                 <div class="js-stools clearfix">
-                    <?php echo category('flt_cate_id', 'com_osdownloads', $this->flt->cate_id, "onchange='this.form.submit();'", 'title', $size = 1, $sel_cat = 1); ?>
+                    <?php echo category('flt_cate_id', 'com_osdownloads', $this->filter->categoryId, "onchange='this.form.submit();'", 'title', $size = 1, $sel_cat = 1); ?>
                 </div>
             </td>
         </tr>
@@ -85,31 +85,44 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
             <tr>
                 <?php if (version_compare(JVERSION, '3.0', '>=')) : ?>
                     <th width="1%" class="nowrap center hidden-phone">
-                        <?php echo JHtml::_('searchtools.sort', '', 'documents.ordering', @$this->lists['order_Dir'], @$this->lists['order'], null, 'asc', 'JGRID_HEADING_ORDERING', 'icon-menu-2'); ?>
+                        <?php echo JHtml::_('searchtools.sort', '', 'doc.ordering', @$this->lists['order_Dir'], @$this->lists['order'], null, 'asc', 'JGRID_HEADING_ORDERING', 'icon-menu-2'); ?>
                     </th>
                 <?php endif; ?>
-                <th width="1%" class="hidden-phone"><input type="checkbox" onclick="Joomla.checkAll(this)" title="<?php echo JText::_('COM_OSDOWNLOADS_CHECK_All'); ?>" value="" name="checkall-toggle" /> </th>
-                <th class="has-context span6">
-                    <?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_NAME', 'documents.name', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+                <th width="1%" class="hidden-phone">
+                    <input type="checkbox" onclick="Joomla.checkAll(this)" title="<?php echo JText::_('COM_OSDOWNLOADS_CHECK_All'); ?>" value="" name="checkall-toggle" />
                 </th>
-                <th><?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_CATEGORY', 'cate.title', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
-                <th class="center nowrap"><?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_DOWNLOADED', 'documents.downloaded', @$this->lists['order_Dir'], @$this->lists['order'] ); ?></th>
-                <th class="center"><?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_PUBLISHED', 'documents.published', @$this->lists['order_Dir'], @$this->lists['order'] ); ?></th>
+                <th class="has-context span6">
+                    <?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_NAME', 'doc.name', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+                </th>
+                <th>
+                    <?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_CATEGORY', 'cat.title', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+                </th>
+                <th class="center nowrap">
+                    <?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_DOWNLOADED', 'doc.downloaded', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+                </th>
+                <th class="center">
+                    <?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_PUBLISHED', 'doc.published', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+                </th>
                 <?php if (version_compare(JVERSION, '3.0', '<')) : ?>
                     <th class="hidden-phone">
-                        <?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ORDERING', 'documents.ordering', @$this->lists['order_Dir'], @$this->lists['order']); ?>
-                        <?php if ($saveOrder) :?>
+                        <?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ORDERING', 'doc.ordering', @$this->lists['order_Dir'], @$this->lists['order']); ?>
+                        <?php if ($saveOrder) : ?>
                             <?php echo JHtml::_('grid.order', $this->items, 'filesave.png', 'file.saveorder'); ?>
                         <?php endif; ?>
                     </th>
                 <?php endif; ?>
-                <th class="hidden-phone center"><?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_ID', 'documents.id', @$this->lists['order_Dir'], @$this->lists['order'] ); ?></th>
+                <?php if ($this->extension->isPro()) : ?>
+                    <?php echo $this->loadTemplate('pro_headers'); ?>
+                <?php endif; ?>
+                <th class="hidden-phone center">
+                    <?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_ID', 'doc.id', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+                </th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($this->items as $i => $item) :
                 $item->checked_out = false;
-                $ordering   = ($listOrder == 'documents.ordering');
+                $ordering   = ($listOrder == 'doc.ordering');
                 $published  = JHTML::_('grid.published', $item, $i, 'tick.png', 'publish_x.png', 'file.');
                 $checked    = JHTML::_('grid.checkedout', $item, $i );
                 // $canChange  = $user->authorise('core.edit.state', 'com_content.article.'.$item->id) && $canCheckin;
@@ -139,7 +152,7 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                     <?php endif; ?>
                     <td class="hidden-phone"><?php echo $checked; ?></td>
                     <td class="has-context span6"><a href="index.php?option=com_osdownloads&view=file&cid[]=<?php echo($item->id);?>"><?php echo ($item->name); ?></a></td>
-                    <td><?php echo($item->cate_name);?></td>
+                    <td><?php echo($item->cat_title);?></td>
                     <td class="center nowrap"><?php echo($item->downloaded);?></td>
                     <td class="center"><?php echo($published);?></td>
                     <?php if (version_compare(JVERSION, '3.0', '<')) : ?>
@@ -156,6 +169,12 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                             <?php $disabled = $saveOrder ?  '' : 'disabled="disabled"'; ?>
                             <input type="text" name="order[]" size="5" value="<?php echo $item->ordering;?>" <?php echo $disabled ?> class="text-area-order span3" />
                         </td>
+                    <?php endif; ?>
+                    <?php if ($this->extension->isPro()) : ?>
+                        <?php
+                        $this->item = $item;
+                        echo $this->loadTemplate('pro_columns');
+                        ?>
                     <?php endif; ?>
                     <td class="hidden-phone center"><?php echo($item->id);?></td>
                 </tr>

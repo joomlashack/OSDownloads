@@ -71,12 +71,14 @@
             <folder>sql</folder>
             <folder>tables</folder>
             <folder>views</folder>
+            <folder>models</folder>
             <folder>language</folder>
             <folder>library</folder>
             <filename>access.xml</filename>
             <filename>config.xml</filename>
             <filename>controller.php</filename>
             <filename>osdownloads.php</filename>
+            <filename>include.php</filename>
         </files>
         <languages folder="admin/language">
             <language tag="en-GB">en-GB/en-GB.com_osdownloads.ini</language>

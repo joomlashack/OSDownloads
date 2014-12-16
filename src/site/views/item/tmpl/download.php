@@ -17,6 +17,7 @@ $thankyoupage = $params->get("thankyoupage", "Thank you");
 $email      = trim(JRequest::getVar("email"));
 $emailRegex = "/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/";
 
+// Increments the download count
 $query = $db->getQuery(true)
     ->update('#__osdownloads_documents')
     ->set('downloaded = downloaded + 1')

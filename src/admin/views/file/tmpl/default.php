@@ -197,6 +197,10 @@ $realname = substr($this->item->file_path, $index + 1);
             <td><input type="text" name="external_ref" value="<?php echo $this->item->external_ref; ?>" style="width:500px" />
             </td>
         </tr>
+
+        <?php if ($this->extension->isPro()) : ?>
+            <?php echo Alledia\OSDownloads\Pro\File::getAdditionalFormFields($this->item); ?>
+        <?php endif; ?>
     </table>
     <input type="hidden" name="task" value="" />
     <input type="hidden" name="option" value="com_osdownloads" />

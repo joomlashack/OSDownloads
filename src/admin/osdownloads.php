@@ -7,7 +7,11 @@
  */
 
 defined('_JEXEC') or die;
+
 jimport('joomla.application.component.controller');
+
+require_once 'include.php';
+
 $controller = JControllerLegacy::getInstance('osdownloads');
 $controller->execute(JFactory::getApplication()->input->get('task'));
 $controller->redirect();

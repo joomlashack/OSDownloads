@@ -8,9 +8,9 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controller');
+jimport('legacy.controller.admin');
 
-class OSDownloadsControllerFiles extends JControllerLegacy
+class OSDownloadsControllerFiles extends JControllerAdmin
 {
     public function __construct($default = array())
     {

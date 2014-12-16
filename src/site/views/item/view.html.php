@@ -18,36 +18,18 @@ class OSDownloadsViewItem extends JViewLegacy
         JTable::addIncludePath(JPATH_COMPONENT.'/tables');
 
         $mainframe = JFactory::getApplication();
+        $model     = $this->getModel();
         $params    = clone($mainframe->getParams('com_osdownloads'));
         $id        = (int) $params->get("document_id");
-
-        $db = JFactory::getDBO();
 
         if (JRequest::getVar("id")) {
             $id = (int) JRequest::getVar("id");
         }
 
-        $query  = "SELECT documents.*, cate.access AS cat_access
-                    FROM `#__osdownloads_documents` documents
-                    LEFT JOIN `#__categories` cate ON (documents.cate_id = cate.id AND cate.extension='com_osdownloads')
-                    WHERE cate.published = 1 AND documents.id = {$id}";
+        $item = $model->getItem($id);
 
-        $db->setQuery($query);
-        $item   = $db->loadObject();
-
-        $user   = JFactory::getUser();
-        $groups = $user->getAuthorisedViewLevels();
-
-        if (! $item || ! (bool) $item->published) {
+        if (empty($item)) {
             JError::raiseWarning(404, JText::_("COM_OSDOWNLOADS_THIS_DOWNLOAD_ISNT_AVAILABLE"));
-            return;
-        }
-
-        $categoryAuthorized = in_array($item->cat_access, $groups);
-        $itemAuthorized = in_array($item->access, $groups);
-
-        if ((! $categoryAuthorized && ! $itemAuthorized) || ! $itemAuthorized) {
-            JError::raiseWarning(403, JText::_("COM_OSDOWNLOADS_YOU_DONT_HAVE_PERMISSION_TO_DOWNLOAD"));
             return;
         }
 

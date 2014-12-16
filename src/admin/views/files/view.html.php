@@ -9,65 +9,56 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.application.component.view');
+jimport('legacy.model.legacy');
+
+require_once __DIR__ . '/../../models/items.php';
 
 class OSDownloadsViewFiles extends JViewLegacy
 {
+    public function __construct()
+    {
+        $model = JModelLegacy::getInstance('OSDownloadsModelItems');
+        $this->setModel($model, true);
+
+        $this->addTemplatePath(__DIR__ . '/tmpl');
+    }
 
     public function display($tpl = null)
     {
-        global $option;
-        $mainframe = JFactory::getApplication();
-        $this->flt = new JObject();
-        $limit              = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-        $limitstart         = $mainframe->getUserStateFromRequest('osdownloads.request.limitstart', 'limitstart', 0, 'int');
-        $this->flt->search  = $mainframe->getUserStateFromRequest('osdownloads.document.request.search', 'search');
-        $this->flt->cate_id = $mainframe->getUserStateFromRequest('osdownloads.document.request.cate_id', 'flt_cate_id');
-        $filter_order       = $mainframe->getUserStateFromRequest("osdownloads.document.filter_order",		'filter_order',		'documents.id',	'');
-        $filter_order_Dir   = $mainframe->getUserStateFromRequest("osdownloads.document.filter_order_Dir",	'filter_order_Dir',	'asc',		'word');
+        $app   = JFactory::getApplication();
+        $model = $this->getModel();
+        $db    = JFactory::getDBO();
 
-        $db = JFactory::getDBO();
+        $pagination = $model->getPagination();
 
-        $query = "SELECT documents.*, cate.title AS cate_name
-                  FROM `#__osdownloads_documents` documents
-                  LEFT OUTER JOIN `#__categories` cate ON (documents.cate_id = cate.id AND cate.extension = 'com_osdownloads')";
+        $query = $model->getItemsQuery();
 
-        $where = array();
-
-        if ($this->flt->search) {
-            $where[] = "documents.name LIKE '%{$this->flt->search}%'";
-        }
-
-        if ($this->flt->cate_id) {
-            $where[] = "cate.id = " .$this->flt->cate_id;
-        }
-
-        $where = (count($where) ? ' WHERE ' . implode(' AND ', $where) : '');
-        $query .= $where;
-
-        if ($filter_order == "documents.ordering") {
-            $orderby = ' ORDER BY documents.cate_id, '. $filter_order .' '. $filter_order_Dir;
-        } else {
-            $orderby = ' ORDER BY '. $filter_order .' '. $filter_order_Dir;
-        }
-
-        $db->setQuery($query);
-        $db->query();
-        $total = $db->getNumRows();
-
-        jimport('joomla.html.pagination');
-        $pagination = new JPagination($total, $limitstart, $limit);
-        $db->setQuery($query. $orderby, $pagination->limitstart, $pagination->limit);
+        $db->setQuery($query, $pagination->limitstart, $pagination->limit);
         $items = $db->loadObjectList();
 
+        $filterOrder    = $app->getUserStateFromRequest("com_osdownloads.document.filter_order", 'filter_order', 'doc.id', '');
+        $filterOrderDir = $app->getUserStateFromRequest("com_osdownloads.document.filter_order_Dir", 'filter_order_Dir', 'asc', 'word');
+
         $lists = array();
-        $lists['order_Dir'] = $filter_order_Dir;
-        $lists['order']     = $filter_order;
+        $lists['order_Dir'] = $filterOrderDir;
+        $lists['order']     = $filterOrder;
+
+        $filter             = new stdClass;
+        $filter->search     = $app->getUserStateFromRequest('com_osdownloads.document.request.search', 'search');
+        $filter->categoryId = $app->getUserStateFromRequest('com_osdownloads.document.request.cate_id', 'flt_cate_id');
+
+        // Load the extension
+        $extension = Alledia\Framework\Factory::getExtension('OSDownloads', 'component');
+        $extension->loadLibrary();
 
         $this->assignRef('lists', $lists);
         $this->assignRef("items", $items);
+        $this->assignRef("filter", $filter);
         $this->assignRef("pagination", $pagination);
+        $this->assignRef("extension", $extension);
 
         $this->addToolbar();
+
         parent::display($tpl);
     }
 

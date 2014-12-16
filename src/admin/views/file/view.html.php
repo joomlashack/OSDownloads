@@ -8,7 +8,9 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.view');
+use Alledia\Framework\Factory;
+
+jimport('legacy.view.legacy');
 
 class OSDownloadsViewFile extends JViewLegacy
 {
@@ -17,7 +19,7 @@ class OSDownloadsViewFile extends JViewLegacy
     {
         JTable::addIncludePath(JPATH_COMPONENT.'/tables');
 
-        $mainframe 	= JFactory::getApplication();
+        $mainframe  = JFactory::getApplication();
         $cid = JRequest::getVar("cid");
 
         if (is_array($cid)) {
@@ -32,7 +34,12 @@ class OSDownloadsViewFile extends JViewLegacy
             $item->description_1 = $item->brief;
         }
 
+        // Load the extension
+        $extension = Factory::getExtension('OSDownloads', 'component');
+        $extension->loadLibrary();
+
         $this->assignRef("item", $item);
+        $this->assignRef("extension", $extension);
 
         $this->addToolbar();
 

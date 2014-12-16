@@ -10,8 +10,15 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.controller');
 
+use Alledia\Framework\Factory;
+
 class OSDownloadsControllerFile extends JControllerLegacy
 {
+    /**
+     * Alledia Extension
+     * @var Licensed
+     */
+    protected $extension;
 
     public function __construct($default = array())
     {
@@ -21,6 +28,10 @@ class OSDownloadsControllerFile extends JControllerLegacy
         $this->registerTask('unpublish', 'publish');
         $this->registerTask('orderup', 'reorder');
         $this->registerTask('orderdown', 'reorder');
+
+        // Load the extension
+        $this->extension = Factory::getExtension('OSDownloads', 'component');
+        $this->extension->loadLibrary();
     }
 
     public function save()

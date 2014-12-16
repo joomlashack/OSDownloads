@@ -79,18 +79,27 @@ class OSDownloadsController extends JControllerLegacy
 
         $query = "SELECT documents.*
                   FROM `#__osdownloads_documents` documents
-                  WHERE documents.id = {$id}";
+                  WHERE documents.id = " . $db->q($id);
 
         $db->setQuery($query);
         $item = $db->loadObject();
 
-        $file     = "./media/OSDownloads/" . $item->file_path;
-        $index    = strpos($item->file_path, "_");
-        $realname = substr($item->file_path, $index + 1);
+        // Get file info
+        $file        = realpath(JPATH_SITE . "/media/com_osdownloads/files/" . $item->file_path);
+        $index       = strpos($item->file_path, "_");
+        $realName    = substr($item->file_path, $index + 1);
+        $finfo       = finfo_open(FILEINFO_MIME_TYPE);
+        $contentType = finfo_file($finfo, $file);
 
-        header("Content-Type: application/force-download");
+        header("Content-Disposition: attachment; filename=\"" . $realName . "\";");
         header('Content-Description: File Transfer');
-        header("Content-Disposition: attachment; filename=\"".$realname."\";");
+        header('Content-Transfer-Encoding: binary');
+        header('Content-Type: ' . $contentType);
+        header('Connection: Keep-Alive');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($file));
 
         @readfile($file);
 

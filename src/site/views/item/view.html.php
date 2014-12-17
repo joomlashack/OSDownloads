@@ -8,6 +8,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+use Alledia\Framework\Factory;
+
 jimport('joomla.application.component.view');
 
 class OSDownloadsViewItem extends JViewLegacy
@@ -37,9 +39,14 @@ class OSDownloadsViewItem extends JViewLegacy
 
         $this->buildBreadcrumbs($paths, $item);
 
+        // Load the extension
+        $extension = Factory::getExtension('OSDownloads', 'component');
+        $extension->loadLibrary();
+
         $this->assignRef("item", $item);
         $this->assignRef("paths", $paths);
         $this->assignRef("params", $params);
+        $this->assignRef("extension", $extension);
 
         // Check if the file should come from an external URL
         if (!empty($item->file_url)) {

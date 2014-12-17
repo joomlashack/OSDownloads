@@ -7,7 +7,13 @@
  */
 defined('_JEXEC') or die;
 
+use Alledia\Framework\Factory;
+
 require_once __DIR__ . '/helper.php';
+
+// Load the OSDownloads extension
+$extension = Factory::getExtension('OSDownloads', 'component');
+$extension->loadLibrary();
 
 $list = ModOSDownloadsFilesHelper::getList($params);
 require JModuleHelper::getLayoutPath('mod_osdownloadsfiles');

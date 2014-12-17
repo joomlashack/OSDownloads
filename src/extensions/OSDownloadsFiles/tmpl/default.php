@@ -11,6 +11,7 @@ jimport('joomla.application.component.helper');
 
 $app    = JFactory::getApplication();
 $doc    = JFactory::getDocument();
+$lang   = JFactory::getLanguage();
 $itemId = (int) $app->input->get('Itemid');
 
 $moduleTag = $params->get('module_tag', 'div');
@@ -22,6 +23,7 @@ $comParams = JComponentHelper::getParams('com_osdownloads');
 $showEmail    = false;
 $requireEmail = false;
 $requireAgree = false;
+$requireShare = false;
 
 // Load language from component
 JFactory::getLanguage()->load('com_osdownloads');
@@ -35,7 +37,7 @@ if ($comParams->get('load_jquery', false)) {
 }
 
 if ($linkTo === 'download') {
-    $doc->addScript('media/com_osdownloads/js/jquery.osdownload.bundle.min.js', 'text/javascript', true);
+    $doc->addScript('media/com_osdownloads/js/jquery.osdownloads.bundle.min.js', 'text/javascript', true);
 }
 ?>
 
@@ -54,12 +56,21 @@ if ($linkTo === 'download') {
             if ($file->require_agree) {
                 $requireAgree = true;
             }
+
+            if (@$file->require_share) {
+                $requireShare = true;
+            }
             ?>
             <li>
                 <h4><?php echo $file->name; ?></h4>
                 <p><?php echo $file->description_1; ?></p>
                 <p>
                     <?php if ($linkTo === 'download') : ?>
+                        <?php
+                        $fileURL = JURI::root(false, false);
+                        $fileURL = preg_replace('/\/$/', '', $fileURL);
+                        $fileURL .= JRoute::_('index.php?option=com_osdownloads&view=item&Itemid=' . $itemId . '&id=' . $file->id);
+                        ?>
                         <a
                             href="<?php echo JRoute::_('index.php?option=com_osdownloads&task=getdownloadlink&tmpl=component&Itemid=' . $itemId . '&id=' . $file->id); ?>"
                             class="modosdownloadsDownloadButton"
@@ -69,6 +80,14 @@ if ($linkTo === 'download') {
                             data-require-email="<?php echo $file->require_email; ?>"
                             data-require-agree="<?php echo $file->require_agree; ?>"
                             data-id="<?php echo $file->id; ?>"
+                            data-require-share="<?php echo $file->require_share; ?>"
+                            data-url="<?php echo $fileURL; ?>"
+                            data-lang="<?php echo $lang->getTag(); ?>"
+                            data-name="<?php echo $file->name; ?>"
+                            <?php if ($extension->isPro()) : ?>
+                                data-hashtags="<?php echo str_replace('#', '', @$file->twitter_hashtags); ?>"
+                                data-via="<?php echo str_replace('@', '', @$file->twitter_via); ?>"
+                            <?php endif; ?>
                             >
                             <span>
                                 <?php echo $params->get('link_label', JText::_('MOD_OSDOWNLOADSFILES_DOWNLOAD')); ?>
@@ -87,7 +106,7 @@ if ($linkTo === 'download') {
 </<?php echo $moduleTag; ?>>
 
 <?php if ($linkTo === 'download') : ?>
-    <?php if ($requireEmail || $showEmail || $requireAgree) : ?>
+    <?php if ($requireEmail || $showEmail || $requireAgree || $requireShare) : ?>
         <div id="modosdownloads<?php echo $module->id; ?>RequirementsPopup" class="reveal-modal">
             <h1 class="title"><?php echo JText::_('COM_OSDOWNLOADS_BEFORE_DOWNLOAD'); ?></h1>
 
@@ -119,6 +138,19 @@ if ($linkTo === 'download') {
 
                 <div class="error" style="display: none;" id="modosdownloads<?php echo $module->id; ?>ErrorAgreeTerms">
                     <?php echo JText::_("COM_OSDOWNLOADS_YOU_HAVE_AGREE_TERMS_TO_DOWNLOAD_THIS"); ?>
+                </div>
+            </div>
+
+            <div id="modosdownloads<?php echo $module->id; ?>ShareGroup" class="osdownloadsshare" style="display: none;">
+                <!-- Facebook -->
+                <div id="fb-root"></div>
+
+                <p id="modosdownloads<?php echo $module->id; ?>RequiredShareMessage" style="display: none;">
+                    <?php echo JText::_('COM_OSDOWNLOADS_YOU_MUST_TWEET_SHARE_FACEBOOK'); ?>
+                </p>
+
+                <div class="error" style="display: none;" id="modosdownloads<?php echo $module->id; ?>ErrorShare">
+                    <?php echo JText::_("COM_OSDOWNLOADS_SHARE_TO_DOWNLOAD_THIS"); ?>
                 </div>
             </div>
 

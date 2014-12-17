@@ -199,3 +199,20 @@ Example markup
         margin-left: -180px !important;
     }
 }
+
+/* SHARE BUTTONS */
+.fb-like {
+    margin-left: 3px;
+}
+
+.fb-like iframe {
+    top: -5px;
+}
+
+.fb_iframe_widget > span {
+    width: 450px !important;
+}
+
+.fb-like-box iframe {
+    width: 450px !important;
+}

@@ -10,7 +10,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 use Alledia\Framework\Factory;
 
-jimport('legacy.model.legacy');
+jimport('joomla.application.component.modeladmin');
 
 abstract class OSDownloadsModelFileAbstract extends JModelAdmin
 {

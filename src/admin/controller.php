@@ -25,9 +25,11 @@ class OSDownloadsController extends JControllerLegacy
     {
         $view = JRequest::getCmd("view", "files");
         JRequest::setVar("view", $view);
+
         switch ($this->getTask()) {
             case "file":
                 JRequest::setVar('view', 'file');
+                $view = 'file';
                 break;
         }
 

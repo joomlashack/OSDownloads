@@ -2,17 +2,33 @@
 <metadata>
 	<layout title="COM_OSDOWNLOADS_FILE_VIEW_DEFAULT_TITLE">
 		<message>
-			<![CDATA[]]>
+			<![CDATA[COM_OSDOWNLOADS_FILE_VIEW_DEFAULT_DESC]]>
 		</message>
 	</layout>
 	<fields name="params">
 		<fieldset name="basic" label="COM_OSDOWNLOADS_OPTIONS" addfieldpath="/components/com_osdownloads/models/fields">
-			<field name="document_id" type="modal_document" size="1" default="" label="COM_OSDOWNLOADS_FILE" />
-			<field name="show_download_count" type="radio" default="0" label="COM_OSDOWNLOADS_SHOW_DOWNLOAD_COUNT" >
+			<field name="document_id"
+				type="modal_document"
+				size="1"
+				default=""
+				label="COM_OSDOWNLOADS_FILE" />
+
+			<field name="show_download_count"
+				type="radio"
+				default="0"
+				label="COM_OSDOWNLOADS_SHOW_DOWNLOAD_COUNT"
+				class="btn-group">
+
 				<option value="0">No</option>
 				<option value="1">Yes</option>
 			</field>
-			<field name="show_category" type="radio" default="0" label="COM_OSDOWNLOADS_SHOW_CATEGORY" >
+
+			<field name="show_category"
+				type="radio"
+				default="0"
+				label="COM_OSDOWNLOADS_SHOW_CATEGORY"
+				class="btn-group">
+
 				<option value="0">No</option>
 				<option value="1">Yes</option>
 			</field>

@@ -2,7 +2,7 @@
 <metadata>
 	<layout title="COM_OSDOWNLOADS_DOWNLOADS_VIEW_DEFAULT_TITLE">
 		<message>
-			<![CDATA[]]>
+			<![CDATA[com_osdownloads_downloads_view_default_desc]]>
 		</message>
 	</layout>
 	<fields name="params">
@@ -14,6 +14,7 @@
 
 			<field name="show_child_categories"
 				type="radio"
+				class="btn-group"
 				default="1"
 				label="COM_OSDOWNLOADS_CHILD_CATEGORIES" >
 				<option value="0">JNO</option>
@@ -22,6 +23,7 @@
 
 			<field name="include_child_files"
 				type="radio"
+				class="btn-group"
 				default="0"
 				label="COM_OSDOWNLOADS_INCLUDE_FILES_CHILD_CATEGORIES" >
 				<option value="0">JNO</option>
@@ -36,6 +38,7 @@
 
 			<field name="show_download_count"
 				type="radio"
+				class="btn-group"
 				default="0"
 				label="COM_OSDOWNLOADS_SHOW_DOWNLOAD_COUNT" >
 				<option value="0">JNO</option>
@@ -44,6 +47,7 @@
 
 			<field name="show_category"
 				type="radio"
+				class="btn-group"
 				default="0"
 				label="COM_OSDOWNLOADS_SHOW_CATEGORY" >
 				<option value="0">JNO</option>
@@ -52,6 +56,7 @@
 
 			<field name="show_category_filter"
 				type="radio"
+				class="btn-group"
 				default="0"
 				label="COM_OSDOWNLOADS_SHOW_CATEGORY_FILTER" >
 				<option value="0">JNO</option>

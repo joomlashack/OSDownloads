@@ -64,13 +64,33 @@ $realname = substr($this->item->file_path, $index + 1);
                         </div>
                     </div>
                 <?php endif;?>
-                <?php
-                    $fields = $this->form->getFieldset('basic');
 
-                    foreach ($fields as $fieldName => $field) {
-                        echo $this->form->renderField($field->fieldname);
-                    }
+                <?php
+                echo $this->form->renderField('file');
+                echo $this->form->renderField('file_url');
                 ?>
+                <div class="control-group">
+                    <div class="control-label">
+                        <?php echo JText::_('COM_OSDOWNLOADS_DESCRIPTIONS'); ?>
+                    </div>
+                    <div class="controls">
+                        <?php echo JHtml::_('bootstrap.startTabSet', 'myTabDescriptions', array('active' => 'description1')); ?>
+
+                        <?php echo JHtml::_('bootstrap.addTab', 'myTabDescriptions', 'description1', JText::_('COM_OSDOWNLOADS_DESCRIPTION_1H', true)); ?>
+                        <?php echo $this->form->getField('description_1')->input; ?>
+                        <?php echo JHtml::_('bootstrap.endTab'); ?>
+
+                        <?php echo JHtml::_('bootstrap.addTab', 'myTabDescriptions', 'description2', JText::_('COM_OSDOWNLOADS_DESCRIPTION_2H', true)); ?>
+                        <?php echo $this->form->getField('description_2')->input; ?>
+                        <?php echo JHtml::_('bootstrap.endTab'); ?>
+
+                        <?php echo JHtml::_('bootstrap.addTab', 'myTabDescriptions', 'description3', JText::_('COM_OSDOWNLOADS_DESCRIPTION_3H', true)); ?>
+                        <?php echo $this->form->getField('description_3')->input; ?>
+                        <?php echo JHtml::_('bootstrap.endTab'); ?>
+
+                        <?php echo JHtml::_('bootstrap.endTabSet'); ?>
+                    </div>
+                </div>
             </div>
             <div class="span2">
                 <fieldset class="form-vertical">
@@ -105,6 +125,7 @@ $realname = substr($this->item->file_path, $index + 1);
             }
         ?>
         <?php echo JHtml::_('bootstrap.endTab'); ?>
+        <?php echo JHtml::_('bootstrap.endTabSet'); ?>
     </div>
 
     <input type="hidden" name="task" value="" />

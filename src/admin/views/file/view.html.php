@@ -10,11 +10,10 @@ defined('_JEXEC') or die;
 
 use Alledia\Framework\Factory;
 
-jimport('legacy.view.legacy');
-
+require_once __DIR__ . '/../view.html.php';
 require_once __DIR__ . '/../../models/file.php';
 
-class OSDownloadsViewFile extends JViewLegacy
+class OSDownloadsViewFile extends OSDownloadsViewAbstract
 {
     protected $form;
 

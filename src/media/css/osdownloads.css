@@ -148,6 +148,9 @@ Example markup
 </div>
 
 */
+.reveal-modal {
+    text-align: left;
+}
 
 .reveal-modal iframe {
     border: 0;

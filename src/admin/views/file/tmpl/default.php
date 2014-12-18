@@ -14,10 +14,7 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('behavior.formvalidation');
 JHtml::_('behavior.keepalive');
 JHtml::_('behavior.tooltip');
-
-if (version_compare(JVERSION, '3.0', '>=')) {
-    JHtml::_('formbehavior.chosen', 'select');
-}
+JHtml::_('formbehavior.chosen', 'select');
 
 JFilterOutput::objectHTMLSafe($this->item);
 $editor = JFactory::getEditor();
@@ -29,7 +26,6 @@ $realname = substr($this->item->file_path, $index + 1);
 <script type="text/javascript">
     Joomla.submitbutton = function(task)
     {
-        console.log(task);
         if (task == 'cancel' || document.formvalidator.isValid(document.id('item-form')))
         {
             Joomla.submitform(task, document.getElementById('item-form'));
@@ -59,7 +55,7 @@ $realname = substr($this->item->file_path, $index + 1);
                             <?php echo JText::_('COM_OSDOWNLOADS_CURRENT_FILE'); ?>
                         </div>
                         <div class="controls">
-                            <?php echo($realname);?>
+                            <?php echo $realname;?>
                             <input type="hidden" name="old_file" value="<?php echo($this->item->file_path);?>" />
                         </div>
                     </div>

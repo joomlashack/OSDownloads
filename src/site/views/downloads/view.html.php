@@ -8,7 +8,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-jimport('joomla.application.component.view');
+require_once JPATH_SITE . '/components/com_osdownloads/models/item.php';
+
+jimport('legacy.view.legacy');
 
 class OSDownloadsViewDownloads extends JViewLegacy
 {
@@ -43,21 +45,22 @@ class OSDownloadsViewDownloads extends JViewLegacy
         }
         $categoryIDsStr = implode(',', $categoryIDs);
 
-        $extraWhere = '';
+        $model = JModelLegacy::getInstance('OSDownloadsModelItem');
+
+        $query = $model->getItemQuery();
+
+        $query->select('cat.access as cat_access');
+
         if ($includeChildFiles) {
-            $extraWhere = " OR c.parent_id IN ({$categoryIDsStr}) ";
+            $query->where("(cate_id IN ({$categoryIDsStr}) OR cat.parent_id IN ({$categoryIDsStr}))");
+        } else {
+            $query->where("cate_id IN ({$categoryIDsStr})");
         }
 
-        $query = "SELECT d.*,
-                      c.published as cat_published,
-                      c.access AS cat_access
-                  FROM `#__osdownloads_documents` AS d
-                  LEFT JOIN `#__categories` AS c ON (d.cate_id = c.id AND c.extension='com_osdownloads')
-                  WHERE (d.cate_id IN ({$categoryIDsStr})
-                      {$extraWhere} )
-                      AND d.published = 1
-                      AND c.published = 1
-                  ORDER BY d.ordering";
+        $query->order('doc.ordering');
+
+        $db->setQuery($query);
+
 
         // Pagination
         $db->setQuery($query);

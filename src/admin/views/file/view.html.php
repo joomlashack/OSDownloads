@@ -25,7 +25,7 @@ class OSDownloadsViewFile extends JViewLegacy
         if (is_array($cid)) {
             $cid = $cid[0];
         }
-        $item = JTable::getInstance("document", "OsdownloadsTable");
+        $item = JTable::getInstance("document", "OSDownloadsTable");
         $item->load($cid);
 
         if ($item->description_1) {

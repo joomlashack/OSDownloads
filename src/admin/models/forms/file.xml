@@ -48,7 +48,7 @@
             description="COM_CATEGORIES_DESCRIPTION_DESC"
             filter="JComponentHelper::filterText"
             buttons="true"
-            hide="pagebreak"/>
+            hide="readmore,pagebreak"/>
 
         <field
             name="description_3"
@@ -57,7 +57,7 @@
             description="COM_CATEGORIES_DESCRIPTION_DESC"
             filter="JComponentHelper::filterText"
             buttons="true"
-            hide="pagebreak"/>
+            hide="readmore,pagebreak"/>
 
     </fieldset>
 

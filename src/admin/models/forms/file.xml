@@ -105,7 +105,8 @@
             type="radio"
             class="btn-group"
             default="0"
-            label="COM_OSDOWNLOADS_SHOW_EMAIL">
+            label="COM_OSDOWNLOADS_SHOW_EMAIL"
+            description="COM_OSDOWNLOADS_SHOW_EMAIL_DESC">
             <option value="1">JYES</option>
             <option value="0">JNO</option>
         </field>
@@ -138,12 +139,14 @@
             name="download_text"
             type="text"
             default=""
-            label="COM_OSDOWNLOADS_DOWNLOAD_TEXT" />
+            label="COM_OSDOWNLOADS_DOWNLOAD_TEXT"
+            description="COM_OSDOWNLOADS_DOWNLOAD_TEXT_DESC" />
 
         <field
             name="download_color"
             type="color"
-            label="COM_OSDOWNLOADS_DOWNLOAD_COLOR" />
+            label="COM_OSDOWNLOADS_DOWNLOAD_COLOR"
+            description="COM_OSDOWNLOADS_DOWNLOAD_COLOR_DESC" />
 
         <field
             name="documentation_link"
@@ -197,6 +200,7 @@
             type="text"
             default=""
             class="input-xxlarge"
-            label="COM_OSDOWNLOADS_EXTERNAL_REFERENCE" />
+            label="COM_OSDOWNLOADS_EXTERNAL_REFERENCE"
+            description="COM_OSDOWNLOADS_EXTERNAL_REFERENCE_DESC" />
     </fieldset>
 </form>

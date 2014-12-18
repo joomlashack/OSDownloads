@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset name="file" addfieldpath="/administrator/components/com_osdownloads/models/fields" >
+        <field name="name"
+            type="text"
+            label="COM_OSDOWNLOADS_NAME"
+            description="COM_OSDOWNLOADS_NAME_DESC"
+            class="input-xxlarge input-large-text"
+            size="40"
+            required="true" />
+
+        <field
+            name="alias"
+            type="text"
+            label="JFIELD_ALIAS_LABEL"
+            description="JFIELD_ALIAS_DESC"
+            hint="JFIELD_ALIAS_PLACEHOLDER"
+            size="45"/>
+    </fieldset>
+
+    <fieldset name="basic">
+        <field
+            name="file"
+            type="file"
+            label="COM_OSDOWNLOADS_UPLOAD_FILE"
+            description="COM_OSDOWNLOADS_UPLOAD_FILE_DESC" />
+
+        <field
+            name="file_url"
+            type="text"
+            label="COM_OSDOWNLOADS_FILE_URL"
+            description="COM_OSDOWNLOADS_FILE_URL_DESC"
+            class="input-xxlarge" />
+
+        <field
+            name="description_1"
+            type="editor"
+            label="COM_OSDOWNLOADS_DESCRIPTION_1H"
+            description="COM_CATEGORIES_DESCRIPTION_DESC"
+            filter="JComponentHelper::filterText"
+            buttons="true"
+            hide="pagebreak"/>
+
+        <field
+            name="description_2"
+            type="editor"
+            label="COM_OSDOWNLOADS_DESCRIPTION_2H"
+            description="COM_CATEGORIES_DESCRIPTION_DESC"
+            filter="JComponentHelper::filterText"
+            buttons="true"
+            hide="pagebreak"/>
+
+        <field
+            name="description_3"
+            type="editor"
+            label="COM_OSDOWNLOADS_DESCRIPTION_3H"
+            description="COM_CATEGORIES_DESCRIPTION_DESC"
+            filter="JComponentHelper::filterText"
+            buttons="true"
+            hide="pagebreak"/>
+
+    </fieldset>
+
+    <fieldset name="file-vertical">
+        <field
+            name="cate_id"
+            type="category"
+            required="true"
+            label="COM_OSDOWNLOADS_CATEGORY"
+            description="COM_OSDOWNLOADS_CATEGORY_DESC"
+            extension="com_osdownloads"
+            class="" />
+
+        <field
+            name="published"
+            type="list"
+            class="chzn-color-state"
+            default="1"
+            size="1"
+            label="JSTATUS"
+            description="JFIELD_PUBLISHED_DESC">
+            <option value="1">JPUBLISHED</option>
+            <option value="0">JUNPUBLISHED</option>
+        </field>
+
+        <field
+            name="access"
+            type="accesslevel"
+            label="JFIELD_ACCESS_LABEL"
+            description="JFIELD_ACCESS_DESC"/>
+
+        <field
+            name="id"
+            type="text"
+            default="0"
+            label="JGLOBAL_FIELD_ID_LABEL"
+            description="JGLOBAL_FIELD_ID_DESC"
+            class="readonly"
+            readonly="true"/>
+    </fieldset>
+
+    <fieldset name="requirements" addfieldpath="/administrator/components/com_osdownloads/models/fields" >
+        <field
+            name="show_email"
+            type="radio"
+            class="btn-group"
+            default="0"
+            label="COM_OSDOWNLOADS_SHOW_EMAIL">
+            <option value="1">JYES</option>
+            <option value="0">JNO</option>
+        </field>
+
+        <field
+            name="require_email"
+            type="radio"
+            class="btn-group"
+            default="0"
+            label="COM_OSDOWNLOADS_REQUIRE_EMAIL"
+            description="COM_OSDOWNLOADS_REQUIRE_EMAIL_MEANS_SHOW_EMAIL_TOO">
+            <option value="1">JYES</option>
+            <option value="0">JNO</option>
+        </field>
+
+        <field
+            name="require_agree"
+            type="radio"
+            class="btn-group"
+            default="0"
+            label="COM_OSDOWNLOADS_REQUIRE_AGREEMENT"
+            description="COM_OSDOWNLOADS_AGREEMENT_TIP">
+            <option value="1">JYES</option>
+            <option value="0">JNO</option>
+        </field>
+    </fieldset>
+
+    <fieldset name="advanced" addfieldpath="/administrator/components/com_osdownloads/models/fields" >
+        <field
+            name="download_text"
+            type="text"
+            default=""
+            label="COM_OSDOWNLOADS_DOWNLOAD_TEXT" />
+
+        <field
+            name="download_color"
+            type="color"
+            label="COM_OSDOWNLOADS_DOWNLOAD_COLOR" />
+
+        <field
+            name="documentation_link"
+            type="text"
+            default=""
+            class="input-xxlarge"
+            label="COM_OSDOWNLOADS_DOCUMENTATION_LINK"
+            description="COM_OSDOWNLOADS_LINK_TIP" />
+
+        <field
+            name="demo_link"
+            type="text"
+            default=""
+            class="input-xxlarge"
+            label="COM_OSDOWNLOADS_DEMO_LINK"
+            description="COM_OSDOWNLOADS_LINK_TIP" />
+
+        <field
+            name="support_link"
+            type="text"
+            default=""
+            class="input-xxlarge"
+            label="COM_OSDOWNLOADS_SUPPORT_LINK"
+            description="COM_OSDOWNLOADS_LINK_TIP" />
+
+        <field
+            name="other_name"
+            type="text"
+            default=""
+            label="COM_OSDOWNLOADS_OTHER_NAME"
+            description="COM_OSDOWNLOADS_OTHER_TIP" />
+
+        <field
+            name="other_link"
+            type="text"
+            default=""
+            class="input-xxlarge"
+            label="COM_OSDOWNLOADS_OTHER_LINK"
+            description="COM_OSDOWNLOADS_OTHER_TIP" />
+
+        <field
+            name="direct_page"
+            type="text"
+            default=""
+            class="input-xxlarge"
+            label="COM_OSDOWNLOADS_DIRECT_PAGE"
+            description="COM_OSDOWNLOADS_LINK_TIP" />
+
+        <field
+            name="external_ref"
+            type="text"
+            default=""
+            class="input-xxlarge"
+            label="COM_OSDOWNLOADS_EXTERNAL_REFERENCE" />
+    </fieldset>
+</form>

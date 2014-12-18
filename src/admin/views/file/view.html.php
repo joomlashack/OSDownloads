@@ -12,12 +12,20 @@ use Alledia\Framework\Factory;
 
 jimport('legacy.view.legacy');
 
+require_once __DIR__ . '/../../models/file.php';
+
 class OSDownloadsViewFile extends JViewLegacy
 {
+    protected $form;
+
+    protected $model;
 
     public function display($tpl = null)
     {
-        JTable::addIncludePath(JPATH_COMPONENT.'/tables');
+        $this->form = $this->get('Form');
+        $this->model = $this->getModel();
+
+        JTable::addIncludePath(JPATH_COMPONENT . '/tables');
 
         $mainframe  = JFactory::getApplication();
         $cid = JRequest::getVar("cid");
@@ -33,6 +41,8 @@ class OSDownloadsViewFile extends JViewLegacy
         } else {
             $item->description_1 = $item->brief;
         }
+
+        $this->form->bind($item);
 
         // Load the extension
         $extension = Factory::getExtension('OSDownloads', 'component');

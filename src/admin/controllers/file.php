@@ -44,46 +44,45 @@ class OSDownloadsControllerFile extends JControllerLegacy
         $row  = JTable::getInstance('Document', 'OsdownloadsTable');
         $post = JRequest::get('post');
 
-        $row->bind($post);
+        $row->bind($post['jform']);
 
-        $text    = JRequest::getVar('description_1', '', 'post', 'string', JREQUEST_ALLOWRAW);
+        $text    = $post['jform']['description_1'];
         $text    = str_replace('<br>', '<br />', $text);
         $pattern = '#<hr\s+id=("|\')system-readmore("|\')\s*\/*>#i';
         $tagPos  = preg_match($pattern, $text);
         if ($tagPos == 0) {
-            $row->brief	= $text;
+            $row->brief = $text;
             $row->description_1 = "";
         } else {
             list($row->brief, $row->description_1) = preg_split($pattern, $text, 2);
         }
 
-        $text               = JRequest::getVar('description_2', '', 'post', 'string', JREQUEST_ALLOWRAW);
-        $text               = str_replace('<br>', '<br />', $text);
-        $row->description_2 = $text;
-        $text               = JRequest::getVar('description_3', '', 'post', 'string', JREQUEST_ALLOWRAW);
-        $text               = str_replace('<br>', '<br />', $text);
-        $row->description_3 = $text;
-        $row->show_email    = isset($row->show_email);
-        $row->require_email = isset($row->require_email);
-        $row->require_agree = isset($row->require_agree);
-        $row->file_url      = JRequest::getVar('file_url', '', 'post', 'string');
+        $row->show_email    = (int) $row->show_email;
+        $row->require_email = (int) $row->require_email;
+        $row->require_agree = (int) $row->require_agree;
 
-        $file         = JRequest::getVar("file", '', "files");
-        $file["name"] = JFile::makeSafe($file["name"]);
+        $files = JRequest::get('files');
+        $file  = $files['jform'];
 
-        if (isset($file["name"]) && $file["name"]) {
-            if (isset($post["old_file"]) && JFile::exists(JPath::clean(JPATH_SITE."/media"."/OSDownloads/".$post["old_file"]))) {
-                unlink(JPath::clean(JPATH_SITE."/media"."/OSDownloads/".$post["old_file"]));
+        if (!empty($file['name'])) {
+            $file["name"]['file'] = JFile::makeSafe($file["name"]['file']);
+
+            if (isset($file["name"]['file']) && $file["name"]['file']) {
+                $uploadDir = JPATH_SITE . "/media/com_osdownloads/files/";
+
+                if (isset($post["old_file"]) && JFile::exists(JPath::clean($uploadDir . $post["old_file"]))) {
+                    unlink(JPath::clean($uploadDir . $post["old_file"]));
+                }
+
+                if (!JFolder::exists(JPath::clean($uploadDir))) {
+                    JFolder::create(JPath::clean($uploadDir));
+                }
+
+                $timestamp = md5(microtime());
+                $filepath = JPath::clean($uploadDir . $timestamp . "_" . $file["name"]['file']);
+                $row->file_path = $timestamp . "_" . $file["name"]['file'];
+                JFile::upload($file["tmp_name"]['file'], $filepath);
             }
-
-            if (!JFolder::exists(JPath::clean(JPATH_SITE."/media"."/OSDownloads"))) {
-                JFolder::create(JPath::clean(JPATH_SITE."/media"."/OSDownloads"));
-            }
-
-            $timestamp = md5(microtime());
-            $filepath = JPath::clean(JPATH_SITE."/media"."/OSDownloads/".$timestamp."_".$file["name"]);
-            $row->file_path = $timestamp."_".$file["name"];
-            JFile::upload($file["tmp_name"], $filepath);
         }
 
         $row->store();
@@ -137,8 +136,11 @@ class OSDownloadsControllerFile extends JControllerLegacy
         $query = 'SELECT * FROM `#__osdownloads_documents` WHERE id IN ('. $cids .')';
         $db->setQuery($query);
         $rows = $db->loadObjectList();
+
+        $uploadDir = JPATH_SITE . "/media/com_osdownloads/files/";
+
         foreach ($rows as $item) {
-            $filepath = JPath::clean(JPATH_SITE."/media"."/OSDownloads/".$item->file_path);
+            $filepath = JPath::clean($uploadDir . $item->file_path);
             if (JFile::exists($filepath)) {
                 JFile::delete($filepath);
             }

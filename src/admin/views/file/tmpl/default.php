@@ -8,200 +8,105 @@
 
 defined('_JEXEC') or die;
 
+// Include the component HTML helpers.
+JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+
+JHtml::_('behavior.formvalidation');
+JHtml::_('behavior.keepalive');
 JHtml::_('behavior.tooltip');
+
+if (version_compare(JVERSION, '3.0', '>=')) {
+    JHtml::_('formbehavior.chosen', 'select');
+}
 
 JFilterOutput::objectHTMLSafe($this->item);
 $editor = JFactory::getEditor();
 
 $index = strpos($this->item->file_path, "_");
 $realname = substr($this->item->file_path, $index + 1);
-
-    function category($name, $extension, $selected = null, $javascript = null, $order = null, $size = 1, $sel_cat = 1)
-    {
-        // Deprecation warning.
-        JLog::add('JList::category is deprecated.', JLog::WARNING, 'deprecated');
-
-        $categories = JHtml::_('category.options', $extension);
-        if ($sel_cat) {
-            array_unshift($categories, JHtml::_('select.option', '0', JText::_('JOPTION_SELECT_CATEGORY')));
-        }
-
-        $category = JHtml::_(
-            'select.genericlist', $categories, $name, 'class="inputbox" size="' . $size . '" ' . $javascript, 'value', 'text',
-            $selected
-        );
-
-        return $category;
-    }
-
 ?>
-<form action="<?php echo(JRoute::_("index.php?option=com_osdownloads"));?>" method="post" name="adminForm" enctype="multipart/form-data" id="adminForm">
-    <table width="100%">
-        <tr>
-            <td width="90"><?php echo(JText::_("COM_OSDOWNLOADS_NAME"));?></td>
-            <td><input type="text" name="name" value="<?php echo $this->item->name; ?>" style="width:200px" /></td>
-        </tr>
-        <tr>
-            <td><?php echo(JText::_("COM_OSDOWNLOADS_ALIAS"));?></td>
-            <td><input type="text" name="alias" value="<?php echo $this->item->alias; ?>" style="width:200px" /></td>
-        </tr>
-        <tr>
-            <td valign="top"><?php echo(JText::_("COM_OSDOWNLOADS_UPLOAD_FILE"));?></td>
-            <td>
+
+<script type="text/javascript">
+    Joomla.submitbutton = function(task)
+    {
+        console.log(task);
+        if (task == 'cancel' || document.formvalidator.isValid(document.id('item-form')))
+        {
+            Joomla.submitform(task, document.getElementById('item-form'));
+        }
+    }
+</script>
+
+<form action="<?php echo JRoute::_("index.php?option=com_osdownloads");?>" method="post" name="adminForm" enctype="multipart/form-data" id="item-form" class="form-validate">
+
+    <div class="form-inline form-inline-header">
+        <?php
+        echo $this->form->renderField('name');
+        echo $this->form->renderField('alias');
+        ?>
+    </div>
+
+    <div class="form-horizontal">
+        <?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'general')); ?>
+
+        <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'general', JText::_('COM_OSDOWNLOADS_FILE', true)); ?>
+
+        <div class="row-fluid">
+            <div class="span10">
                 <?php if ($this->item->file_path):?>
-                    <div><?php echo($realname);?></div>
-                    <input type="hidden" name="old_file" value="<?php echo($this->item->file_path);?>" />
+                    <div class="control-group">
+                        <div class="control-label">
+                            <?php echo JText::_('COM_OSDOWNLOADS_CURRENT_FILE'); ?>
+                        </div>
+                        <div class="controls">
+                            <?php echo($realname);?>
+                            <input type="hidden" name="old_file" value="<?php echo($this->item->file_path);?>" />
+                        </div>
+                    </div>
                 <?php endif;?>
-                <input type="file" name="file" />
-            </td>
-        </tr>
-        <tr>
-            <td><?php echo(JText::_("COM_OSDOWNLOADS_FILE_URL"));?></td>
-            <td><input type="text" name="file_url" value="<?php echo $this->item->file_url; ?>" style="width:200px" /></td>
-        </tr>
-        <tr>
-            <td><?php echo(JText::_("COM_OSDOWNLOADS_CATEGORY"));?></td>
-            <td>
-                  <?php echo category('cate_id', 'com_osdownloads', $this->item->cate_id, $javascript = null, 'title', $size = 1, $sel_cat = 1); ?>
-            </td>
-        </tr>
-        <tr>
-            <td><?php echo JText::_('COM_OSDOWNLOADS_ACCESS_LEVEL'); ?></td>
-            <td>
-                <?php echo JHtml::_('access.level', 'access', $this->item->access, null, array(), 'access'); ?>
-            </td>
-        </tr>
+                <?php
+                    $fields = $this->form->getFieldset('basic');
 
-        <?php if (version_compare(JVERSION, '3.0', '>=')) : ?>
-            <tr>
-                <td>
-                    <?php echo JText::_("COM_OSDOWNLOADS_DESCRIPTIONS"); ?>
-                </td>
-                <td>
-                    <?php echo JHtml::_('bootstrap.startTabSet', 'descrTabs', array('active' => 'description_1_tab')); ?>
-
-                    <?php echo JHtml::_('bootstrap.addTab', 'descrTabs', 'description_1_tab', JText::_("COM_OSDOWNLOADS_DESCRIPTION_1h")); ?>
-                    <?php echo $editor->display( 'description_1',  $this->item->description_1 , '100%', '200', '75', '20' ); ?>
-                    <?php echo JHtml::_('bootstrap.endTab'); ?>
-
-                    <?php echo JHtml::_('bootstrap.addTab', 'descrTabs', 'description_2_tab', JText::_("COM_OSDOWNLOADS_DESCRIPTION_2h")); ?>
-                    <?php echo $editor->display( 'description_2',  $this->item->description_2 , '100%', '200', '75', '20' ); ?>
-                    <?php echo JHtml::_('bootstrap.endTab'); ?>
-
-                    <?php echo JHtml::_('bootstrap.addTab', 'descrTabs', 'description_3_tab', JText::_("COM_OSDOWNLOADS_DESCRIPTION_3h")); ?>
-                    <?php echo $editor->display( 'description_3',  $this->item->description_3 , '100%', '200', '75', '20' ); ?>
-                    <?php echo JHtml::_('bootstrap.endTab'); ?>
-
-                    <?php echo JHtml::_('bootstrap.endTabSet'); ?>
-                </td>
-            </tr>
-        <?php else : ?>
-            <tr>
-                <td>
-                    <?php echo JText::_("COM_OSDOWNLOADS_DESCRIPTIONS"); ?>
-                </td>
-
-                <td>
-                    <?php echo JHtml::_('tabs.start', 'descrTabs', array('useCookie'=>1));?>
-
-                    <?php echo JHtml::_('tabs.panel', JText::_("COM_OSDOWNLOADS_DESCRIPTION_1h"), 'description_1_tab'); ?>
-                    <?php echo $editor->display( 'description_1',  $this->item->description_1 , '100%', '200', '75', '20' ); ?>
-
-                    <?php echo JHtml::_('tabs.panel', JText::_("COM_OSDOWNLOADS_DESCRIPTION_2h"), 'description_2_tab'); ?>
-                    <?php echo $editor->display( 'description_2',  $this->item->description_2 , '100%', '200', '75', '20' ); ?>
-
-                    <?php echo JHtml::_('tabs.panel', JText::_("COM_OSDOWNLOADS_DESCRIPTION_3h"), 'description_3_tab'); ?>
-                    <?php echo $editor->display( 'description_3',  $this->item->description_3 , '100%', '200', '75', '20' ); ?>
-
-                    <?php echo JHtml::_('tabs.end');?>
-                </td>
-            </tr>
-        <?php endif; ?>
-
-        <tr>
-            <td><?php echo(JText::_("COM_OSDOWNLOADS_EMAIL"));?> </td>
-            <td>
-                <input type="checkbox" name="show_email" value="1" <?php if ($this->item->show_email) echo('checked="checked"');?> />
-                <?php echo(JText::_("COM_OSDOWNLOADS_SHOW_EMAIL_ONLY"));?>
-                <input type="checkbox" name="require_email" value="1" <?php if ($this->item->require_email) echo('checked="checked"');?> />
-                <?php echo(JText::_("COM_OSDOWNLOADS_REQUIRE_EMAIL"));?> (<i><?php echo(JText::_("COM_OSDOWNLOADS_REQUIRE_EMAIL_MEANS_SHOW_EMAIL_TOO"));?></i>)
-            </td>
-        </tr>
-        <tr>
-            <td><?php echo(JText::_("COM_OSDOWNLOADS_REQUIRE_AGREEMENT"));?></td>
-            <td><input type="checkbox" name="require_agree" value="1" <?php if ($this->item->require_agree) echo('checked="checked"');?> />
-                <?php echo(JHTML::_('tooltip', strip_tags($this->escape(JText::_("COM_OSDOWNLOADS_AGREEMENT_TIP"))) ));?>
-            </td>
-        </tr>
-        <tr>
-            <td><?php echo(JText::_("COM_OSDOWNLOADS_DOWNLOAD_TEXT"));?></td>
-            <td><input type="text" name="download_text" value="<?php echo $this->item->download_text; ?>" /></td>
-        </tr>
-        <tr>
-            <td><?php echo(JText::_("COM_OSDOWNLOADS_DOWNLOAD_COLOR"));?></td>
-            <td>
-                <?php if (version_compare(JVERSION, '3.0', '>=')) : ?>
+                    foreach ($fields as $fieldName => $field) {
+                        echo $this->form->renderField($field->fieldname);
+                    }
+                ?>
+            </div>
+            <div class="span2">
+                <fieldset class="form-vertical">
                     <?php
-                        require_once JPATH_SITE . '/libraries/joomla/form/fields/color.php';
-                        $field = new JFormFieldColor();
-                        $field->value = $this->item->download_color;
-                        $field->name  = 'download_color';
+                        $fields = $this->form->getFieldset('file-vertical');
 
-                        echo $field->input;
+                        foreach ($fields as $fieldName => $field) {
+                            echo $this->form->renderField($field->fieldname);
+                        }
                     ?>
-                <?php else : ?>
-                    <input type="text" name="download_color" value="<?php echo $this->item->download_color; ?>" />
-                <?php endif; ?>
-            </td>
-        </tr>
-        <tr>
-            <td><?php echo(JText::_("COM_OSDOWNLOADS_DOCUMENTATION_LINK"));?></td>
-            <td>
-                <input type="text" name="documentation_link" value="<?php echo $this->item->documentation_link; ?>" style="width:500px" />
-                <?php echo(JHTML::_('tooltip', strip_tags($this->escape(JText::_("COM_OSDOWNLOADS_LINK_TIP"))) ));?>
-            </td>
-        </tr>
-        <tr>
-            <td><?php echo(JText::_("COM_OSDOWNLOADS_DEMO_LINK"));?></td>
-            <td><input type="text" name="demo_link" value="<?php echo $this->item->demo_link; ?>" style="width:500px" />
-                <?php echo(JHTML::_('tooltip', strip_tags($this->escape(JText::_("COM_OSDOWNLOADS_LINK_TIP"))) ));?>
-            </td>
-        </tr>
-        <tr>
-            <td><?php echo(JText::_("COM_OSDOWNLOADS_SUPPORT_LINK"));?></td>
-            <td><input type="text" name="support_link" value="<?php echo $this->item->support_link; ?>" style="width:500px" />
-                <?php echo(JHTML::_('tooltip', strip_tags($this->escape(JText::_("COM_OSDOWNLOADS_LINK_TIP"))) ));?>
-            </td>
-        </tr>
-        <tr>
-            <td><?php echo(JText::_("COM_OSDOWNLOADS_OTHER"));?></td>
-            <td>
-                Name <input type="text" name="other_name" value="<?php echo $this->item->other_name; ?>" style="width:150px" />
-                Link <input type="text" name="other_link" value="<?php echo $this->item->other_link; ?>" style="width:500px" />
-                <?php echo(JHTML::_('tooltip', strip_tags($this->escape(JText::_("COM_OSDOWNLOADS_OTHER_TIP"))) ));?>
-            </td>
-        </tr>
-        <tr>
-            <td><?php echo(JText::_("COM_OSDOWNLOADS_DIRECT_PAGE"));?></td>
-            <td><input type="text" name="direct_page" value="<?php echo $this->item->direct_page; ?>" style="width:500px" />
-            </td>
-        </tr>
-        <tr>
-            <td><?php echo(JText::_("COM_OSDOWNLOADS_PUBLISHED"));?></td>
-            <td>
-                <input type="radio" name="published" value="1" <?php if ($this->item->published) echo('checked="checked"');?> /> <?php echo(JText::_("COM_OSDOWNLOADS_YES"));?>
-                <input type="radio" name="published" value="0" <?php if (!$this->item->published) echo('checked="checked"');?> /><?php echo(JText::_("COM_OSDOWNLOADS_NO"));?></td>
-        </tr>
-        <tr>
-            <td><?php echo(JText::_("COM_OSDOWNLOADS_EXTERNAL_REFERENCE"));?></td>
-            <td><input type="text" name="external_ref" value="<?php echo $this->item->external_ref; ?>" style="width:500px" />
-            </td>
-        </tr>
+                </fieldset>
+            </div>
+        </div>
+        <?php echo JHtml::_('bootstrap.endTab'); ?>
 
-        <?php if ($this->extension->isPro()) : ?>
-            <?php echo Alledia\OSDownloads\Pro\File::getAdditionalFormFields($this->item); ?>
-        <?php endif; ?>
-    </table>
+        <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'requirements', JText::_('COM_OSDOWNLOADS_REQUIREMENTS_TO_DOWNLOAD', true)); ?>
+        <?php
+            $fields = $this->form->getFieldset('requirements');
+
+            foreach ($fields as $fieldName => $field) {
+                echo $this->form->renderField($field->fieldname);
+            }
+        ?>
+        <?php echo JHtml::_('bootstrap.endTab'); ?>
+
+        <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'advanced', JText::_('COM_OSDOWNLOADS_ADVANCED', true)); ?>
+        <?php
+            $fields = $this->form->getFieldset('advanced');
+
+            foreach ($fields as $fieldName => $field) {
+                echo $this->form->renderField($field->fieldname);
+            }
+        ?>
+        <?php echo JHtml::_('bootstrap.endTab'); ?>
+    </div>
+
     <input type="hidden" name="task" value="" />
     <input type="hidden" name="option" value="com_osdownloads" />
     <input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />

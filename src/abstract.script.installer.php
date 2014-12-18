@@ -189,6 +189,8 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
         $db->setQuery($query);
         $db->execute();
 
+        $this->checkAndCreateDefaultCategory();
+
         return true;
     }
 
@@ -230,6 +232,42 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
             } else {
                 $this->setMessage(JText::sprintf('COM_OSDOWNLOADS_INSTALL_COULD_NOT_REMOVE_FOLDER', $oldUploadRelativePath));
             }
+        }
+    }
+
+    protected function checkAndCreateDefaultCategory()
+    {
+        $db = JFactory::getDBO();
+
+        // Make sure we have at least one category
+        $query = $db->getQuery(true)
+            ->select('count(*)')
+            ->from('#__categories')
+            ->where(
+                array(
+                    'extension = "com_osdownloads"',
+                    'published >= 0'
+                )
+            );
+        $db->setQuery($query);
+        $total = $db->loadResult();
+
+        $row = JTable::getInstance('category');
+
+        $data = array(
+            'title'     => 'General',
+            'parent_id' => 1,
+            'extension' => 'com_osdownloads',
+            'published' => 1
+        );
+
+        $row->setLocation($data['parent_id'], 'last-child');
+        $row->bind($data);
+        if ($row->check()) {
+            $row->store();
+            $this->setMessage(JText::_('COM_OSDOWNLOADS_INSTALL_GENERAL_CATEGORY_CREATED'));
+        } else {
+            $this->setMessage(JText::_('COM_OSDOWNLOADS_INSTALL_GENERAL_CATEGORY_WARNING'), 'notice');
         }
     }
 }

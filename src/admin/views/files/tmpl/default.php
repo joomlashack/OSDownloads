@@ -182,7 +182,13 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="7">
+                <?php
+                    $colspan = 7;
+                    if ($this->extension->isPro()) {
+                        $colspan += 2;
+                    }
+                ?>
+                <td colspan="<?php echo $colspan; ?>">
                     <?php echo $this->pagination->getListFooter(); ?>
                 </td>
             </tr>

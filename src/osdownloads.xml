@@ -81,6 +81,7 @@
                 img="class:component"
                 alt="OSDownloads/Emails"
                 >COM_OSDOWNLOADS_EMAILS</menu>
+        </submenu>
 
         <files folder="admin">
             <folder>controllers</folder>

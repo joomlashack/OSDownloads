@@ -7,16 +7,17 @@
  */
 defined('_JEXEC') or die();
 
+require_once JPATH_SITE . '/components/com_osdownloads/models/item.php';
+
 abstract class ModOSDownloadsFilesHelper
 {
     public static function getList($params)
     {
         $db = JFactory::getDBO();
 
-        $query = $db->getQuery(true);
-        $query->select("*");
-        $query->from("#__osdownloads_documents");
-        $query->where("published = 1");
+        $model = JModelLegacy::getInstance('OSDownloadsModelItem');
+
+        $query = $model->getItemQuery();
         $query->where("cate_id = " . $db->quote($params->get('category', 0)));
         $db->setQuery($query);
 

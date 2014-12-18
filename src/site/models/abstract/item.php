@@ -34,7 +34,7 @@ abstract class OSDownloadsModelItemAbstract extends JModelLegacy
      * @param  int $documentId
      * @return JDatabaseQuery
      */
-    protected function getItemQuery($documentId)
+    public function getItemQuery($documentId = null)
     {
         $db     = $this->getDBO();
         $user   = JFactory::getUser();
@@ -50,7 +50,6 @@ abstract class OSDownloadsModelItemAbstract extends JModelLegacy
             )
             ->where(
                 array(
-                    'doc.id = ' . $db->quote((int) $documentId),
                     // It must be published
                     'cat.published = 1',
                     'doc.published = 1',
@@ -59,6 +58,10 @@ abstract class OSDownloadsModelItemAbstract extends JModelLegacy
                     'cat.access IN (' . implode(',', $groups) . ')'
                 )
             );
+
+        if (!empty($documentId)) {
+            $query->where('doc.id = ' . $db->quote((int) $documentId));
+        }
 
         return $query;
     }

@@ -61,6 +61,10 @@ class OSDownloadsControllerFile extends JControllerLegacy
         $row->require_email = (int) $row->require_email;
         $row->require_agree = (int) $row->require_agree;
 
+        if (version_compare(JVERSION, '3.0', 'lt') && (!empty($post['id']))) {
+            $row->id = $post['id'];
+        }
+
         $files = JRequest::get('files');
         $file  = $files['jform'];
 

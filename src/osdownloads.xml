@@ -96,7 +96,6 @@
             <filename>controller.php</filename>
             <filename>osdownloads.php</filename>
             <filename>include.php</filename>
-            <filename>abstract.script.installer.php</filename>
         </files>
         <languages folder="admin/language">
             <language tag="en-GB">en-GB/en-GB.com_osdownloads.ini</language>

@@ -10,6 +10,7 @@
 			<field name="category_id" type="category"
 				multiple="true"
 				extension="com_osdownloads"
+				required="true"
 				label="COM_OSDOWNLOADS_CATEGORIES" />
 
 			<field name="show_child_categories"

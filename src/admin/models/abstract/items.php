@@ -47,7 +47,7 @@ abstract class OSDownloadsModelItemsAbstract extends JModelLegacy
         }
 
         $categoryId = $app->getUserStateFromRequest('com_osdownloads.document.request.cate_id', 'flt_cate_id');
-        if ($categoryId) {
+        if (!empty($categoryId)) {
             $query->where("cat.id = " . $categoryId);
         }
 

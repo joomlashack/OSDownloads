@@ -48,7 +48,7 @@ class OSDownloadsViewFile extends JViewLegacy
 
     protected function addToolbar()
     {
-        JToolBarHelper::title(JText::_('COM_OSDOWNLOADS_FILE'));
+        JToolBarHelper::title(JText::_('COM_OSDOWNLOADS') . ': ' . JText::_('COM_OSDOWNLOADS_FILE'));
         JToolBarHelper::save('file.save', 'JTOOLBAR_SAVE');
         JToolBarHelper::apply('file.apply', 'JTOOLBAR_APPLY');
         JToolBarHelper::cancel('cancel', 'JTOOLBAR_CANCEL');

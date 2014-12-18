@@ -59,12 +59,29 @@
     </media>
 
     <administration>
-        <menu img="class:component">OSDownloads</menu>
+        <menu img="class:component">COM_OSDOWNLOADS</menu>
         <submenu>
-            <menu link="option=com_osdownloads&amp;view=files" view="files" img="class:component"   alt="OSDownloads/Files">Files</menu>
-            <menu link="option=com_categories&amp;extension=com_osdownloads" view="categories" img="class:component" alt="OSDownloads/Categories">Categories</menu>
-            <menu link="option=com_osdownloads&amp;view=emails" view="emails" img="class:component" alt="OSDownloads/Emails">Emails</menu>
-        </submenu>
+            <menu
+                link="option=com_osdownloads&amp;view=files"
+                view="files"
+                img="class:component"
+                alt="OSDownloads/Files"
+                >COM_OSDOWNLOADS_FILES</menu>
+
+            <menu
+                link="option=com_categories&amp;extension=com_osdownloads"
+                view="categories"
+                img="class:component"
+                alt="OSDownloads/Categories"
+                >COM_OSDOWNLOADS_CATEGORIES</menu>
+
+            <menu
+                link="option=com_osdownloads&amp;view=emails"
+                view="emails"
+                img="class:component"
+                alt="OSDownloads/Emails"
+                >COM_OSDOWNLOADS_EMAILS</menu>
+
         <files folder="admin">
             <folder>controllers</folder>
             <folder>helpers</folder>

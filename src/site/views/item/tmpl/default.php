@@ -73,7 +73,6 @@ if (! $this->extension->isPro()) {
                     style="color:<?php echo($this->item->download_color);?>"
                     class="readmore"
                     data-direct-page="<?php echo $this->item->direct_page; ?>"
-                    data-show-email="<?php echo $this->item->show_email; ?>"
                     data-require-email="<?php echo $this->item->require_email; ?>"
                     data-require-agree="<?php echo $this->item->require_agree; ?>"
                     data-require-share="<?php echo $this->item->require_share; ?>"
@@ -107,7 +106,7 @@ if (! $this->extension->isPro()) {
     </form>
 </div>
 
-<?php if ($this->item->require_email || $this->item->show_email || $this->item->require_agree || $this->item->require_share) : ?>
+<?php if ($this->item->require_email || $this->item->require_agree || $this->item->require_share) : ?>
     <div id="osdownloadsRequirementsPopup" class="reveal-modal">
         <h1 class="title"><?php echo JText::_('COM_OSDOWNLOADS_BEFORE_DOWNLOAD'); ?></h1>
 

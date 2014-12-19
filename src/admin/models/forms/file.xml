@@ -101,25 +101,15 @@
 
     <fieldset name="requirements" addfieldpath="/administrator/components/com_content/models/fields" >
         <field
-            name="show_email"
-            type="radio"
-            class="btn-group"
-            default="0"
-            label="COM_OSDOWNLOADS_SHOW_EMAIL"
-            description="COM_OSDOWNLOADS_SHOW_EMAIL_DESC">
-            <option value="1">JYES</option>
-            <option value="0">JNO</option>
-        </field>
-
-        <field
             name="require_email"
             type="radio"
             class="btn-group"
             default="0"
             label="COM_OSDOWNLOADS_REQUIRE_EMAIL"
-            description="COM_OSDOWNLOADS_REQUIRE_EMAIL_MEANS_SHOW_EMAIL_TOO">
+            description="COM_OSDOWNLOADS_REQUIRE_EMAIL_DESC">
             <option value="1">JYES</option>
             <option value="0">JNO</option>
+            <option value="2">COM_OSDOWNLOADS_OPTIONAL</option>
         </field>
 
         <field

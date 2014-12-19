@@ -18,7 +18,7 @@ class OsdownloadsTableDocument extends JTable
     public $brief;
     public $description_1;
     public $description_2;
-    public $show_email;
+    public $description_3;
     public $require_email;
     public $require_agree;
     public $download_text;
@@ -31,10 +31,12 @@ class OsdownloadsTableDocument extends JTable
     public $file_path;
     public $file_url;
     public $downloaded;
-    public $published;
+    public $direct_page;
+    public $published = true;
     public $ordering;
     public $external_ref;
     public $access;
+    public $agreement_article_id;
 
     public function __construct(&$_db)
     {

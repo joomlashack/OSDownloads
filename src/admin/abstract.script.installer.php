@@ -201,6 +201,10 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
 
         $this->checkAndCreateDefaultCategory();
 
+        if ($has_show_email) {
+            $this->removeDeprecatedFieldShowEmail();
+        }
+
         return true;
     }
 
@@ -279,5 +283,23 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
         } else {
             $this->setMessage(JText::_('COM_OSDOWNLOADS_INSTALL_GENERAL_CATEGORY_WARNING'), 'notice');
         }
+    }
+
+    protected function removeDeprecatedFieldShowEmail()
+    {
+        $db = JFactory::getDBO();
+
+        // Fix the current data
+        $query = $db->getQuery(true)
+            ->update('#__osdownloads_documents')
+            ->set('require_email = 2')
+            ->where('show_email = 1')
+            ->where('require_email = 0');
+        $db->setQuery($query);
+        $db->execute();
+
+        // Drop the show_email column
+        $db->setQuery('ALTER TABLE `#__osdownloads_documents` DROP COLUMN `show_email`');
+        $db->execute();
     }
 }

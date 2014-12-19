@@ -21,7 +21,6 @@ class OSDownloadsTableAbstractDocument extends OSDownloadsTableAbstract
     public $description_1;
     public $description_2;
     public $description_3;
-    public $show_email;
     public $require_email;
     public $require_agree;
     public $download_text;

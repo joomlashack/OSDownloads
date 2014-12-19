@@ -27,8 +27,7 @@
                     $groupAgree           = $('#' + options.elementsPrefix + 'AgreeGroup'),
                     $requiredEmailMessage = $('#' + options.elementsPrefix + 'RequiredEmailMessage'),
                     directPage            = $this.data('direct-page'),
-                    showEmail             = $this.data('show-email') == 1,
-                    requireEmail          = $this.data('require-email') == 1,
+                    requireEmail          = $this.data('require-email'),
                     requireAgree          = $this.data('require-agree') == 1;
 
                 var isValidForm = function () {
@@ -45,7 +44,7 @@
                         }
                     }
 
-                    if (requireEmail) {
+                    if (requireEmail == 1) {
                         var email = $fieldEmail.val().trim();
 
                         if (email === '' || ! emailRegex.test(email)) {
@@ -55,7 +54,7 @@
                             $errorInvalidEmail.hide();
                         }
                     } else {
-                        if (showEmail) {
+                        if (requireEmail == 2) {
                             var email = $fieldEmail.val().trim();
 
                             if (email != '' && ! emailRegex.test(email)) {
@@ -128,9 +127,9 @@
                 $this.on('click', function downloadBtnOnClick(event) {
                     event.preventDefault();
 
-                    if (showEmail || requireEmail || requireAgree) {
-                        if (showEmail || requireEmail) {
-                            if (requireEmail) {
+                    if (requireEmail || requireAgree) {
+                        if (requireEmail != 0) {
+                            if (requireEmail == 1) {
                                 $requiredEmailMessage.show();
                             } else {
                                 $requiredEmailMessage.hide();

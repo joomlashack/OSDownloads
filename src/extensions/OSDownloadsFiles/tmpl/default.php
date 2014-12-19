@@ -45,13 +45,7 @@ if ($linkTo === 'download') {
     <ul>
         <?php foreach ($list as $file) : ?>
             <?php
-            if ($file->show_email) {
-                $showEmail = true;
-            }
-
-            if ($file->require_email) {
-                $requireEmail = true;
-            }
+            $requireEmail = (int) $file->require_email;
 
             if ($file->require_agree) {
                 $requireAgree = true;
@@ -76,7 +70,6 @@ if ($linkTo === 'download') {
                             class="modosdownloadsDownloadButton"
                             style="color:<?php echo $file->download_color;?>"
                             data-direct-page="<?php echo $file->direct_page; ?>"
-                            data-show-email="<?php echo $file->show_email; ?>"
                             data-require-email="<?php echo $file->require_email; ?>"
                             data-require-agree="<?php echo $file->require_agree; ?>"
                             data-id="<?php echo $file->id; ?>"

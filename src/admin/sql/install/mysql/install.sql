@@ -7,7 +7,6 @@ CREATE TABLE IF NOT EXISTS `#__osdownloads_documents` (
   `description_1` TEXT NOT NULL,
   `description_2` TEXT NOT NULL,
   `description_3` TEXT NOT NULL,
-  `show_email` INT(11) NOT NULL,
   `require_email` INT(11) NOT NULL,
   `require_agree` INT(11) NOT NULL,
   `download_text` VARCHAR(100) NOT NULL,

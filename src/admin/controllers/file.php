@@ -57,7 +57,6 @@ class OSDownloadsControllerFile extends JControllerLegacy
             list($row->brief, $row->description_1) = preg_split($pattern, $text, 2);
         }
 
-        $row->show_email    = (int) $row->show_email;
         $row->require_email = (int) $row->require_email;
         $row->require_agree = (int) $row->require_agree;
 

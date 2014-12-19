@@ -8,7 +8,11 @@
 
 defined('_JEXEC') or die;
 
-require_once 'abstract.script.installer.php';
+if (file_exists(__DIR__ . '/admin/abstract.script.installer.php')) {
+    require_once __DIR__ . '/admin/abstract.script.installer.php';
+} else {
+    require_once __DIR__ . '/abstract.script.installer.php';
+}
 
 class Com_OSDownloadsInstallerScript extends AbstractOSDownloadsInstallerScript
 {

@@ -51,6 +51,14 @@ class OSDownloadsViewFiles extends JViewLegacy
         $extension = Alledia\Framework\Factory::getExtension('OSDownloads', 'component');
         $extension->loadLibrary();
 
+        // jQuery warning for J2.5 users
+        if (version_compare(JVERSION, '3.0', 'lt')) {
+            $params = JComponentHelper::getParams('com_osdownloads');
+            if (! (bool) $params->get('load_jquery', 0)) {
+                $app->enqueueMessage(JText::_('COM_OSDOWNLOADS_JQUERY_REQUIRED_WARNING'), 'warning');
+            }
+        }
+
         $this->assignRef('lists', $lists);
         $this->assignRef("items", $items);
         $this->assignRef("filter", $filter);

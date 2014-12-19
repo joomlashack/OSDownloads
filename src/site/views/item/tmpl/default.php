@@ -81,7 +81,17 @@ if (! $this->extension->isPro()) {
                     data-lang="<?php echo $lang->getTag(); ?>"
                     data-name="<?php echo $this->item->name; ?>"
                     <?php if (!empty($this->item->agreement_article_id)) : ?>
-                        data-agreement-article="<?php echo JRoute::_("index.php?option=com_content&view=article&id={$this->item->agreement_article_id}"); ?>"
+                        <?php
+                        // Set the article item id, if exists
+                        $articleLink = 'index.php?option=com_content&view=article&id=' . (int)$this->item->agreement_article_id;
+                        $menu = JFactory::getApplication()->getMenu();
+                        $menuItem = $menu->getItems('link', $articleLink, true);
+                        if (!empty($menuItem)) {
+                            $articleItemId = $menuItem->id;
+                            $articleLink .= '&Itemid=' . $articleItemId;
+                        }
+                        ?>
+                        data-agreement-article="<?php echo JRoute::_($articleLink); ?>"
                     <?php endif; ?>
                     <?php if ($this->extension->isPro() && (bool) @$this->item->require_share) : ?>
                         data-hashtags="<?php echo str_replace('#', '', @$this->item->twitter_hashtags); ?>"

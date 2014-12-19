@@ -80,6 +80,9 @@ if (! $this->extension->isPro()) {
                     data-url="<?php echo JURI::current(); ?>"
                     data-lang="<?php echo $lang->getTag(); ?>"
                     data-name="<?php echo $this->item->name; ?>"
+                    <?php if (!empty($this->item->agreement_article_id)) : ?>
+                        data-agreement-article="<?php echo JRoute::_("index.php?option=com_content&view=article&id={$this->item->agreement_article_id}"); ?>"
+                    <?php endif; ?>
                     <?php if ($this->extension->isPro()) : ?>
                         data-hashtags="<?php echo str_replace('#', '', @$this->item->twitter_hashtags); ?>"
                         data-via="<?php echo str_replace('@', '', @$this->item->twitter_via); ?>"

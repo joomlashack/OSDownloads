@@ -16,20 +16,20 @@
 
         if (this.length) {
             return this.each(function osdownloadsEachElement() {
-                var $this = $(this),
-                    $btnContinue = $('#' + options.elementsPrefix + 'DownloadContinue'),
-                    $popup = $('#' + options.popupElementId),
-                    $errorAgreeTerms = $('#' + options.elementsPrefix + 'ErrorAgreeTerms'),
-                    $errorInvalidEmail = $('#' + options.elementsPrefix + 'ErrorInvalidEmail'),
-                    $fieldAgree = $('#' + options.elementsPrefix + 'RequireAgree'),
-                    $fieldEmail = $('#' + options.elementsPrefix + 'RequireEmail'),
-                    $groupEmail = $('#' + options.elementsPrefix + 'EmailGroup'),
-                    $groupAgree = $('#' + options.elementsPrefix + 'AgreeGroup'),
+                var $this                 = $(this),
+                    $btnContinue          = $('#' + options.elementsPrefix + 'DownloadContinue'),
+                    $popup                = $('#' + options.popupElementId),
+                    $errorAgreeTerms      = $('#' + options.elementsPrefix + 'ErrorAgreeTerms'),
+                    $errorInvalidEmail    = $('#' + options.elementsPrefix + 'ErrorInvalidEmail'),
+                    $fieldAgree           = $('#' + options.elementsPrefix + 'RequireAgree'),
+                    $fieldEmail           = $('#' + options.elementsPrefix + 'RequireEmail'),
+                    $groupEmail           = $('#' + options.elementsPrefix + 'EmailGroup'),
+                    $groupAgree           = $('#' + options.elementsPrefix + 'AgreeGroup'),
                     $requiredEmailMessage = $('#' + options.elementsPrefix + 'RequiredEmailMessage'),
-                    directPage = $this.data('direct-page'),
-                    showEmail = $this.data('show-email') == 1,
-                    requireEmail = $this.data('require-email') == 1,
-                    requireAgree = $this.data('require-agree') == 1;
+                    directPage            = $this.data('direct-page'),
+                    showEmail             = $this.data('show-email') == 1,
+                    requireEmail          = $this.data('require-email') == 1,
+                    requireAgree          = $this.data('require-agree') == 1;
 
                 var isValidForm = function () {
                     var emailRegex = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/,
@@ -142,6 +142,8 @@
                         }
 
                         if (requireAgree) {
+                            // Update the requirement article url
+                            $groupAgree.children('label').children('span').children('a').attr('href', $this.data('agreement-article'));
                             $groupAgree.show();
                         } else {
                             $groupAgree.hide();

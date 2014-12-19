@@ -39,6 +39,7 @@ class OSDownloadsTableAbstractDocument extends OSDownloadsTableAbstract
     public $ordering;
     public $external_ref;
     public $access;
+    public $agreement_article_id;
 
     /**
      * Event dispatcher

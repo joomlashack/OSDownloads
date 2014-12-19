@@ -53,15 +53,16 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
         $rows = $db->loadObjectList();
         $db_version = "1.0.0";
 
-        $has_show_email    = false;
-        $has_description_3 = false;
-        $has_direct_field  = false;
-        $has_file_url      = false;
-        $has_parent_id     = false;
-        $has_cms_version   = false;
-        $has_picture       = false;
-        $has_external_ref  = false;
-        $has_access        = false;
+        $has_show_email           = false;
+        $has_description_3        = false;
+        $has_direct_field         = false;
+        $has_file_url             = false;
+        $has_parent_id            = false;
+        $has_cms_version          = false;
+        $has_picture              = false;
+        $has_external_ref         = false;
+        $has_access               = false;
+        $has_agreement_article_id = false;
 
         foreach ($rows as $row) {
 
@@ -103,6 +104,10 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
 
             if ($row->Field == 'access') {
                 $has_access = true;
+            }
+
+            if ($row->Field == 'agreement_article_id') {
+                $has_agreement_article_id = true;
             }
         }
 
@@ -165,6 +170,11 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
 
         if (!$has_access) {
             $db->setQuery('ALTER TABLE `#__osdownloads_documents` ADD COLUMN `access` INT(11) NOT NULL DEFAULT 1;');
+            $db->execute();
+        }
+
+        if (!$has_agreement_article_id) {
+            $db->setQuery('ALTER TABLE `#__osdownloads_documents` ADD COLUMN `agreement_article_id` INT(11);');
             $db->execute();
         }
 

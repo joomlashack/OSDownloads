@@ -99,7 +99,7 @@
             readonly="true"/>
     </fieldset>
 
-    <fieldset name="requirements" addfieldpath="/administrator/components/com_osdownloads/models/fields" >
+    <fieldset name="requirements" addfieldpath="/administrator/components/com_content/models/fields" >
         <field
             name="show_email"
             type="radio"
@@ -132,6 +132,14 @@
             <option value="1">JYES</option>
             <option value="0">JNO</option>
         </field>
+
+        <field name="agreement_article_id"
+            type="modal_article"
+            label="COM_OSDOWNLOADS_AGREEMENT_ARTICLE_LABEL"
+            edit="true"
+            clear="true"
+            description="COM_OSDOWNLOADS_AGREEMENT_ARTICLE_DESC"
+        />
     </fieldset>
 
     <fieldset name="advanced" addfieldpath="/administrator/components/com_osdownloads/models/fields" >

@@ -83,9 +83,10 @@ if (! $this->extension->isPro()) {
                     <?php if (!empty($this->item->agreement_article_id)) : ?>
                         data-agreement-article="<?php echo JRoute::_("index.php?option=com_content&view=article&id={$this->item->agreement_article_id}"); ?>"
                     <?php endif; ?>
-                    <?php if ($this->extension->isPro()) : ?>
+                    <?php if ($this->extension->isPro() && (bool) @$this->item->require_share) : ?>
                         data-hashtags="<?php echo str_replace('#', '', @$this->item->twitter_hashtags); ?>"
                         data-via="<?php echo str_replace('@', '', @$this->item->twitter_via); ?>"
+                        data-text="<?php echo str_replace('{name}', $this->item->name, @$this->item->twitter_text); ?>"
                     <?php endif; ?>
                     >
                     <span><?php echo($this->item->download_text ? $this->item->download_text : JText::_("COM_OSDOWNLOADS_DOWNLOAD"));?></span>

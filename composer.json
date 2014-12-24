@@ -11,13 +11,16 @@
         "client"         : "administrator",
         "package-license": "free"
     },
-    "authors"          : [
+    "authors": [
         {
             "name" : "Alledia.com",
             "email": "hello@alledia.com"
         }
     ],
-    "require"          : {
-        "php"       : ">= 5.3"
+    "require": {
+        "php": ">= 5.3"
+    },
+    "require-dev": {
+        "codeception/codeception": "~2.0"
     }
 }

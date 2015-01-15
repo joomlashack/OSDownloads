@@ -8,6 +8,7 @@
 
 defined('_JEXEC') or die;
 
+use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\File;
 
 jimport('joomla.application.component.controller');
@@ -75,6 +76,9 @@ class OSDownloadsController extends JControllerLegacy
     public function download()
     {
         $app = JFactory::getApplication();
+
+        $extension = Factory::getExtension('OSDownloads', 'component');
+        $extension->loadLibrary();
 
         $id = (int) $app->input->getVar("id");
         $db = JFactory::getDBO();

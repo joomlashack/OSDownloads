@@ -8,11 +8,18 @@
 
 defined('_JEXEC') or die;
 
+use Alledia\Framework\Factory;
+
 require_once JPATH_COMPONENT.'/controller.php';
 
 $doc = JFactory::getDocument();
 $doc->addStyleSheet(JURI::Root(). "media/com_osdownloads/css/osdownloads.css");
 
-$controller	= new OSDownloadsController();
+require_once JPATH_SITE . '/administrator/components/com_osdownloads/include.php';
+
+$extension = Factory::getExtension('OSDownloads', 'component');
+$extension->loadLibrary();
+
+$controller = new OSDownloadsController();
 $controller->execute(JRequest::getCmd('task', 'display'));
 $controller->redirect();

@@ -8,6 +8,8 @@
 
 defined('_JEXEC') or die;
 
+use Alledia\OSDownloads\Free\File;
+
 jimport('joomla.application.component.controller');
 
 class OSDownloadsController extends JControllerLegacy
@@ -88,8 +90,7 @@ class OSDownloadsController extends JControllerLegacy
         $file        = realpath(JPATH_SITE . "/media/com_osdownloads/files/" . $item->file_path);
         $index       = strpos($item->file_path, "_");
         $realName    = substr($item->file_path, $index + 1);
-        $finfo       = finfo_open(FILEINFO_MIME_TYPE);
-        $contentType = finfo_file($finfo, $file);
+        $contentType = File::getContentTypeFromFileName($item->file_path);
 
         header("Content-Disposition: attachment; filename=\"" . $realName . "\";");
         header('Content-Description: File Transfer');
@@ -103,6 +104,6 @@ class OSDownloadsController extends JControllerLegacy
 
         @readfile($file);
 
-        exit();
+        jexit();
     }
 }

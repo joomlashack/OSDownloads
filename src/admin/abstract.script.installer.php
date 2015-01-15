@@ -259,29 +259,45 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
             ->from('#__categories')
             ->where(
                 array(
-                    'extension = "com_osdownloads"',
+                    'extension = ' . $db->quote('com_osdownloads'),
                     'published >= 0'
                 )
             );
         $db->setQuery($query);
-        $total = $db->loadResult();
+        $total = (int) $db->loadResult();
 
-        $row = JTable::getInstance('category');
+        if ($total === 0) {
+            $row = JTable::getInstance('category');
 
-        $data = array(
-            'title'     => 'General',
-            'parent_id' => 1,
-            'extension' => 'com_osdownloads',
-            'published' => 1
-        );
+            $data = array(
+                'title'     => 'General',
+                'parent_id' => 1,
+                'extension' => 'com_osdownloads',
+                'published' => 1,
+                'language'  => '*'
+            );
 
-        $row->setLocation($data['parent_id'], 'last-child');
-        $row->bind($data);
-        if ($row->check()) {
-            $row->store();
-            $this->setMessage(JText::_('COM_OSDOWNLOADS_INSTALL_GENERAL_CATEGORY_CREATED'));
+            $row->setLocation($data['parent_id'], 'last-child');
+            $row->bind($data);
+            if ($row->check()) {
+                $row->store();
+                $this->setMessage(JText::_('COM_OSDOWNLOADS_INSTALL_GENERAL_CATEGORY_CREATED'));
+            } else {
+                $this->setMessage(JText::_('COM_OSDOWNLOADS_INSTALL_GENERAL_CATEGORY_WARNING'), 'notice');
+            }
         } else {
-            $this->setMessage(JText::_('COM_OSDOWNLOADS_INSTALL_GENERAL_CATEGORY_WARNING'), 'notice');
+            // Make sure to fix the undefined language
+            $query = $db->getQuery(true)
+                ->update('#__categories')
+                ->set($db->quoteName('language') . '=' . $db->quote('*'))
+                ->where(
+                    array(
+                        $db->quoteName('extension') . ' = ' . $db->quote('com_osdownloads'),
+                        '(' . $db->quoteName('language') . ' IS NULL OR ' . $db->quoteName('language') . ' = ' . $db->quote('') . ')',
+                    )
+                );
+            $db->setQuery($query);
+            $db->execute();
         }
     }
 

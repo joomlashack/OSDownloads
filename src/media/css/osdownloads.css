@@ -92,7 +92,7 @@ Reveal Modals
     height: 100%;
     width: 100%;
     background: #000;
-    z-index: 100;
+    z-index: 999998;
     display: none;
     top: 0;
     left: 0;
@@ -106,7 +106,7 @@ Reveal Modals
     width: 520px;
     background: #eee url(../images/reveal-modal-gloss.png) no-repeat -200px -80px;
     position: absolute;
-    z-index: 101;
+    z-index: 999999;
     padding: 30px 40px 34px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -160,6 +160,10 @@ Example markup
 .reveal-modal .error {
     margin-bottom: 20px;
     font-style: italic;
+}
+
+.reveal-modal label {
+    width: 100%;
 }
 
 .reveal-modal input[type="email"] {

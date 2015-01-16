@@ -61,9 +61,7 @@ if ($linkTo === 'download') {
                 <p>
                     <?php if ($linkTo === 'download') : ?>
                         <?php
-                        $fileURL = JURI::root(false, false);
-                        $fileURL = preg_replace('/\/$/', '', $fileURL);
-                        $fileURL .= JRoute::_('index.php?option=com_osdownloads&view=item&Itemid=' . $itemId . '&id=' . $file->id);
+                        $fileURL = JRoute::_('index.php?option=com_osdownloads&view=item&Itemid=' . $itemId . '&id=' . $file->id);
                         ?>
                         <a
                             href="<?php echo JRoute::_('index.php?option=com_osdownloads&task=getdownloadlink&tmpl=component&Itemid=' . $itemId . '&id=' . $file->id); ?>"

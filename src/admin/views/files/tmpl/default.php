@@ -94,6 +94,9 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                 <th class="has-context span6">
                     <?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_NAME', 'doc.name', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
                 </th>
+                <th class="">
+                    <?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_ACCESS', 'doc.access', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+                </th>
                 <th>
                     <?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_CATEGORY', 'cat.title', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
                 </th>
@@ -152,7 +155,8 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                     <?php endif; ?>
                     <td class="hidden-phone"><?php echo $checked; ?></td>
                     <td class="has-context span6"><a href="index.php?option=com_osdownloads&view=file&cid[]=<?php echo($item->id);?>"><?php echo ($item->name); ?></a></td>
-                    <td><?php echo($item->cat_title);?></td>
+                    <td><?php echo($item->access_title); ?></td>
+                    <td><?php echo($item->cat_title); ?></td>
                     <td class="center nowrap"><?php echo($item->downloaded);?></td>
                     <td class="center"><?php echo($published);?></td>
                     <?php if (version_compare(JVERSION, '3.0', '<')) : ?>

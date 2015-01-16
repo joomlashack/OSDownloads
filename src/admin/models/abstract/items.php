@@ -32,13 +32,18 @@ abstract class OSDownloadsModelItemsAbstract extends JModelLegacy
                 array(
                     'doc.*',
                     'cat.access AS cat_access',
-                    'cat.title AS cat_title'
+                    'cat.title AS cat_title',
+                    'vl.title AS access_title'
                 )
             )
             ->from('#__osdownloads_documents AS doc')
             ->leftJoin(
                 '#__categories AS cat'
                     . ' ON (doc.cate_id = cat.id AND cat.extension = ' . $db->quote('com_osdownloads') . ')'
+            )
+            ->leftJoin(
+                '#__viewlevels AS vl'
+                    . ' ON (doc.access = vl.id)'
             );
 
         $search = $app->getUserStateFromRequest('com_osdownloads.document.request.search', 'search');

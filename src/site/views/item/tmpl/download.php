@@ -46,8 +46,13 @@ $db->query();
 </style>
 
 <div id="osdownloads-thankyou">
-    <?php if ($this->item->require_email && !preg_match($emailRegex, $email)) : ?>
-        <div class="error"><?php echo(JText::_("COM_OSDOWNLOADS_WRONG_EMAIL"));?></div>
+    <?php if ($this->item->require_email == 1 && !preg_match($emailRegex, $email)) : ?>
+        <div class="error">
+            <h1><?php echo JText::_("COM_OSDOWNLOADS_ERROR"); ?></h1>
+            <p>
+                <?php echo JText::_("COM_OSDOWNLOADS_WRONG_EMAIL"); ?>
+            </p>
+        </div>
     <?php else : ?>
         <div class="contentopen thank">
             <?php echo($thankyoupage);?>

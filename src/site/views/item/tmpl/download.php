@@ -11,8 +11,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 $app = JFactory::getApplication();
 $db  = JFactory::getDBO();
 
-$params       = clone($app->getParams('com_osdownloads'));
-$thankyoupage = $params->get("thankyoupage", "Thank you");
+$params          = clone($app->getParams('com_osdownloads'));
+$defaultThankYou = "
+    <h1>Thank you</h1>
+    <p>" . JText::sprintf("COM_OSDOWNLOADS_CLICK_TO_DOWNLOAD_FILE", $this->download_url) . "</p>";
+$thankyoupage    = $params->get("thankyoupage", $defaultThankYou);
+
+// Replace the tags found in the thank you message by the respective information
+$thankyoupage = str_replace('{{download_url}}', $this->download_url, $thankyoupage);
+
 
 $email      = trim(JRequest::getVar("email"));
 $emailRegex = "/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/";
@@ -42,13 +49,10 @@ $db->query();
     <?php if ($this->item->require_email && !preg_match($emailRegex, $email)) : ?>
         <div class="error"><?php echo(JText::_("COM_OSDOWNLOADS_WRONG_EMAIL"));?></div>
     <?php else : ?>
-        <div class="contentopen">
-            <h1 class="thank"><?php echo($thankyoupage);?></h1>
-            <p class="download_link">
-                <?php echo JText::sprintf("COM_OSDOWNLOADS_CLICK_TO_DOWNLOAD_FILE", $this->download_url);?>
+        <div class="contentopen thank">
+            <?php echo($thankyoupage);?>
 
-                <meta http-equiv="refresh" content="0;url=<?php echo $this->download_url;?>">
-            </p>
+            <meta http-equiv="refresh" content="0;url=<?php echo $this->download_url;?>">
         </div>
     <?php endif; ?>
 </div>

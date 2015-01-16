@@ -8,6 +8,10 @@
 
 defined('_JEXEC') or die;
 
+if (version_compare(JVERSION, '3.0', 'ge')) {
+    JHtml::_('formbehavior.chosen', 'select');
+}
+
 function category($name, $extension, $selected = null, $javascript = null, $order = null, $size = 1, $sel_cat = 1)
     {
         // Deprecation warning.
@@ -20,7 +24,7 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
         }
 
         $category = JHtml::_(
-            'select.genericlist', $categories, $name, 'class="inputbox" size="' . $size . '" ' . $javascript, 'value', 'text',
+            'select.genericlist', $categories, $name, 'class="inputbox chosen" size="' . $size . '" ' . $javascript, 'value', 'text',
             $selected
         );
 
@@ -71,10 +75,10 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
             <?php foreach ($this->items as $i => $item) :
             ?>
                 <tr class="row<?php echo $i % 2; ?>">
-                    <td class="hidden-phone"><?php echo JHTML::_('grid.id',$i,$item->id);?></td>
+                    <td class="hidden-phone" width="1%"><?php echo JHTML::_('grid.id',$i,$item->id);?></td>
                     <td class="has-context span6"><?php echo($item->email);?></td>
                     <td><?php echo($item->doc_name);?></td>
-                    <td><?php echo($item->cate_name);?></td>
+                    <td class="small"><?php echo($item->cate_name);?></td>
                     <td class="small"><?php echo(JHTML::_("date", $item->downloaded_date, "d-m-Y H:m:s"));?></td>
                     <td class="hidden-phone center"><?php echo($item->id);?></td>
                 </tr>

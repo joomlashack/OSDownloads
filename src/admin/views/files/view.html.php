@@ -9,11 +9,11 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.application.component.view');
-jimport('legacy.model.legacy');
 
+require_once __DIR__ . '/../view.html.php';
 require_once __DIR__ . '/../../models/items.php';
 
-class OSDownloadsViewFiles extends JViewLegacy
+class OSDownloadsViewFiles extends OSDownloadsViewAbstract
 {
     public function __construct()
     {

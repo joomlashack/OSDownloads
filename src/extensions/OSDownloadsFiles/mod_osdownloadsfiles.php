@@ -16,4 +16,4 @@ $extension = Factory::getExtension('OSDownloads', 'component');
 $extension->loadLibrary();
 
 $list = ModOSDownloadsFilesHelper::getList($params);
-require JModuleHelper::getLayoutPath('mod_osdownloadsfiles');
+require JModuleHelper::getLayoutPath('mod_osdownloadsfiles', $params->get('layout', 'default'));

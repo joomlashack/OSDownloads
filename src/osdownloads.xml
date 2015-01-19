@@ -41,6 +41,7 @@
         <folder>models</folder>
         <folder>tables</folder>
         <folder>views</folder>
+        <filename>abstract.controller.php</filename>
         <filename>controller.php</filename>
         <filename>osdownloads.php</filename>
         <filename>router.php</filename>

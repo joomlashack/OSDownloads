@@ -38,7 +38,6 @@
     <scriptfile>script.installer.php</scriptfile>
 
     <files folder="site">
-        <folder>classes</folder>
         <folder>models</folder>
         <folder>tables</folder>
         <folder>views</folder>

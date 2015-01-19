@@ -30,7 +30,7 @@ class OSDownloadsController extends JControllerLegacy
 
     public function executePlugin($item, $email, $mailchimp_api, $list_id)
     {
-        require_once 'classes'."/MCAPI.class.php";
+        require_once JPATH_SITE . '/administrator/components/com_osdownloads/library/Free/MCAPI.php';
 
         $mc = new MCAPI($mailchimp_api);
         $merge_vars = array();

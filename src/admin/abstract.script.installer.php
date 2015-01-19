@@ -163,36 +163,20 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
             $db->query();
         }
 
-        if (!$has_external_ref) {
-            $db->setQuery('ALTER TABLE `#__osdownloads_documents` ADD COLUMN `external_ref` VARCHAR(100);');
-            $db->execute();
-        }
+        // Legacy database update
+        $columns = array(
+            'external_ref'         => 'VARCHAR(100)',
+            'access'               => 'INT(11) NOT NULL DEFAULT 1',
+            'agreement_article_id' => 'INT(11)'
+        );
+        $this->addColumnsIfNotExists('#__osdownloads_documents', $columns);
 
-        if (!$has_access) {
-            $db->setQuery('ALTER TABLE `#__osdownloads_documents` ADD COLUMN `access` INT(11) NOT NULL DEFAULT 1;');
-            $db->execute();
-        }
-
-        if (!$has_agreement_article_id) {
-            $db->setQuery('ALTER TABLE `#__osdownloads_documents` ADD COLUMN `agreement_article_id` INT(11);');
-            $db->execute();
-        }
-
-        // Remove old columns
-        if ($has_parent_id) {
-            $db->setQuery('ALTER TABLE `#__osdownloads_documents` DROP COLUMN `parent_id`');
-            $db->execute();
-        }
-
-        if ($has_cms_version) {
-            $db->setQuery('ALTER TABLE `#__osdownloads_documents` DROP COLUMN `cms_version`');
-            $db->execute();
-        }
-
-        if ($has_picture) {
-            $db->setQuery('ALTER TABLE `#__osdownloads_documents` DROP COLUMN `picture`');
-            $db->execute();
-        }
+        $columns = array(
+            'parent_id',
+            'cms_version',
+            'picture'
+        );
+        $this->dropColumnsIfExists('#__osdownloads_documents', $columns);
 
         // Remove the old pkg_osdownloads, if existent
         $query = 'DELETE FROM `#__extensions` WHERE `type`="package" AND `element`="pkg_osdownloads"';

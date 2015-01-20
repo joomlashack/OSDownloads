@@ -8,9 +8,10 @@
 
 defined('_JEXEC') or die;
 
-require_once 'abstract.controller.php';
+use Alledia\OSDownloads\Free\Joomla\Controller\Site as SiteController;
 
-class OSDownloadsController extends AbstractOSDownloadsController
+
+class OSDownloadsController extends SiteController
 {
 
 }

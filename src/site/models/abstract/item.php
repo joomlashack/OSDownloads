@@ -10,7 +10,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('legacy.model.legacy');
 
-abstract class OSDownloadsModelItemAbstract extends JModelLegacy
+abstract class AbstractOSDownloadsModelItem extends JModelLegacy
 {
     /**
      * Get document's data from db

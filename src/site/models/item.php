@@ -10,7 +10,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 require_once __DIR__ . '/abstract/item.php';
 
-class OSDownloadsModelItem extends OSDownloadsModelItemAbstract
+class OSDownloadsModelItem extends AbstractOSDownloadsModelItem
 {
 
 }

@@ -8,13 +8,9 @@
 
 defined('_JEXEC') or die;
 
-require_once JPATH_COMPONENT.'/controller.php';
-
-$doc = JFactory::getDocument();
-$doc->addStyleSheet(JURI::Root(). "media/com_osdownloads/css/osdownloads.css");
+use Alledia\OSDownloads\Free\Joomla\Component\Site as SiteComponent;
 
 require_once JPATH_SITE . '/administrator/components/com_osdownloads/include.php';
 
-$controller = new OSDownloadsController();
-$controller->execute(JRequest::getCmd('task', 'display'));
-$controller->redirect();
+$component = SiteComponent::getInstance();
+$component->init();

@@ -8,6 +8,8 @@
 
 defined('_JEXEC') or die();
 
+use Alledia\Framework\Joomla\Extension\Helper as ExtensionHelper;
+
 // Alledia Framework
 if (!defined('ALLEDIA_FRAMEWORK_LOADED')) {
     $allediaFrameworkPath = JPATH_SITE . '/libraries/allediaframework/include.php';
@@ -19,3 +21,8 @@ if (!defined('ALLEDIA_FRAMEWORK_LOADED')) {
             ->enqueueMessage('[OSDownloads] Alledia framework not found', 'error');
     }
 }
+
+define('OSDOWNLOADS_MEDIA_PATH', JPATH_SITE . 'media/com_osdownloads');
+define('OSDOWNLOADS_MEDIA_URI', JUri::root() . 'media/com_osdownloads');
+
+ExtensionHelper::loadLibrary('com_osdownloads');

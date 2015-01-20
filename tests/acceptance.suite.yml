@@ -1,0 +1,19 @@
+# Codeception Test Suite Configuration
+
+# suite for acceptance tests.
+# perform tests in browser using the WebDriver or PhpBrowser.
+# If you need both WebDriver and PHPBrowser tests - create a separate suite.
+
+class_name: AcceptanceTester
+modules:
+    enabled:
+        - WebDriver
+        - AcceptanceHelper
+        - Cli
+    config:
+        WebDriver:
+            url: 'http://127.0.0.1/tests_osdownloads/'
+            browser: phantomjs
+            capabilities:
+                webStorageEnabled: true
+                phantomjs.cli.args: ['--ignore-ssl-errors=true']

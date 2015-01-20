@@ -15,8 +15,19 @@ class OsdownloadsTableEmail extends JTable
     public $document_id;
     public $downloaded_date;
 
-    public function __construct(&$_db)
+    public function __construct(&$db)
     {
-        parent::__construct('#__osdownloads_emails', 'id', $_db);
+        parent::__construct('#__osdownloads_emails', 'id', $db);
+    }
+
+    public function addToMailchimpList($item, $mailchimpAPIKey, $mailchimpListId)
+    {
+        if (!empty($this->email)) {
+            require_once JPATH_SITE . '/administrator/components/com_osdownloads/library/Free/MCAPI.php';
+
+            $mc = new MCAPI($mailchimpAPIKey);
+            $merge_vars = array();
+            $mc->listSubscribe($mailchimpListId, $this->email, $merge_vars);
+        }
     }
 }

@@ -53,7 +53,6 @@ class Site extends BaseController
             $emailRow = $modelEmail->insert($email, $item->id);
 
             if ($mailchimpConnect) {
-                // @TODO: After confirm only
                 $emailRow->addToMailchimpList($item, $mailchimpAPIKey, $mailchimpListId);
             }
 

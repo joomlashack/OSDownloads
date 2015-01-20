@@ -20,6 +20,6 @@ defined('_JEXEC') or die( 'Restricted access' );
     }
 </style>
 
-<h1>Error</h1>
-<strong>Your e-mail address is not set.</strong>
-<p>Sorry, you are not allowed to download this file</p>
+<h1><?php echo JText::_('JERROR'); ?></h1>
+<strong><?php echo JText::_('COM_OSDOWNLOADS_EMPTY_EMAIL'); ?></strong>
+<p><?php echo JText::_('COM_OSDOWNLOADS_DOWNLOAD_DENIED'); ?></p>

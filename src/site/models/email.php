@@ -5,11 +5,13 @@
  * @copyright 2014 Alledia.com, All rights reserved
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
 
-require_once __DIR__ . '/abstract/email.php';
+defined('_JEXEC') or die();
 
-class OSDownloadsModelEmail extends AbstractOSDownloadsModelEmail
+use Alledia\OSDownloads\Free\Joomla\Model\Email as EmailModel;
+
+
+class OSDownloadsModelEmail extends EmailModel
 {
+
 }

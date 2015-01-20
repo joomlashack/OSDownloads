@@ -10,12 +10,12 @@ namespace Alledia\OSDownloads\Free\Joomla\Model;
 
 defined('_JEXEC') or die();
 
+use Alledia\Framework\Joomla\Model\Base as BaseModel;
 use Alledia\Framework\Factory;
 use JRequest;
 
-jimport('legacy.model.legacy');
 
-class Item extends \JModelLegacy
+class Item extends BaseModel
 {
     /**
      * Get document's data from db

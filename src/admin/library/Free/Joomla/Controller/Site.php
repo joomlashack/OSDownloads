@@ -10,7 +10,10 @@ namespace Alledia\OSDownloads\Free\Joomla\Controller;
 
 defined('_JEXEC') or die();
 
+use Alledia\Framework\Factory;
 use Alledia\Framework\Joomla\Controller\Base as BaseController;
+use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
+use Alledia\OSDownloads\Free\File;
 use JRequest;
 use JModelLegacy;
 
@@ -26,7 +29,8 @@ class Site extends BaseController
 
     public function getdownloadlink()
     {
-        $app              = JFactory::getApplication();
+        $app              = Factory::getApplication();
+        $component        = FreeComponentSite::getInstance();
         $params           = clone($app->getParams('com_osdownloads'));
         $mailchimpConnect = $params->get("connect_mailchimp", 0);
         $mailchimpAPIKey  = $params->get("mailchimp_api", 0);
@@ -35,7 +39,7 @@ class Site extends BaseController
         $id    = (int) JRequest::getVar("id");
         $email = JRequest::getVar("email");
 
-        $model = JModelLegacy::getInstance('OSDownloadsModelItem');
+        $model = $component->getModel('Item');
         $item = $model->getItem($id);
 
         // Must verify the e-mail before download?
@@ -45,7 +49,7 @@ class Site extends BaseController
                 JRequest::setVar("layout", "error_empty_email");
             }
 
-            $modelEmail = JModelLegacy::getInstance('OSDownloadsModelEmail');
+            $model = $component->getModel('Email');
             $emailRow = $modelEmail->insert($email, $item->id);
 
             if ($mailchimpConnect) {
@@ -53,9 +57,7 @@ class Site extends BaseController
                 $emailRow->addToMailchimpList($item, $mailchimpAPIKey, $mailchimpListId);
             }
 
-            // Send e-mail with link
-
-            // redirect view to a message
+            JRequest::setVar("layout", "download");
         } else {
             // Directly output the file to download
             JRequest::setVar("layout", "download");

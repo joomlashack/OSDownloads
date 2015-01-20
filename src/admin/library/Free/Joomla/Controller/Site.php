@@ -12,6 +12,7 @@ defined('_JEXEC') or die();
 
 use Alledia\Framework\Joomla\Controller\Base as BaseController;
 use JRequest;
+use JModelLegacy;
 
 
 class Site extends BaseController

@@ -5,12 +5,17 @@
  * @copyright 2014 Alledia.com, All rights reserved
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+
+namespace Alledia\OSDownloads\Free\Joomla\Model;
+
+defined('_JEXEC') or die();
+
+use Alledia\Framework\Factory;
+use JRequest;
 
 jimport('legacy.model.legacy');
 
-abstract class AbstractOSDownloadsModelItem extends JModelLegacy
+class Item extends \JModelLegacy
 {
     /**
      * Get document's data from db
@@ -37,7 +42,7 @@ abstract class AbstractOSDownloadsModelItem extends JModelLegacy
     public function getItemQuery($documentId = null)
     {
         $db     = $this->getDBO();
-        $user   = JFactory::getUser();
+        $user   = Factory::getUser();
         $groups = $user->getAuthorisedViewLevels();
 
         $query  = $db->getQuery(true)

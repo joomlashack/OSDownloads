@@ -25,7 +25,7 @@ class Site extends AbstractComponent
     public function init()
     {
         $doc = Factory::getDocument();
-        $doc->addStyleSheet(OSDOWNLOADS_MEDIA_URI . "/css/osdownloads.css");
+        $doc->addStyleSheet(OSDOWNLOADS_MEDIA_URI . "/css/frontend.css");
 
         parent::init();
     }

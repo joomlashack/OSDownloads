@@ -30,7 +30,7 @@ JFactory::getLanguage()->load('com_osdownloads');
 
 // Module body
 
-$doc->addStylesheet(JUri::base() . 'media/com_osdownloads/css/osdownloads.css');
+$doc->addStylesheet(JUri::base() . 'media/com_osdownloads/css/frontend.css');
 
 if ($comParams->get('load_jquery', false)) {
     $doc->addScript('media/com_osdownloads/js/jquery.js');

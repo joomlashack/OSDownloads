@@ -159,7 +159,7 @@ if (! $this->extension->isPro()) {
 
     $(function osdownloadsDomReady() {
         $('#osdownloadsDownloadButton').osdownloads({
-            animation: '<?php echo $params->get("popup_animation", "fade"); ?>',
+            animation: '<?php echo $this->params->get("popup_animation", "fade"); ?>',
             elementsPrefix: 'osdownloads',
             popupElementId: 'osdownloadsRequirementsPopup'
         });

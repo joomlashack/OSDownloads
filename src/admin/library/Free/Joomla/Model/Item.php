@@ -13,6 +13,10 @@ defined('_JEXEC') or die();
 use Alledia\Framework\Joomla\Model\Base as BaseModel;
 use Alledia\Framework\Factory;
 use JRequest;
+use JRoute;
+use JDispatcher;
+use JEventDispatcher;
+use JPluginHelper;
 
 
 class Item extends BaseModel
@@ -30,7 +34,32 @@ class Item extends BaseModel
 
         $db->setQuery($query);
 
-        return $db->loadObject();
+        $item = $db->loadObject();
+
+        if (!empty($item)) {
+            // Check if the file should comes from an external URL
+            if (!empty($item->file_url)) {
+                // Triggers the onOSDownloadsGetExternalDownloadLink event
+                JPluginHelper::importPlugin('osdownloads');
+
+                if (version_compare(JVERSION, '3.0', '<')) {
+                    $dispatcher = JDispatcher::getInstance();
+                } else {
+                    $dispatcher = JEventDispatcher::getInstance();
+                }
+
+                $dispatcher->trigger('onOSDownloadsGetExternalDownloadLink', array(&$item));
+
+                $downloadUrl = $item->file_url;
+            } else {
+                // Uploaded file - internal link
+                $downloadUrl = "index.php?option=com_osdownloads&task=download&tmpl=component&id={$item->id}";
+            }
+
+            $item->download_url = JRoute::_($downloadUrl);
+        }
+
+        return $item;
     }
 
     /**

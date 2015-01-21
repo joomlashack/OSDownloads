@@ -28,15 +28,21 @@ class Email extends BaseModel
         $component = FreeComponentSite::getInstance();
         $row = $component->getTable('Email');
 
-        $row->email = $email;
+        $email = filter_var($email, FILTER_VALIDATE_EMAIL);
 
-        $row->document_id = $documentId;
-        $row->downloaded_date = Factory::getDate()->toSQL();
+        if ($email !== false) {
+            $row->email = $email;
 
-        $this->prepareRow($row);
+            $row->document_id = (int) $documentId;
+            $row->downloaded_date = Factory::getDate()->toSQL();
 
-        $row->store();
+            $this->prepareRow($row);
 
-        return $row;
+            $row->store();
+
+            return $row;
+        }
+
+        return false;
     }
 }

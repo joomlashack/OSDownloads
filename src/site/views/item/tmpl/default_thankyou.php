@@ -11,14 +11,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 $app = JFactory::getApplication();
 $db  = JFactory::getDBO();
 
-$params          = clone($app->getParams('com_osdownloads'));
 $defaultThankYou = "
     <h1>Thank you</h1>
-    <p>" . JText::sprintf("COM_OSDOWNLOADS_CLICK_TO_DOWNLOAD_FILE", $this->download_url) . "</p>";
-$thankyoupage    = $params->get("thankyoupage", $defaultThankYou);
+    <p>" . JText::sprintf("COM_OSDOWNLOADS_CLICK_TO_DOWNLOAD_FILE", $this->item->download_url) . "</p>";
+$thankyoupage    = $this->params->get("thankyoupage", $defaultThankYou);
 
-// Replace the tags found in the thank you message by the respective information
-$thankyoupage = str_replace('{{download_url}}', $this->download_url, $thankyoupage);
+// Replace found tags in the thank you message by the respective information
+$thankyoupage = str_replace('{{download_url}}', $this->item->download_url, $thankyoupage);
 
 
 $email      = trim(JRequest::getVar("email"));
@@ -28,7 +27,7 @@ $emailRegex = "/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._
 $query = $db->getQuery(true)
     ->update('#__osdownloads_documents')
     ->set('downloaded = downloaded + 1')
-    ->where("id = " . $db->q($this->item->id));
+    ->where("id = " . $db->quote($this->item->id));
 $db->setQuery($query);
 $db->query();
 ?>
@@ -57,7 +56,7 @@ $db->query();
         <div class="contentopen thank">
             <?php echo($thankyoupage);?>
 
-            <meta http-equiv="refresh" content="0;url=<?php echo $this->download_url;?>">
+            <meta http-equiv="refresh" content="0;url=<?php echo $this->item->download_url;?>">
         </div>
     <?php endif; ?>
 </div>

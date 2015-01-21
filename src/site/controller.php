@@ -13,5 +13,4 @@ use Alledia\OSDownloads\Free\Joomla\Controller\Site as SiteController;
 
 class OSDownloadsController extends SiteController
 {
-
 }

@@ -70,7 +70,7 @@ if ($linkTo === 'download') {
                         $fileURL = JRoute::_('index.php?option=com_osdownloads&view=item&Itemid=' . $itemId . '&id=' . $file->id);
                         ?>
                         <a
-                            href="<?php echo JRoute::_('index.php?option=com_osdownloads&task=getdownloadlink&tmpl=component&Itemid=' . $itemId . '&id=' . $file->id); ?>"
+                            href="<?php echo JRoute::_('index.php?option=com_osdownloads&task=routedownload&tmpl=component&Itemid=' . $itemId . '&id=' . $file->id); ?>"
                             class="modosdownloadsDownloadButton"
                             style="color:<?php echo $file->download_color;?>"
                             data-direct-page="<?php echo $file->direct_page; ?>"

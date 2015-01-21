@@ -13,6 +13,7 @@
         </field>
         <field type="spacer" />
         <field name="thankyoupage" type="editor" default="" filter="safehtml" label="COM_OSDOWNLOADS_THANK_YOU_PAGE" />
+        <field name="download_email_content" type="editor" default="" filter="safehtml" label="COM_OSDOWNLOADS_DOWNLOAD_EMAIL_CONTENT" />
     </fieldset>
 
     <fieldset name="mailchimp"

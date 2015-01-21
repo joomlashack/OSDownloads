@@ -7,11 +7,8 @@
  */
 defined('_JEXEC') or die( 'Restricted access' );
 
-$app    = JFactory::getApplication();
 $doc    = JFactory::getDocument();
 $lang   = JFactory::getLanguage();
-$params = clone($app->getParams('com_osdownloads'));
-$itemId = (int) $app->input->get('Itemid');
 
 if ($this->params->get('load_jquery', false)) {
     $doc->addScript('media/com_osdownloads/js/jquery.js');
@@ -68,7 +65,7 @@ if (! $this->extension->isPro()) {
         <div class="osdownloadsactions">
             <div class="btn_download">
                 <a
-                    href="<?php echo JRoute::_("index.php?option=com_osdownloads&task=getdownloadlink&tmpl=component&Itemid=".$itemId."&id={$this->item->id}");?>"
+                    href="<?php echo JRoute::_("index.php?option=com_osdownloads&task=routedownload&tmpl=component&Itemid={$this->itemId}&id={$this->item->id}");?>"
                     id="osdownloadsDownloadButton"
                     style="color:<?php echo($this->item->download_color);?>"
                     class="readmore"
@@ -130,7 +127,7 @@ if (! $this->extension->isPro()) {
 
         <div id="osdownloadsAgreeGroup" class="osdownloadsagree" style="display: none;">
             <label for="osdownloadsRequireAgree">
-                <input type="checkbox" name="require_agree" id="osdownloadsRequireAgree" />
+                <input type="checkbox" name="require_agree" id="osdownloadsRequireAgree" value="1" />
                 <span>
                     * <?php echo(JText::_("COM_OSDOWNLOADS_DOWNLOAD_TERM"));?>
                 </span>

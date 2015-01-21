@@ -108,4 +108,10 @@ class Site extends BaseController
 
         $this->display();
     }
+
+    public function download()
+    {
+        JRequest::setVar("view", "download");
+        $this->display();
+    }
 }

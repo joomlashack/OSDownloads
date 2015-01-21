@@ -46,12 +46,13 @@ class Item extends \JViewLegacy
         // Load the extension
         $extension = Factory::getExtension('OSDownloads', 'component');
         $extension->loadLibrary();
+        $isPro = $extension->isPro();
 
         $this->assignRef("item", $item);
         $this->assignRef("itemId", $itemId);
         $this->assignRef("paths", $paths);
         $this->assignRef("params", $params);
-        $this->assignRef("extension", $extension);
+        $this->assignRef("isPro", $isPro);
 
         parent::display($tpl);
     }

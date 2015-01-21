@@ -16,7 +16,7 @@ if ($this->params->get('load_jquery', false)) {
 
 $doc->addScript('media/com_osdownloads/js/jquery.osdownloads.bundle.min.js', 'text/javascript', true);
 
-if (! $this->extension->isPro()) {
+if (! $this->isPro) {
     $this->item->require_share = false;
 }
 
@@ -89,7 +89,7 @@ if (! $this->extension->isPro()) {
                         ?>
                         data-agreement-article="<?php echo JRoute::_($articleLink); ?>"
                     <?php endif; ?>
-                    <?php if ($this->extension->isPro() && (bool) @$this->item->require_share) : ?>
+                    <?php if ($this->isPro && (bool) @$this->item->require_share) : ?>
                         data-hashtags="<?php echo str_replace('#', '', @$this->item->twitter_hashtags); ?>"
                         data-via="<?php echo str_replace('@', '', @$this->item->twitter_via); ?>"
                         data-text="<?php echo str_replace('{name}', $this->item->name, @$this->item->twitter_text); ?>"
@@ -138,7 +138,7 @@ if (! $this->extension->isPro()) {
             </div>
         </div>
 
-        <?php if ($this->extension->isPro()) : ?>
+        <?php if ($this->isPro) : ?>
             <?php
             echo $this->loadTemplate('pro_social_download');
             ?>

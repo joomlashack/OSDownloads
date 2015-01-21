@@ -29,6 +29,13 @@ class Site extends BaseController
 
     protected function processEmailRequirement(&$item)
     {
+        $app              = Factory::getApplication();
+        $component        = FreeComponentSite::getInstance();
+        $params           = $app->getParams('com_osdownloads');
+        $mailchimpConnect = $params->get("connect_mailchimp", 0);
+        $mailchimpAPIKey  = $params->get("mailchimp_api", 0);
+        $mailchimpListId  = $params->get("list_id", 0);
+
         $email = JRequest::getVar("email");
 
         // Must verify the e-mail before download?
@@ -44,6 +51,11 @@ class Site extends BaseController
             // Store the e-mail
             $modelEmail = $component->getModel('Email');
             $emailRow = $modelEmail->insert($email, $item->id);
+
+            // Send to Mail Chimp without validation
+            if ($mailchimpConnect) {
+                $this->addEmailToMailchimpList($item, $email, $mailchimpAPIKey, $mailchimpListId);
+            }
 
             if (!$emailRow) {
                 JRequest::setVar("layout", "error_invalid_email");
@@ -82,9 +94,6 @@ class Site extends BaseController
         $app                  = Factory::getApplication();
         $component            = FreeComponentSite::getInstance();
         $params               = $app->getParams('com_osdownloads');
-        $mailchimpConnect     = $params->get("connect_mailchimp", 0);
-        $mailchimpAPIKey      = $params->get("mailchimp_api", 0);
-        $mailchimpListId      = $params->get("list_id", 0);
         $downloadEmailContent = $params->get("download_email_content", false);
         $id                   = (int) $params->get("document_id", false);
 
@@ -106,6 +115,12 @@ class Site extends BaseController
 
         JRequest::setVar("view", "item");
 
+        $this->display();
+    }
+
+    public function download()
+    {
+        JRequest::setVar("view", "download");
         $this->display();
     }
 }

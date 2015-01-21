@@ -45,4 +45,14 @@ class Email extends BaseModel
 
         return false;
     }
+
+    public function getEmail($emailId)
+    {
+        $component = FreeComponentSite::getInstance();
+        $row = $component->getTable('Email');
+
+        $row->load((int) $emailId);
+
+        return $row;
+    }
 }

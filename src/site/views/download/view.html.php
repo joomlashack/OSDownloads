@@ -10,6 +10,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
+use Alledia\OSDownloads\Free\File;
 
 jimport('joomla.application.component.view');
 

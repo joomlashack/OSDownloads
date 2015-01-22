@@ -76,7 +76,8 @@ class Item extends BaseModel
 
         $query  = $db->getQuery(true)
             ->select('doc.*')
-            ->select('cat.access', 'cat_access')
+            ->select('cat.access AS cat_access')
+            ->select('cat.title AS cat_title')
             ->from('#__osdownloads_documents AS doc')
             ->leftJoin(
                 '#__categories AS cat'

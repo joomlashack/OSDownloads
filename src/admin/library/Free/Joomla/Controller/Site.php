@@ -64,7 +64,7 @@ class Site extends BaseController
             }
         }
 
-        JRequest::setVar("layout", "download");
+        JRequest::setVar("layout", "thankyou");
 
         return true;
     }

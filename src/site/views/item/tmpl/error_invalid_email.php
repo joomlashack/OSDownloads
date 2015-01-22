@@ -20,6 +20,6 @@ defined('_JEXEC') or die( 'Restricted access' );
     }
 </style>
 
-<h1><?php echo JText::_('JERROR'); ?></h1>
+<h1><?php echo JText::_('COM_OSDOWNLOADS_ERROR'); ?></h1>
 <strong><?php echo JText::_('COM_OSDOWNLOADS_INVALID_EMAIL'); ?></strong>
 <p><?php echo JText::_('COM_OSDOWNLOADS_DOWNLOAD_DENIED'); ?></p>

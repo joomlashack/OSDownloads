@@ -1,30 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-    <fieldset name="general"
+    <fieldset
+        name="general"
         label="COM_OSDOWNLOADS_GENERAL">
-        <field name="load_jquery" type="radio" default="0" class="btn-group" label="COM_OSDOWNLOADS_LOAD_JQUERY" >
+
+        <field
+            name="load_jquery"
+            type="radio"
+            default="0"
+            class="btn-group"
+            label="COM_OSDOWNLOADS_LOAD_JQUERY" >
+
             <option value="0">JNO</option>
             <option value="1">JYES</option>
         </field>
-        <field name="popup_animation" type="radio" default="fade" class="btn-group" label="COM_OSDOWNLOADS_POPUP_ANIMATION" >
+
+        <field
+            name="popup_animation"
+            type="radio"
+            default="fade"
+            class="btn-group"
+            label="COM_OSDOWNLOADS_POPUP_ANIMATION" >
+
             <option value="none">COM_OSDOWNLOADS_NONE</option>
             <option value="fade">COM_OSDOWNLOADS_ANIMATION_FADE</option>
             <option value="fadeAndPop">COM_OSDOWNLOADS_ANIMATION_FADE_AND_POP</option>
         </field>
+
         <field type="spacer" />
-        <field name="thankyoupage" type="editor" default="" filter="safehtml" label="COM_OSDOWNLOADS_THANK_YOU_PAGE" />
-        <field name="download_email_content" type="editor" default="" filter="safehtml" label="COM_OSDOWNLOADS_DOWNLOAD_EMAIL_CONTENT" />
+
+        <field
+            name="thankyoupage"
+            type="editor"
+            default=""
+            filter="safehtml"
+            label="COM_OSDOWNLOADS_THANK_YOU_PAGE" />
     </fieldset>
 
-    <fieldset name="mailchimp"
+    <fieldset
+        name="mailchimp"
         label="COM_OSDOWNLOADS_FIELDSET_CONFIG_MAILCHIMP">
 
-        <field name="connect_mailchimp" type="radio" class="btn-group" default="0" label="COM_OSDOWNLOADS_CONNECT_TO_MAILCHIMP" >
+        <field
+            name="connect_mailchimp"
+            type="radio"
+            class="btn-group"
+            default="0"
+            label="COM_OSDOWNLOADS_CONNECT_TO_MAILCHIMP" >
+
             <option value="0">JNO</option>
             <option value="1">JYES</option>
         </field>
-        <field name="mailchimp_api" type="text" default="" label="COM_OSDOWNLOADS_MAILCHIMP_API" />
-        <field name="list_id" type="text" default="" label="COM_OSDOWNLOADS_LIST_ID" />
+
+        <field
+            name="mailchimp_api"
+            type="text"
+            default=""
+            label="COM_OSDOWNLOADS_MAILCHIMP_API" />
+
+        <field
+            name="list_id"
+            type="text"
+            default=""
+            label="COM_OSDOWNLOADS_LIST_ID" />
     </fieldset>
 
     <fieldset

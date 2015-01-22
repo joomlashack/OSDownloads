@@ -15,20 +15,22 @@ class OSDownloadsViewEmails extends JViewLegacy
     public function display($tpl = null)
     {
         global $option;
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
 
         if (!isset($this->flt)) {
             $this->flt = new stdClass;
         }
 
-        $limit              = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-        $limitstart         = $mainframe->getUserStateFromRequest('osdownloads.request.limitstart', 'limitstart', 0, 'int');
-        $this->flt->search  = $mainframe->getUserStateFromRequest('osdownloads.email.request.search', 'search', "");
-        $this->flt->cate_id = $mainframe->getUserStateFromRequest('osdownloads.email.request.cate_id', 'cate_id');
-        $filter_order       = $mainframe->getUserStateFromRequest("osdownloads.email.filter_order", 'filter_order', 'email.id', 'cmd');
-        $filter_order_Dir   = $mainframe->getUserStateFromRequest("osdownloads.email.filter_order_Dir", 'filter_order_Dir', '', 'word');
+        $limit              = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int');
+        $limitstart         = $app->getUserStateFromRequest('osdownloads.request.limitstart', 'limitstart', 0, 'int');
+        $this->flt->search  = $app->getUserStateFromRequest('osdownloads.email.request.search', 'search', "");
+        $this->flt->cate_id = $app->getUserStateFromRequest('osdownloads.email.request.cate_id', 'cate_id');
+        $filter_order       = $app->getUserStateFromRequest("osdownloads.email.filter_order", 'filter_order', 'email.id', 'cmd');
+        $filter_order_Dir   = $app->getUserStateFromRequest("osdownloads.email.filter_order_Dir", 'filter_order_Dir', '', 'word');
+        $filter_confirmed   = $app->getUserStateFromRequest("osdownloads.email.filter_confirmed", 'filter_confirmed', '-1', 'int');
+
         $db = JFactory::getDBO();
-        $query 	= $db->getQuery(true);
+        $query = $db->getQuery(true);
 
         $query->select("email.*, document.name AS doc_name, cate.title AS cate_name");
         $query->from("#__osdownloads_emails email");
@@ -40,6 +42,10 @@ class OSDownloadsViewEmails extends JViewLegacy
         }
         if ($this->flt->cate_id) {
             $query->where("cate.id = {$this->flt->cate_id}");
+        }
+
+        if ($filter_confirmed >= 0) {
+            $query->where('confirmed = ' . $db->quote($filter_confirmed));
         }
 
         $query->order(" $filter_order  $filter_order_Dir");
@@ -54,12 +60,18 @@ class OSDownloadsViewEmails extends JViewLegacy
         $items = (array) $db->loadObjectList();
 
         $lists = array();
-        $lists['order_Dir'] = $filter_order_Dir;
-        $lists['order']     = $filter_order;
+        $lists['order_Dir']        = $filter_order_Dir;
+        $lists['order']            = $filter_order;
+        $lists['filter_confirmed'] = $filter_confirmed;
+
+        // Load the extension
+        $extension = Alledia\Framework\Factory::getExtension('OSDownloads', 'component');
+        $extension->loadLibrary();
 
         $this->assignRef('lists', $lists);
         $this->assignRef("items", $items);
         $this->assignRef("pagination", $pagination);
+        $this->assign("isPro", $extension->isPro());
 
         $this->addToolbar();
         parent::display($tpl);

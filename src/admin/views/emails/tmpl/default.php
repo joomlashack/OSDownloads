@@ -55,6 +55,10 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
             </td>
             <td align="right">
                 <div class="js-stools clearfix">
+                    <?php if ($this->isPro) : ?>
+                        <?php echo $this->loadTemplate('pro_filters'); ?>
+                    <?php endif; ?>
+
                     <?php echo category('cate_id', 'com_osdownloads', $this->flt->cate_id, "onchange='this.form.submit();'", 'title', $size = 1, $sel_cat = 1); ?>
                 </div>
             </td>
@@ -65,6 +69,9 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
             <tr>
                 <th class="hidden-phone"><input type="checkbox" onclick="Joomla.checkAll(this)" title="check All" value="" name="checkall-toggle" /> </th>
                 <th class="has-context span6"><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_NAME', 'email.email', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
+                <?php if ($this->isPro) : ?>
+                    <?php echo $this->loadTemplate('pro_headers'); ?>
+                <?php endif; ?>
                 <th><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_FILE', 'document.name', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
                 <th><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_CATEGORY', 'cate.title', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
                 <th><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_DATE', 'email.downloaded_date', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
@@ -77,6 +84,12 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                 <tr class="row<?php echo $i % 2; ?>">
                     <td class="hidden-phone" width="1%"><?php echo JHTML::_('grid.id',$i,$item->id);?></td>
                     <td class="has-context span6"><?php echo($item->email);?></td>
+                    <?php if ($this->isPro) : ?>
+                        <?php
+                        $this->item = $item;
+                        echo $this->loadTemplate('pro_columns');
+                        ?>
+                    <?php endif; ?>
                     <td><?php echo($item->doc_name);?></td>
                     <td class="small"><?php echo($item->cate_name);?></td>
                     <td class="small"><?php echo(JHTML::_("date", $item->downloaded_date, "d-m-Y H:m:s"));?></td>
@@ -86,7 +99,7 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="6">
+                <td colspan="<?php echo $this->isPro ? 7 : 6; ?>">
                     <?php echo $this->pagination->getListFooter(); ?>
                 </td>
             </tr>

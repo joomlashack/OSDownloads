@@ -99,4 +99,16 @@ class Item extends BaseModel
 
         return $query;
     }
+
+    public function incrementDownloadCount($itemId)
+    {
+        $db = Factory::getDbo();
+
+        $query = $db->getQuery(true)
+            ->update('#__osdownloads_documents')
+            ->set('downloaded = downloaded + 1')
+            ->where('id = ' . $db->quote($itemId));
+        $db->setQuery($query);
+        $db->execute();
+    }
 }

@@ -22,14 +22,6 @@ $thankyoupage = str_replace('{{download_url}}', $this->item->download_url, $than
 
 $email      = trim(JRequest::getVar("email"));
 $emailRegex = "/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/";
-
-// Increments the download count
-$query = $db->getQuery(true)
-    ->update('#__osdownloads_documents')
-    ->set('downloaded = downloaded + 1')
-    ->where("id = " . $db->quote($this->item->id));
-$db->setQuery($query);
-$db->query();
 ?>
 
 <style>

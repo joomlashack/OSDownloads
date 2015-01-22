@@ -120,6 +120,13 @@ class Site extends BaseController
 
     public function download()
     {
+        $id = (int) JRequest::getVar('id');
+
+        $component = FreeComponentSite::getInstance();
+        $model     = $component->getModel('Item');
+
+        $model->incrementDownloadCount($id);
+
         JRequest::setVar("view", "download");
         $this->display();
     }

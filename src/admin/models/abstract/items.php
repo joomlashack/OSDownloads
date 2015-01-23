@@ -10,7 +10,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('legacy.model.legacy');
 
-abstract class OSDownloadsModelItemsAbstract extends JModelLegacy
+abstract class OSDownloadsModelItemsAbstract extends JModelAdmin
 {
     protected $state;
 
@@ -90,5 +90,31 @@ abstract class OSDownloadsModelItemsAbstract extends JModelLegacy
         }
 
         return $this->pagination;
+    }
+
+    /**
+     * Method to get the row form.
+     *
+     * @param   array    $data      Data for the form.
+     * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+     *
+     * @return  mixed    A JForm object on success, false on failure
+     *
+     * @since   1.6
+     */
+    public function getForm($data = array(), $loadData = true)
+    {
+        return false;
+    }
+
+    public function publish(&$pks, $value = 1)
+    {
+        $db = $this->getDBO();
+        $query = $db->getQuery(true)
+            ->update('#__osdownloads_documents')
+            ->set('published = ' . $db->quote($value))
+            ->where('id IN (' . implode(',', $pks) . ')');
+        $db->setQuery($query);
+        $db->execute();
     }
 }

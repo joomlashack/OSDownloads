@@ -18,10 +18,6 @@ $thankyoupage    = $this->params->get("thankyoupage", $defaultThankYou);
 
 // Replace found tags in the thank you message by the respective information
 $thankyoupage = str_replace('{{download_url}}', $this->item->download_url, $thankyoupage);
-
-
-$email      = trim(JRequest::getVar("email"));
-$emailRegex = "/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/";
 ?>
 
 <style>
@@ -37,18 +33,9 @@ $emailRegex = "/^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._
 </style>
 
 <div id="osdownloads-thankyou">
-    <?php if ($this->item->require_email == 1 && !preg_match($emailRegex, $email)) : ?>
-        <div class="error">
-            <h1><?php echo JText::_("COM_OSDOWNLOADS_ERROR"); ?></h1>
-            <p>
-                <?php echo JText::_("COM_OSDOWNLOADS_WRONG_EMAIL"); ?>
-            </p>
-        </div>
-    <?php else : ?>
-        <div class="contentopen thank">
-            <?php echo($thankyoupage);?>
+    <div class="contentopen thank">
+        <?php echo($thankyoupage);?>
 
-            <meta http-equiv="refresh" content="0;url=<?php echo $this->item->download_url;?>">
-        </div>
-    <?php endif; ?>
+        <meta http-equiv="refresh" content="0;url=<?php echo $this->item->download_url;?>">
+    </div>
 </div>

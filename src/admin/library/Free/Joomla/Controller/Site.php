@@ -39,7 +39,7 @@ class Site extends BaseController
         $email = JRequest::getVar("email");
 
         // Must verify the e-mail before download?
-        if ($item->require_email == 1 || ($item->require_email == 2 && !empty($email))) {
+        if ($item->require_user_email == 1 || ($item->require_user_email == 2 && !empty($email))) {
 
             $email = filter_var($email, FILTER_VALIDATE_EMAIL);
             if (empty($email)) {
@@ -72,7 +72,7 @@ class Site extends BaseController
     protected function processRequirements(&$item)
     {
         if ($item->require_agree == 1) {
-            $agree = (int) JRequest::getVar('require_agree');
+            $agree = (int) JRequest::getVar('agree');
 
             if ($agree != 1) {
                 JRequest::setVar("layout", "error_invalid_data");
@@ -95,11 +95,7 @@ class Site extends BaseController
         $component            = FreeComponentSite::getInstance();
         $params               = $app->getParams('com_osdownloads');
         $downloadEmailContent = $params->get("download_email_content", false);
-        $id                   = (int) $params->get("document_id", false);
-
-        if (empty($id)) {
-            $id = (int) JRequest::getVar("id");
-        }
+        $id                   = (int) JRequest::getVar("id");
 
         $model = $component->getModel('Item');
         $item  = $model->getItem($id);

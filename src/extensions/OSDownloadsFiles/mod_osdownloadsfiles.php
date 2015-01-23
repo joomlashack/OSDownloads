@@ -7,15 +7,19 @@
  */
 defined('_JEXEC') or die;
 
-use Alledia\Framework\Joomla\Extension\Helper as ExtensionHelper;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
+use Alledia\OSDownloads\Free\Joomla\Module\File as FreeFileModule;
+use Alledia\OSDownloads\Pro\Joomla\Module\File as ProFileModule;
+use Alledia\Framework\Joomla\Extension\Helper as ExtensionHelper;
 
 require_once JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
-require_once __DIR__ . '/helper.php';
 
 // Load the OSDownloads extension
 ExtensionHelper::loadLibrary('com_osdownloads');
-$extension = FreeComponentSite::getInstance();
 
-$list = ModOSDownloadsFilesHelper::getList($params);
-require JModuleHelper::getLayoutPath('mod_osdownloadsfiles', $params->get('layout', 'default'));
+$osdownloads = FreeComponentSite::getInstance();
+
+$osdownloadsModule = $osdownloads->isPro() ?
+    ProFileModule::getInstance(null, $module) : FreeFileModule::getInstance(null, $module);
+
+$osdownloadsModule->init();

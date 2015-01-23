@@ -10,10 +10,12 @@ defined('_JEXEC') or die;
 
 jimport('legacy.controller.admin');
 
+require '../models/items.php';
+
 class OSDownloadsControllerFiles extends JControllerAdmin
 {
-    public function __construct($default = array())
+    public function getModel($name = '', $prefix = '', $config = array())
     {
-        parent::__construct($default);
+        return OSDownloadsModelItems::getInstance('Items', 'OSDownloadsModel');
     }
 }

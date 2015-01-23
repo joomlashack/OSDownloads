@@ -11,10 +11,12 @@ namespace Alledia\OSDownloads\Free\Joomla\View\Site;
 defined('_JEXEC') or die();
 
 use Alledia\Framework\Factory;
+use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use JTable;
 use JError;
 use JRequest;
 use JRoute;
+use JText;
 
 jimport('legacy.view.legacy');
 
@@ -23,11 +25,12 @@ class Item extends \JViewLegacy
 {
     public function display($tpl = null)
     {
-        $app    = Factory::getApplication();
-        $model  = $this->getModel();
-        $params = $app->getParams('com_osdownloads');
-        $id     = (int) $params->get("document_id");
-        $itemId = (int) $app->input->get('Itemid');
+        $app       = Factory::getApplication();
+        $component = FreeComponentSite::getInstance();
+        $model     = $component->getModel('Item');
+        $params    = $app->getParams('com_osdownloads');
+        $id        = (int) $params->get("document_id");
+        $itemId    = (int) $app->input->get('Itemid');
 
         if (JRequest::getVar("id")) {
             $id = (int) JRequest::getVar("id");
@@ -44,9 +47,8 @@ class Item extends \JViewLegacy
         $this->buildBreadcrumbs($paths, $item);
 
         // Load the extension
-        $extension = Factory::getExtension('OSDownloads', 'component');
-        $extension->loadLibrary();
-        $isPro = $extension->isPro();
+        $component->loadLibrary();
+        $isPro = $component->isPro();
 
         $this->assignRef("item", $item);
         $this->assignRef("itemId", $itemId);

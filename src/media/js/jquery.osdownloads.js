@@ -95,6 +95,10 @@
                         url += '&email=' + $fieldEmail.val().trim();
                     }
 
+                    if ($fieldAgree.length > 0) {
+                        url += '&agree=' + ($fieldAgree.attr('checked') ? 1 : 0);
+                    }
+
                     // Create the popup element
                     $container = $('<div>')
                         .attr('id', options.elementsPrefix + 'PopupIframe')

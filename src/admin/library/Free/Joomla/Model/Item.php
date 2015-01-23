@@ -12,6 +12,7 @@ defined('_JEXEC') or die();
 
 use Alledia\Framework\Joomla\Model\Base as BaseModel;
 use Alledia\Framework\Factory;
+use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use JRequest;
 use JRoute;
 use JDispatcher;
@@ -70,9 +71,10 @@ class Item extends BaseModel
      */
     public function getItemQuery($documentId = null)
     {
-        $db     = $this->getDBO();
-        $user   = Factory::getUser();
-        $groups = $user->getAuthorisedViewLevels();
+        $db        = $this->getDBO();
+        $user      = Factory::getUser();
+        $groups    = $user->getAuthorisedViewLevels();
+        $component = FreeComponentSite::getInstance();
 
         $query  = $db->getQuery(true)
             ->select('doc.*')
@@ -96,6 +98,10 @@ class Item extends BaseModel
 
         if (!empty($documentId)) {
             $query->where('doc.id = ' . $db->quote((int) $documentId));
+        }
+
+        if ($component->isFree()) {
+            $query->select("doc.require_email as require_user_email");
         }
 
         return $query;

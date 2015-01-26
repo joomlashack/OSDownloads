@@ -11,6 +11,7 @@ namespace Alledia\OSDownloads\Free\Joomla\Table;
 defined('_JEXEC') or die();
 
 use Alledia\Framework\Joomla\Table\Base as BaseTable;
+use Alledia\OSDownloads\Free\MailChimpAPI;
 
 
 class Email extends BaseTable
@@ -25,12 +26,11 @@ class Email extends BaseTable
         parent::__construct('#__osdownloads_emails', 'id', $db);
     }
 
-    public function addToMailchimpList($item, $mailchimpAPIKey, $mailchimpListId)
+    public function addToMailchimpList($mailchimpAPIKey, $mailchimpListId)
     {
         if (!empty($this->email)) {
-            require_once JPATH_SITE . '/administrator/components/com_osdownloads/library/Free/MCAPI.php';
 
-            $mc = new MCAPI($mailchimpAPIKey);
+            $mc = new MailChimpAPI($mailchimpAPIKey);
             $merge_vars = array();
             $mc->listSubscribe($mailchimpListId, $this->email, $merge_vars);
         }

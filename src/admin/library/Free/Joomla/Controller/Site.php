@@ -54,7 +54,7 @@ class Site extends BaseController
 
             // Send to Mail Chimp without validation
             if ($mailchimpConnect) {
-                $this->addEmailToMailchimpList($item, $email, $mailchimpAPIKey, $mailchimpListId);
+                $emailRow->addToMailchimpList($mailchimpAPIKey, $mailchimpListId);
             }
 
             if (!$emailRow) {

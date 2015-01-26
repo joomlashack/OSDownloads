@@ -1,6 +1,16 @@
 <?php
+/**
+ * @package   OSDownloads
+ * @contact   www.alledia.com, hello@alledia.com
+ * @copyright 2014 Alledia.com, All rights reserved
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
+ */
 
-class MCAPI
+namespace Alledia\OSDownloads\Free;
+
+defined('_JEXEC') or die();
+
+class MailChimpAPI
 {
     public $version = "1.3";
     public $errorMessage;
@@ -37,7 +47,7 @@ class MCAPI
      * @param string $apikey Your MailChimp apikey
      * @param string $secure Whether or not this should use a secure connection
      */
-    public function MCAPI($apikey, $secure=false)
+    public function __construct($apikey, $secure=false)
     {
         $this->secure = $secure;
         $this->apiUrl = parse_url("http://api.mailchimp.com/" . $this->version . "/?output=php");

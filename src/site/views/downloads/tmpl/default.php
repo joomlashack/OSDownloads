@@ -90,7 +90,7 @@ $doc->addScript('media/com_osdownloads/js/jquery.osdownloads.bundle.min.js', 'te
                         <h3><a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$file->id."&Itemid=".JRequest::getVar("Itemid")));?>"><?php echo($file->name);?></a></h3>
                         <div class="item_content"><?php echo($file->brief);?></div>
 
-                        <?php if ($params->get('show_download_button', 1)) : ?>
+                        <?php if ($params->get('show_download_button', 0)) : ?>
                             <div class="osdownloadsactions">
                                 <div class="btn_download">
                                     <?php

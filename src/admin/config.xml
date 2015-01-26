@@ -27,6 +27,30 @@
             <option value="fadeAndPop">COM_OSDOWNLOADS_ANIMATION_FADE_AND_POP</option>
         </field>
 
+        <field
+            name="show_readmore_button"
+            type="radio"
+            default="1"
+            class="btn-group"
+            label="COM_OSDOWNLOADS_SHOW_READMORE_BUTTON_LABEL"
+            description="COM_OSDOWNLOADS_SHOW_READMORE_BUTTON_DESC">
+
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field
+            name="show_download_button"
+            type="radio"
+            default="0"
+            class="btn-group"
+            label="COM_OSDOWNLOADS_SHOW_DOWNLOAD_BUTTON_LABEL"
+            description="COM_OSDOWNLOADS_SHOW_DOWNLOAD_BUTTON_DESC">
+
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
         <field type="spacer" />
 
         <field

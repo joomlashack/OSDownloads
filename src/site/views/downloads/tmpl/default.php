@@ -7,11 +7,21 @@
  */
 defined('_JEXEC') or die( 'Restricted access' );
 
-$mainframe              = JFactory::getApplication();
-$params                 = clone($mainframe->getParams('com_osdownloads'));
+$app                    = JFactory::getApplication();
+$lang                   = JFactory::getLanguage();
+$doc                    = JFactory::getDocument();
+$params                 = clone($app->getParams('com_osdownloads'));
 $NumberOfColumn         = $params->get("number_of_column", 1);
 $user                   = JFactory::getUser();
 $authorizedAccessLevels = $user->getAuthorisedViewLevels();
+$itemId                 = (int) $app->input->get('Itemid');
+$showModal = false;
+
+if ($params->get('load_jquery', false)) {
+    $doc->addScript('media/com_osdownloads/js/jquery.js');
+}
+
+$doc->addScript('media/com_osdownloads/js/jquery.osdownloads.bundle.min.js', 'text/javascript', true);
 
 ?>
 <form action="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id=".JRequest::getVar("id")."&Itemid=".JRequest::getVar("Itemid")));?>" method="post" name="adminForm" id="adminForm">
@@ -64,19 +74,63 @@ $authorizedAccessLevels = $user->getAuthorisedViewLevels();
         <?php endif; ?>
 
         <?php if (!empty($this->items)) : ?>
-            <?php foreach($this->items as $item):?>
-                <?php if (in_array($item->access, $authorizedAccessLevels)) : ?>
-                    <div class="item_<?php echo($item->id);?>">
-                        <h3><a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$item->id."&Itemid=".JRequest::getVar("Itemid")));?>"><?php echo($item->name);?></a></h3>
-                        <div class="item_content"><?php echo($item->brief);?></div>
-                        <div class="readmore_wrapper">
-                            <div class="readmore">
-                                <a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$item->id."&Itemid=".JRequest::getVar("Itemid")));?>">
-                                    <?php echo(JText::_("COM_OSDOWNLOADS_READ_MORE"));?>
-                                </a>
+            <?php foreach($this->items as $file):?>
+                <?php
+                $requireEmail = $file->require_user_email;
+                $requireAgree = (bool) $file->require_agree;
+                $requireShare = (bool) @$file->require_share;
+
+                if (!$showModal) {
+                    $showModal = $requireEmail || $requireAgree || $requireShare;
+                }
+
+                ?>
+                <?php if (in_array($file->access, $authorizedAccessLevels)) : ?>
+                    <div class="item_<?php echo($file->id);?>">
+                        <h3><a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$file->id."&Itemid=".JRequest::getVar("Itemid")));?>"><?php echo($file->name);?></a></h3>
+                        <div class="item_content"><?php echo($file->brief);?></div>
+
+                        <?php if ($params->get('show_download_button', 1)) : ?>
+                            <div class="osdownloadsactions">
+                                <div class="btn_download">
+                                    <?php
+                                    $fileURL = JRoute::_('index.php?option=com_osdownloads&view=item&Itemid=' . $itemId . '&id=' . $file->id);
+                                    ?>
+                                    <a
+                                        href="<?php echo JRoute::_('index.php?option=com_osdownloads&task=routedownload&tmpl=component&Itemid=' . $itemId . '&id=' . $file->id); ?>"
+                                        class="osdownloadsDownloadButton"
+                                        style="color:<?php echo $file->download_color;?>"
+                                        data-direct-page="<?php echo $file->direct_page; ?>"
+                                        data-require-email="<?php echo $requireEmail; ?>"
+                                        data-require-agree="<?php echo $requireAgree ? 1 : 0; ?>"
+                                        data-require-share="<?php echo $requireShare ? 1 : 0; ?>"
+                                        data-id="<?php echo $file->id; ?>"
+                                        data-url="<?php echo $fileURL; ?>"
+                                        data-lang="<?php echo $lang->getTag(); ?>"
+                                        data-name="<?php echo $file->name; ?>"
+                                        <?php if ($this->isPro) : ?>
+                                            data-hashtags="<?php echo str_replace('#', '', @$file->twitter_hashtags); ?>"
+                                            data-via="<?php echo str_replace('@', '', @$file->twitter_via); ?>"
+                                        <?php endif; ?>
+                                        >
+                                        <span>
+                                            <?php echo $params->get('link_label', JText::_('COM_OSDOWNLOADS_DOWNLOAD')); ?>
+                                        </span>
+                                    </a>
+                                </div>
                             </div>
-                            <div class="clr"></div>
-                        </div>
+                        <?php endif; ?>
+
+                        <?php if ($params->get('show_readmore_button', 1)) : ?>
+                            <div class="readmore_wrapper">
+                                <div class="readmore">
+                                    <a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$file->id."&Itemid=".JRequest::getVar("Itemid")));?>">
+                                        <?php echo(JText::_("COM_OSDOWNLOADS_READ_MORE"));?>
+                                    </a>
+                                </div>
+                                <div class="clr"></div>
+                            </div>
+                        <?php endif; ?>
                         <div class="seperator"></div>
                     </div>
                 <?php endif; ?>
@@ -88,3 +142,80 @@ $authorizedAccessLevels = $user->getAuthorisedViewLevels();
     </div>
 
 </form>
+
+<?php if ($params->get('show_download_button', 1)) : ?>
+    <div id="osdownloadsRequirementsPopup" class="reveal-modal">
+        <h1 class="title"><?php echo JText::_('COM_OSDOWNLOADS_BEFORE_DOWNLOAD'); ?></h1>
+
+        <div id="osdownloadsEmailGroup" class="osdownloadsemail" style="display: none;">
+
+            <p id="osdownloadsRequiredEmailMessage" style="display: none;">
+                <?php echo JText::_('COM_OSDOWNLOADS_YOU_HAVE_INPUT_CORRECT_EMAIL_TO_GET_DOWNLOAD_LINK'); ?>
+            </p>
+
+            <label for="osdownloadsRequireEmail">
+                <span>
+                    <?php echo(JText::_("COM_OSDOWNLOADS_EMAIL")); ?>:
+                </span>
+                <input type="email" aria-required="true" required name="require_email" id="osdownloadsRequireEmail" />
+            </label>
+
+            <div class="error" style="display: none;" id="osdownloadsErrorInvalidEmail">
+                <?php echo JText::_("COM_OSDOWNLOADS_INVALID_EMAIL"); ?>
+            </div>
+        </div>
+
+        <div id="osdownloadsAgreeGroup" class="osdownloadsagree" style="display: none;">
+            <label for="osdownloadsRequireAgree">
+                <input type="checkbox" name="require_agree" id="osdownloadsRequireAgree" value="1" />
+                <span>
+                    * <?php echo(JText::_("COM_OSDOWNLOADS_DOWNLOAD_TERM"));?>
+                </span>
+            </label>
+
+            <div class="error" style="display: none;" id="osdownloadsErrorAgreeTerms">
+                <?php echo JText::_("COM_OSDOWNLOADS_YOU_HAVE_AGREE_TERMS_TO_DOWNLOAD_THIS"); ?>
+            </div>
+        </div>
+
+        <?php if ($this->isPro) : ?>
+            <div id="osdownloadsShareGroup" class="osdownloadsshare" style="display: none;">
+                <!-- Facebook -->
+                <div id="fb-root"></div>
+
+                <p id="osdownloadsRequiredShareMessage" style="display: none;">
+                    <?php echo JText::_('COM_OSDOWNLOADS_YOU_MUST_TWEET_SHARE_FACEBOOK'); ?>
+                </p>
+
+                <div class="error" style="display: none;" id="osdownloadsErrorShare">
+                    <?php echo JText::_("COM_OSDOWNLOADS_SHARE_TO_DOWNLOAD_THIS"); ?>
+                </div>
+            </div>
+
+        <?php endif; ?>
+
+        <a href="#"  id="osdownloadsDownloadContinue" class="readmore">
+            <span>
+                <?php echo JText::_("COM_OSDOWNLOADS_CONTINUE"); ?>
+            </span>
+        </a>
+
+        <a class="close-reveal-modal">&#215;</a>
+    </div>
+
+    <script>
+    (function ($) {
+
+        $(function osdownloadsDomReady() {
+            $('.osdownloads-container .osdownloadsDownloadButton').osdownloads({
+                animation: '<?php echo $params->get("popup_animation", "fade"); ?>',
+                elementsPrefix: 'osdownloads',
+                popupElementId: 'osdownloadsRequirementsPopup'
+            });
+        });
+
+    })(jQuery);
+    </script>
+
+<?php endif;?>
+

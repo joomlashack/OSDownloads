@@ -24,6 +24,10 @@ class OSDownloadsViewDownloads extends JViewLegacy
         $includeChildFiles   = (bool) $params->get('include_child_files', 0);
         $showChildCategories = (bool) $params->get('show_child_categories', 1);
 
+        // Load the extension
+        $extension = Alledia\Framework\Factory::getExtension('OSDownloads', 'component');
+        $extension->loadLibrary();
+
         $limit      = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int');
         $limitstart = $app->getUserStateFromRequest('osdownloads.request.limitstart', 'limitstart', 0, 'int');
 
@@ -112,6 +116,7 @@ class OSDownloadsViewDownloads extends JViewLegacy
         $this->assignRef("items", $items);
         $this->assignRef("paths", $paths);
         $this->assignRef("pagination", $pagination);
+        $this->assign("isPro", $extension->isPro());
 
         parent::display($tpl);
     }

@@ -1947,8 +1947,8 @@ class MailChimpAPI
      * @param  boolean $update_existing   flag to control whether to update members that are already subscribed to the list or to return an error, defaults to false (return error)
      * @param  boolean $replace_interests flag to determine whether we replace the interest groups with the updated groups provided, or we add the provided groups to the member's interest groups (optional, defaults to true)
      * @return array   Array of result counts and any errors that occurred
-                int add_count Number of email addresses that were succesfully added
-                int update_count Number of email addresses that were succesfully updated
+                int add_count Number of email addresses that were successfully added
+                int update_count Number of email addresses that were successfully updated
                 int error_count Number of email addresses that failed during addition/updating
                 array errors error data including:
                     string email address the email address in question
@@ -1979,7 +1979,7 @@ class MailChimpAPI
      * @param  boolean $send_goodbye  flag to send the goodbye email to the email addresses, defaults to true
      * @param  boolean $send_notify   flag to send the unsubscribe notification email to the address defined in the list email notification settings, defaults to false
      * @return array   Array of result counts and any errors that occurred
-                int success_count Number of email addresses that were succesfully added/updated
+                int success_count Number of email addresses that were successfully added/updated
                 int error_count Number of email addresses that failed during addition/updating
                 array errors error data including:
                     string email address the email address in question

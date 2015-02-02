@@ -100,15 +100,8 @@ if ($linkTo === 'download') {
 
             <div id="modosdownloads<?php echo $this->id; ?>EmailGroup" class="osdownloadsemail" style="display: none;">
 
-                <p id="modosdownloads<?php echo $this->id; ?>RequiredEmailMessage" style="display: none;">
-                    <?php echo JText::_('COM_OSDOWNLOADS_YOU_HAVE_INPUT_CORRECT_EMAIL_TO_GET_DOWNLOAD_LINK'); ?>
-                </p>
-
-                <label for="modosdownloads<?php echo $this->id; ?>RequireEmail">
-                    <span>
-                        <?php echo(JText::_("COM_OSDOWNLOADS_EMAIL")); ?>:
-                    </span>
-                    <input type="email" aria-required="true" required name="require_email" id="modosdownloads<?php echo $this->id; ?>RequireEmail" />
+                <label for="modosdownloads<?php echo $module->id; ?>RequireEmail">
+                    <input type="email" aria-required="true" required name="require_email" id="modosdownloads<?php echo $this->id; ?>RequireEmail" placeholder="<?php echo JText::_("COM_OSDOWNLOADS_ENTER_EMAIL_ADDRESS"); ?>" />
                 </label>
 
                 <div class="error" style="display: none;" id="modosdownloads<?php echo $this->id; ?>ErrorInvalidEmail">

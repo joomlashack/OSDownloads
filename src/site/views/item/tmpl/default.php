@@ -102,15 +102,8 @@ if (! $this->extension->isPro()) {
 
         <div id="osdownloadsEmailGroup" class="osdownloadsemail" style="display: none;">
 
-            <p id="osdownloadsRequiredEmailMessage" style="display: none;">
-                <?php echo JText::_('COM_OSDOWNLOADS_YOU_HAVE_INPUT_CORRECT_EMAIL_TO_GET_DOWNLOAD_LINK'); ?>
-            </p>
-
             <label for="osdownloadsRequireEmail">
-                <span>
-                    <?php echo(JText::_("COM_OSDOWNLOADS_EMAIL")); ?>:
-                </span>
-                <input type="email" aria-required="true" required name="require_email" id="osdownloadsRequireEmail" />
+                <input type="email" aria-required="true" required name="require_email" id="osdownloadsRequireEmail" placeholder="<?php echo JText::_("COM_OSDOWNLOADS_ENTER_EMAIL_ADDRESS"); ?>" />
             </label>
 
             <div class="error" style="display: none;" id="osdownloadsErrorInvalidEmail">

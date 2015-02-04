@@ -8,8 +8,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-use Alledia\OSDownloads\Free\Joomla\Table\Email as FreeEmailTable
-
+use Alledia\OSDownloads\Free\Joomla\Table\Email as FreeEmailTable;
 
 class OsdownloadsTableEmail extends FreeEmailTable
 {

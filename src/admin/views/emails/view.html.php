@@ -71,6 +71,7 @@ class OSDownloadsViewEmails extends JViewLegacy
         $this->assignRef('lists', $lists);
         $this->assignRef("items", $items);
         $this->assignRef("pagination", $pagination);
+        $this->assignRef("extension", $extension);
         $this->assign("isPro", $extension->isPro());
 
         $this->addToolbar();

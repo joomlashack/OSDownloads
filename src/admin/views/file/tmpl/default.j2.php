@@ -148,3 +148,5 @@ $realname = substr($this->item->file_path, $index + 1);
     <input type="hidden" name="cid[]" value="<?php echo $this->item->id; ?>" />
     <?php echo JHTML::_( 'form.token' ); ?>
 </form>
+
+<?php echo $this->extension->getFooterMarkup(); ?>

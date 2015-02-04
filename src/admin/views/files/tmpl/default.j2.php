@@ -177,3 +177,5 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
     <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
     <?php echo JHTML::_( 'form.token' ); ?>
 </form>
+
+<?php echo $this->extension->getFooterMarkup(); ?>

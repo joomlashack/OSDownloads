@@ -14,6 +14,7 @@
         <element>osdownloadsfiles</element>
         <namespace>OSDownloadsFiles</namespace>
         <license>free</license>
+        <include>AllediaFreeDefaultFiles</include>
     </alledia>
 
     <files>
@@ -24,7 +25,7 @@
 
     <config>
         <fields name="params">
-            <fieldset name="basic">
+            <fieldset name="basic" addfieldpath="/administrator/components/com_osdownloads/form/fields">
                 <field
                     name="category"
                     type="category"
@@ -54,6 +55,12 @@
                     type="text"
                     label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
                     description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+
+                <field
+                    type="allediafooter"
+                    name="allediafooter"
+                    media="com_osdownloads"
+                    jedurl="http://extensions.joomla.org/extensions/extension/directory-a-documentation/downloads/osdownloads" />
             </fieldset>
 
             <fieldset

@@ -2,7 +2,8 @@
 <config>
     <fieldset
         name="general"
-        label="COM_OSDOWNLOADS_GENERAL">
+        label="COM_OSDOWNLOADS_GENERAL"
+        addfieldpath="/administrator/components/com_osdownloads/form/fields">
 
         <field
             name="load_jquery"
@@ -59,6 +60,13 @@
             default=""
             filter="safehtml"
             label="COM_OSDOWNLOADS_THANK_YOU_PAGE" />
+
+        <field
+            type="allediafooter"
+            name="allediafooter"
+            media="com_osdownloads"
+            showgoproad="1"
+            jedurl="http://extensions.joomla.org/extensions/extension/directory-a-documentation/downloads/osdownloads" />
     </fieldset>
 
     <fieldset

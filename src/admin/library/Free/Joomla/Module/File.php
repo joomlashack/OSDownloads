@@ -31,10 +31,10 @@ class File extends AbstractModule
         $osdownloads = FreeComponentSite::getInstance();
         $osdownloads->loadLibrary();
 
-        $this->list                = $this->getList();
-        $this->loadJQuery          = (bool) $osdownloads->params->get('load_jquery', false);
-        $this->popupAnimation      = $osdownloads->params->get('popup_animation', 'fade');
-        $this->isPro               = $osdownloads->isPro();
+        $this->list           = $this->getList();
+        $this->loadJQuery     = (bool) $osdownloads->params->get('load_jquery', false);
+        $this->popupAnimation = $osdownloads->params->get('popup_animation', 'fade');
+        $this->isPro          = $osdownloads->isPro();
 
         parent::init();
     }

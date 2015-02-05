@@ -7,6 +7,8 @@
  */
 defined('_JEXEC') or die( 'Restricted access' );
 
+use Alledia\Framework\Helper as AllediaHelper;
+
 $app                    = JFactory::getApplication();
 $lang                   = JFactory::getLanguage();
 $doc                    = JFactory::getDocument();
@@ -144,7 +146,7 @@ $doc->addScript('media/com_osdownloads/js/jquery.osdownloads.bundle.min.js', 'te
 </form>
 
 <?php if ($params->get('show_download_button', 1)) : ?>
-    <div id="osdownloadsRequirementsPopup" class="reveal-modal">
+    <div id="osdownloadsRequirementsPopup" class="reveal-modal osdownloads-modal <?php echo AllediaHelper::getJoomlaVersionCssClass(); ?>">
         <h1 class="title"><?php echo JText::_('COM_OSDOWNLOADS_BEFORE_DOWNLOAD'); ?></h1>
 
         <div id="osdownloadsEmailGroup" class="osdownloadsemail" style="display: none;">

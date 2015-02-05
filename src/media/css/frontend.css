@@ -96,9 +96,9 @@ Reveal Modals
     display: none;
     top: 0;
     left: 0;
-    }
+}
 
-.reveal-modal {
+.osdownloads-modal {
     visibility: hidden;
     top: 100px;
     left: 50%;
@@ -116,12 +116,12 @@ Reveal Modals
     box-shadow: 0 0 10px rgba(0,0,0,.4);
     }
 
-.reveal-modal.small         { width: 200px; margin-left: -140px;}
-.reveal-modal.medium        { width: 400px; margin-left: -240px;}
-.reveal-modal.large         { width: 600px; margin-left: -340px;}
-.reveal-modal.xlarge        { width: 800px; margin-left: -440px;}
+.osdownloads-modal.small         { width: 200px; margin-left: -140px;}
+.osdownloads-modal.medium        { width: 400px; margin-left: -240px;}
+.osdownloads-modal.large         { width: 600px; margin-left: -340px;}
+.osdownloads-modal.xlarge        { width: 800px; margin-left: -440px;}
 
-.reveal-modal .close-reveal-modal {
+.osdownloads-modal .close-reveal-modal {
     font-size: 22px;
     line-height: .5;
     position: absolute;
@@ -148,60 +148,60 @@ Example markup
 </div>
 
 */
-.reveal-modal {
+.osdownloads-modal {
     text-align: left;
 }
 
-.reveal-modal iframe {
+.osdownloads-modal iframe {
     border: 0;
     width: 100%;
 }
 
-.reveal-modal .error {
+.osdownloads-modal .error {
     margin-bottom: 20px;
     font-style: italic;
 }
 
-.reveal-modal label {
+.osdownloads-modal label {
     width: 100%;
 }
 
-.reveal-modal input[type="email"] {
+.osdownloads-modal input[type="email"] {
     width: 97%;
 }
 
-.reveal-modal h1 {
+.osdownloads-modal h1 {
     margin-bottom: 30px;
 }
 
-.reveal-modal input[type="checkbox"] {
+.osdownloads-modal input[type="checkbox"] {
     margin-right: 5px;
     margin-top: -2px;
 }
 
 @media screen and (max-width: 320px) {
-    .reveal-modal {
+    .osdownloads-modal {
         width: 280px !important;
         margin-left: -120px !important;
     }
 }
 
 @media screen and (max-width: 768px) {
-    .reveal-modal {
+    .osdownloads-modal {
         width: 480px !important;
         margin-left: -280px !important;
     }
 }
 
 @media screen and (max-width: 580px) {
-    .reveal-modal {
+    .osdownloads-modal {
         width: 380px !important;
         margin-left: -230px !important;
     }
 }
 
 @media screen and (max-width: 480px) {
-    .reveal-modal {
+    .osdownloads-modal {
         width: 280px !important;
         margin-left: -180px !important;
     }
@@ -222,4 +222,22 @@ Example markup
 
 .fb-like-box iframe {
     width: 450px !important;
+}
+
+/* Joomla 2.5 */
+.osdownloads-modal.joomla25 h1 {
+    font-weight: normal;
+}
+
+.osdownloads-modal.joomla25 input[type="email"],
+.osdownloads-modal.joomla25 input[type="text"] {
+    height: 30px;
+    padding: 0 2px;
+}
+
+.osdownloads-modal.joomla25 a.readmore,
+.osdownloads-modal.joomla25 a.readmore * {
+    margin-top: 10px;
+    background: transparent;
+    border: none;
 }

@@ -7,6 +7,8 @@
  */
 defined('_JEXEC') or die( 'Restricted access' );
 
+use Alledia\Framework\Helper as AllediaHelper;
+
 $doc    = JFactory::getDocument();
 $lang   = JFactory::getLanguage();
 
@@ -104,7 +106,7 @@ if (! $this->isPro) {
 </div>
 
 <?php if ($this->item->require_user_email || $this->item->require_agree || $this->item->require_share) : ?>
-    <div id="osdownloadsRequirementsPopup" class="reveal-modal">
+    <div id="osdownloadsRequirementsPopup" class="reveal-modal osdownloads-modal <?php echo AllediaHelper::getJoomlaVersionCssClass(); ?>">
         <h1 class="title"><?php echo JText::_('COM_OSDOWNLOADS_BEFORE_DOWNLOAD'); ?></h1>
 
         <div id="osdownloadsEmailGroup" class="osdownloadsemail" style="display: none;">

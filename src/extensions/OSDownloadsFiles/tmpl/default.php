@@ -7,6 +7,8 @@
  */
 defined('_JEXEC') or die;
 
+use Alledia\Framework\Helper as AllediaHelper;
+
 jimport('joomla.application.component.helper');
 
 $app    = JFactory::getApplication();
@@ -95,12 +97,12 @@ if ($linkTo === 'download') {
 
 <?php if ($linkTo === 'download') : ?>
     <?php if ($showModal) : ?>
-        <div id="modosdownloads<?php echo $this->id; ?>RequirementsPopup" class="reveal-modal">
+        <div id="modosdownloads<?php echo $this->id; ?>RequirementsPopup" class="reveal-modal osdownloads-modal <?php echo AllediaHelper::getJoomlaVersionCssClass(); ?>">
             <h1 class="title"><?php echo JText::_('COM_OSDOWNLOADS_BEFORE_DOWNLOAD'); ?></h1>
 
             <div id="modosdownloads<?php echo $this->id; ?>EmailGroup" class="osdownloadsemail" style="display: none;">
 
-                <label for="modosdownloads<?php echo $module->id; ?>RequireEmail">
+                <label for="modosdownloads<?php echo $this->id; ?>RequireEmail">
                     <input type="email" aria-required="true" required name="require_email" id="modosdownloads<?php echo $this->id; ?>RequireEmail" placeholder="<?php echo JText::_("COM_OSDOWNLOADS_ENTER_EMAIL_ADDRESS"); ?>" />
                 </label>
 

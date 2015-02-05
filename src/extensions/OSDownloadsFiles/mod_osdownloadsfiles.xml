@@ -57,8 +57,8 @@
                     description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
 
                 <field
-                    type="allediafooter"
-                    name="allediafooter"
+                    type="customfooter"
+                    name="customfooter"
                     media="com_osdownloads"
                     jedurl="http://extensions.joomla.org/extensions/extension/directory-a-documentation/downloads/osdownloads" />
             </fieldset>

@@ -62,8 +62,8 @@
             label="COM_OSDOWNLOADS_THANK_YOU_PAGE" />
 
         <field
-            type="allediafooter"
-            name="allediafooter"
+            type="customfooter"
+            name="customfooter"
             media="com_osdownloads"
             showgoproad="1"
             jedurl="http://extensions.joomla.org/extensions/extension/directory-a-documentation/downloads/osdownloads" />

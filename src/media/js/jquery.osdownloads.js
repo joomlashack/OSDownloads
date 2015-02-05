@@ -26,7 +26,6 @@
                     $groupEmail           = $('#' + options.elementsPrefix + 'EmailGroup'),
                     $groupAgree           = $('#' + options.elementsPrefix + 'AgreeGroup'),
                     $requiredEmailMessage = $('#' + options.elementsPrefix + 'RequiredEmailMessage'),
-                    $termsAnchor          = $('#' + options.elementsPrefix + 'TermsAnchor'),
                     directPage            = $this.data('direct-page'),
                     requireEmail          = $this.data('require-email'),
                     requireAgree          = $this.data('require-agree') == 1;

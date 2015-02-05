@@ -26,6 +26,7 @@
                     $groupEmail           = $('#' + options.elementsPrefix + 'EmailGroup'),
                     $groupAgree           = $('#' + options.elementsPrefix + 'AgreeGroup'),
                     $requiredEmailMessage = $('#' + options.elementsPrefix + 'RequiredEmailMessage'),
+                    $termsAnchor          = $('#' + options.elementsPrefix + 'TermsAnchor'),
                     directPage            = $this.data('direct-page'),
                     requireEmail          = $this.data('require-email'),
                     requireAgree          = $this.data('require-agree') == 1;
@@ -146,7 +147,7 @@
 
                         if (requireAgree) {
                             // Update the requirement article url
-                            $groupAgree.children('label').children('span').children('a').attr('href', $this.data('agreement-article'));
+                            $groupAgree.find('.agreement-article').attr('href', $this.data('agreement-article'));
                             $groupAgree.show();
                         } else {
                             $groupAgree.hide();

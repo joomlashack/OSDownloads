@@ -59,6 +59,16 @@ class OSDownloadsViewFiles extends OSDownloadsViewAbstract
             }
         }
 
+        // Add the agreementLink property
+        if (!empty($items)) {
+            foreach ($items as &$item) {
+                $item->agreementLink = '';
+                if ((bool)$item->require_email) {
+                    $item->agreementLink = JRoute::_('index.php?option=com_content&view=article&id=' . (int)  $item->agreement_article_id);
+                }
+            }
+        }
+
         $this->assignRef('lists', $lists);
         $this->assignRef("items", $items);
         $this->assignRef("filter", $filter);

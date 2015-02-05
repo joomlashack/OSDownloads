@@ -47,6 +47,14 @@ class OSDownloadsViewFile extends OSDownloadsViewAbstract
         $extension = Factory::getExtension('OSDownloads', 'component');
         $extension->loadLibrary();
 
+        // Add the agreementLink property
+        if (!empty($item)) {
+            $item->agreementLink = '';
+            if ((bool)$item->require_email) {
+                $item->agreementLink = JRoute::_('index.php?option=com_content&view=article&id=' . (int)  $item->agreement_article_id);
+            }
+        }
+
         $this->assignRef("item", $item);
         $this->assignRef("extension", $extension);
 

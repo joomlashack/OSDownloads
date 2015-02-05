@@ -110,6 +110,7 @@ $doc->addScript('media/com_osdownloads/js/jquery.osdownloads.bundle.min.js', 'te
                                         data-url="<?php echo $fileURL; ?>"
                                         data-lang="<?php echo $lang->getTag(); ?>"
                                         data-name="<?php echo $file->name; ?>"
+                                        data-agreement-article="<?php echo $file->agreementLink; ?>"
                                         <?php if ($this->isPro) : ?>
                                             data-hashtags="<?php echo str_replace('#', '', @$file->twitter_hashtags); ?>"
                                             data-via="<?php echo str_replace('@', '', @$file->twitter_via); ?>"

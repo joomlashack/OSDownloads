@@ -50,6 +50,14 @@ class Item extends \JViewLegacy
         $component->loadLibrary();
         $isPro = $component->isPro();
 
+        // Add the agreementLink property
+        if (!empty($item)) {
+            $item->agreementLink = '';
+            if ((bool)$item->require_email) {
+                $item->agreementLink = JRoute::_('index.php?option=com_content&view=article&id=' . (int)  $item->agreement_article_id);
+            }
+        }
+
         $this->assignRef("item", $item);
         $this->assignRef("itemId", $itemId);
         $this->assignRef("paths", $paths);

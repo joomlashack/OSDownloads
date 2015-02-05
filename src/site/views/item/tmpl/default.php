@@ -78,19 +78,7 @@ if (! $this->isPro) {
                     data-url="<?php echo JURI::current(); ?>"
                     data-lang="<?php echo $lang->getTag(); ?>"
                     data-name="<?php echo $this->item->name; ?>"
-                    <?php if (!empty($this->item->agreement_article_id)) : ?>
-                        <?php
-                        // Set the article item id, if exists
-                        $articleLink = 'index.php?option=com_content&view=article&id=' . (int)$this->item->agreement_article_id;
-                        $menu = JFactory::getApplication()->getMenu();
-                        $menuItem = $menu->getItems('link', $articleLink, true);
-                        if (!empty($menuItem)) {
-                            $articleItemId = $menuItem->id;
-                            $articleLink .= '&Itemid=' . $articleItemId;
-                        }
-                        ?>
-                        data-agreement-article="<?php echo JRoute::_($articleLink); ?>"
-                    <?php endif; ?>
+                    data-agreement-article="<?php echo $this->item->agreementLink; ?>"
                     <?php if ($this->isPro && (bool) @$this->item->require_share) : ?>
                         data-hashtags="<?php echo str_replace('#', '', @$this->item->twitter_hashtags); ?>"
                         data-via="<?php echo str_replace('@', '', @$this->item->twitter_via); ?>"

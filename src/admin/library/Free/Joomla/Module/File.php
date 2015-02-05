@@ -41,7 +41,7 @@ class File extends AbstractModule
 
     public function getList()
     {
-        $db     = Factory::getDBO();
+        $db = Factory::getDBO();
 
         $osdownloads = FreeComponentSite::getInstance();
         $model       = $osdownloads->getModel('Item');

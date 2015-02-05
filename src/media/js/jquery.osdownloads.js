@@ -96,7 +96,7 @@
                     }
 
                     if ($fieldAgree.length > 0) {
-                        url += '&agree=' + ($fieldAgree.attr('checked') ? 1 : 0);
+                        url += '&agree=' + ($fieldAgree.is(':checked') ? 1 : 0);
                     }
 
                     // Create the popup element

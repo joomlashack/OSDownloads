@@ -2,7 +2,7 @@
 
     $(function osdownloadsDomReady() {
         // Move the popup containers to the body
-        $('.reveal-modal').appendTo($('body'));
+        $('.osdownloads-modal').appendTo($('body'));
     });
 
     $.fn.osdownloads = function osdownloads(options) {
@@ -103,7 +103,8 @@
                     // Create the popup element
                     $container = $('<div>')
                         .attr('id', options.elementsPrefix + 'PopupIframe')
-                        .addClass('reveal-modal');
+                        .addClass('reveal-modal')
+                        .addClass('osdownloads-modal');
 
                     $iframe = $('<iframe>').attr('src', url);
                     $iframe.iframeAutoHeight({
@@ -163,7 +164,7 @@
                                 // Clean fields
                                 $fieldEmail.val('');
                                 $fieldAgree.attr('checked', false);
-                                $('.reveal-modal .error').hide();
+                                $('.osdownloads-modal .error').hide();
                             }
                         );
 

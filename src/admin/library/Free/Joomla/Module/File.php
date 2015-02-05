@@ -14,6 +14,7 @@ use Alledia\Framework\Joomla\Extension\AbstractModule;
 use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use JModuleHelper;
+use JRoute;
 
 class File extends AbstractModule
 {
@@ -51,6 +52,12 @@ class File extends AbstractModule
         $db->setQuery($query);
 
         $rows = $db->loadObjectList();
+
+        if (!empty($rows)) {
+            foreach ($rows as &$row) {
+                $row->agreementLink = JRoute::_('index.php?option=com_content&view=article&id=' . (int)  $row->agreement_article_id);
+            }
+        }
 
         return $rows;
     }

@@ -8,7 +8,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-jimport('legacy.model.legacy');
+jimport('joomla.application.component.modeladmin');
 
 abstract class OSDownloadsModelItemsAbstract extends JModelAdmin
 {

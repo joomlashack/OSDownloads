@@ -17,4 +17,4 @@ header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 header('Pragma: public');
 header('Content-Length: ' . $this->fileSize);
 
-@readfile($filePath);
+@readfile($this->fileFullPath);

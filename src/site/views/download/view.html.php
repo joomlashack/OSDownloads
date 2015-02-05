@@ -36,6 +36,7 @@ class OSDownloadsViewDownload extends JViewLegacy
         $this->assign('realName', substr($item->file_path, strpos($item->file_path, "_") + 1));
         $this->assign('contentType', File::getContentTypeFromFileName($item->file_path));
         $this->assign('fileSize', filesize($fileFullPath));
+        $this->assign('fileFullPath', $fileFullPath);
 
         parent::display($tpl);
         jexit();

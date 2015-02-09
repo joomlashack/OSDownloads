@@ -10,7 +10,7 @@ defined('_JEXEC') or die;
 
 jimport('legacy.controller.admin');
 
-require '../models/items.php';
+require_once JPATH_ADMINISTRATOR . '/components/com_osdownloads/models/items.php';
 
 class OSDownloadsControllerFiles extends JControllerAdmin
 {

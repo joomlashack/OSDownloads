@@ -33,8 +33,6 @@ class Site extends BaseController
         $component        = FreeComponentSite::getInstance();
         $params           = $app->getParams('com_osdownloads');
         $mailchimpConnect = $params->get("connect_mailchimp", 0);
-        $mailchimpAPIKey  = $params->get("mailchimp_api", 0);
-        $mailchimpListId  = $params->get("list_id", 0);
 
         $email = JRequest::getVar("email");
 
@@ -54,7 +52,7 @@ class Site extends BaseController
 
             // Send to Mail Chimp without validation
             if ($mailchimpConnect) {
-                $emailRow->addToMailchimpList($mailchimpAPIKey, $mailchimpListId);
+                $emailRow->addToMailchimpList();
             }
 
             if (!$emailRow) {

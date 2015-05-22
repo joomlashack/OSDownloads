@@ -10,6 +10,7 @@ namespace Alledia\OSDownloads\Free\Joomla\Table;
 
 defined('_JEXEC') or die();
 
+use Alledia\Framework\Factory;
 use Alledia\Framework\Joomla\Table\Base as BaseTable;
 use Alledia\OSDownloads\Free\MailChimpAPI;
 
@@ -26,13 +27,18 @@ class Email extends BaseTable
         parent::__construct('#__osdownloads_emails', 'id', $db);
     }
 
-    public function addToMailchimpList($mailchimpAPIKey, $mailchimpListId)
+    public function addToMailchimpList()
     {
+        $app    = Factory::getApplication();
+        $params = $app->getParams('com_osdownloads');
+        $apiKey = $params->get("mailchimp_api", 0);
+        $listId = $params->get("list_id", 0);
+
         if (!empty($this->email)) {
 
-            $mc = new MailChimpAPI($mailchimpAPIKey);
+            $mc = new MailChimpAPI($apiKey);
             $merge_vars = array();
-            $mc->listSubscribe($mailchimpListId, $this->email, $merge_vars);
+            $mc->listSubscribe($listId, $this->email, $merge_vars);
         }
     }
 }

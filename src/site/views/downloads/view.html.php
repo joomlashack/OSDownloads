@@ -10,9 +10,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 require_once JPATH_SITE . '/components/com_osdownloads/models/item.php';
 
-jimport('legacy.view.legacy');
+use Alledia\OSDownloads\Free\Joomla\View\Legacy as LegacyView;
 
-class OSDownloadsViewDownloads extends JViewLegacy
+
+class OSDownloadsViewDownloads extends LegacyView
 {
 
     public function display($tpl = null)

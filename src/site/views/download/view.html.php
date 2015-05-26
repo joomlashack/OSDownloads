@@ -11,10 +11,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Alledia\OSDownloads\Free\File;
+use Alledia\OSDownloads\Free\Joomla\View\Legacy as LegacyView;
 
-jimport('joomla.application.component.view');
 
-class OSDownloadsViewDownload extends JViewLegacy
+class OSDownloadsViewDownload extends LegacyView
 {
     public function display($tpl = null)
     {

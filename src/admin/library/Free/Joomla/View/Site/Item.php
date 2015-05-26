@@ -12,6 +12,7 @@ defined('_JEXEC') or die();
 
 use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
+use Alledia\OSDownloads\Free\Joomla\View\Legacy as LegacyView;
 use JTable;
 use JError;
 use JRequest;
@@ -21,7 +22,7 @@ use JText;
 jimport('legacy.view.legacy');
 
 
-class Item extends \JViewLegacy
+class Item extends LegacyView
 {
     public function display($tpl = null)
     {

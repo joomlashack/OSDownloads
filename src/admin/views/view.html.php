@@ -8,7 +8,10 @@
 
 defined('_JEXEC') or die;
 
-jimport('legacy.view.legacy');
+if (!class_exists('JViewLegacy')) {
+    jimport('legacy.view.legacy');
+}
+
 
 class OSDownloadsViewAbstract extends JViewLegacy
 {

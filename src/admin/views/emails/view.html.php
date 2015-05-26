@@ -8,9 +8,10 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.view');
+use Alledia\OSDownloads\Free\Joomla\View\Legacy as LegacyView;
 
-class OSDownloadsViewEmails extends JViewLegacy
+
+class OSDownloadsViewEmails extends LegacyView
 {
     public function display($tpl = null)
     {

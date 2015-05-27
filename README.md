@@ -5,23 +5,7 @@ OSDownloads
 
 ## About
 
-OSDownloads is an extension to help you manage your downloads. It allows you to easily provide downloads in exchange for emails, which can in turn be automatically imported in MailChimp upon download.
-
-## OSDownloads Plugins
-
-### Events
-
-* onOSDownloadsBeforeSaveFile($documentInstance, $isNew)
-* onOSDownloadsAfterSaveFile($storedWithSuccess, $documentInstance)
-* onOSDownloadsBeforeDeleteFile($documentInstance, $pk)
-* onOSDownloadsAfterDeleteFile($deletedWithSuccess, $id, $pk);
-
-* onOSDownloadsBeforeSaveEmail($emailInstance)
-* onOSDownloadsAfterSaveEmail($storedWithSuccess, $emailInstance)
-* onOSDownloadsBeforeDeleteEmail($emailInstance, $pk)
-* onOSDownloadsAfterDeleteEmail($deletedWithSuccess, $id, $pk);
-
-* onOSDownloadsGetExternalDownloadLink($documentInstance)
+OSDownloads is an extension to help you manage your downloads. It allows you to easily provide downloads in exchange for emails, which can in turn be automatically imported in MailChimp or Constant Contact.
 
 ## Requirements
 

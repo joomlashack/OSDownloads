@@ -5,7 +5,9 @@ OSDownloads
 
 ## About
 
-OSDownloads is an extension to help you manage your downloads. It allows you to easily provide downloads in exchange for emails, which can in turn be automatically imported in MailChimp or Constant Contact.
+OSDownloads is a Joomla extension to help you manage your downloads. 
+
+It allows you to easily provide downloads in exchange for emails, which can in turn be automatically imported in MailChimp or Constant Contact.
 
 ## Requirements
 

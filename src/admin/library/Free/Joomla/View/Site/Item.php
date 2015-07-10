@@ -13,9 +13,6 @@ defined('_JEXEC') or die();
 use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Alledia\OSDownloads\Free\Joomla\View\Legacy as LegacyView;
-use JTable;
-use JError;
-use JRequest;
 use JRoute;
 use JText;
 
@@ -33,15 +30,12 @@ class Item extends LegacyView
         $id        = (int) $params->get("document_id");
         $itemId    = (int) $app->input->get('Itemid');
 
-        if (JRequest::getVar("id")) {
-            $id = (int) JRequest::getVar("id");
-        }
+        $id = $app->input->getInt('id');
 
         $item = $model->getItem($id);
 
         if (empty($item)) {
-            JError::raiseWarning(404, JText::_("COM_OSDOWNLOADS_THIS_DOWNLOAD_ISNT_AVAILABLE"));
-            return;
+            throw new \Exception(JText::_('COM_OSDOWNLOADS_THIS_DOWNLOAD_ISNT_AVAILABLE'), 404);
         }
 
         $paths = null;
@@ -95,7 +89,7 @@ class Item extends LegacyView
 
         $app     = Factory::getApplication();
         $pathway = $app->getPathway();
-        $itemID  = JRequest::getVar("Itemid", null, 'default', 'int');
+        $itemID  = $app->input->getInt('Itemid');
 
         $countPaths = count($paths) - 1;
         for ($i = $countPaths; $i >= 0; $i--) {

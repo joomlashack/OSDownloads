@@ -13,7 +13,6 @@ defined('_JEXEC') or die();
 use Alledia\Framework\Joomla\Model\Base as BaseModel;
 use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
-use JRequest;
 use JRoute;
 use JDispatcher;
 use JEventDispatcher;
@@ -26,7 +25,7 @@ class Item extends BaseModel
      * Get document's data from db
      *
      * @param  int $documentId
-     * @return stdClass
+     * @return object
      */
     public function getItem($documentId)
     {

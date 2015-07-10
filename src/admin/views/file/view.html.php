@@ -26,8 +26,8 @@ class OSDownloadsViewFile extends OSDownloadsViewAbstract
 
         JTable::addIncludePath(JPATH_COMPONENT . '/tables');
 
-        $mainframe  = JFactory::getApplication();
-        $cid = JRequest::getVar("cid");
+        $app = JFactory::getApplication();
+        $cid = $app->input->getInt('cid');
 
         if (is_array($cid)) {
             $cid = $cid[0];

@@ -16,7 +16,8 @@ $params                 = clone($app->getParams('com_osdownloads'));
 $NumberOfColumn         = $params->get("number_of_column", 1);
 $user                   = JFactory::getUser();
 $authorizedAccessLevels = $user->getAuthorisedViewLevels();
-$itemId                 = (int) $app->input->get('Itemid');
+$itemId                 = $app->input->getInt('Itemid');
+$id                     = $app->input->getInt('id');
 $showModal = false;
 
 if ($params->get('load_jquery', false)) {
@@ -26,13 +27,13 @@ if ($params->get('load_jquery', false)) {
 $doc->addScript('media/com_osdownloads/js/jquery.osdownloads.bundle.min.js', 'text/javascript', true);
 
 ?>
-<form action="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id=".JRequest::getVar("id")."&Itemid=".JRequest::getVar("Itemid")));?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id=".$id."&Itemid=".$itemId));?>" method="post" name="adminForm" id="adminForm">
     <div class="contentopen osdownloads-container">
         <?php if (!empty($this->paths)) : ?>
             <h2>
                 <?php for ($i = count($this->paths) - 1; $i >= 0; $i--):?>
                     <?php if ($i):?>
-                        <a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$this->paths[$i]->id}"."&Itemid=".JRequest::getVar("Itemid")));?>">
+                        <a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$this->paths[$i]->id}"."&Itemid=".$itemId));?>">
                     <?php endif;?>
                     <?php echo($this->paths[$i]->title);?>
                     <?php if ($i > 0):?>
@@ -56,7 +57,7 @@ $doc->addScript('media/com_osdownloads/js/jquery.osdownloads.bundle.min.js', 'te
                     <?php if (in_array($category->access, $authorizedAccessLevels)) : ?>
                         <div class="item<?php echo($i % $NumberOfColumn);?> cate_<?php echo($category->id);?>">
                             <h3>
-                                <a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$category->id}"."&Itemid=".JRequest::getVar("Itemid")));?>">
+                                <a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$category->id}"."&Itemid=".$itemId));?>">
                                     <?php echo($category->title);?>
                                 </a>
                             </h3>
@@ -89,7 +90,7 @@ $doc->addScript('media/com_osdownloads/js/jquery.osdownloads.bundle.min.js', 'te
                 ?>
                 <?php if (in_array($file->access, $authorizedAccessLevels)) : ?>
                     <div class="item_<?php echo($file->id);?>">
-                        <h3><a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$file->id."&Itemid=".JRequest::getVar("Itemid")));?>"><?php echo($file->name);?></a></h3>
+                        <h3><a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$file->id."&Itemid=".$itemId));?>"><?php echo($file->name);?></a></h3>
                         <div class="item_content"><?php echo($file->brief);?></div>
 
                         <?php if ($params->get('show_download_button', 0)) : ?>
@@ -127,7 +128,7 @@ $doc->addScript('media/com_osdownloads/js/jquery.osdownloads.bundle.min.js', 'te
                         <?php if ($params->get('show_readmore_button', 1)) : ?>
                             <div class="readmore_wrapper">
                                 <div class="readmore">
-                                    <a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$file->id."&Itemid=".JRequest::getVar("Itemid")));?>">
+                                    <a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$file->id."&Itemid=".$itemId));?>">
                                         <?php echo(JText::_("COM_OSDOWNLOADS_READ_MORE"));?>
                                     </a>
                                 </div>

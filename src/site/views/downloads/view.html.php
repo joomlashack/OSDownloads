@@ -35,7 +35,7 @@ class OSDownloadsViewDownloads extends LegacyView
         // Paths
         $paths = array();
 
-        $id = JRequest::getVar("id", null, 'default', 'int');
+        $id = $app->input->getInt('id');
 
         if (empty($id)) {
             if (count($categoryIDs) == 1) {
@@ -147,7 +147,7 @@ class OSDownloadsViewDownloads extends LegacyView
     protected function buildBreadcrumbs($paths) {
         $app     = JFactory::getApplication();
         $pathway = $app->getPathway();
-        $itemID  = JRequest::getVar("Itemid", null, 'default', 'int');
+        $itemID  = $app->input->getInt('Itemid');
 
         $countPaths = count($paths) - 1;
         for ($i = $countPaths; $i >= 0; $i--) {

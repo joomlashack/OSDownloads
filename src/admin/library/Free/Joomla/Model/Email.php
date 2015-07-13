@@ -13,8 +13,6 @@ defined('_JEXEC') or die();
 use Alledia\Framework\Joomla\Model\Base as BaseModel;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Alledia\Framework\Factory;
-use JRequest;
-
 
 class Email extends BaseModel
 {

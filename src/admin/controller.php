@@ -23,19 +23,21 @@ class OSDownloadsController extends JControllerLegacy
 
     public function display($cachable = false, $urlparams = array())
     {
-        $view = JRequest::getCmd("view", "files");
-        JRequest::setVar("view", $view);
+        $app = JFactory::getApplication();
+
+        $view = $app->input->getCmd('view', 'files');
+        $app->input->set('view', $view);
 
         switch ($this->getTask()) {
             case "file":
-                JRequest::setVar('view', 'file');
+                $app->input->set('view', 'file');
                 $view = 'file';
                 break;
         }
 
         if ($view !== 'file') {
             require_once JPATH_COMPONENT.'/helpers/osdownloads.php';
-            OSDownloadsHelper::addSubmenu(JRequest::getCmd('view', $view));
+            OSDownloadsHelper::addSubmenu($app->input->getCmd('view', $view));
         }
 
         parent::display();

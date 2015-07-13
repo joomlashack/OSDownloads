@@ -19,8 +19,7 @@ class OSDownloadsViewDownload extends LegacyView
     public function display($tpl = null)
     {
         $app    = JFactory::getApplication();
-        $params = $app->getParams('com_osdownloads');
-        $id     = JRequest::getVar('id', 0, 'int');
+        $id     = $app->input->getInt('id');
 
         $component = FreeComponentSite::getInstance();
         $model     = $component->getModel('Item');

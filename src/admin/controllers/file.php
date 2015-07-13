@@ -36,7 +36,7 @@ class OSDownloadsControllerFile extends JControllerLegacy
 
     public function save()
     {
-        JRequest::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
+        JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
         JTable::addIncludePath(JPATH_COMPONENT.'/tables');
         jimport('joomla.filesystem.file');
         jimport('joomla.filesystem.folder');

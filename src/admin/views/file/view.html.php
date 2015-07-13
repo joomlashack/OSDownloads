@@ -27,11 +27,11 @@ class OSDownloadsViewFile extends OSDownloadsViewAbstract
         JTable::addIncludePath(JPATH_COMPONENT . '/tables');
 
         $app = JFactory::getApplication();
-        $cid = $app->input->getInt('cid');
+        $cid = $app->input->get('cid', array(), 'array');
+        $cid = (int)array_shift($cid);
 
-        if (is_array($cid)) {
-            $cid = $cid[0];
-        }
+
+
         $item = JTable::getInstance("document", "OSDownloadsTable");
         $item->load($cid);
 

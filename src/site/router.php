@@ -30,7 +30,7 @@ function OSDownloadsBuildRoute(&$query)
     if ($view == "item" && isset($query['id'])) {
         $segments[] = "file";
         $db = JFactory::getDBO();
-        $db->setQuery("SELECT alias FROM `#__osdownloads_documents` WHERE  id = " . $query['id']);
+        $db->setQuery("SELECT alias FROM `#__osdownloads_documents` WHERE  id = " . (int)$query['id']);
         $segments[] = $db->loadResult();
     }
 
@@ -44,7 +44,7 @@ function buildPath(& $segments, $id)
     }
 
     $db = JFactory::getDBO();
-    $db->setQuery("SELECT * FROM `#__categories` WHERE extension='com_osdownloads' AND id = " . $id);
+    $db->setQuery("SELECT * FROM `#__categories` WHERE extension='com_osdownloads' AND id = " . (int)$id);
     $cate = $db->loadObject();
 
     if ($cate) {

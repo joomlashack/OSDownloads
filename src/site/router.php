@@ -44,7 +44,7 @@ function buildPath(& $segments, $id)
     }
 
     $db = JFactory::getDBO();
-    $db->setQuery("SELECT * FROM `#__categories` WHERE extension='com_osdownloads' AND id = " . $id);
+    $db->setQuery("SELECT * FROM `#__categories` WHERE extension='com_osdownloads' AND id = " . (int)$id);
     $cate = $db->loadObject();
 
     if ($cate) {

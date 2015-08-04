@@ -144,7 +144,7 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                     <td class="hidden-phone"><?php echo $checked; ?></td>
                     <td class="center">
                         <div class="btn-group">
-                            <?php echo JHtml::_('jgrid.published', $item->published, $i, 'files.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
+                            <?php echo JHtml::_('jgrid.published', $item->published, $i, 'files.', $canChange, 'cb', @$item->publish_up, @$item->publish_down); ?>
                             <?php
                             // // Create dropdown items
                             // $action = $archived ? 'unarchive' : 'archive';

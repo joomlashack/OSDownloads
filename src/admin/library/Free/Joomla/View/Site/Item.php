@@ -16,7 +16,9 @@ use Alledia\OSDownloads\Free\Joomla\View\Legacy as LegacyView;
 use JRoute;
 use JText;
 
-jimport('legacy.view.legacy');
+if (!class_exists('JViewLegacy')) {
+    jimport('legacy.view.legacy');
+}
 
 
 class Item extends LegacyView

@@ -19,7 +19,10 @@ ExtensionHelper::loadLibrary('com_osdownloads');
 
 $osdownloads = FreeComponentSite::getInstance();
 
-$osdownloadsModule = $osdownloads->isPro() ?
-    ProFileModule::getInstance(null, $module) : FreeFileModule::getInstance(null, $module);
+if ($osdownloads->isPro()) {
+    $osdownloadsModule = new ProFileModule('OSDownloadsFiles', $module);
+} else {
+    $osdownloadsModule = new FreeFileModule('OSDownloadsFiles', $module);
+}
 
 $osdownloadsModule->init();

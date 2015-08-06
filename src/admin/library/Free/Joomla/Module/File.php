@@ -10,21 +10,14 @@ namespace Alledia\OSDownloads\Free\Joomla\Module;
 
 defined('_JEXEC') or die();
 
-use Alledia\Framework\Joomla\Extension\AbstractModule;
+use Alledia\Framework\Joomla\Extension\AbstractFlexibleModule;
 use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use JModuleHelper;
 use JRoute;
 
-class File extends AbstractModule
+class File extends AbstractFlexibleModule
 {
-    protected static $instance;
-
-    public static function getInstance($namespace = null, $module = null)
-    {
-        return parent::getInstance('OSDownloadsFiles', $module);
-    }
-
     public function init()
     {
         // Load the OSDownloads extension

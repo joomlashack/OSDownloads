@@ -86,7 +86,8 @@ class Item extends LegacyView
         }
     }
 
-    protected function buildBreadcrumbs(&$paths, $item) {
+    protected function buildBreadcrumbs(&$paths, $item)
+    {
         $this->buildPath($paths, $item->cate_id);
 
         $app     = Factory::getApplication();

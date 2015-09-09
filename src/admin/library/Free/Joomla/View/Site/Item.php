@@ -29,10 +29,12 @@ class Item extends LegacyView
         $component = FreeComponentSite::getInstance();
         $model     = $component->getModel('Item');
         $params    = $app->getParams('com_osdownloads');
-        $id        = (int) $params->get("document_id");
+        $id        = (int) $app->input->getInt('id');
         $itemId    = (int) $app->input->get('Itemid');
 
-        $id = $app->input->getInt('id');
+        if (empty($id)) {
+            $id = (int) $params->get("document_id");
+        }
 
         $item = $model->getItem($id);
 

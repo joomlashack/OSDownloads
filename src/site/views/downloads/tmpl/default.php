@@ -141,7 +141,7 @@ $doc->addScript('media/com_osdownloads/js/jquery.osdownloads.bundle.min.js', 'te
             <?php endforeach;?>
         <?php endif; ?>
         <div class="clr"></div>
-        <div><?php echo $this->pagination->getPagesCounter(); ?></div>
+        <div class="osdownloads-pages-counter"><?php echo $this->pagination->getPagesCounter(); ?></div>
         <div class="osdownloads-pagination"><?php echo $this->pagination->getPagesLinks(); ?></div>
     </div>
 

@@ -62,6 +62,7 @@ class Item extends LegacyView
         $this->assignRef("paths", $paths);
         $this->assignRef("params", $params);
         $this->assignRef("isPro", $isPro);
+        $this->assignRef('model', $model);
 
         parent::display($tpl);
     }

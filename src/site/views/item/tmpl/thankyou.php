@@ -16,6 +16,10 @@ $defaultThankYou = "
     <p>" . JText::sprintf("COM_OSDOWNLOADS_CLICK_TO_DOWNLOAD_FILE", $this->item->download_url) . "</p>";
 $thankyoupage    = $this->params->get("thankyoupage", $defaultThankYou);
 
+if (!empty($this->item->file_url)) {
+    $this->model->incrementDownloadCount($this->item->id);
+}
+
 // Replace found tags in the thank you message by the respective information
 $thankyoupage = str_replace('{{download_url}}', $this->item->download_url, $thankyoupage);
 ?>

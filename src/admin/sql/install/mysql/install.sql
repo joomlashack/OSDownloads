@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `#__osdownloads_documents` (
   `other_link` VARCHAR(100) NOT NULL,
   `file_path` VARCHAR(100) NOT NULL,
   `file_url` VARCHAR(255) NOT NULL,
-  `downloaded` INT(11) NOT NULL,
+  `downloaded` BIGINT(20) NOT NULL,
   `direct_page` VARCHAR(250) NOT NULL,
   `published` INT(11) NOT NULL,
   `ordering` INT(11) NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `#__osdownloads_documents` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 CREATE TABLE IF NOT EXISTS `#__osdownloads_emails` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(100) NOT NULL,
   `document_id` INT NOT NULL,
   `downloaded_date` DATETIME NOT NULL,

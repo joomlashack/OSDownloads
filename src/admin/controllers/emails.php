@@ -6,22 +6,12 @@
  * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 
+use Alledia\OSDownloads\Free\Joomla\Controller\Admin\Emails as EmailsView;
+
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controller');
 
-class OSDownloadsControllerEmails extends JControllerLegacy
+class OSDownloadsControllerEmails extends EmailsView
 {
-    public function delete()
-    {
-        $app = JFactory::getApplication();
 
-        $id_arr = $app->input->getVar('cid');
-        $str_id = implode(',', $id_arr);
-        $db = JFactory::getDBO();
-        $query = "DELETE FROM `#__osdownloads_emails` WHERE id IN (".$str_id.")";
-        $db->setQuery($query);
-        $db->query();
-        $this->setRedirect("index.php?option=com_osdownloads&view=emails", JText::_("COM_OSDOWNLOADS_EMAIL_IS_DELETED"));
-    }
 }

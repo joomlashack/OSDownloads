@@ -40,13 +40,13 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                 <div class="js-stools clearfix">
                     <div class="clearfix">
                         <div class="btn-wrapper input-append">
-                            <input type="text" name="search" id="search" placeholder="<?php echo JText::_('JSEARCH_FILTER'); ?>" value="<?php echo htmlspecialchars($this->flt->search);?>" class="text_area" onchange="document.adminForm.submit();" />
+                            <input type="text" name="search" id="search" placeholder="<?php echo JText::_('JSEARCH_FILTER'); ?>" value="<?php echo htmlspecialchars($this->flt->search);?>" class="text_area" onchange="doc.adminForm.submit();" />
                             <button class="btn hasTooltip" title="" type="submit" data-original-title="Search">
                                 <?php echo JText::_( 'COM_OSDOWNLOADS_GO' ); ?>
                             </button>
                         </div>
                         <div class="btn-wrapper">
-                            <button onclick="document.getElementById('search').value='';this.form.getElementById('cate_id').value='';this.form.submit();" class="btn hasTooltip js-stools-btn-clear">
+                            <button onclick="doc.getElementById('search').value='';this.form.getElementById('cate_id').value='';this.form.submit();" class="btn hasTooltip js-stools-btn-clear">
                                 <?php echo JText::_( 'COM_OSDOWNLOADS_RESET' ); ?>
                             </button>
                         </div>
@@ -72,7 +72,7 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                 <?php if ($this->isPro) : ?>
                     <?php echo $this->loadTemplate('pro_headers'); ?>
                 <?php endif; ?>
-                <th><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_FILE', 'document.name', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
+                <th><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_FILE', 'doc.name', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
                 <th><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_CATEGORY', 'cate.title', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
                 <th><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_DATE', 'email.downloaded_date', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
                 <th class="hidden-phone center"><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_ID', 'email.id', @$this->lists['order_Dir'], @$this->lists['order'] ); ?></th>

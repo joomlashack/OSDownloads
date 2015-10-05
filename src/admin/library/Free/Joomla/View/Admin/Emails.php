@@ -40,16 +40,16 @@ class Emails extends LegacyView
         $db = Factory::getDBO();
         $query = $db->getQuery(true);
 
-        $query->select("email.*, doc.name AS doc_name, cate.title AS cate_name");
+        $query->select("email.*, doc.name AS doc_name, cat.title AS cate_name");
         $query->from("#__osdownloads_emails email");
         $query->join("LEFT", "#__osdownloads_documents doc ON (email.document_id = doc.id)");
-        $query->join("LEFT", "#__categories cate ON (cate.id = doc.cate_id)");
+        $query->join("LEFT", "#__categories cat ON (cat.id = doc.cate_id)");
 
         if ($this->flt->search) {
             $query->where("email.email LIKE '%{$this->flt->search}%' OR doc.name LIKE '%{$this->flt->search}%'");
         }
         if ($this->flt->cate_id) {
-            $query->where("cate.id = {$this->flt->cate_id}");
+            $query->where("cat.id = {$this->flt->cate_id}");
         }
 
         if ($filter_confirmed >= 0) {

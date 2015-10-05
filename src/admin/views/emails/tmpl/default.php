@@ -73,7 +73,7 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                     <?php echo $this->loadTemplate('pro_headers'); ?>
                 <?php endif; ?>
                 <th><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_FILE', 'doc.name', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
-                <th><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_CATEGORY', 'cate.title', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
+                <th><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_CATEGORY', 'cat.title', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
                 <th><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_DATE', 'email.downloaded_date', @$this->lists['order_Dir'], @$this->lists['order'] ); ?> </th>
                 <th class="hidden-phone center"><?php echo JHTML::_('grid.sort',   'COM_OSDOWNLOADS_ID', 'email.id', @$this->lists['order_Dir'], @$this->lists['order'] ); ?></th>
             </tr>

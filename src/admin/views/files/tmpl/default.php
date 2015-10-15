@@ -8,15 +8,16 @@
 
 defined('_JEXEC') or die;
 
+JHtml::_('bootstrap.tooltip');
 JHtml::_('formbehavior.chosen', 'select');
 
 $listOrder = $this->lists['order'];
-$listDirn  = $this->lists['order_Dir'];
-$saveOrder = $listOrder === 'doc.ordering';
+$listDirn  = strtolower($this->lists['order_Dir']);
+$saveOrder = strtolower($listOrder) === 'doc.ordering asc';
 
 if ($saveOrder) {
     $saveOrderingUrl = 'index.php?option=com_osdownloads&task=files.saveOrderAjax&tmpl=component';
-    JHtml::_('sortablelist.sortable', 'documentList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+    JHtml::_('sortablelist.sortable', 'documentList', 'adminForm', $listDirn, $saveOrderingUrl, false, true);
 }
 
 function category($name, $extension, $selected = null, $javascript = null, $order = null, $size = 1, $sel_cat = 1)
@@ -30,32 +31,24 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
     }
 
     $category = JHtml::_(
-        'select.genericlist', $categories, $name, 'class="inputbox chosen" size="' . $size . '" ' . $javascript, 'value', 'text',
+        'select.genericlist',
+        $categories,
+        $name,
+        'class="inputbox chosen" size="' . $size . '" ' . $javascript,
+        'value',
+        'text',
         $selected
     );
 
     return $category;
 }
 
+// Load search tools
+$options = array(
+    'orderFieldSelector' => '#filter_order'
+);
+JHtml::_('searchtools.form', '#adminForm', $options);
 ?>
-
-<script type="text/javascript">
-    Joomla.orderTable = function()
-    {
-        table = document.getElementById("sortTable");
-        direction = document.getElementById("directionTable");
-        order = table.options[table.selectedIndex].value;
-        if (order != '<?php echo $listOrder; ?>')
-        {
-            dirn = 'asc';
-        }
-        else
-        {
-            dirn = direction.options[direction.selectedIndex].value;
-        }
-        Joomla.tableOrdering(order, dirn, '');
-    }
-</script>
 
 <form action="index.php?option=com_osdownloads" method="post" name="adminForm" id="adminForm">
     <table width="100%">
@@ -88,40 +81,39 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
         <thead>
             <tr>
                 <th width="1%" class="nowrap center hidden-phone">
-                    <?php echo JHtml::_('searchtools.sort', '', 'doc.ordering', @$this->lists['order_Dir'], @$this->lists['order'], null, 'asc', 'JGRID_HEADING_ORDERING', 'icon-menu-2'); ?>
+                    <?php echo JHtml::_('searchtools.sort', '', 'doc.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING', 'icon-menu-2'); ?>
                 </th>
                 <th width="1%" class="hidden-phone">
                     <input type="checkbox" onclick="Joomla.checkAll(this)" title="<?php echo JText::_('COM_OSDOWNLOADS_CHECK_All'); ?>" value="" name="checkall-toggle" />
                 </th>
                 <th width="1%" style="min-width:55px" class="nowrap center">
-                    <?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_PUBLISHED', 'doc.published', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+                    <?php echo JHTML::_('searchtools.sort', 'COM_OSDOWNLOADS_PUBLISHED', 'doc.published', $listDirn, $listOrder); ?>
                 </th>
                 <th class="has-context span6">
-                    <?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_NAME', 'doc.name', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+                    <?php echo JHTML::_('searchtools.sort', 'COM_OSDOWNLOADS_NAME', 'doc.name', $listDirn, $listOrder); ?>
                 </th>
                 <th class="">
-                    <?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_ACCESS', 'doc.access', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+                    <?php echo JHTML::_('searchtools.sort', 'COM_OSDOWNLOADS_ACCESS', 'doc.access', $listDirn, $listOrder); ?>
                 </th>
                 <th class="center nowrap">
-                    <?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_DOWNLOADED', 'doc.downloaded', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+                    <?php echo JHTML::_('searchtools.sort', 'COM_OSDOWNLOADS_DOWNLOADED', 'doc.downloaded', $listDirn, $listOrder); ?>
                 </th>
                 <?php if ($this->extension->isPro()) : ?>
                     <?php echo $this->loadTemplate('pro_headers'); ?>
                 <?php endif; ?>
                 <th class="hidden-phone center">
-                    <?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_ID', 'doc.id', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
+                    <?php echo JHTML::_('searchtools.sort', 'COM_OSDOWNLOADS_ID', 'doc.id', $listDirn, $listOrder); ?>
                 </th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($this->items as $i => $item) :
                 $item->checked_out = false;
-                $ordering   = ($listOrder == 'doc.ordering');
-                $checked    = JHTML::_('grid.checkedout', $item, $i );
+                $checked    = JHTML::_('grid.checkedout', $item, $i);
                 // $canChange  = $user->authorise('core.edit.state', 'com_content.article.'.$item->id) && $canCheckin;
                 $canChange  = true;
             ?>
-                <tr class="row<?php echo $i % 2; ?>">
+                <tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->cate_id; ?>">
                     <td class="order nowrap center hidden-phone">
                         <?php
                         $iconClass = '';
@@ -199,9 +191,10 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
     <input type="hidden" name="option" value="com_osdownloads" />
     <input type="hidden" name="task" value="" />
     <input type="hidden" name="boxchecked" value="0" />
-    <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
-    <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
-    <?php echo JHTML::_( 'form.token' ); ?>
+    <input type="hidden" name="filter_order" id="filter_order" value="<?php echo $listOrder; ?>" />
+    <input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
+    <?php echo JHTML::_('form.token'); ?>
 </form>
 
 <?php echo $this->extension->getFooterMarkup(); ?>
+

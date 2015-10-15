@@ -63,6 +63,29 @@
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
 			</field>
+
+			<field
+				name="ordering"
+				type="list"
+				default="ordering"
+				label="COM_OSDOWNLOADSFILES_FIELD_ORDERING_LABEL"
+				description="COM_OSDOWNLOADSFILES_FIELD_ORDERING_DESC">
+
+				<option value="ordering">COM_OSDOWNLOADSFILES_ORDERING</option>
+				<option value="name">COM_OSDOWNLOADSFILES_NAME</option>
+				<option value="downloaded">COM_OSDOWNLOADSFILES_DOWNLOAD_COUNTER</option>
+			</field>
+
+			<field
+				name="ordering_dir"
+				type="list"
+				default="asc"
+				label="COM_OSDOWNLOADSFILES_FIELD_ORDERING_DIR_LABEL"
+				description="COM_OSDOWNLOADSFILES_FIELD_ORDERING_DIR_DESC">
+
+				<option value="asc">COM_OSDOWNLOADSFILES_ASC</option>
+				<option value="desc">COM_OSDOWNLOADSFILES_DESC</option>
+			</field>
 		</fieldset>
 	</fields>
 </metadata>

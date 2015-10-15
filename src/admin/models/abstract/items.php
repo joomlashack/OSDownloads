@@ -9,6 +9,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.application.component.modeladmin');
+jimport('joomla.table.table');
+
+require_once JPATH_ADMINISTRATOR . '/components/com_osdownloads/tables/document.php';
 
 abstract class OSDownloadsModelItemsAbstract extends JModelAdmin
 {
@@ -60,9 +63,9 @@ abstract class OSDownloadsModelItemsAbstract extends JModelAdmin
         $filterOrderDir = $app->getUserStateFromRequest("com_osdownloads.document.filter_order_Dir", 'filter_order_Dir', 'asc', 'word');
 
         if ($filterOrder == "doc.ordering") {
-            $query->order('doc.cate_id, ' . $filterOrder . ' ' . $filterOrderDir);
+            $query->order('doc.cate_id, ' . $filterOrder);
         } else {
-            $query->order($filterOrder . ' ' . $filterOrderDir);
+            $query->order($filterOrder);
         }
 
         return $query;
@@ -116,5 +119,22 @@ abstract class OSDownloadsModelItemsAbstract extends JModelAdmin
             ->where('id IN (' . implode(',', $pks) . ')');
         $db->setQuery($query);
         $db->execute();
+    }
+
+    /**
+     * Method to get a table object, load it if necessary.
+     *
+     * @param   string  $name     The table name. Optional.
+     * @param   string  $prefix   The class prefix. Optional.
+     * @param   array   $options  Configuration array for model. Optional.
+     *
+     * @return  JTable  A JTable object
+     *
+     * @since   12.2
+     * @throws  Exception
+     */
+    public function getTable($name = '', $prefix = 'Table', $options = array())
+    {
+        return JTable::getInstance('Document', 'OsdownloadsTable', $options);
     }
 }

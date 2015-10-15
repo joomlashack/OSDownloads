@@ -51,6 +51,29 @@
                     description="MOD_OSDOWNLOADSFILES_FIELD_LINK_DESC" />
 
                 <field
+                    name="ordering"
+                    type="list"
+                    default="ordering"
+                    label="MOD_OSDOWNLOADSFILES_FIELD_ORDERING_LABEL"
+                    description="MOD_OSDOWNLOADSFILES_FIELD_ORDERING_DESC">
+
+                    <option value="ordering">MOD_OSDOWNLOADSFILES_ORDERING</option>
+                    <option value="name">MOD_OSDOWNLOADSFILES_NAME</option>
+                    <option value="downloaded">MOD_OSDOWNLOADSFILES_DOWNLOAD_COUNTER</option>
+                </field>
+
+                <field
+                    name="ordering_dir"
+                    type="list"
+                    default="asc"
+                    label="MOD_OSDOWNLOADSFILES_FIELD_ORDERING_DIR_LABEL"
+                    description="MOD_OSDOWNLOADSFILES_FIELD_ORDERING_DIR_DESC">
+
+                    <option value="asc">MOD_OSDOWNLOADSFILES_ASC</option>
+                    <option value="desc">MOD_OSDOWNLOADSFILES_DESC</option>
+                </field>
+
+                <field
                     name="moduleclass_sfx"
                     type="text"
                     label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"

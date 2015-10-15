@@ -39,9 +39,12 @@ class File extends AbstractFlexibleModule
 
         $osdownloads = FreeComponentSite::getInstance();
         $model       = $osdownloads->getModel('Item');
+        $ordering    = $db->quoteName($this->params->get('ordering', 'ordering'))
+            . ' ' . $this->params->get('ordering_dir', 'asc');
 
         $query = $model->getItemQuery();
         $query->where("cate_id = " . $db->quote($this->params->get('category', 0)));
+        $query->order($ordering);
         $db->setQuery($query);
 
         $rows = $db->loadObjectList();

@@ -32,6 +32,9 @@ class OSDownloadsViewDownloads extends LegacyView
         $limit      = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int');
         $limitstart = $app->getUserStateFromRequest('osdownloads.request.limitstart', 'limitstart', 0, 'int');
 
+        $app->setUserState("com_osdownloads.files.filter_order", $params->get('ordering', 'doc.ordering'));
+        $app->setUserState("com_osdownloads.files.filter_order_Dir", $params->get('ordering_dir', 'asc'));
+
         // Paths
         $paths = array();
 
@@ -61,8 +64,6 @@ class OSDownloadsViewDownloads extends LegacyView
         } else {
             $query->where("cate_id IN ({$categoryIDsStr})");
         }
-
-        $query->order('doc.ordering');
 
         $db->setQuery($query);
 

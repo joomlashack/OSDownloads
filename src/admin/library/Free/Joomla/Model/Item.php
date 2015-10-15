@@ -17,6 +17,7 @@ use JRoute;
 use JDispatcher;
 use JEventDispatcher;
 use JPluginHelper;
+use JFactory;
 
 
 class Item extends BaseModel
@@ -75,10 +76,14 @@ class Item extends BaseModel
      */
     public function getItemQuery($documentId = null)
     {
+        $app       = JFactory::getApplication();
         $db        = $this->getDBO();
         $user      = Factory::getUser();
         $groups    = $user->getAuthorisedViewLevels();
         $component = FreeComponentSite::getInstance();
+
+        $filterOrder    = $app->getUserStateFromRequest("com_osdownloads.files.filter_order", 'filter_order', 'doc.ordering', '');
+        $filterOrderDir = $app->getUserStateFromRequest("com_osdownloads.files.filter_order_Dir", 'filter_order_Dir', 'asc', 'word');
 
         $query  = $db->getQuery(true)
             ->select('doc.*')
@@ -98,7 +103,8 @@ class Item extends BaseModel
                     'doc.access IN (' . implode(',', $groups) . ')',
                     'cat.access IN (' . implode(',', $groups) . ')'
                 )
-            );
+            )
+            ->order($db->quoteName($filterOrder) . ' ' . $filterOrderDir);
 
         if (!empty($documentId)) {
             $query->where('doc.id = ' . $db->quote((int) $documentId));

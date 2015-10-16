@@ -11,6 +11,7 @@ namespace Alledia\OSDownloads\Free\Joomla\Table;
 defined('_JEXEC') or die();
 
 use Alledia\Framework\Joomla\Table\Base as BaseTable;
+use JFactory;
 
 
 class Item extends BaseTable
@@ -42,6 +43,10 @@ class Item extends BaseTable
     public $external_ref;
     public $access;
     public $agreement_article_id;
+    public $created_user_id;
+    public $created_time;
+    public $modified_user_id;
+    public $modified_time;
 
     public function __construct(&$db)
     {
@@ -50,8 +55,19 @@ class Item extends BaseTable
 
     public function store($updateNulls = false)
     {
-        if (!isset($this->id)) {
-            $this->downloaded = 0;
+        $date = JFactory::getDate();
+        $user = JFactory::getUser();
+
+        $this->modified_time = $date->toSql();
+
+        if (isset($this->id) && !empty($this->id)) {
+            // Existing item
+            $this->modified_user_id = $user->get('id');
+        } else {
+            // New item
+            $this->downloaded      = 0;
+            $this->created_time    = $date->toSql();
+            $this->created_user_id = $user->get('id');
         }
 
         if (isset($this->alias) && isset($this->name) && $this->alias == "") {

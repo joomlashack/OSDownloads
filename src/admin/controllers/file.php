@@ -103,7 +103,9 @@ class OSDownloadsControllerFile extends JControllerLegacy
         // Check for request forgeries
         JRequest::checkToken() or jexit('Invalid Token');
 
-        $db = JFactory::getDBO();
+        $db   = JFactory::getDBO();
+        $date = JFactory::getDate();
+        $user = JFactory::getUser();
 
         $cid     = JRequest::getVar('cid', array(), '', 'array');
         $publish = ($this->getTask() == 'publish' ? 1 : 0);
@@ -113,7 +115,9 @@ class OSDownloadsControllerFile extends JControllerLegacy
         $cids = implode(',', $cid);
 
         $query = 'UPDATE `#__osdownloads_documents`'
-        . ' SET published = ' . (int) $publish
+        . ' SET published = ' . (int) $publish . ','
+        . ' modified_user_id = ' . (int) $user->get('id') . ','
+        . ' modified_time = ' . $date->toSql()
         . ' WHERE id IN ('. $cids .')';
         $db->setQuery($query);
         if (!$db->query()) {

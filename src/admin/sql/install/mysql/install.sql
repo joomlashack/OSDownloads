@@ -24,6 +24,10 @@ CREATE TABLE IF NOT EXISTS `#__osdownloads_documents` (
   `ordering` INT(11) NOT NULL,
   `external_ref` VARCHAR(100),
   `access` INT(11) NOT NULL DEFAULT 1,
+  `created_user_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `created_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_user_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `modified_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 

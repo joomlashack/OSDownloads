@@ -191,8 +191,6 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
 
         $db->setQuery('ALTER TABLE `#__osdownloads_emails` CHANGE `id` `id` BIGINT(20)  NOT NULL  AUTO_INCREMENT')
             ->execute();
-        $db->setQuery('ALTER TABLE `#__osdownloads_emails` CHANGE `confirmed` `confirmed` TINYINT(1)  UNSIGNED  NOT NULL  DEFAULT \'0\'')
-            ->execute();
 
         return true;
     }

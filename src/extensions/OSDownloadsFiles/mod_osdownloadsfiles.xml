@@ -60,6 +60,8 @@
                     <option value="ordering">MOD_OSDOWNLOADSFILES_ORDERING</option>
                     <option value="name">MOD_OSDOWNLOADSFILES_NAME</option>
                     <option value="downloaded">MOD_OSDOWNLOADSFILES_DOWNLOAD_COUNTER</option>
+                    <option value="created_time">MOD_OSDOWNLOADSFILES_CREATED_TIME</option>
+                    <option value="modified_time">MOD_OSDOWNLOADSFILES_MODIFIED_TIME</option>
                 </field>
 
                 <field

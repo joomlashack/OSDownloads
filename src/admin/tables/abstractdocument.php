@@ -39,6 +39,10 @@ class OSDownloadsTableAbstractDocument extends OSDownloadsTableAbstract
     public $external_ref;
     public $access;
     public $agreement_article_id;
+    public $created_user_id;
+    public $created_time;
+    public $modified_user_id;
+    public $modified_time;
 
     /**
      * Event dispatcher
@@ -55,11 +59,22 @@ class OSDownloadsTableAbstractDocument extends OSDownloadsTableAbstract
     public function store($updateNulls = false)
     {
         $isNew = false;
-        if (!$this->id) {
+        $date  = JFactory::getDate();
+        $user  = JFactory::getUser();
+
+        $this->modified_time = $date->toSql();
+
+        if (isset($this->id) && !empty($this->id)) {
+            // Existing document
+            $this->modified_user_id = $user->get('id');
+        } else {
             // New document
-            $this->downloaded = 0;
+            $this->downloaded      = 0;
+            $this->created_time    = $date->toSql();
+            $this->created_user_id = $user->get('id');
             $isNew = true;
         }
+
 
         if (isset($this->alias) && isset($this->name) && $this->alias == "") {
             $this->alias = preg_replace("/ /", "-", strtolower($this->name));

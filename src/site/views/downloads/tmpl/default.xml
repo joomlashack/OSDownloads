@@ -73,7 +73,9 @@
 
 				<option value="ordering">COM_OSDOWNLOADSFILES_ORDERING</option>
 				<option value="name">COM_OSDOWNLOADSFILES_NAME</option>
-				<option value="downloaded">COM_OSDOWNLOADSFILES_DOWNLOAD_COUNTER</option>
+				<option value="downloaded">COM_OSDOWNLOADSFILES_DOWNLOADED</option>
+				<option value="created_time">COM_OSDOWNLOADSFILES_CREATED_TIME</option>
+				<option value="modified_time">COM_OSDOWNLOADSFILES_MODIFIED_TIME</option>
 			</field>
 
 			<field

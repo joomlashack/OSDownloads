@@ -46,6 +46,11 @@ class OSDownloadsViewFiles extends OSDownloadsViewAbstract
         $filter             = new stdClass;
         $filter->search     = $app->getUserStateFromRequest('com_osdownloads.document.request.search', 'search');
         $filter->categoryId = $app->getUserStateFromRequest('com_osdownloads.document.request.cate_id', 'flt_cate_id');
+        $filter->limit      = $app->getUserStateFromRequest('com_osdownloads.document.request.limit', 'limit');
+
+        if (empty($filter->limit)) {
+            $filter->limit = 25;
+        }
 
         // Load the extension
         $extension = Alledia\Framework\Factory::getExtension('OSDownloads', 'component');
@@ -69,11 +74,11 @@ class OSDownloadsViewFiles extends OSDownloadsViewAbstract
             }
         }
 
-        $this->assignRef('lists', $lists);
-        $this->assignRef("items", $items);
-        $this->assignRef("filter", $filter);
-        $this->assignRef("pagination", $pagination);
-        $this->assignRef("extension", $extension);
+        $this->lists         = $lists;
+        $this->items         = $items;
+        $this->filter        = $filter;
+        $this->pagination    = $pagination;
+        $this->extension     = $extension;
 
         $this->addToolbar();
 

@@ -43,6 +43,10 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
     return $category;
 }
 
+?>
+<form action="index.php?option=com_osdownloads" method="post" name="adminForm" id="adminForm">
+
+<?php
 // Load search tools
 $options = array(
     'orderFieldSelector' => '#filter_order'
@@ -50,7 +54,9 @@ $options = array(
 JHtml::_('searchtools.form', '#adminForm', $options);
 ?>
 
-<form action="index.php?option=com_osdownloads" method="post" name="adminForm" id="adminForm">
+
+    <?php // echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this)); ?>
+
     <table width="100%">
         <tr>
             <td>
@@ -73,6 +79,22 @@ JHtml::_('searchtools.form', '#adminForm', $options);
             <td align="right">
                 <div class="js-stools clearfix">
                     <?php echo category('flt_cate_id', 'com_osdownloads', $this->filter->categoryId, "onchange='this.form.submit();'", 'title', $size = 1, $sel_cat = 1); ?>
+                    <?php echo JHtml::_(
+                        'select.genericlist',
+                        array(
+                            array('value' => 5, 'text' => '5'),
+                            array('value' => 10, 'text' => '10'),
+                            array('value' => 20, 'text' => '20'),
+                            array('value' => 25, 'text' => '25'),
+                            array('value' => 50, 'text' => '50'),
+                            array('value' => 100, 'text' => '100')
+                        ),
+                        'limit',
+                        'class="inputbox chosen inputbox input-mini" size="' . 5 . '" onchange="this.form.submit();"',
+                        'value',
+                        'text',
+                        $this->filter->limit);
+                    ?>
                 </div>
             </td>
         </tr>

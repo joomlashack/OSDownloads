@@ -29,7 +29,7 @@ $showModal    = false;
 
 
 // Module body
-$doc->addStylesheet(JUri::base() . 'media/com_osdownloads/css/frontend.css');
+JHtml::_('stylesheet', 'media/com_osdownloads/css/frontend.css');
 
 if ($this->loadJQuery && !defined('ALLEDIA_JQUERY_LOADED')) {
     define('ALLEDIA_JQUERY_LOADED', 1);

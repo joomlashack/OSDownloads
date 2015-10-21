@@ -99,7 +99,7 @@ if ($linkTo === 'download') {
 <?php if ($linkTo === 'download') : ?>
     <?php if ($showModal) : ?>
         <div id="modosdownloads<?php echo $this->id; ?>RequirementsPopup" class="reveal-modal osdownloads-modal <?php echo AllediaHelper::getJoomlaVersionCssClass(); ?>">
-            <h1 class="title"><?php echo JText::_('COM_OSDOWNLOADS_BEFORE_DOWNLOAD'); ?></h1>
+            <h2 class="title"><?php echo JText::_('COM_OSDOWNLOADS_BEFORE_DOWNLOAD'); ?></h2>
 
             <div id="modosdownloads<?php echo $this->id; ?>EmailGroup" class="osdownloadsemail" style="display: none;">
 

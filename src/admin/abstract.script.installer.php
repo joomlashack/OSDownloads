@@ -167,7 +167,11 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
         $columns = array(
             'external_ref'         => 'VARCHAR(100)',
             'access'               => 'INT(11) NOT NULL DEFAULT 1',
-            'agreement_article_id' => 'INT(11)'
+            'agreement_article_id' => 'INT(11)',
+            'created_user_id'      => 'INT(10) UNSIGNED NOT NULL DEFAULT "0"',
+            'created_time'         => 'DATETIME NOT NULL DEFAULT "0000-00-00 00:00:00"',
+            'modified_user_id'     => 'INT(10) unsigned NOT NULL DEFAULT "0"',
+            'modified_time'        => 'DATETIME NOT NULL DEFAULT "0000-00-00 00:00:00"'
         );
         $this->addColumnsIfNotExists('#__osdownloads_documents', $columns);
 

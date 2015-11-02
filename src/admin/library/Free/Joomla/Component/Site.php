@@ -24,7 +24,7 @@ class Site extends AbstractComponent
 
     public function init()
     {
-        JHtml::_('stylesheet', 'media/com_osdownloads/css/frontend.css');
+        \JHtml::_('stylesheet', 'media/com_osdownloads/css/frontend.css');
 
         parent::init();
     }

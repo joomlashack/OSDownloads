@@ -12,7 +12,7 @@ $app = JFactory::getApplication();
 $db  = JFactory::getDBO();
 
 $defaultThankYou = "
-    <h1>" . JText::_('COM_OSDOWNLOADS_THANK_YOU') . "</h1>
+    <h2>" . JText::_('COM_OSDOWNLOADS_THANK_YOU') . "</h2>
     <p>" . JText::sprintf("COM_OSDOWNLOADS_CLICK_TO_DOWNLOAD_FILE", $this->item->download_url) . "</p>";
 $thankyoupage    = $this->params->get("thankyoupage", $defaultThankYou);
 

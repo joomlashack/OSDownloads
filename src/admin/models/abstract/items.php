@@ -8,7 +8,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-jimport('joomla.application.component.modeladmin');
+jimport('joomla.application.component.modellist');
 jimport('joomla.table.table');
 
 require_once JPATH_ADMINISTRATOR . '/components/com_osdownloads/tables/document.php';

@@ -2,8 +2,8 @@
 <extension type="module" version="2.5.0" client="site" method="upgrade">
     <name>mod_osdownloadsfiles</name>
     <author>Alledia</author>
-    <creationDate>August 10, 2015</creationDate>
-    <copyright>Copyright (C) 2015 Alledia.com</copyright>
+    <creationDate>August 10, 2016</creationDate>
+    <copyright>Copyright (C) 2016 Alledia.com</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <authorEmail>hello@alledia.com</authorEmail>
     <authorUrl>http://www.alledia.com</authorUrl>

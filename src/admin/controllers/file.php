@@ -64,13 +64,29 @@ class OSDownloadsControllerFile extends JControllerLegacy
             $row->id = $post['id'];
         }
 
-        $files = JRequest::get('files');
-        $file  = $files['jform'];
+        if (version_compare(JVERSION, '3.4', '<')) {
+            $files       = JRequest::get('files');
+            $file        = $files['jform'];
+            $fileName    = $file["name"]['file'];
+            $fileTmpName = $file["tmp_name"]['file'];
+        } else {
+            $app = JFactory::getApplication();
 
-        if (!empty($file['name'])) {
-            $file["name"]['file'] = JFile::makeSafe($file["name"]['file']);
+            $files       = $app->input->files->get('jform', null, 'raw');
+            if (isset($files['file'])) {
+                $file        = $files['file'];
+                $fileName    = $file["name"];
+                $fileTmpName = $file["tmp_name"];
+            } else {
+                $fileName    = '';
+                $fileTmpName = '';
+            }
+        }
 
-            if (isset($file["name"]['file']) && $file["name"]['file']) {
+        if (!empty($fileName)) {
+            $fileName = JFile::makeSafe($fileName);
+
+            if (isset($fileName) && $fileName) {
                 $uploadDir = JPATH_SITE . "/media/com_osdownloads/files/";
 
                 if (isset($post["old_file"]) && JFile::exists(JPath::clean($uploadDir . $post["old_file"]))) {
@@ -82,9 +98,30 @@ class OSDownloadsControllerFile extends JControllerLegacy
                 }
 
                 $timestamp = md5(microtime());
-                $filepath = JPath::clean($uploadDir . $timestamp . "_" . $file["name"]['file']);
-                $row->file_path = $timestamp . "_" . $file["name"]['file'];
-                JFile::upload($file["tmp_name"]['file'], $filepath);
+                $filepath = JPath::clean($uploadDir . $timestamp . "_" . $fileName);
+                $row->file_path = $timestamp . "_" . $fileName;
+
+                if (version_compare(JVERSION, '3.4', '<')) {
+                    JFile::upload($fileTmpName, $filepath);
+                } else {
+                    $safeFileOptions = array(
+                        // Null byte in file name
+                        'null_byte'                  => true,
+                        // Forbidden string in extension (e.g. php matched .php, .xxx.php, .php.xxx and so on)
+                        'forbidden_extensions'       => array(),
+                        // <?php tag in file contents
+                        'php_tag_in_content'         => false,
+                        // <? tag in file contents
+                        'shorttag_in_content'        => false,
+                        // Which file extensions to scan for short tags
+                        'shorttag_extensions'        => array(),
+                        // Forbidden extensions anywhere in the content
+                        'fobidden_ext_in_content'    => false,
+                        // Which file extensions to scan for .php in the content
+                        'php_ext_content_extensions' => array(),
+                    );
+                    JFile::upload($fileTmpName, $filepath, false, false, $safeFileOptions);
+                }
             }
         }
 

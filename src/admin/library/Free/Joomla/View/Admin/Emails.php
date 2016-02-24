@@ -90,5 +90,7 @@ class Emails extends LegacyView
     {
         JToolBarHelper::title(JText::_('COM_OSDOWNLOADS') . ': ' . JText::_('COM_OSDOWNLOADS_EMAILS'));
         JToolBarHelper::deleteList('Are you sure?', 'emails.delete');
+        JToolBarHelper::divider();
+        JToolBarHelper::preferences('com_osdownloads', '450');
     }
 }

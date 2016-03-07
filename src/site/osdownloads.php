@@ -10,7 +10,9 @@ defined('_JEXEC') or die;
 
 use Alledia\OSDownloads\Free\Joomla\Component\Site as SiteComponent;
 
-require_once JPATH_SITE . '/administrator/components/com_osdownloads/include.php';
+include_once JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
 
-$component = SiteComponent::getInstance();
-$component->init();
+if (defined('OSDOWNLOADS_LOADED')) {
+    $component = SiteComponent::getInstance();
+    $component->init();
+}

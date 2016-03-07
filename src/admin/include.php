@@ -17,12 +17,20 @@ if (!defined('ALLEDIA_FRAMEWORK_LOADED')) {
     if (file_exists($allediaFrameworkPath)) {
         require_once $allediaFrameworkPath;
     } else {
-        JFactory::getApplication()
-            ->enqueueMessage('[OSDownloads] Alledia framework not found', 'error');
+        $app = JFactory::getApplication();
+
+        if ($app->isAdmin()) {
+            $app->enqueueMessage('[OSDownloads] Alledia framework not found', 'error');
+        }
     }
 }
 
-define('OSDOWNLOADS_MEDIA_PATH', JPATH_SITE . 'media/com_osdownloads');
-define('OSDOWNLOADS_MEDIA_URI', JUri::root() . 'media/com_osdownloads');
+if (defined('ALLEDIA_FRAMEWORK_LOADED')) {
+    // Define the constant that say OSDownloads is ok to run
+    define('OSDOWNLOADS_LOADED', true);
 
-ExtensionHelper::loadLibrary('com_osdownloads');
+    define('OSDOWNLOADS_MEDIA_PATH', JPATH_SITE . 'media/com_osdownloads');
+    define('OSDOWNLOADS_MEDIA_URI', JUri::root() . 'media/com_osdownloads');
+
+    ExtensionHelper::loadLibrary('com_osdownloads');
+}

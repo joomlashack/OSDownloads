@@ -6,9 +6,9 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
-defined('_JEXEC') or die();
+use Alledia\Framework\Joomla\Extension;
 
-use Alledia\Framework\Joomla\Extension\Helper as ExtensionHelper;
+defined('_JEXEC') or die();
 
 // Alledia Framework
 if (!defined('ALLEDIA_FRAMEWORK_LOADED')) {
@@ -27,10 +27,10 @@ if (!defined('ALLEDIA_FRAMEWORK_LOADED')) {
 
 if (defined('ALLEDIA_FRAMEWORK_LOADED')) {
     // Define the constant that say OSDownloads is ok to run
-    define('OSDOWNLOADS_LOADED', true);
+    define('OSDOWNLOADS_LOADED', 1);
 
     define('OSDOWNLOADS_MEDIA_PATH', JPATH_SITE . 'media/com_osdownloads');
     define('OSDOWNLOADS_MEDIA_URI', JUri::root() . 'media/com_osdownloads');
 
-    ExtensionHelper::loadLibrary('com_osdownloads');
+    Extension\Helper::loadLibrary('com_osdownloads');
 }

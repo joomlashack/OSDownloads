@@ -99,7 +99,7 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="<?php echo $this->isPro ? 7 : 6; ?>">
+                <td colspan="<?php echo $this->isPro ? 8 : 6; ?>">
                     <?php echo $this->pagination->getListFooter(); ?>
                 </td>
             </tr>

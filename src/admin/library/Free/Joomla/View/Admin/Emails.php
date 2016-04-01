@@ -34,7 +34,7 @@ class Emails extends LegacyView
         $this->flt->search  = $app->getUserStateFromRequest('osdownloads.email.request.search', 'search', "");
         $this->flt->cate_id = $app->getUserStateFromRequest('osdownloads.email.request.cate_id', 'cate_id');
         $filter_order       = $app->getUserStateFromRequest("osdownloads.email.filter_order", 'filter_order', 'email.id', 'cmd');
-        $filter_order_Dir   = $app->getUserStateFromRequest("osdownloads.email.filter_order_Dir", 'filter_order_Dir', '', 'word');
+        $filter_order_Dir   = $app->getUserStateFromRequest("osdownloads.email.filter_order_Dir", 'filter_order_Dir', 'DESC', 'word');
         $filter_confirmed   = $app->getUserStateFromRequest("osdownloads.email.filter_confirmed", 'filter_confirmed', '-1', 'int');
 
         $db = Factory::getDBO();

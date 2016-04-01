@@ -13,6 +13,7 @@ defined('_JEXEC') or die();
 use Alledia\Framework\Factory;
 use Alledia\Framework\Joomla\Table\Base as BaseTable;
 use Alledia\OSDownloads\Free\MailChimpAPI;
+use JEventDispatcher;
 
 
 class Email extends BaseTable
@@ -37,8 +38,40 @@ class Email extends BaseTable
         if (!empty($this->email)) {
 
             $mc = new MailChimpAPI($apiKey);
-            $merge_vars = array();
-            $mc->listSubscribe($listId, $this->email, $merge_vars);
+            $mergeVars = array();
+            $mc->listSubscribe($listId, $this->email, $mergeVars);
         }
+    }
+
+    public function store($updateNulls = false)
+    {
+        // Trigger events to osdownloads plugins
+        $dispatcher = JEventDispatcher::getInstance();
+        $pluginResults = $dispatcher->trigger('onOSDownloadsBeforeSaveEmail', array(&$this));
+
+        $result = false;
+        if ($pluginResults !== false) {
+            $result = parent::store($updateNulls);
+
+            $dispatcher->trigger('onOSDownloadsAfterSaveEmail', array($result, &$this));
+        }
+
+        return $result;
+    }
+
+    public function delete($pk = null)
+    {
+        // Trigger events to osdownloads plugins
+        $dispatcher = JEventDispatcher::getInstance();
+        $pluginResults = $dispatcher->trigger('onOSDownloadsBeforeDeleteEmail', array(&$this, $pk));
+
+        $result = false;
+        if ($pluginResults !== false) {
+            $result = parent::delete($pk);
+
+            $dispatcher->trigger('onOSDownloadsAfterDeleteEmail', array($result, $this->id, $pk));
+        }
+
+        return $result;
     }
 }

@@ -71,11 +71,11 @@
 				label="COM_OSDOWNLOADSFILES_FIELD_ORDERING_LABEL"
 				description="COM_OSDOWNLOADSFILES_FIELD_ORDERING_DESC">
 
-				<option value="ordering">COM_OSDOWNLOADSFILES_ORDERING</option>
-				<option value="name">COM_OSDOWNLOADSFILES_NAME</option>
-				<option value="downloaded">COM_OSDOWNLOADSFILES_DOWNLOADED</option>
-				<option value="created_time">COM_OSDOWNLOADSFILES_CREATED_TIME</option>
-				<option value="modified_time">COM_OSDOWNLOADSFILES_MODIFIED_TIME</option>
+				<option value="doc.ordering">COM_OSDOWNLOADSFILES_ORDERING</option>
+				<option value="doc.name">COM_OSDOWNLOADSFILES_NAME</option>
+				<option value="doc.downloaded">COM_OSDOWNLOADSFILES_DOWNLOADED</option>
+				<option value="doc.created_time">COM_OSDOWNLOADSFILES_CREATED_TIME</option>
+				<option value="doc.modified_time">COM_OSDOWNLOADSFILES_MODIFIED_TIME</option>
 			</field>
 
 			<field

@@ -196,6 +196,8 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
         $db->setQuery('ALTER TABLE `#__osdownloads_emails` CHANGE `id` `id` BIGINT(20)  NOT NULL  AUTO_INCREMENT')
             ->execute();
 
+        $this->fixOrderingParamForMenus();
+
         return true;
     }
 
@@ -308,5 +310,47 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
         // Drop the show_email column
         $db->setQuery('ALTER TABLE `#__osdownloads_documents` DROP COLUMN `show_email`');
         $db->execute();
+    }
+
+    /**
+     * Fix old values for the ordering param in menus, adding the table prefix.
+     */
+    protected function fixOrderingParamForMenus()
+    {
+        $db = JFactory::getDbo();
+
+        $query = $db->getQuery(true)
+            ->select('link')
+            ->select('params')
+            ->select('id')
+            ->from('#__menu')
+            ->where('link = ' . $db->quote('index.php?option=com_osdownloads&view=downloads'));
+        $db->setQuery($query);
+        $menus = $db->loadObjectList();
+
+        if (!empty($menus)) {
+            foreach ($menus as $menu) {
+                $params = @json_decode($menu->params);
+                $legacyOrderings = array(
+                    'ordering',
+                    'name',
+                    'downloaded',
+                    'created_time',
+                    'modified_time'
+                );
+
+                if (isset($params->ordering) && in_array($params->ordering, $legacyOrderings)) {
+                    $params->ordering = 'doc.' . $params->ordering;
+                    $params = json_encode($params);
+
+                    $query = $db->getQuery(true)
+                        ->update('#__menu')
+                        ->set('params = ' . $db->quote($params))
+                        ->where('id = ' . $menu->id);
+                    $db->setQuery($query);
+                    $db->execute();
+                }
+            }
+        }
     }
 }

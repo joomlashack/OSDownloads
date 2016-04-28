@@ -13,7 +13,7 @@ jimport('joomla.table.table');
 
 require_once JPATH_ADMINISTRATOR . '/components/com_osdownloads/tables/document.php';
 
-abstract class OSDownloadsModelItemsAbstract extends JModelList
+abstract class OSDownloadsModelItemsAbstract extends JModelAdmin
 {
     protected $state;
 

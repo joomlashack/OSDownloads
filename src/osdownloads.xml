@@ -109,6 +109,7 @@
         <element>osdownloads</element>
         <namespace>OSDownloads</namespace>
         <license>free</license>
+        <targetplatform>3.*</targetplatform>
         <relatedExtensions>
             <extension
                 type="library"

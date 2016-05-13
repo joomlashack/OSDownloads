@@ -9,7 +9,8 @@
         "element-short"  : "osdownloads",
         "name"           : "OSDownloads",
         "client"         : "administrator",
-        "package-license": "free"
+        "package-license": "free",
+        "target-platform": "3.*"
     },
     "authors": [
         {

@@ -7,8 +7,8 @@
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>support@alledia.com</authorEmail>
     <authorUrl>https://www.alledia.com</authorUrl>
-    <description>OSDownloads is an extension to help you manage your downloads. It allows you to easily provide downloads in exchange for emails, which can in turn be automatically imported in MailChimp upon download.</description>
     <version>1.4.8</version>
+    <description>COM_OSDOWNLOADS_DESCRIPTION</description>
 
     <scriptfile>script.installer.php</scriptfile>
 

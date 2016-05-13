@@ -2,12 +2,12 @@
 <extension type="component" version="2.5.0" method="upgrade">
     <name>com_osdownloads</name>
     <author>Alledia</author>
-    <creationDate>March 10 2016</creationDate>
+    <creationDate>May 12 2016</creationDate>
     <copyright>Copyright (C) 2016 Open Source Training, LLC</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>support@alledia.com</authorEmail>
     <authorUrl>https://www.alledia.com</authorUrl>
-    <version>1.4.6</version>
+    <version>1.4.7</version>
     <description>OSDownloads is an extension to help you manage your downloads. It allows you to easily provide downloads in exchange for emails, which can in turn be automatically imported in MailChimp upon download.</description>
 
     <variant>FREE</variant>

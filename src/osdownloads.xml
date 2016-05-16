@@ -2,12 +2,12 @@
 <extension version="3.5" type="component" method="upgrade">
     <name>com_osdownloads</name>
     <author>Alledia</author>
-    <creationDate>May 13 2016</creationDate>
+    <creationDate>May 16 2016</creationDate>
     <copyright>Copyright (C) 2016 Open Source Training, LLC</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>support@alledia.com</authorEmail>
     <authorUrl>https://www.alledia.com</authorUrl>
-    <version>1.4.8</version>
+    <version>1.4.9</version>
     <variant>FREE</variant>
     <description>COM_OSDOWNLOADS_DESCRIPTION</description>
 

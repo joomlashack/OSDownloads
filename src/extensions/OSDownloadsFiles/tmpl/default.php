@@ -85,7 +85,7 @@ if ($linkTo === 'download') {
                             </span>
                         </a>
                     <?php else: ?>
-                        <a class="modosdownloadsDownloadButton readmore" href="<?php echo JRoute::_('index.php?option=com_osdownloads&view=item&Itemid=' . $itemId . '&id=' . $file->id); ?>" data-direct-page="<?php echo $file->direct_page; ?>">
+                        <a class="modosdownloadsDownloadButton osdownloads-readmore readmore" href="<?php echo JRoute::_('index.php?option=com_osdownloads&view=item&Itemid=' . $itemId . '&id=' . $file->id); ?>" data-direct-page="<?php echo $file->direct_page; ?>">
                             <?php echo $this->params->get('link_label', JText::_('MOD_OSDOWNLOADSFILES_READ_MORE')); ?>
                         </a>
                         <br clear="all" />
@@ -138,7 +138,7 @@ if ($linkTo === 'download') {
                 </div>
             </div>
 
-            <a href="#"  id="modosdownloads<?php echo $this->id; ?>DownloadContinue" class="readmore">
+            <a href="#"  id="modosdownloads<?php echo $this->id; ?>DownloadContinue" class="osdownloads-readmore readmore">
                 <span>
                     <?php echo JText::_("COM_OSDOWNLOADS_CONTINUE"); ?>
                 </span>

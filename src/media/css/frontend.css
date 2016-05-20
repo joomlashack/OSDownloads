@@ -20,7 +20,7 @@
     padding-bottom:20px;
 }
 
-.readmore
+.osdownloads-readmore
 {
     float:right;
 }
@@ -30,7 +30,7 @@
     clear:both;
 }
 
-.reference .readmore
+.reference .osdownloads-readmore
 {
     float:left;
     margin-right:10px;
@@ -41,7 +41,7 @@
     margin-top:10px;
 }
 
-.btn_download .readmore
+.btn_download .osdownloads-readmore
 {
     float:none;
 }

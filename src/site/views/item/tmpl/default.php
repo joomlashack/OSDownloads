@@ -44,16 +44,16 @@ if (! $this->isPro) {
         <?php endif;?>
         <div class="reference">
             <?php if ($this->item->documentation_link):?>
-                <div class="readmore"><a href="<?php echo($this->item->documentation_link);?>"><?php echo(JText::_("COM_OSDOWNLOADS_DOCUMENTATION"));?></a></div>
+                <div class="osdownloads-readmore readmore"><a href="<?php echo($this->item->documentation_link);?>"><?php echo(JText::_("COM_OSDOWNLOADS_DOCUMENTATION"));?></a></div>
             <?php endif;?>
             <?php if ($this->item->demo_link):?>
-                <div class="readmore"><a href="<?php echo($this->item->demo_link);?>"><?php echo(JText::_("COM_OSDOWNLOADS_DEMO"));?></a></div>
+                <div class="osdownloads-readmore readmore"><a href="<?php echo($this->item->demo_link);?>"><?php echo(JText::_("COM_OSDOWNLOADS_DEMO"));?></a></div>
             <?php endif;?>
             <?php if ($this->item->support_link):?>
-                <div class="readmore"><a href="<?php echo($this->item->support_link);?>"><?php echo(JText::_("COM_OSDOWNLOADS_SUPPORT"));?></a></div>
+                <div class="osdownloads-readmore readmore"><a href="<?php echo($this->item->support_link);?>"><?php echo(JText::_("COM_OSDOWNLOADS_SUPPORT"));?></a></div>
             <?php endif;?>
             <?php if ($this->item->other_link):?>
-                <div class="readmore"><a href="<?php echo($this->item->other_link);?>"><?php echo($this->item->other_name);?></a></div>
+                <div class="osdownloads-readmore readmore"><a href="<?php echo($this->item->other_link);?>"><?php echo($this->item->other_name);?></a></div>
             <?php endif;?>
             <div class="clr"></div>
         </div>
@@ -70,7 +70,7 @@ if (! $this->isPro) {
                     href="<?php echo JRoute::_("index.php?option=com_osdownloads&task=routedownload&tmpl=component&Itemid={$this->itemId}&id={$this->item->id}");?>"
                     id="osdownloadsDownloadButton"
                     style="color:<?php echo($this->item->download_color);?>"
-                    class="readmore"
+                    class="osdownloads-readmore readmore"
                     data-direct-page="<?php echo $this->item->direct_page; ?>"
                     data-require-email="<?php echo $this->item->require_user_email; ?>"
                     data-require-agree="<?php echo $this->item->require_agree; ?>"
@@ -127,7 +127,7 @@ if (! $this->isPro) {
             ?>
         <?php endif; ?>
 
-        <a href="#"  id="osdownloadsDownloadContinue" class="readmore">
+        <a href="#"  id="osdownloadsDownloadContinue" class="osdownloads-readmore readmore">
             <span>
                 <?php echo JText::_("COM_OSDOWNLOADS_CONTINUE"); ?>
             </span>

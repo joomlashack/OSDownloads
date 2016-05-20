@@ -126,8 +126,8 @@ $doc->addScript('media/com_osdownloads/js/jquery.osdownloads.bundle.min.js', 'te
                         <?php endif; ?>
 
                         <?php if ($params->get('show_readmore_button', 1)) : ?>
-                            <div class="readmore_wrapper">
-                                <div class="readmore">
+                            <div class="osdownloads-readmore-wrapper readmore_wrapper">
+                                <div class="osdownloads-readmore readmore">
                                     <a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$file->id."&Itemid=".$itemId));?>">
                                         <?php echo(JText::_("COM_OSDOWNLOADS_READ_MORE"));?>
                                     </a>
@@ -191,7 +191,7 @@ $doc->addScript('media/com_osdownloads/js/jquery.osdownloads.bundle.min.js', 'te
 
         <?php endif; ?>
 
-        <a href="#"  id="osdownloadsDownloadContinue" class="readmore">
+        <a href="#"  id="osdownloadsDownloadContinue" class="osdownloads-readmore readmore">
             <span>
                 <?php echo JText::_("COM_OSDOWNLOADS_CONTINUE"); ?>
             </span>

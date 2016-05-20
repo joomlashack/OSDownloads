@@ -27,11 +27,7 @@ abstract class OSDownloadsTableAbstract extends JTable
         JPluginHelper::importPlugin('osdownloads');
 
         if (!isset($this->dispatcher)) {
-            if (version_compare(JVERSION, '3.0', '<')) {
-                $this->dispatcher = JDispatcher::getInstance();
-            } else {
-                $this->dispatcher = JEventDispatcher::getInstance();
-            }
+            $this->dispatcher = JEventDispatcher::getInstance();
         }
 
         return $this->dispatcher;

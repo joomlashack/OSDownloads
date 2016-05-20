@@ -8,9 +8,7 @@
 
 defined('_JEXEC') or die;
 
-if (version_compare(JVERSION, '3.0', 'ge')) {
-    JHtml::_('formbehavior.chosen', 'select');
-}
+JHtml::_('formbehavior.chosen', 'select');
 
 function category($name, $extension, $selected = null, $javascript = null, $order = null, $size = 1, $sel_cat = 1)
     {

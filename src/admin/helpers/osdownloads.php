@@ -12,7 +12,7 @@ class OSDownloadsHelper
     public static function addSubmenu($vName)
     {
         // Joomla 3.x Backward Compatibility
-        if ( version_compare(JVERSION, '3.0', '>') && JFactory::getApplication()->input->getCmd('option') == 'com_categories' ) {
+        if (JFactory::getApplication()->input->getCmd('option') == 'com_categories') {
             $subMenuClass = 'JHtmlSidebar';
         } else {
             $subMenuClass = 'JSubMenuHelper';
@@ -46,9 +46,7 @@ class OSDownloadsHelper
         );
 
         // Load responsive CSS
-        if ( version_compare(JVERSION, '3.0', '>') ) {
-            JHtml::stylesheet( 'media/jui/css/jquery.searchtools.css' );
-        }
+        JHtml::stylesheet('media/jui/css/jquery.searchtools.css');
     }
 
     /**

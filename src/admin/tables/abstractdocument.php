@@ -80,11 +80,7 @@ class OSDownloadsTableAbstractDocument extends OSDownloadsTableAbstract
             $this->alias = preg_replace("/ /", "-", strtolower($this->name));
         }
 
-        if (version_compare(JVERSION, '3.0', '>=')) {
-            $this->alias = JApplicationHelper::stringURLSafe($this->alias);
-        } else {
-            $this->alias = JApplication::stringURLSafe($this->alias);
-        }
+        $this->alias = JApplicationHelper::stringURLSafe($this->alias);
 
         // Trigger events to osdownloads plugins
         $dispatcher = $this->getDispatcher();

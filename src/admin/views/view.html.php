@@ -15,14 +15,5 @@ if (!class_exists('JViewLegacy')) {
 
 class OSDownloadsViewAbstract extends JViewLegacy
 {
-    public function getLayout()
-    {
-        $layout = parent::getLayout();
 
-        if (version_compare(JVERSION, '3.0', 'lt')) {
-            $layout .= '.j2';
-        }
-
-        return $layout;
-    }
 }

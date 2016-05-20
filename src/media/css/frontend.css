@@ -234,21 +234,3 @@ Example markup
 .fb-like-box iframe {
     width: 450px !important;
 }
-
-/* Joomla 2.5 */
-.osdownloads-modal.joomla25 h1 {
-    font-weight: normal;
-}
-
-.osdownloads-modal.joomla25 input[type="email"],
-.osdownloads-modal.joomla25 input[type="text"] {
-    height: 30px;
-    padding: 0 2px;
-}
-
-.osdownloads-modal.joomla25 a.readmore,
-.osdownloads-modal.joomla25 a.readmore * {
-    margin-top: 10px;
-    background: transparent;
-    border: none;
-}

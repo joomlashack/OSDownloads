@@ -49,7 +49,7 @@
                 view="categories"
                 img="class:component"
                 alt="OSDownloads/Categories"
-                >COM_OSDOWNLOADS_CATEGORIES</menu>
+                >COM_OSDOWNLOADS_CATEGORIES_LABEL</menu>
 
             <menu
                 link="option=com_osdownloads&amp;view=emails"

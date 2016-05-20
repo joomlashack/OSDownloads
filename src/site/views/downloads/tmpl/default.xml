@@ -11,22 +11,25 @@
 				multiple="true"
 				extension="com_osdownloads"
 				required="true"
-				label="COM_OSDOWNLOADS_CATEGORIES" />
-
-			<field name="show_child_categories"
-				type="radio"
-				class="btn-group"
-				default="1"
-				label="COM_OSDOWNLOADS_CHILD_CATEGORIES" >
-				<option value="0">JNO</option>
-				<option value="1">JYES</option>
-			</field>
+				label="COM_OSDOWNLOADS_CATEGORIES_LABEL"
+				description="COM_OSDOWNLOADS_CATEGORIES_DESC" />
 
 			<field name="include_child_files"
 				type="radio"
 				class="btn-group"
 				default="0"
-				label="COM_OSDOWNLOADS_INCLUDE_FILES_CHILD_CATEGORIES" >
+				label="COM_OSDOWNLOADS_INCLUDE_FILES_CHILD_CATEGORIES_LABEL"
+				description="COM_OSDOWNLOADS_INCLUDE_FILES_CHILD_CATEGORIES_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+			<field name="show_child_categories"
+				type="radio"
+				class="btn-group"
+				default="1"
+				label="COM_OSDOWNLOADS_CHILD_CATEGORIES_LABEL"
+				description="COM_OSDOWNLOADS_CHILD_CATEGORIES_DESC" >
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
 			</field>

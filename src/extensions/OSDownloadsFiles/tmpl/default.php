@@ -29,16 +29,16 @@ $showModal    = false;
 
 
 // Module body
-JHtml::_('stylesheet', 'media/com_osdownloads/css/frontend.css');
+JHtml::stylesheet(JUri::root() . '/media/com_osdownloads/css/frontend.css');
 
 if ($this->loadJQuery && !defined('ALLEDIA_JQUERY_LOADED')) {
     define('ALLEDIA_JQUERY_LOADED', 1);
-    JHtml::script('com_osdownloads/js/jquery.js', false, true);
 
+    JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.js');
 }
 
 if ($linkTo === 'download') {
-    JHtml::script('com_osdownloads/js/jquery.osdownloads.bundle.min.js', false, true);
+    JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundle.min.js');
 }
 ?>
 

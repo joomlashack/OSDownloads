@@ -11,11 +11,13 @@ use Alledia\Framework\Helper as AllediaHelper;
 
 $lang   = JFactory::getLanguage();
 
-if ($this->params->get('load_jquery', false)) {
-    JHtml::script('com_osdownloads/js/jquery.js', false, true);
+if ($this->params->get('load_jquery', false) && !defined('ALLEDIA_JQUERY_LOADED')) {
+    define('ALLEDIA_JQUERY_LOADED', 1);
+
+    JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.js');
 }
 
-JHtml::script('com_osdownloads/js/jquery.osdownloads.bundle.min.js', false, true);
+JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundle.min.js');
 
 if (! $this->isPro) {
     $this->item->require_share = false;

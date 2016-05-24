@@ -20,11 +20,13 @@ $itemId                 = $app->input->getInt('Itemid');
 $id                     = $app->input->getInt('id');
 $showModal = false;
 
-if ($params->get('load_jquery', false)) {
-    JHtml::script('com_osdownloads/js/jquery.js', false, true);
+if ($params->get('load_jquery', false) && !defined('ALLEDIA_JQUERY_LOADED')) {
+    define('ALLEDIA_JQUERY_LOADED', 1);
+
+    JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.js');
 }
 
-JHtml::script('com_osdownloads/js/jquery.osdownloads.bundle.min.js', false, true);
+JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundle.min.js');
 
 ?>
 <form action="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id=".$id."&Itemid=".$itemId));?>" method="post" name="adminForm" id="adminForm">

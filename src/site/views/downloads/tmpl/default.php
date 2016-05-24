@@ -21,10 +21,10 @@ $id                     = $app->input->getInt('id');
 $showModal = false;
 
 if ($params->get('load_jquery', false)) {
-    $doc->addScript('media/com_osdownloads/js/jquery.js');
+    JHtml::script('com_osdownloads/js/jquery.js', false, true);
 }
 
-$doc->addScript('media/com_osdownloads/js/jquery.osdownloads.bundle.min.js', 'text/javascript', true);
+JHtml::script('com_osdownloads/js/jquery.osdownloads.bundle.min.js', false, true);
 
 ?>
 <form action="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id=".$id."&Itemid=".$itemId));?>" method="post" name="adminForm" id="adminForm">

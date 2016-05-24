@@ -33,11 +33,12 @@ JHtml::_('stylesheet', 'media/com_osdownloads/css/frontend.css');
 
 if ($this->loadJQuery && !defined('ALLEDIA_JQUERY_LOADED')) {
     define('ALLEDIA_JQUERY_LOADED', 1);
-    $doc->addScript('media/com_osdownloads/js/jquery.js');
+    JHtml::script('com_osdownloads/js/jquery.js', false, true);
+
 }
 
 if ($linkTo === 'download') {
-    $doc->addScript('media/com_osdownloads/js/jquery.osdownloads.bundle.min.js', 'text/javascript', true);
+    JHtml::script('com_osdownloads/js/jquery.osdownloads.bundle.min.js', false, true);
 }
 ?>
 

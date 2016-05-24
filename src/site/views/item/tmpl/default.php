@@ -9,14 +9,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 use Alledia\Framework\Helper as AllediaHelper;
 
-$doc    = JFactory::getDocument();
 $lang   = JFactory::getLanguage();
 
 if ($this->params->get('load_jquery', false)) {
-    $doc->addScript('media/com_osdownloads/js/jquery.js');
+    JHtml::script('com_osdownloads/js/jquery.js', false, true);
 }
 
-$doc->addScript('media/com_osdownloads/js/jquery.osdownloads.bundle.min.js', 'text/javascript', true);
+JHtml::script('com_osdownloads/js/jquery.osdownloads.bundle.min.js', false, true);
 
 if (! $this->isPro) {
     $this->item->require_share = false;

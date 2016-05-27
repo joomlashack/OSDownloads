@@ -31,7 +31,7 @@
                     requireAgree          = $this.data('require-agree') == 1;
 
                 var isValidForm = function () {
-                    var emailRegex = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/,
+                    var emailRegex = /^([A-Za-z0-9_\-\.\+])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,25})$/,
                         errorElement = null,
                         hasError = false;
 
@@ -92,7 +92,7 @@
                     var url = $this.attr('href');
 
                     if ($fieldEmail.length > 0) {
-                        url += '&email=' + $fieldEmail.val().trim();
+                        url += '&email=' + encodeURIComponent($fieldEmail.val().trim());
                     }
 
                     if ($fieldAgree.length > 0) {

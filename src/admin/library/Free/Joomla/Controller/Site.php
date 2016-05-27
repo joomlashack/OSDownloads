@@ -13,7 +13,7 @@ defined('_JEXEC') or die();
 use Alledia\Framework\Factory;
 use Alledia\Framework\Joomla\Controller\Base as BaseController;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
-
+use Alledia\OSDownloads\Free\Helper;
 
 class Site extends BaseController
 {
@@ -33,13 +33,12 @@ class Site extends BaseController
         $params           = $app->getParams('com_osdownloads');
         $mailchimpConnect = $params->get("connect_mailchimp", 0);
 
-        $email = $app->input->getString('email');
+        $email = $app->input->getRaw('email');
 
         // Must verify the e-mail before download?
         if ($item->require_user_email == 1 || ($item->require_user_email == 2 && !empty($email))) {
 
-            $email = filter_var($email, FILTER_VALIDATE_EMAIL);
-            if (empty($email)) {
+            if (!Helper::validateEmail($email)) {
                 $app->input->set('layout', 'error_invalid_email');
 
                 return false;

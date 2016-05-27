@@ -13,6 +13,7 @@ defined('_JEXEC') or die();
 use Alledia\Framework\Joomla\Model\Base as BaseModel;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Alledia\Framework\Factory;
+use Alledia\OSDownloads\Free\Helper;
 
 class Email extends BaseModel
 {
@@ -26,9 +27,7 @@ class Email extends BaseModel
         $component = FreeComponentSite::getInstance();
         $row = $component->getTable('Email');
 
-        $email = filter_var($email, FILTER_VALIDATE_EMAIL);
-
-        if ($email !== false) {
+        if (Helper::validateEmail($email)) {
             $row->email = $email;
 
             $row->document_id = (int) $documentId;

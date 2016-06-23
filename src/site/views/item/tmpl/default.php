@@ -26,7 +26,7 @@ if (! $this->isPro) {
 ?>
 <div class="contentopen osdownloads-container item_<?php echo $this->item->id; ?>">
     <form method="post" id="adminForm" name="adminForm">
-        <h1><?php echo($this->item->name);?></h1>
+        <h2><?php echo($this->item->name);?></h2>
         <?php if ($this->params->get("show_category", 0)):?>
             <div class="cate_info">
                 Category:

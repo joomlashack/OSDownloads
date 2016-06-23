@@ -96,7 +96,7 @@ if (! $this->isPro) {
 
 <?php if ($this->item->require_user_email || $this->item->require_agree || $this->item->require_share) : ?>
     <div id="osdownloadsRequirementsPopup" class="reveal-modal osdownloads-modal <?php echo AllediaHelper::getJoomlaVersionCssClass(); ?>">
-        <h1 class="title"><?php echo JText::_('COM_OSDOWNLOADS_BEFORE_DOWNLOAD'); ?></h1>
+        <h2 class="title"><?php echo JText::_('COM_OSDOWNLOADS_BEFORE_DOWNLOAD'); ?></h2>
 
         <div id="osdownloadsEmailGroup" class="osdownloadsemail" style="display: none;">
 

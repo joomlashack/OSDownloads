@@ -26,7 +26,7 @@ if (! $this->isPro) {
 ?>
 <div class="contentopen osdownloads-container item_<?php echo $this->item->id; ?>">
     <form method="post" id="adminForm" name="adminForm">
-        <h1><?php echo($this->item->name);?></h1>
+        <h2><?php echo($this->item->name);?></h2>
         <?php if ($this->params->get("show_category", 0)):?>
             <div class="cate_info">
                 Category:
@@ -96,7 +96,7 @@ if (! $this->isPro) {
 
 <?php if ($this->item->require_user_email || $this->item->require_agree || $this->item->require_share) : ?>
     <div id="osdownloadsRequirementsPopup" class="reveal-modal osdownloads-modal <?php echo AllediaHelper::getJoomlaVersionCssClass(); ?>">
-        <h1 class="title"><?php echo JText::_('COM_OSDOWNLOADS_BEFORE_DOWNLOAD'); ?></h1>
+        <h2 class="title"><?php echo JText::_('COM_OSDOWNLOADS_BEFORE_DOWNLOAD'); ?></h2>
 
         <div id="osdownloadsEmailGroup" class="osdownloadsemail" style="display: none;">
 

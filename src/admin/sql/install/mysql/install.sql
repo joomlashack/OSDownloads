@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `#__osdownloads_documents` (
   `support_link` VARCHAR(100) NOT NULL,
   `other_name` VARCHAR(100) NOT NULL,
   `other_link` VARCHAR(100) NOT NULL,
-  `file_path` VARCHAR(100) NOT NULL,
+  `file_path` VARCHAR(255) NOT NULL,
   `file_url` VARCHAR(255) NOT NULL,
   `downloaded` BIGINT(20) NOT NULL,
   `direct_page` VARCHAR(250) NOT NULL,

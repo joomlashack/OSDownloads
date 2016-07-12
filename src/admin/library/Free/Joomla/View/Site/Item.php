@@ -12,7 +12,6 @@ defined('_JEXEC') or die();
 
 use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
-use Alledia\OSDownloads\Free\Joomla\View\Legacy as LegacyView;
 use JRoute;
 use JText;
 
@@ -21,7 +20,7 @@ if (!class_exists('JViewLegacy')) {
 }
 
 
-class Item extends LegacyView
+class Item extends Base
 {
     public function display($tpl = null)
     {

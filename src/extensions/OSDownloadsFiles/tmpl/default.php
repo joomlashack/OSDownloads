@@ -31,10 +31,11 @@ $showModal    = false;
 // Module body
 JHtml::stylesheet(JUri::root() . '/media/com_osdownloads/css/frontend.css');
 
-if ($this->loadJQuery && !defined('ALLEDIA_JQUERY_LOADED')) {
-    define('ALLEDIA_JQUERY_LOADED', 1);
+if ($this->loadJQuery && JFactory::getApplication()->get('jquery') !== true) {
+    JFactory::getApplication()->set('jquery', true);
 
-    JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.js');
+    // load jQuery here
+    JHtml::_('jquery.framework');
 }
 
 if ($linkTo === 'download') {

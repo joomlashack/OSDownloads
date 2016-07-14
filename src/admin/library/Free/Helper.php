@@ -32,6 +32,8 @@ class Helper
             return (bool)preg_match($pattern, $email);
         }
 
-        return !empty(filter_var($email, FILTER_VALIDATE_EMAIL));
+        $valid = filter_var($email, FILTER_VALIDATE_EMAIL);
+
+        return !empty($valid);
     }
 }

@@ -29,7 +29,7 @@ class Item extends Base
         $model     = $component->getModel('Item');
         $params    = $app->getParams('com_osdownloads');
         $id        = (int) $app->input->getInt('id');
-        $itemId    = (int) $app->input->get('Itemid');
+        $itemId    = (int) $app->input->getInt('Itemid');
 
         if (empty($id)) {
             $id = (int) $params->get("document_id");

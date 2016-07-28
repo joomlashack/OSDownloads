@@ -14,7 +14,7 @@ jimport('joomla.application.component.helper');
 $app    = JFactory::getApplication();
 $doc    = JFactory::getDocument();
 $lang   = JFactory::getLanguage();
-$itemId = (int) $app->input->get('Itemid');
+$itemId = (int) $app->input->getInt('Itemid');
 
 $moduleTag = $this->params->get('module_tag', 'div');
 $headerTag = $this->params->get('header_tag', 'h3');

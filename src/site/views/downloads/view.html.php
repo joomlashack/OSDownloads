@@ -20,10 +20,10 @@ class OSDownloadsViewDownloads extends View\Site\Base
     {
         $app                 = JFactory::getApplication();
         $db                  = JFactory::getDBO();
-        $params              = clone($app->getParams('com_osdownloads'));
-        $categoryIDs         = (array) $params->get("category_id");
-        $includeChildFiles   = (bool) $params->get('include_child_files', 0);
-        $showChildCategories = (bool) $params->get('show_child_categories', 1);
+        $this->params        = clone($app->getParams('com_osdownloads'));
+        $categoryIDs         = (array) $this->params->get("category_id");
+        $includeChildFiles   = (bool) $this->params->get('include_child_files', 0);
+        $showChildCategories = (bool) $this->params->get('show_child_categories', 1);
 
         // Load the extension
         $extension = Alledia\Framework\Factory::getExtension('OSDownloads', 'component');
@@ -32,8 +32,8 @@ class OSDownloadsViewDownloads extends View\Site\Base
         $limit      = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int');
         $limitstart = $app->getUserStateFromRequest('osdownloads.request.limitstart', 'limitstart', 0, 'int');
 
-        $app->setUserState("com_osdownloads.files.filter_order", $params->get('ordering', 'doc.ordering'));
-        $app->setUserState("com_osdownloads.files.filter_order_Dir", $params->get('ordering_dir', 'asc'));
+        $app->setUserState("com_osdownloads.files.filter_order", $this->params->get('ordering', 'doc.ordering'));
+        $app->setUserState("com_osdownloads.files.filter_order_Dir", $this->params->get('ordering_dir', 'asc'));
 
         // Paths
         $paths = array();
@@ -109,7 +109,7 @@ class OSDownloadsViewDownloads extends View\Site\Base
         $categories = $db->loadObjectList();
 
         // Category filter
-        $showCategoryFilter = $params->get('show_category_filter', false);
+        $showCategoryFilter = $this->params->get('show_category_filter', false);
 
         $this->buildBreadcrumbs($paths);
 

@@ -12,8 +12,7 @@ use Alledia\Framework\Helper as AllediaHelper;
 $app                    = JFactory::getApplication();
 $lang                   = JFactory::getLanguage();
 $doc                    = JFactory::getDocument();
-$params                 = clone($app->getParams('com_osdownloads'));
-$NumberOfColumn         = $params->get("number_of_column", 1);
+$NumberOfColumn         = $this->params->get("number_of_column", 1);
 $user                   = JFactory::getUser();
 $authorizedAccessLevels = $user->getAuthorisedViewLevels();
 $itemId                 = $app->input->getInt('Itemid');
@@ -96,7 +95,7 @@ JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundl
                         <h3><a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$file->id."&Itemid=".$itemId));?>"><?php echo($file->name);?></a></h3>
                         <div class="item_content"><?php echo($file->brief);?></div>
 
-                        <?php if ($params->get('show_download_button', 0)) : ?>
+                        <?php if ($this->params->get('show_download_button', 0)) : ?>
                             <div class="osdownloadsactions">
                                 <div class="btn_download">
                                     <?php
@@ -121,14 +120,14 @@ JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundl
                                         <?php endif; ?>
                                         >
                                         <span>
-                                            <?php echo $params->get('link_label', JText::_('COM_OSDOWNLOADS_DOWNLOAD')); ?>
+                                            <?php echo $this->params->get('link_label', JText::_('COM_OSDOWNLOADS_DOWNLOAD')); ?>
                                         </span>
                                     </a>
                                 </div>
                             </div>
                         <?php endif; ?>
 
-                        <?php if ($params->get('show_readmore_button', 1)) : ?>
+                        <?php if ($this->params->get('show_readmore_button', 1)) : ?>
                             <div class="osdownloads-readmore-wrapper readmore_wrapper">
                                 <div class="osdownloads-readmore readmore">
                                     <a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$file->id."&Itemid=".$itemId));?>">
@@ -150,7 +149,7 @@ JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundl
 
 </form>
 
-<?php if ($params->get('show_download_button', 1)) : ?>
+<?php if ($this->params->get('show_download_button', 1)) : ?>
     <div id="osdownloadsRequirementsPopup" class="reveal-modal osdownloads-modal <?php echo AllediaHelper::getJoomlaVersionCssClass(); ?>">
         <h2 class="title"><?php echo JText::_('COM_OSDOWNLOADS_BEFORE_DOWNLOAD'); ?></h2>
 
@@ -208,7 +207,7 @@ JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundl
 
         $(function osdownloadsDomReady() {
             $('.osdownloads-container .osdownloadsDownloadButton').osdownloads({
-                animation: '<?php echo $params->get("popup_animation", "fade"); ?>',
+                animation: '<?php echo $this->params->get("popup_animation", "fade"); ?>',
                 elementsPrefix: 'osdownloads',
                 popupElementId: 'osdownloadsRequirementsPopup'
             });

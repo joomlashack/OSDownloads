@@ -19,8 +19,8 @@ $itemId                 = $app->input->getInt('Itemid');
 $id                     = $app->input->getInt('id');
 $showModal = false;
 
-if ($this->params->get('load_jquery', false) && JFactory::getApplication()->get('jquery') !== true) {
-    JFactory::getApplication()->set('jquery', true);
+if ($this->params->get('load_jquery', false) && $app->get('jquery') !== true) {
+    $app->set('jquery', true);
 
     // load jQuery here
     JHtml::_('jquery.framework');

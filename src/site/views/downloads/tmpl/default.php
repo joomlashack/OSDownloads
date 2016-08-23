@@ -19,7 +19,7 @@ $itemId                 = $app->input->getInt('Itemid');
 $id                     = $app->input->getInt('id');
 $showModal = false;
 
-if ($this->params->get('load_jquery', false) && $app->get('jquery') !== true) {
+if ($app->get('jquery') !== true) {
     $app->set('jquery', true);
 
     // load jQuery here

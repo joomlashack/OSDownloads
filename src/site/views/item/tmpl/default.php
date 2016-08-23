@@ -11,7 +11,7 @@ use Alledia\Framework\Helper as AllediaHelper;
 
 $lang   = JFactory::getLanguage();
 
-if ($this->params->get('load_jquery', false) && JFactory::getApplication()->get('jquery') !== true) {
+if (JFactory::getApplication()->get('jquery') !== true) {
     JFactory::getApplication()->set('jquery', true);
 
     // load jQuery here

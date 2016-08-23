@@ -31,8 +31,12 @@ $showModal    = false;
 // Module body
 JHtml::stylesheet(JUri::root() . '/media/com_osdownloads/css/frontend.css');
 
-// load jQuery here
-JHtml::_('jquery.framework');
+if ($app->get('jquery') !== true) {
+    $app->set('jquery', true);
+
+    // load jQuery here
+    JHtml::_('jquery.framework');
+}
 
 if ($linkTo === 'download') {
     JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundle.min.js');

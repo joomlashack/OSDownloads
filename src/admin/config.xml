@@ -6,17 +6,6 @@
         addfieldpath="/administrator/components/com_osdownloads/form/fields">
 
         <field
-            name="load_jquery"
-            type="radio"
-            default="0"
-            class="btn-group"
-            label="COM_OSDOWNLOADS_LOAD_JQUERY" >
-
-            <option value="0">JNO</option>
-            <option value="1">JYES</option>
-        </field>
-
-        <field
             name="popup_animation"
             type="radio"
             default="fade"

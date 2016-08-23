@@ -30,6 +30,11 @@
                     requireEmail          = $this.data('require-email'),
                     requireAgree          = $this.data('require-agree') == 1;
 
+                // Check if the link was already confired and skip
+                if ($this.data('configured') === '1') {
+                    return true;
+                }
+
                 var isValidForm = function () {
                     var emailRegex = /^([A-Za-z0-9_\-\.\+])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,25})$/,
                         errorElement = null,
@@ -179,6 +184,8 @@
                         download();
                     }
                 });
+
+                $this.data('configured', 1);
             });
         }
     };

@@ -13,6 +13,7 @@ defined('_JEXEC') or die();
 use Alledia\Framework\Joomla\Model\Base as BaseModel;
 use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
+use Alledia\OSDownloads\Free\Helper;
 use JRoute;
 use JDispatcher;
 use JEventDispatcher;
@@ -38,8 +39,8 @@ class Item extends BaseModel
         $item = $db->loadObject();
 
         if (!empty($item)) {
-            // Check if the file should comes from an external URL
-            if (!empty($item->file_url)) {
+            // Check if the file url is an external URL
+            if (!empty($item->file_url) && !Helper::isLocalPath($item->file_url)) {
                 // Triggers the onOSDownloadsGetExternalDownloadLink event
                 JPluginHelper::importPlugin('osdownloads');
 

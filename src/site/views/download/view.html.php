@@ -11,6 +11,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Alledia\OSDownloads\Free\File;
+use Alledia\OSDownloads\Free\Helper;
 use Alledia\OSDownloads\Free\Joomla\View\Legacy as LegacyView;
 
 
@@ -30,9 +31,15 @@ class OSDownloadsViewDownload extends LegacyView
             return;
         }
 
-        $fileFullPath = realpath(JPATH_SITE . "/media/com_osdownloads/files/" . $item->file_path);
+        // The priority is for a relative local path
+        if (Helper::isLocalPath($item->file_url)) {
+            $fileFullPath = realpath(JPATH_SITE . $item->file_url);
+            $this->assign('realName', basename($item->file_url));
+        } else {
+            $fileFullPath = realpath(JPATH_SITE . "/media/com_osdownloads/files/" . $item->file_path);
+            $this->assign('realName', substr($item->file_path, strpos($item->file_path, "_") + 1));
+        }
 
-        $this->assign('realName', substr($item->file_path, strpos($item->file_path, "_") + 1));
         $this->assign('contentType', File::getContentTypeFromFileName($item->file_path));
         $this->assign('fileSize', filesize($fileFullPath));
         $this->assign('fileFullPath', $fileFullPath);

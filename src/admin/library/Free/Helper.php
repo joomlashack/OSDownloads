@@ -36,4 +36,23 @@ class Helper
 
         return !empty($valid);
     }
+
+    /**
+     * Check if the path is a local path and exists. Otherwise it can means
+     * we have an external URL.
+     *
+     * @param string $path
+     *
+     * @return bool
+     */
+    public static function isLocalPath($path)
+    {
+        // Is an external URL or empty path?
+        if (empty($path) || preg_match('#(?:^//|[a-z0-9]+?://)#i', $path)) {
+            return false;
+        }
+
+        // If the file exists, it is a local path
+        return  \JFile::exists(realpath(JPATH_SITE . $path));
+    }
 }

@@ -19,13 +19,7 @@ $itemId                 = $app->input->getInt('Itemid');
 $id                     = $app->input->getInt('id');
 $showModal = false;
 
-if ($app->get('jquery') !== true) {
-    $app->set('jquery', true);
-
-    // load jQuery here
-    JHtml::_('jquery.framework');
-}
-
+JHtml::_('jquery.framework');
 JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundle.min.js');
 
 ?>

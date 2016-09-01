@@ -11,13 +11,7 @@ use Alledia\Framework\Helper as AllediaHelper;
 
 $lang   = JFactory::getLanguage();
 
-if (JFactory::getApplication()->get('jquery') !== true) {
-    JFactory::getApplication()->set('jquery', true);
-
-    // load jQuery here
-    JHtml::_('jquery.framework');
-}
-
+JHtml::_('jquery.framework');
 JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundle.min.js');
 
 if (! $this->isPro) {

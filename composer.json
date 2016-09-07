@@ -1,5 +1,5 @@
 {
-    "name"             : "Alledia/OSDownloads",
+    "name"             : "Joomlashack/OSDownloads",
     "description"      : "OSDownloads",
     "minimum-stability": "stable",
     "license"          : "GPL-2+",
@@ -14,8 +14,8 @@
     },
     "authors": [
         {
-            "name" : "Alledia.com",
-            "email": "hello@alledia.com"
+            "name" : "Joomlashack",
+            "email": "help@joomlashack.com"
         }
     ],
     "require": {

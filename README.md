@@ -1,11 +1,11 @@
-[![Alledia](https://www.alledia.com/images/logo_circle_small.png)](https://www.alledia.com)
+[![Joomlashack](https://www.joomlashack.com/images/logo_circle_small.png)](https://www.joomlashack.com)
 
 OSDownloads
 ============
 
 ## About
 
-OSDownloads is a Joomla extension to help you manage your downloads. 
+OSDownloads is a Joomla extension to help you manage your downloads.
 
 It allows you to easily provide downloads in exchange for emails, which can in turn be automatically imported in MailChimp or Constant Contact.
 

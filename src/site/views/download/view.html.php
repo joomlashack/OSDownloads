@@ -45,6 +45,5 @@ class OSDownloadsViewDownload extends LegacyView
         $this->assign('fileFullPath', $fileFullPath);
 
         parent::display($tpl);
-        jexit();
     }
 }

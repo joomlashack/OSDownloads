@@ -18,3 +18,4 @@ header('Pragma: public');
 header('Content-Length: ' . $this->fileSize);
 
 @readfile($this->fileFullPath);
+jexit();

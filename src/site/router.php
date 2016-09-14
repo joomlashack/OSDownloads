@@ -19,155 +19,53 @@ function OSDownloadsBuildRoute(&$query)
 
     if ($view == "downloads") {
         $segments[] = "category";
-
         $categories = array();
         if (isset($query['id'])) {
-            buildCategoryPath($categories, $query['id']);
+            buildPath($categories, $query['id']);
             for ($i = count($categories) - 1; $i >= 0; $i--) {
                 $segments[] = $categories[$i];
             }
         }
     }
-
     if ($view == "item" && isset($query['id'])) {
         $segments[] = "file";
-        $segments[] = getAliasFromId($query['id']);
-
-        unset($query['id']);
-    }
-
-    $task = '';
-    if (isset($query['task'])) {
-        $task = $query['task'];
-
-        // Route Download Link
-        if ($task === 'routedownload') {
-            unset($query['task']);
-            $segments[] = 'routedownload';
-
-            if (isset($query['tmpl']) && $query['tmpl'] === 'component') {
-                unset($query['tmpl']);
-            }
-
-            if (isset($query['id'])) {
-                $segments[] = getAliasFromId($query['id']);
-                unset($query['id']);
-            }
-        }
-
-        // Download link
-        if ($task === 'download') {
-            unset($query['task']);
-            $segments[] = 'download';
-
-            if (isset($query['tmpl']) && $query['tmpl'] === 'component') {
-                unset($query['tmpl']);
-            }
-
-            if (isset($query['id'])) {
-                $segments[] = getAliasFromId($query['id']);
-                unset($query['id']);
-            }
-        }
+        $db = JFactory::getDBO();
+        $db->setQuery("SELECT alias FROM `#__osdownloads_documents` WHERE  id = " . (int)$query['id']);
+        $segments[] = $db->loadResult();
     }
 
     return $segments;
 }
 
-function OSDownloadsParseRoute($segments)
-{
-    $app = JFactory::getApplication();
-
-    $query = array();
-    if ($segments[0] === "category") {
-        $query['view'] = 'downloads';
-    }
-
-    // Support partially routed URLS
-    if (!isset($segments[1]) && in_array($segments[0], array('file', 'routedownload', 'download'))) {
-        $segments[1] = $app->input->getInt('id');
-    }
-
-    if ($segments[0] === "file") {
-        $query['view'] = 'item';
-        $query['id']   = getIdFromAlias($segments[1]);
-    }
-
-    if ($segments[0] === "routedownload") {
-        $query['task'] = 'routedownload';
-        $query['tmpl'] = 'component';
-        $query['id']   = getIdFromAlias($segments[1]);
-    }
-
-    if ($segments[0] === "download") {
-        $query['view'] = 'item';
-        $query['task'] = 'download';
-        $query['tmpl'] = 'component';
-        $query['id']   = getIdFromAlias($segments[1]);
-    }
-
-    return $query;
-}
-
-function buildCategoryPath(&$segments, $id)
+function buildPath(& $segments, $id)
 {
     if (!$id) {
         return;
     }
 
     $db = JFactory::getDBO();
+    $db->setQuery("SELECT * FROM `#__categories` WHERE extension='com_osdownloads' AND id = " . (int)$id);
+    $cate = $db->loadObject();
 
-    $sql = $db->getQuery(true)
-        ->select('*')
-        ->from('#__categories')
-        ->where('extension = ' . $db->quote('com_osdownloads'))
-        ->where('id = ' . (int)$id);
-    $db->setQuery($sql);
-
-    $category = $db->loadObject();
-
-    if ($category) {
-        $segments[] = $category->alias;
+    if ($cate) {
+        $segments[] = $cate->alias;
     }
 
-    if ($category && $category->parent_id) {
-        buildCategoryPath($segments, $category->parent_id);
+    if ($cate && $cate->parent_id) {
+        buildPath($segments, $cate->parent_id);
     }
 }
 
-function sanitizeAlias($value)
+function OSDownloadsParseRoute($segments)
 {
-    jimport('joomla.filter.output');
+    $vars = array();
+    if ($segments[0] == "category") {
+        $vars['view'] = 'downloads';
+    }
 
-    return JFilterOutput::stringURLSafe($value);
-}
+    if ($segments[0] == "file") {
+        $vars['view'] = 'item';
+    }
 
-function getIdFromAlias($alias)
-{
-    $db = JFactory::getDBO();
-
-    $alias = sanitizeAlias($alias);
-
-    $sql = $db->getQuery(true)
-        ->select('id')
-        ->from('#__osdownloads_documents')
-        ->where('alias = ' . $db->quote($alias));
-    $db->setQuery($sql);
-
-    return $db->loadResult();
-}
-
-function getAliasFromId($id)
-{
-    $db = JFactory::getDBO();
-
-    $id = (int) $id;
-
-    $sql = $db->getQuery(true)
-        ->select("alias")
-        ->from('#__osdownloads_documents')
-        ->where('id = ' . $db->quote($id));
-    $db->setQuery($sql);
-
-    return $db->loadResult();
+    return $vars;
 }

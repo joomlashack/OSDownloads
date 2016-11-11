@@ -44,7 +44,7 @@ class Base extends Legacy
 		}
 		else
 		{
-			$params->def('page_heading', \JText::_($this->defaultPageTitle));
+			$params->def('page_heading', '');
 		}
 
 		$title = $params->get('page_title', '');

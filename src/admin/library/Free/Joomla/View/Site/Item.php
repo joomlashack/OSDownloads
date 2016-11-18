@@ -12,6 +12,7 @@ defined('_JEXEC') or die();
 
 use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
+use Joomla\Registry\Registry;
 use JRoute;
 use JText;
 
@@ -22,17 +23,47 @@ if (!class_exists('JViewLegacy')) {
 
 class Item extends Base
 {
+    /**
+     * @var object
+     */
+    protected $item = null;
+
+    /**
+     * @var int
+     */
+    protected $itemId = null;
+
+    /**
+     * @var object[]
+     */
+    protected $paths = null;
+
+    /**
+     * @var Registry
+     */
+    protected $params = null;
+
+    /**
+     * @var bool
+     */
+    protected $isPro = null;
+
+    /**
+     * @var \OSDownloadsModelItem
+     */
+    protected $model = null;
+
     public function display($tpl = null)
     {
         $app       = Factory::getApplication();
         $component = FreeComponentSite::getInstance();
         $model     = $component->getModel('Item');
         $params    = $app->getParams('com_osdownloads');
-        $id        = (int) $app->input->getInt('id');
-        $itemId    = (int) $app->input->getInt('Itemid');
+        $id        = (int)$app->input->getInt('id');
+        $itemId    = (int)$app->input->getInt('Itemid');
 
         if (empty($id)) {
-            $id = (int) $params->get("document_id");
+            $id = (int)$params->get("document_id");
         }
 
         $item = $model->getItem($id);
@@ -52,16 +83,16 @@ class Item extends Base
         if (!empty($item)) {
             $item->agreementLink = '';
             if ((bool)$item->require_agree) {
-                $item->agreementLink = JRoute::_('index.php?option=com_content&view=article&id=' . (int)  $item->agreement_article_id);
+                $item->agreementLink = JRoute::_('index.php?option=com_content&view=article&id=' . (int)$item->agreement_article_id);
             }
         }
 
-        $this->assignRef("item", $item);
-        $this->assignRef("itemId", $itemId);
-        $this->assignRef("paths", $paths);
-        $this->assignRef("params", $params);
-        $this->assignRef("isPro", $isPro);
-        $this->assignRef('model', $model);
+        $this->item   = $item;
+        $this->itemId = $itemId;
+        $this->paths  = $paths;
+        $this->params = $params;
+        $this->isPro  = $isPro;
+        $this->model  = $model;
 
         parent::display($tpl);
     }
@@ -72,11 +103,11 @@ class Item extends Base
             return;
         }
 
-        $db = Factory::getDBO();
+        $db = Factory::getDbo();
         $db->setQuery("SELECT *
                        FROM `#__categories`
                        WHERE extension='com_osdownloads'
-                           AND id = " . $db->q((int) $categoryID));
+                           AND id = " . $db->q((int)$categoryID));
         $category = $db->loadObject();
 
         if ($category) {
@@ -100,7 +131,7 @@ class Item extends Base
         for ($i = $countPaths; $i >= 0; $i--) {
             $pathway->addItem(
                 $paths[$i]->title,
-                JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$paths[$i]->id}"."&Itemid={$itemID}")
+                JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$paths[$i]->id}" . "&Itemid={$itemID}")
             );
         }
     }

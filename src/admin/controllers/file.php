@@ -16,7 +16,7 @@ class OSDownloadsControllerFile extends JControllerLegacy
 {
     /**
      * Alledia Extension
-     * @var Licensed
+     * @var \Alledia\Framework\Joomla\Extension\Licensed
      */
     protected $extension;
 
@@ -108,7 +108,11 @@ class OSDownloadsControllerFile extends JControllerLegacy
                     'php_ext_content_extensions' => array(),
                 );
 
-                JFile::upload($fileTmpName, $filepath, false, false, $safeFileOptions);
+                if (!JFile::upload($fileTmpName, $filepath, false, false, $safeFileOptions)) {
+                    // Upload failed and message already queued
+                    $this->setRedirect("index.php?option=com_osdownloads&view=file&cid=" . $row->id);
+                    return;
+                }
             }
         }
 

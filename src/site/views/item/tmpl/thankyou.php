@@ -9,7 +9,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $app = JFactory::getApplication();
-$db  = JFactory::getDBO();
+$db  = JFactory::getDbo();
 
 $defaultThankYou = "
     <h2>" . JText::_('COM_OSDOWNLOADS_THANK_YOU') . "</h2>

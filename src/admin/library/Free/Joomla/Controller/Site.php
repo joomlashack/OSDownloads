@@ -37,7 +37,6 @@ class Site extends BaseController
 
         // Must verify the e-mail before download?
         if ($item->require_user_email == 1 || ($item->require_user_email == 2 && !empty($email))) {
-
             if (!Helper::validateEmail($email)) {
                 $app->input->set('layout', 'error_invalid_email');
 

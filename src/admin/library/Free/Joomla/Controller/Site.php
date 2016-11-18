@@ -46,7 +46,7 @@ class Site extends BaseController
 
             // Store the e-mail
             $modelEmail = $component->getModel('Email');
-            $emailRow = $modelEmail->insert($email, $item->id);
+            $emailRow   = $modelEmail->insert($email, $item->id);
 
             // Send to Mail Chimp without validation
             if ($mailchimpConnect) {
@@ -68,7 +68,7 @@ class Site extends BaseController
     protected function processRequirements(&$item)
     {
         if ($item->require_agree == 1) {
-             $app = \JFactory::getApplication();
+            $app = \JFactory::getApplication();
 
             $agree = $app->input->getInt('agree');
 
@@ -86,14 +86,13 @@ class Site extends BaseController
      * Task to route the download workflow
      *
      * @return void
+     * @throws \Exception
      */
     public function routedownload()
     {
-        $app                  = Factory::getApplication();
-        $component            = FreeComponentSite::getInstance();
-        $params               = $app->getParams('com_osdownloads');
-        $downloadEmailContent = $params->get('download_email_content', false);
-        $id                   = $app->input->getInt('id');
+        $app       = Factory::getApplication();
+        $component = FreeComponentSite::getInstance();
+        $id        = $app->input->getInt('id');
 
         $model = $component->getModel('Item');
         $item  = $model->getItem($id);

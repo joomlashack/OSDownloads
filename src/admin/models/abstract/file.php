@@ -6,7 +6,7 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die();
 
 use Alledia\Framework\Factory;
 
@@ -17,8 +17,8 @@ abstract class OSDownloadsModelFileAbstract extends JModelAdmin
     /**
      * Method to get the row form.
      *
-     * @param   array    $data      Data for the form.
-     * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+     * @param   array   $data     Data for the form.
+     * @param   boolean $loadData True if the form is to load its own data (default case), false if not.
      *
      * @return  mixed    A JForm object on success, false on failure
      *
@@ -37,8 +37,7 @@ abstract class OSDownloadsModelFileAbstract extends JModelAdmin
             $form->loadFile(JPATH_COMPONENT . '/models/forms/file_pro.xml', true);
         }
 
-        if (empty($form))
-        {
+        if (empty($form)) {
             return false;
         }
 

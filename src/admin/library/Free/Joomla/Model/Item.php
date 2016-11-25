@@ -15,7 +15,6 @@ use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Alledia\OSDownloads\Free\Helper;
 use JRoute;
-use JDispatcher;
 use JEventDispatcher;
 use JPluginHelper;
 use JFactory;
@@ -27,11 +26,12 @@ class Item extends BaseModel
      * Get document's data from db
      *
      * @param  int $documentId
+     *
      * @return object
      */
     public function getItem($documentId)
     {
-        $db    = $this->getDBO();
+        $db    = $this->getDbo();
         $query = $this->getItemQuery($documentId);
 
         $db->setQuery($query);
@@ -39,25 +39,9 @@ class Item extends BaseModel
         $item = $db->loadObject();
 
         if (!empty($item)) {
-            // Check if the file url is an external URL
-            if (!empty($item->file_url) && !Helper::isLocalPath($item->file_url)) {
-                // Triggers the onOSDownloadsGetExternalDownloadLink event
-                JPluginHelper::importPlugin('osdownloads');
-
-                $dispatcher = JEventDispatcher::getInstance();
-                $dispatcher->trigger('onOSDownloadsGetExternalDownloadLink', array(&$item));
-
-                $downloadUrl = $item->file_url;
-            } else {
-                // Uploaded file - internal link
-                $downloadUrl = "index.php?option=com_osdownloads&task=download&tmpl=component&id={$item->id}";
-            }
-
-            $item->download_url  = JRoute::_($downloadUrl);
-
             $item->agreementLink = '';
-            if ((bool)$item->require_agree) {
-                $item->agreementLink = JRoute::_('index.php?option=com_content&view=article&id=' . (int)  $item->agreement_article_id);
+            if ((bool)$item->require_agree && (int)$item->agreement_article_id) {
+                $item->agreementLink = JRoute::_('index.php?option=com_content&view=article&id=' . (int)$item->agreement_article_id);
             }
         }
 
@@ -68,27 +52,30 @@ class Item extends BaseModel
      * Get the document's query
      *
      * @param  int $documentId
-     * @return JDatabaseQuery
+     *
+     * @return \JDatabaseQuery
      */
     public function getItemQuery($documentId = null)
     {
         $app       = JFactory::getApplication();
-        $db        = $this->getDBO();
+        $db        = $this->getDbo();
         $user      = Factory::getUser();
         $groups    = $user->getAuthorisedViewLevels();
         $component = FreeComponentSite::getInstance();
 
-        $filterOrder    = $app->getUserStateFromRequest("com_osdownloads.files.filter_order", 'filter_order', 'doc.ordering', '');
-        $filterOrderDir = $app->getUserStateFromRequest("com_osdownloads.files.filter_order_Dir", 'filter_order_Dir', 'asc', 'word');
+        $filterOrder    = $app->getUserStateFromRequest("com_osdownloads.files.filter_order", 'filter_order',
+            'doc.ordering', '');
+        $filterOrderDir = $app->getUserStateFromRequest("com_osdownloads.files.filter_order_Dir", 'filter_order_Dir',
+            'asc', 'word');
 
-        $query  = $db->getQuery(true)
+        $query = $db->getQuery(true)
             ->select('doc.*')
             ->select('cat.access AS cat_access')
             ->select('cat.title AS cat_title')
             ->from('#__osdownloads_documents AS doc')
             ->leftJoin(
                 '#__categories AS cat'
-                    . ' ON (doc.cate_id = cat.id AND cat.extension = ' . $db->quote('com_osdownloads') . ')'
+                . ' ON (doc.cate_id = cat.id AND cat.extension = ' . $db->quote('com_osdownloads') . ')'
             )
             ->where(
                 array(
@@ -103,7 +90,7 @@ class Item extends BaseModel
             ->order($db->quoteName($filterOrder) . ' ' . $filterOrderDir);
 
         if (!empty($documentId)) {
-            $query->where('doc.id = ' . $db->quote((int) $documentId));
+            $query->where('doc.id = ' . $db->quote((int)$documentId));
         }
 
         if ($component->isFree()) {

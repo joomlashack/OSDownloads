@@ -113,13 +113,6 @@ class Site extends BaseController
     {
         $app = \JFactory::getApplication();
 
-        $id = $app->input->getInt('id');
-
-        $component = FreeComponentSite::getInstance();
-        $model     = $component->getModel('Item');
-
-        $model->incrementDownloadCount($id);
-
         $app->input->set('view', 'download');
         $this->display();
     }

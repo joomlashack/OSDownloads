@@ -50,21 +50,27 @@ class OSDownloadsViewDownload extends LegacyView
             throw new Exception(JText::_("COM_OSDOWNLOADS_THIS_DOWNLOAD_ISNT_AVAILABLE"), 404);
         }
 
-        // The priority is for a relative local path
-        if (Helper::isLocalPath($item->file_url)) {
-            $fileFullPath   = realpath(JPATH_SITE . $item->file_url);
+        //$model->incrementDownloadCount($id);
+
+        if ($fileFullPath = $item->file_url) {
+            if (Helper::isLocalPath($fileFullPath)) {
+                $fileFullPath   = realpath(JPATH_SITE . '/' . ltrim($fileFullPath, '/'));
+                $this->fileSize = filesize($fileFullPath);
+            }
             $this->realName = basename($item->file_url);
+
         } else {
             $fileFullPath   = realpath(JPATH_SITE . "/media/com_osdownloads/files/" . $item->file_path);
             $this->realName = substr($item->file_path, strpos($item->file_path, "_") + 1);
+            $this->fileSize = filesize($fileFullPath);
         }
 
         if (empty($fileFullPath)) {
             throw new Exception(JText::_("COM_OSDOWNLOADS_THIS_DOWNLOAD_ISNT_AVAILABLE"), 404);
         }
 
+
         $this->contentType  = File::getContentTypeFromFileName($item->file_path);
-        $this->fileSize     = filesize($fileFullPath);
         $this->fileFullPath = $fileFullPath;
 
         parent::display($tpl);

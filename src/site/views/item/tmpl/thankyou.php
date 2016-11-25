@@ -11,17 +11,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 $app = JFactory::getApplication();
 $db  = JFactory::getDbo();
 
+$downloadUrl = JRoute::_("index.php?option=com_osdownloads&task=download&tmpl=component&id={$this->item->id}");
+
 $defaultThankYou = "
     <h2>" . JText::_('COM_OSDOWNLOADS_THANK_YOU') . "</h2>
-    <p>" . JText::sprintf("COM_OSDOWNLOADS_CLICK_TO_DOWNLOAD_FILE", $this->item->download_url) . "</p>";
+    <p>" . JText::sprintf("COM_OSDOWNLOADS_CLICK_TO_DOWNLOAD_FILE", $downloadUrl) . "</p>";
 $thankyoupage    = $this->params->get("thankyoupage", $defaultThankYou);
 
-if (!empty($this->item->file_url)) {
-    $this->model->incrementDownloadCount($this->item->id);
-}
-
 // Replace found tags in the thank you message by the respective information
-$thankyoupage = str_replace('{{download_url}}', $this->item->download_url, $thankyoupage);
+$thankyoupage = str_replace('{{download_url}}', $downloadUrl, $thankyoupage);
 ?>
 
 <style>
@@ -40,6 +38,6 @@ $thankyoupage = str_replace('{{download_url}}', $this->item->download_url, $than
     <div class="contentopen thank">
         <?php echo($thankyoupage);?>
 
-        <meta http-equiv="refresh" content="0;url=<?php echo $this->item->download_url;?>">
+        <meta http-equiv="refresh" content="0;url=<?php echo $downloadUrl;?>">
     </div>
 </div>

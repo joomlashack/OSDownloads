@@ -37,6 +37,11 @@ class OSDownloadsViewDownload extends LegacyView
      */
     protected $fileFullPath = null;
 
+    /**
+     * @var bool
+     */
+    protected $isLocal = true;
+
     public function display($tpl = null)
     {
         $app = JFactory::getApplication();
@@ -52,12 +57,28 @@ class OSDownloadsViewDownload extends LegacyView
 
         $model->incrementDownloadCount($id);
 
-        if ($fileFullPath = $item->file_url) {
-            if (Helper::isLocalPath($fileFullPath)) {
-                $fileFullPath   = realpath(JPATH_SITE . '/' . ltrim($fileFullPath, '/'));
-                $this->fileSize = filesize($fileFullPath);
-            }
+        if ($item->file_url) {
             $this->realName = basename($item->file_url);
+
+            if (Helper::isLocalPath($item->file_url)) {
+                $fileFullPath = realpath(JPATH_SITE . '/' . ltrim($item->file_url, '/'));
+                if (is_file($fileFullPath)) {
+                    $this->fileSize = filesize($fileFullPath);
+                } else {
+                    $fileFullPath = null;
+                }
+
+            } else {
+                $this->isLocal = false;
+
+                // Triggers the onOSDownloadsGetExternalDownloadLink event
+                JPluginHelper::importPlugin('osdownloads');
+
+                $dispatcher = JEventDispatcher::getInstance();
+                $dispatcher->trigger('onOSDownloadsGetExternalDownloadLink', array(&$item));
+
+                $fileFullPath = $item->file_url;
+            }
 
         } else {
             $fileFullPath   = realpath(JPATH_SITE . "/media/com_osdownloads/files/" . $item->file_path);
@@ -69,8 +90,7 @@ class OSDownloadsViewDownload extends LegacyView
             throw new Exception(JText::_("COM_OSDOWNLOADS_THIS_DOWNLOAD_ISNT_AVAILABLE"), 404);
         }
 
-
-        $this->contentType  = File::getContentTypeFromFileName($item->file_path);
+        $this->contentType  = File::getContentTypeFromFileName($fileFullPath);
         $this->fileFullPath = $fileFullPath;
 
         parent::display($tpl);

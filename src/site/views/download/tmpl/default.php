@@ -22,7 +22,7 @@ if ($this->fileSize > 0) {
     header('Content-Length: ' . $this->fileSize);
 }
 
-if (Helper::isLocalPath($this->fileFullPath)) {
+if ($this->isLocal) {
     @readfile($this->fileFullPath);
 
 } else {

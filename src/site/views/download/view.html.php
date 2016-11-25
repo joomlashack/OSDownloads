@@ -50,7 +50,7 @@ class OSDownloadsViewDownload extends LegacyView
             throw new Exception(JText::_("COM_OSDOWNLOADS_THIS_DOWNLOAD_ISNT_AVAILABLE"), 404);
         }
 
-        //$model->incrementDownloadCount($id);
+        $model->incrementDownloadCount($id);
 
         if ($fileFullPath = $item->file_url) {
             if (Helper::isLocalPath($fileFullPath)) {

@@ -34,7 +34,7 @@ class File extends AbstractFlexibleModule
 
     public function getList()
     {
-        $db  = Factory::getDBO();
+        $db  = Factory::getDbo();
         $app = Factory::getApplication();
 
         $app->setUserState("com_osdownloads.files.filter_order", $this->params->get('ordering', 'ordering'));
@@ -49,8 +49,13 @@ class File extends AbstractFlexibleModule
         $rows = $db->loadObjectList();
 
         if (!empty($rows)) {
+            \JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
+
             foreach ($rows as &$row) {
-                $row->agreementLink = JRoute::_('index.php?option=com_content&view=article&id=' . (int)  $row->agreement_article_id);
+                $row->agreementLink = '';
+                if ($row->agreement_article_id > 0) {
+                    $row->agreementLink = JRoute::_(\ContentHelperRoute::getArticleRoute($row->agreement_article_id));
+                }
             }
         }
 

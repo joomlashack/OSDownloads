@@ -247,7 +247,7 @@ class OsdownloadsRouter extends JComponentRouterBase
             ->from('#__categories')
             ->where(
                 array(
-                    'extension = ' . $db->quote('com_osdownloads'),
+                    'extension IN ("com_osdownloads", "system")',
                     'id = ' . (int)$id
                 )
             );
@@ -277,7 +277,7 @@ class OsdownloadsRouter extends JComponentRouterBase
             ->from('#__categories')
             ->where(
                 array(
-                    'extension = ' . $db->quote('com_osdownloads'),
+                    'extension IN ("com_osdownloads", "system")',
                     'alias = ' . $db->quote($alias)
                 )
             );

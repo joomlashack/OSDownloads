@@ -8,8 +8,6 @@
 
 namespace Alledia\OSDownloads\Free;
 
-use stdClass;
-
 defined('_JEXEC') or die();
 
 class Helper

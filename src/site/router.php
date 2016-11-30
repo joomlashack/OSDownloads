@@ -175,7 +175,7 @@ class OsdownloadsRouter extends JComponentRouterBase
         $alias = $db->setQuery($query)->loadResult();
 
         if (empty($alias)) {
-            throw new Exception('COM_OSDOWNLOADS_ERROR_FILE_NOT_FOUND');
+            throw new Exception(JText::_('COM_OSDOWNLOADS_ERROR_FILE_NOT_FOUND'));
         }
 
         return $alias;
@@ -200,7 +200,7 @@ class OsdownloadsRouter extends JComponentRouterBase
         $id = $db->setQuery($query)->loadResult();
 
         if (empty($id)) {
-            throw new Exception('COM_OSDOWNLOADS_ERROR_FILE_NOT_FOUND');
+            throw new Exception(JText::_('COM_OSDOWNLOADS_ERROR_FILE_NOT_FOUND'));
         }
 
         return $id;
@@ -225,7 +225,7 @@ class OsdownloadsRouter extends JComponentRouterBase
         $catId = $db->setQuery($query)->loadResult();
 
         if (empty($catId)) {
-            throw new Exception('COM_OSDOWNLOADS_ERROR_FILE_NOT_FOUND');
+            throw new Exception(JText::_('COM_OSDOWNLOADS_ERROR_FILE_NOT_FOUND'));
         }
 
         return $catId;
@@ -255,7 +255,7 @@ class OsdownloadsRouter extends JComponentRouterBase
         $category = $db->setQuery($query)->loadObject();
 
         if (!is_object($category)) {
-            throw new Exception('COM_OSDOWNLOADS_ERROR_CATEGORY_NOT_FOUND');
+            throw new Exception(JText::_('COM_OSDOWNLOADS_ERROR_CATEGORY_NOT_FOUND'));
         }
 
         return $category;
@@ -285,7 +285,7 @@ class OsdownloadsRouter extends JComponentRouterBase
         $category = $db->setQuery($query)->loadObject();
 
         if (!is_object($category)) {
-            throw new Exception('COM_OSDOWNLOADS_ERROR_CATEGORY_NOT_FOUND');
+            throw new Exception(JText::_('COM_OSDOWNLOADS_ERROR_CATEGORY_NOT_FOUND'));
         }
 
         return $category;

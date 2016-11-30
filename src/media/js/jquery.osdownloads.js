@@ -93,15 +93,28 @@
                     }
                 };
 
+                var addQueryVarToUri = function(url, variable, value) {
+                    if (url.indexOf('?') > -1) {
+                        url += '&';
+                    } else {
+                        url += '?';
+                    }
+
+                    url += variable + '=' + value;
+
+                    return url;
+                };
+
                 var download = function () {
                     var url = $this.attr('href');
 
                     if ($fieldEmail.length > 0) {
-                        url += '&email=' + encodeURIComponent($fieldEmail.val().trim());
+                        url = addQueryVarToUri(url, 'email', encodeURIComponent($fieldEmail.val().trim()));
                     }
 
                     if ($fieldAgree.length > 0) {
-                        url += '&agree=' + ($fieldAgree.is(':checked') ? 1 : 0);
+                        value = ($fieldAgree.is(':checked') ? 1 : 0);
+                        url = addQueryVarToUri(url, 'agree', value);
                     }
 
                     // Create the popup element

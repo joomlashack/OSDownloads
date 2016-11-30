@@ -34,36 +34,34 @@ class OsdownloadsRouter extends JComponentRouterBase
             $view = $query['view'];
             unset($query['view']);
 
-            switch ($view) {
-                case 'downloads':
-                    $segments[] = "category";
+            if ($view === 'downloads') {
+                $segments[] = "category";
 
-                    if (isset($query['id'])) {
-                        $this->appendCategoriesToSegments($segments, $query['id']);
+                if (isset($query['id'])) {
+                    $this->appendCategoriesToSegments($segments, $query['id']);
 
-                        unset($query['id']);
-                    }
-                    break;
+                    unset($query['id']);
+                }
+            } elseif ($view === 'item') {
+                if (isset($query['id'])) {
+                    $segments[] = "file";
 
-                case 'item':
-                    if (isset($query['id'])) {
-                        $segments[] = "file";
+                    $catId = $this->getCategoryIdFromFile($query['id']);
 
-                        $catId = $this->getCategoryIdFromFile($query['id']);
+                    $this->appendCategoriesToSegments($segments, $catId);
 
-                        $this->appendCategoriesToSegments($segments, $catId);
+                    // Append the file alias
+                    $segments[] = $this->getFileAlias($query['id']);
 
-                        // Append the file alias
-                        $segments[] = $this->getFileAlias($query['id']);
-
-                        unset($query['id']);
-                    }
-                    break;
+                    unset($query['id']);
+                }
             }
         }
 
         if (isset($query['task'])) {
-            if ($query['task'] === 'routedownload') {
+            $layout = JArrayHelper::getValue($query, 'layout');
+
+            if ($query['task'] === 'routedownload' && $layout !== 'thankyou') {
                 $segments[] = 'download';
 
                 // Append the categories before the alias of the file
@@ -118,10 +116,10 @@ class OsdownloadsRouter extends JComponentRouterBase
     /**
      * Build the path to a category, considering the parent categories.
      *
-     * @param array $segments
+     * @param array $categories
      * @param int   $catId
      */
-    protected function buildCategoriesPath(&$segments, $catId)
+    protected function buildCategoriesPath(&$categories, $catId)
     {
         if (empty($catId)) {
             return;
@@ -129,12 +127,12 @@ class OsdownloadsRouter extends JComponentRouterBase
 
         $category = $this->getCategory($catId);
 
-        if ($category) {
-            $segments[] = $category->alias;
+        if ($category && $category->alias !== 'root') {
+            $categories[] = $category->alias;
         }
 
         if ($category && $category->parent_id) {
-            $this->buildCategoriesPath($segments, $category->parent_id);
+            $this->buildCategoriesPath($categories, $category->parent_id);
         }
     }
 
@@ -175,7 +173,7 @@ class OsdownloadsRouter extends JComponentRouterBase
         $alias = $db->setQuery($query)->loadResult();
 
         if (empty($alias)) {
-            throw new Exception(JText::_('COM_OSDOWNLOADS_ERROR_FILE_NOT_FOUND'));
+            throw new Exception(JText::_('COM_OSDOWNLOADS_ERROR_FILE_NOT_FOUND'), 1000);
         }
 
         return $alias;
@@ -200,7 +198,7 @@ class OsdownloadsRouter extends JComponentRouterBase
         $id = $db->setQuery($query)->loadResult();
 
         if (empty($id)) {
-            throw new Exception(JText::_('COM_OSDOWNLOADS_ERROR_FILE_NOT_FOUND'));
+            throw new Exception(JText::_('COM_OSDOWNLOADS_ERROR_FILE_NOT_FOUND'), 1001);
         }
 
         return $id;
@@ -222,10 +220,12 @@ class OsdownloadsRouter extends JComponentRouterBase
             ->from('#__osdownloads_documents')
             ->where('id = ' . (int)$fileId);
 
+
         $catId = $db->setQuery($query)->loadResult();
 
         if (empty($catId)) {
-            throw new Exception(JText::_('COM_OSDOWNLOADS_ERROR_FILE_NOT_FOUND'));
+            var_dump($catId, (string)$query); die;
+            // throw new Exception(JText::_('COM_OSDOWNLOADS_ERROR_FILE_NOT_FOUND'), 1002);
         }
 
         return $catId;
@@ -255,7 +255,7 @@ class OsdownloadsRouter extends JComponentRouterBase
         $category = $db->setQuery($query)->loadObject();
 
         if (!is_object($category)) {
-            throw new Exception(JText::_('COM_OSDOWNLOADS_ERROR_CATEGORY_NOT_FOUND'));
+            throw new Exception(JText::_('COM_OSDOWNLOADS_ERROR_CATEGORY_NOT_FOUND'), 1003);
         }
 
         return $category;
@@ -285,7 +285,7 @@ class OsdownloadsRouter extends JComponentRouterBase
         $category = $db->setQuery($query)->loadObject();
 
         if (!is_object($category)) {
-            throw new Exception(JText::_('COM_OSDOWNLOADS_ERROR_CATEGORY_NOT_FOUND'));
+            throw new Exception(JText::_('COM_OSDOWNLOADS_ERROR_CATEGORY_NOT_FOUND'), 1004);
         }
 
         return $category;

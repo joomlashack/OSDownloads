@@ -124,28 +124,16 @@ class File
         }
 
         // Exhausted all possibilities, do our best!
-        if (filter_var($filename, FILTER_VALIDATE_URL) !== false) {
-            // Try as external link
-            if (preg_match('#^([a-z]*)://#i', $filename, $schema)) {
-                stream_context_set_default(
-                    array(
-                        $schema[1] => array(
-                            'method' => 'HEAD'
-                        )
-                    )
-                );
-            }
-            $headers = static::getHeaders($filename);
-            if (!empty($headers['Content-Type'])) {
-                return $headers['Content-Type'];
-            }
+        $headers = static::getHeaders($filename);
+        if (!empty($headers['Content-Type'])) {
+            return $headers['Content-Type'];
         }
 
         return 'application/octet-stream';
     }
 
     /**
-     * Get header info for a url
+     * Get header info for a url. Only http(s) urls will work
      *
      * @param string $url
      *
@@ -155,8 +143,9 @@ class File
     {
         $key = md5($url);
         if (!isset(static::$headers[$key])) {
+            static::$headers[$key] = array();
             if (filter_var($url, FILTER_VALIDATE_URL) !== false) {
-                if (preg_match('#^([a-z]*)://#i', $url, $schema)) {
+                if (preg_match('#^(https?)://#i', $url, $schema)) {
                     stream_context_set_default(
                         array(
                             $schema[1] => array(
@@ -164,9 +153,8 @@ class File
                             )
                         )
                     );
+                    static::$headers[$key] = get_headers($url, 1) ?: array();
                 }
-
-                static::$headers[$key] = @get_headers($url, 1) ?: array();
             }
         }
 

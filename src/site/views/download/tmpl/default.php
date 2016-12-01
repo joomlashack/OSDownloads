@@ -9,7 +9,11 @@ use Alledia\OSDownloads\Free\Helper;
 
 defined('_JEXEC') or die('Restricted access');
 
-header("Content-Disposition: attachment; filename=\"" . $this->realName . "\";");
+if (empty($this->headers['Content-Disposition'])) {
+    header('Content-Disposition: attachment; filename="' . $this->realName . '";');
+} else {
+    header('Content-Disposition: ' . $this->headers['Content-Disposition']);
+}
 header('Content-Description: File Transfer');
 header('Content-Transfer-Encoding: binary');
 header('Content-Type: ' . $this->contentType);

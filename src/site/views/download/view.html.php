@@ -38,6 +38,11 @@ class OSDownloadsViewDownload extends LegacyView
     protected $fileFullPath = null;
 
     /**
+     * @var string[]
+     */
+    protected $headers = null;
+
+    /**
      * @var bool
      */
     protected $isLocal = true;
@@ -78,6 +83,11 @@ class OSDownloadsViewDownload extends LegacyView
                 $dispatcher->trigger('onOSDownloadsGetExternalDownloadLink', array(&$item));
 
                 $fileFullPath = $item->file_url;
+
+                $this->headers = File::getHeaders($fileFullPath);
+                if (!empty($this->headers['Content-Length'])) {
+                    $this->fileSize = $this->headers['Content-Length'];
+                }
             }
 
         } else {

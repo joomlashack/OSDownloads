@@ -13,6 +13,11 @@ defined('_JEXEC') or die();
 class File
 {
     /**
+     * @var array[]
+     */
+    protected static $headers = array();
+
+    /**
      * Return's the content type based on the file name
      * Can accept external urls to determine from URL
      *
@@ -130,12 +135,41 @@ class File
                     )
                 );
             }
-            $headers = @get_headers($filename, 1);
+            $headers = static::getHeaders($filename);
             if (!empty($headers['Content-Type'])) {
                 return $headers['Content-Type'];
             }
         }
 
         return 'application/octet-stream';
+    }
+
+    /**
+     * Get header info for a url
+     *
+     * @param string $url
+     *
+     * @return string[]
+     */
+    public static function getHeaders($url)
+    {
+        $key = md5($url);
+        if (!isset(static::$headers[$key])) {
+            if (filter_var($url, FILTER_VALIDATE_URL) !== false) {
+                if (preg_match('#^([a-z]*)://#i', $url, $schema)) {
+                    stream_context_set_default(
+                        array(
+                            $schema[1] => array(
+                                'method' => 'HEAD'
+                            )
+                        )
+                    );
+                }
+
+                static::$headers[$key] = @get_headers($url, 1) ?: array();
+            }
+        }
+
+        return static::$headers[$key];
     }
 }

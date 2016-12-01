@@ -13,6 +13,56 @@ defined('_JEXEC') or die();
 class File
 {
     /**
+     * Internal list of known mime types
+     *
+     * @var string[]
+     */
+    protected static $mimeTypes = array(
+        'aif'  => 'audio/aiff',
+        'aiff' => 'audio/aiff',
+        'avi'  => 'video/msvideo',
+        'bmp'  => 'image/bmp',
+        'css'  => 'text/css',
+        'doc'  => 'application/msword',
+        'docx' => 'application/msword',
+        'gif'  => 'image/gif',
+        'htm'  => 'text/html',
+        'html' => 'text/html',
+        'jpe'  => 'image/jpg',
+        'jpeg' => 'image/jpg',
+        'jpg'  => 'image/jpg',
+        'js'   => 'application/x-javascript',
+        'json' => 'application/json',
+        'mov'  => 'video/quicktime',
+        'mp3'  => 'audio/mpeg3',
+        'mpe'  => 'video/mpeg',
+        'mpeg' => 'video/mpeg',
+        'mpg'  => 'video/mpeg',
+        'pdf'  => 'application/pdf',
+        'php'  => 'text/html',
+        'png'  => 'image/png',
+        'pps'  => 'application/vnd.ms-excel',
+        'ppt'  => 'application/vnd.ms-excel',
+        'rtf'  => 'application/rtf',
+        'swf'  => 'application/x-shockwave-flash',
+        'tar'  => 'application/x-tar',
+        'tiff' => 'image/tiff',
+        'txt'  => 'text/plain',
+        'wav'  => 'audio/wav',
+        'wmv'  => 'video/x-ms-wmv',
+        'xla'  => 'application/vnd.ms-excel',
+        'xlc'  => 'application/vnd.ms-excel',
+        'xld'  => 'application/vnd.ms-excel',
+        'xll'  => 'application/vnd.ms-excel',
+        'xlm'  => 'application/vnd.ms-excel',
+        'xls'  => 'application/vnd.ms-excel',
+        'xlt'  => 'application/vnd.ms-excel',
+        'xlw'  => 'application/vnd.ms-excel',
+        'xml'  => 'application/xml',
+        'zip'  => 'application/zip'
+    );
+
+    /**
      * @var array[]
      */
     protected static $headers = array();
@@ -21,110 +71,20 @@ class File
      * Return's the content type based on the file name
      * Can accept external urls to determine from URL
      *
-     * @param  string $filename The file filename
+     * @param  string $path Filename, full path or url
      *
-     * @return string           The content type
+     * @return string The content type
      */
-    public static function getContentTypeFromFileName($filename)
+    public static function getContentTypeFromFileName($path)
     {
-        if (is_file($filename) && function_exists('mime_content_type')) {
-            return mime_content_type($filename);
+        // Try from filename/extension
+        if ($mimeType = static::getMimeType($path)) {
+            return $mimeType;
         }
 
-        if (preg_match('|\.([a-z0-9]{2,4})$|i', $filename, $fileSuffix)) {
-            switch (strtolower($fileSuffix[1])) {
-                case 'js':
-                    return 'application/x-javascript';
-
-                case 'json':
-                    return 'application/json';
-
-                case 'jpg':
-                case 'jpeg':
-                case 'jpe':
-                    return 'image/jpg';
-
-                case 'png':
-                case 'gif':
-                case 'bmp':
-                case 'tiff':
-                    return 'image/' . strtolower($fileSuffix[1]);
-
-                case 'css':
-                    return 'text/css';
-
-                case 'xml':
-                    return 'application/xml';
-
-                case 'doc':
-                case 'docx':
-                    return 'application/msword';
-
-                case 'xls':
-                case 'xlt':
-                case 'xlm':
-                case 'xld':
-                case 'xla':
-                case 'xlc':
-                case 'xlw':
-                case 'xll':
-                    return 'application/vnd.ms-excel';
-
-                case 'ppt':
-                case 'pps':
-                    return 'application/vnd.ms-powerpoint';
-
-                case 'rtf':
-                    return 'application/rtf';
-
-                case 'pdf':
-                    return 'application/pdf';
-
-                case 'html':
-                case 'htm':
-                case 'php':
-                    return 'text/html';
-
-                case 'txt':
-                    return 'text/plain';
-
-                case 'mpeg':
-                case 'mpg':
-                case 'mpe':
-                    return 'video/mpeg';
-
-                case 'mp3':
-                    return 'audio/mpeg3';
-
-                case 'wav':
-                    return 'audio/wav';
-
-                case 'aiff':
-                case 'aif':
-                    return 'audio/aiff';
-
-                case 'avi':
-                    return 'video/msvideo';
-
-                case 'wmv':
-                    return 'video/x-ms-wmv';
-
-                case 'mov':
-                    return 'video/quicktime';
-
-                case 'zip':
-                    return 'application/zip';
-
-                case 'tar':
-                    return 'application/x-tar';
-
-                case 'swf':
-                    return 'application/x-shockwave-flash';
-            }
-        }
-
-        // Exhausted all possibilities, do our best!
-        $headers = static::getHeaders($filename);
+        // Either not recognized or no extension
+        // if a url, maybe we can get it from the http headers
+        $headers = static::getHeaders($path);
         if (!empty($headers['Content-Type'])) {
             return $headers['Content-Type'];
         }
@@ -159,5 +119,32 @@ class File
         }
 
         return static::$headers[$key];
+    }
+
+    /**
+     * Make effort to determine from filename
+     *
+     * @param string $filename
+     *
+     * @return null|string
+     */
+    public static function getMimeType($filename)
+    {
+        // Existing local file
+        if (is_file($filename) && function_exists('mime_content_type')) {
+            return mime_content_type($filename);
+        }
+
+        // May not be a local file, try file extension
+        $pathinfo = pathinfo($filename);
+        if (!empty($pathinfo['extension'])) {
+            $extension = $pathinfo['extension'];
+            if (!empty(static::$mimeTypes[$extension])) {
+                return static::$mimeTypes[$extension];
+            }
+        }
+
+        // Unable to determine from file name
+        return null;
     }
 }

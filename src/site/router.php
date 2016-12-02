@@ -76,6 +76,11 @@ class OsdownloadsRouter extends JComponentRouterBase
                 $this->appendCategoriesToSegments($segments, $catId);
 
                 $segments[] = $this->getFileAlias($id);
+            } elseif ($task === 'confirmemail') {
+                $segments[] = 'confirmemail';
+                $segments[] = JArrayHelper::getValue($query, 'data');
+
+                unset($query['data']);
             }
         }
 
@@ -151,6 +156,11 @@ class OsdownloadsRouter extends JComponentRouterBase
             $vars['task'] = 'routedownload';
             $vars['tmpl'] = 'component';
             $vars['id']   = $this->getFileIdFromAlias($segments[$lastSegmentIndex]);
+        }
+
+        if ($segments[0] === 'confirmemail') {
+            $vars['task'] = 'confirmemail';
+            $vars['data'] = $segments[$lastSegmentIndex];
         }
 
         return $vars;

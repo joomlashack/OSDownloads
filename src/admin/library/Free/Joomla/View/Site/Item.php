@@ -123,7 +123,7 @@ class Item extends Base
         for ($i = $countPaths; $i >= 0; $i--) {
             $pathway->addItem(
                 $paths[$i]->title,
-                JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$paths[$i]->id}" . "&Itemid={$itemID}")
+                JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$paths[$i]->id}&Itemid={$itemID}")
             );
         }
     }

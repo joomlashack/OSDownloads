@@ -43,4 +43,20 @@ abstract class OSDownloadsModelFileAbstract extends JModelAdmin
 
         return $form;
     }
+
+    /**
+     * Returns a JTable object, always creating it.
+     *
+     * @param   string  $type    The table type to instantiate. [optional]
+     * @param   string  $prefix  A prefix for the table class name. [optional]
+     * @param   array   $config  Configuration array for model. [optional]
+     *
+     * @return  JTable  A database object
+     *
+     * @since   1.6
+     */
+    public function getTable($type = 'Document', $prefix = 'OSDownloadsTable', $config = array())
+    {
+        return JTable::getInstance($type, $prefix, $config);
+    }
 }

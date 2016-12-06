@@ -8,11 +8,9 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controller');
-
 use Alledia\Framework\Factory;
 
-class OSDownloadsControllerFile extends JControllerLegacy
+class OSDownloadsControllerFile extends JControllerForm
 {
     /**
      * Alledia Extension
@@ -26,8 +24,6 @@ class OSDownloadsControllerFile extends JControllerLegacy
 
         $this->registerTask('apply', 'save');
         $this->registerTask('unpublish', 'publish');
-        $this->registerTask('orderup', 'reorder');
-        $this->registerTask('orderdown', 'reorder');
 
         // Load the extension
         $this->extension = Factory::getExtension('OSDownloads', 'component');
@@ -117,6 +113,7 @@ class OSDownloadsControllerFile extends JControllerLegacy
         }
 
         $row->store();
+
         switch ($this->getTask()) {
             case "apply":
                 $this->setRedirect("index.php?option=com_osdownloads&view=file&cid=" . $row->id, JText::_("COM_OSDOWNLOADS_DOCUMENT_IS_SAVED"));
@@ -203,81 +200,5 @@ class OSDownloadsControllerFile extends JControllerLegacy
 
         $this->setRedirect('index.php?option=com_osdownloads&view=files', JText::_("COM_OSDOWNLOADS_FILES_ARE_DELETED"));
 
-    }
-
-    public function saveorder()
-    {
-        // Check for request forgeries
-        JRequest::checkToken() or jexit('Invalid Token');
-        JTable::addIncludePath(JPATH_COMPONENT.'/tables');
-
-        // Initialize some variables
-        $db = JFactory::getDBO();
-
-        $cid = JRequest::getVar('cid', array(), 'post', 'array');
-        JArrayHelper::toInteger($cid);
-
-        if (empty($cid)) {
-            return JError::raiseWarning(500, 'No items selected');
-        }
-
-        $total = count($cid);
-        $row   = JTable::getInstance('Document', 'OsdownloadsTable');
-        $groupings = array();
-
-        $order = JRequest::getVar('order', array(0), 'post', 'array');
-        JArrayHelper::toInteger($order);
-
-        // update ordering values
-        for ($i = 0; $i < $total; $i++) {
-            $row->load((int) $cid[$i]);
-            // track postions
-            $groupings[] = $row->cate_id;
-
-            if ($row->ordering != $order[$i]) {
-                $row->ordering = $order[$i];
-                if (!$row->store()) {
-                    //return JError::raiseWarning( 500, $db->getErrorMsg());
-                }
-            }
-        }
-
-        // execute updateOrder for each parent group
-        $groupings = array_unique($groupings);
-        foreach ($groupings as $group) {
-            $row->reorder('cate_id = '.$db->Quote($group));
-        }
-
-        $this->setMessage(JText::_('COM_OSDOWNLOADS_NEW_ORDERING_SAVED'));
-        $this->setRedirect('index.php?option=com_osdownloads&view=files');
-    }
-
-    public function reorder()
-    {
-        global $mainframe;
-        JTable::addIncludePath(JPATH_COMPONENT.'/tables');
-
-        // Check for request forgeries
-        JRequest::checkToken() or jexit('Invalid Token');
-
-        // Initialize some variables
-        $db = JFactory::getDBO();
-
-        $cid = JRequest::getVar('cid', array(), 'post', 'array');
-        JArrayHelper::toInteger($cid);
-
-        $task = $this->getTask();
-        $inc  = ($task == 'orderup' ? -1 : 1);
-
-        if (empty($cid)) {
-            return JError::raiseWarning(500, 'No items selected');
-        }
-
-        $row = JTable::getInstance('Document', 'OsdownloadsTable');
-        $row->load((int) $cid[0]);
-
-        $row->move($inc, 'cate_id = '.$db->Quote($row->cate_id));
-        $this->setMessage(JText::_('COM_OSDOWNLOADS_NEW_ORDERING_SAVED'));
-        $this->setRedirect('index.php?option=com_osdownloads&view=files');
     }
 }

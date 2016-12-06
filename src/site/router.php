@@ -6,6 +6,8 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
+use Joomla\Utilities\ArrayHelper;
+
 defined('_JEXEC') or die();
 
 jimport('joomla.log.log');
@@ -49,10 +51,10 @@ class OsdownloadsRouter extends JComponentRouterBase
     {
         $segments = array();
 
-        $view   = JArrayHelper::getValue($query, 'view');
-        $layout = JArrayHelper::getValue($query, 'layout');
-        $id     = JArrayHelper::getValue($query, 'id');
-        $task   = JArrayHelper::getValue($query, 'task');
+        $view   = ArrayHelper::getValue($query, 'view');
+        $layout = ArrayHelper::getValue($query, 'layout');
+        $id     = ArrayHelper::getValue($query, 'id');
+        $task   = ArrayHelper::getValue($query, 'task');
 
         unset(
             $query['view'],
@@ -78,7 +80,7 @@ class OsdownloadsRouter extends JComponentRouterBase
                 $segments[] = $this->getFileAlias($id);
             } elseif ($task === 'confirmemail') {
                 $segments[] = 'confirmemail';
-                $segments[] = JArrayHelper::getValue($query, 'data');
+                $segments[] = ArrayHelper::getValue($query, 'data');
 
                 unset($query['data']);
             }

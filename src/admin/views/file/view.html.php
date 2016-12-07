@@ -51,7 +51,8 @@ class OSDownloadsViewFile extends OSDownloadsViewAbstract
         if (!empty($item)) {
             $item->agreementLink = '';
             if ((bool)$item->require_agree) {
-                $item->agreementLink = JRoute::_('index.php?option=com_content&view=article&id=' . (int)  $item->agreement_article_id);
+                \JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
+                $item->agreementLink = JRoute::_(\ContentHelperRoute::getArticleRoute($item->agreement_article_id));
             }
         }
 
@@ -65,9 +66,9 @@ class OSDownloadsViewFile extends OSDownloadsViewAbstract
 
     protected function addToolbar()
     {
-        JToolBarHelper::title(JText::_('COM_OSDOWNLOADS') . ': ' . JText::_('COM_OSDOWNLOADS_FILE'));
-        JToolBarHelper::save('file.save', 'JTOOLBAR_SAVE');
-        JToolBarHelper::apply('file.apply', 'JTOOLBAR_APPLY');
-        JToolBarHelper::cancel('cancel', 'JTOOLBAR_CANCEL');
+        JToolbarHelper::title(JText::_('COM_OSDOWNLOADS') . ': ' . JText::_('COM_OSDOWNLOADS_FILE'));
+        JToolbarHelper::save('file.save', 'JTOOLBAR_SAVE');
+        JToolbarHelper::apply('file.apply', 'JTOOLBAR_APPLY');
+        JToolbarHelper::cancel('cancel', 'JTOOLBAR_CANCEL');
     }
 }

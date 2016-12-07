@@ -80,6 +80,14 @@ class OSDownloadsViewDownloads extends View\Site\Base
         // Items
         $db->setQuery($query, $pagination->limitstart, $pagination->limit);
         $items = $db->loadObjectList();
+        foreach ($items as &$item) {
+            $item->agreementLink = '';
+            if ((bool)$item->require_agree) {
+                JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
+                $item->agreementLink = JRoute::_(ContentHelperRoute::getArticleRoute($item->agreement_article_id));
+            }
+        }
+
 
         $user = JFactory::getUser();
         $groups = $user->getAuthorisedViewLevels();

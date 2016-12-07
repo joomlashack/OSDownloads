@@ -61,7 +61,8 @@ class OSDownloadsViewFiles extends OSDownloadsViewAbstract
             foreach ($items as &$item) {
                 $item->agreementLink = '';
                 if ((bool)$item->require_agree) {
-                    $item->agreementLink = JRoute::_('index.php?option=com_content&view=article&id=' . (int)  $item->agreement_article_id);
+                    JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
+                    $item->agreementLink = JRoute::_(ContentHelperRoute::getArticleRoute($item->agreement_article_id));
                 }
             }
         }

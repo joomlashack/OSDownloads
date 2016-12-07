@@ -11,6 +11,7 @@ namespace Alledia\OSDownloads\Free\Joomla\Table;
 defined('_JEXEC') or die();
 
 use Alledia\Framework\Joomla\Table\Base as BaseTable;
+use JApplicationHelper;
 use JFactory;
 
 
@@ -71,8 +72,9 @@ class Item extends BaseTable
         }
 
         if (isset($this->alias) && isset($this->name) && $this->alias == "") {
-            $this->alias = preg_replace("/ /", "-", strtolower($this->name));
+            $this->alias = $this->name;
         }
+        $this->alias = JApplicationHelper::stringURLSafe($this->alias);
 
         return parent::store($updateNulls);
     }

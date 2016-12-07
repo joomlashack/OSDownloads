@@ -205,7 +205,7 @@ class OsdownloadsRouter extends JComponentRouterBase
         $this->buildCategoriesPath($categories, $catId);
 
         for ($i = count($categories) - 1; $i >= 0; $i--) {
-            $segments[] = JApplicationHelper::stringURLSafe($categories[$i]);
+            $segments[] = $categories[$i];
         }
     }
 
@@ -238,7 +238,7 @@ class OsdownloadsRouter extends JComponentRouterBase
             );
         }
 
-        return JApplicationHelper::stringURLSafe($alias);
+        return $alias;
     }
 
     /**

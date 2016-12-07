@@ -51,6 +51,6 @@ class Helper
         }
 
         // If the file exists, it is a local path
-        return  \JFile::exists(realpath(JPATH_SITE . $path));
+        return  \JFile::exists(realpath(JPATH_SITE . '/' . ltrim($path, '/')));
     }
 }

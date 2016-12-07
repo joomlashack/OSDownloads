@@ -57,10 +57,10 @@ class OSDownloadsViewDownload extends LegacyView
         $item      = $model->getItem($id);
 
         if (empty($item)) {
-            throw new Exception(JText::_("COM_OSDOWNLOADS_THIS_DOWNLOAD_ISNT_AVAILABLE"), 404);
+            $this->setLayout('error_not_available');
+            parent::display();
+            return;
         }
-
-        $model->incrementDownloadCount($id);
 
         if ($item->file_url) {
             $this->realName = basename($item->file_url);
@@ -97,11 +97,15 @@ class OSDownloadsViewDownload extends LegacyView
         }
 
         if (empty($fileFullPath)) {
-            throw new Exception(JText::_("COM_OSDOWNLOADS_THIS_DOWNLOAD_ISNT_AVAILABLE"), 404);
+            $this->setLayout('error_not_available');
+            parent::display();
+            return;
         }
 
         $this->contentType  = File::getContentTypeFromFileName($fileFullPath);
         $this->fileFullPath = $fileFullPath;
+
+        $model->incrementDownloadCount($id);
 
         parent::display($tpl);
     }

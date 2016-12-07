@@ -45,23 +45,26 @@ class sef_osdownloads
         $segments = array();
         parse_str($string, $query);
 
+        $id     = ArrayHelper::getValue($query, 'id');
+        $itemId = ArrayHelper::getValue($query, 'Itemid');
+
         if (isset($query['task'])) {
             if (ArrayHelper::getValue($query, 'layout') === 'thankyou') {
                 // /osdownloads/thankyou/{file-alias}
                 $segments[] = 'thankyou';
-                $segments[] = $this->getFileAlias($query['id']);
+                $segments[] = $this->getFileAlias($id);
             } else {
                 switch ($query['task']) {
                     case 'routedownload':
                         // /osdownloads/routedownload/{file-alias}
                         $segments[] = 'routedownload';
-                        $segments[] = $this->getFileAlias($query['id']);
+                        $segments[] = $this->getFileAlias($id);
                         break;
 
                     case 'download':
                         // /osdownloads/download/{file-alias}
                         $segments[] = 'download';
-                        $segments[] = $this->getFileAlias($query['id']);
+                        $segments[] = $this->getFileAlias($id);
                         break;
 
                     case 'confirmemail':
@@ -79,29 +82,24 @@ class sef_osdownloads
                         // /osdownloads/categories/{categories-aliases}
                         $segments[] = 'categories';
 
-                        $categories = $this->getCategoriesFromMenu($query['Itemid']);
+                        $categories = $this->getCategoriesFromMenu($itemId);
                         $segments = array_merge($segments, $categories);
                         break;
 
                     case 'downloads':
                         // /osdownloads/downloads/{category-alias}
                         $segments[] = 'downloads';
-                        $segments[] = $this->getCategoryAlias($query['id']);
+                        $segments[] = $this->getCategoryAlias($id);
                         break;
 
                     case 'item':
                         // /osdownloads/item/{file-alias}
                         $segments[] = 'item';
-                        $segments[] = $this->getFileAlias($query['id']);
+                        $segments[] = $this->getFileAlias($id);
                         break;
                 }
             }
         }
-
-
-        // var_dump($query);
-        // var_dump($segments);
-        // die;
 
         $sefString = implode('/', $segments) . '/';
 

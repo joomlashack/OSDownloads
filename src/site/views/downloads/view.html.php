@@ -6,7 +6,7 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 require_once JPATH_SITE . '/components/com_osdownloads/models/item.php';
 
@@ -21,9 +21,9 @@ class OSDownloadsViewDownloads extends View\Site\Base
         $app                 = JFactory::getApplication();
         $db                  = JFactory::getDBO();
         $this->params        = clone($app->getParams('com_osdownloads'));
-        $categoryIDs         = (array) $this->params->get("category_id");
-        $includeChildFiles   = (bool) $this->params->get('include_child_files', 0);
-        $showChildCategories = (bool) $this->params->get('show_child_categories', 1);
+        $categoryIDs         = (array)$this->params->get("category_id");
+        $includeChildFiles   = (bool)$this->params->get('include_child_files', 0);
+        $showChildCategories = (bool)$this->params->get('show_child_categories', 1);
 
         // Load the extension
         $extension = Alledia\Framework\Factory::getExtension('OSDownloads', 'component');
@@ -49,9 +49,8 @@ class OSDownloadsViewDownloads extends View\Site\Base
         if (!empty($id)) {
             $this->buildPath($paths, $id);
 
-            $categoryIDs = (array) $id;
+            $categoryIDs = (array)$id;
         }
-        $categoryIDsStr = implode(',', $categoryIDs);
 
         $model = JModelLegacy::getInstance('OSDownloadsModelItem');
 
@@ -59,10 +58,12 @@ class OSDownloadsViewDownloads extends View\Site\Base
 
         $query->select('cat.access as cat_access');
 
-        if ($includeChildFiles) {
-            $query->where("(cate_id IN ({$categoryIDsStr}) OR cat.parent_id IN ({$categoryIDsStr}))");
-        } else {
-            $query->where("cate_id IN ({$categoryIDsStr})");
+        if (!empty($categoryIDs)) {
+            $ors = array(sprintf('cate_id IN (%s)', join(',', $categoryIDs)));
+            if ($includeChildFiles) {
+                $ors[] = sprintf('cat.parent_id IN (%s)', $categoryIDs);
+            }
+            $query->where(sprintf('(%s)', join(' OR ', $ors)));
         }
 
         $db->setQuery($query);
@@ -89,7 +90,7 @@ class OSDownloadsViewDownloads extends View\Site\Base
         }
 
 
-        $user = JFactory::getUser();
+        $user   = JFactory::getUser();
         $groups = $user->getAuthorisedViewLevels();
 
         if (!isset($items) || (count($items) && !in_array($items[0]->cat_access, $groups))) {
@@ -99,20 +100,26 @@ class OSDownloadsViewDownloads extends View\Site\Base
         }
 
         // Categories
-        $extraWhere = '';
-        if ($showChildCategories) {
-            $extraWhere = " OR c.parent_id IN ({$categoryIDsStr}) ";
+        $query     = $db->getQuery(true)
+            ->select('*')
+            ->from('#__categories AS c')
+            ->where(
+                array(
+                    'extension = ' . $db->quote('com_osdownloads'),
+                    'published = 1',
+                    sprintf('access IN (%s)', join(',', $groups))
+                )
+            )
+            ->order('c.lft ASC');
+
+        if ($categoryIDs) {
+            $ors = array(sprintf('id IN (%s)', join(',', $categoryIDs)));
+            if ($showChildCategories) {
+                $ors[] = sprintf('parent_id IN (%s)', join(',', $categoryIDs));
+            }
+            $query->where(sprintf('(%s)', join(' OR ', $ors)));
         }
 
-        $groupsStr = implode(',', $groups);
-        $query = "SELECT *
-                  FROM `#__categories` AS c
-                  WHERE extension='com_osdownloads'
-                    AND published = 1
-                    AND (id IN ({$categoryIDsStr})
-                        {$extraWhere}
-                    )
-                  ORDER BY c.lft ASC";
         $db->setQuery($query);
         $categories = $db->loadObjectList();
 
@@ -141,7 +148,7 @@ class OSDownloadsViewDownloads extends View\Site\Base
         $db->setQuery("SELECT *
                        FROM `#__categories`
                        WHERE extension='com_osdownloads'
-                           AND id = " . $db->q((int) $categoryID));
+                           AND id = " . $db->q((int)$categoryID));
         $category = $db->loadObject();
 
         if ($category) {
@@ -153,7 +160,8 @@ class OSDownloadsViewDownloads extends View\Site\Base
         }
     }
 
-    protected function buildBreadcrumbs($paths) {
+    protected function buildBreadcrumbs($paths)
+    {
         $app     = JFactory::getApplication();
         $pathway = $app->getPathway();
         $itemID  = $app->input->getInt('Itemid');
@@ -162,7 +170,7 @@ class OSDownloadsViewDownloads extends View\Site\Base
         for ($i = $countPaths; $i >= 0; $i--) {
             $pathway->addItem(
                 $paths[$i]->title,
-                JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$paths[$i]->id}"."&Itemid={$itemID}")
+                JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$paths[$i]->id}" . "&Itemid={$itemID}")
             );
         }
     }

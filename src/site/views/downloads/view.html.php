@@ -41,6 +41,11 @@ class OSDownloadsViewDownloads extends View\Site\Base
     protected $pagination = null;
 
     /**
+     * @var \Joomla\Registry\Registry
+     */
+    protected $params = null;
+
+    /**
      * @var bool
      */
     protected $isPro = null;
@@ -99,8 +104,7 @@ class OSDownloadsViewDownloads extends View\Site\Base
 
 
         // Pagination
-        $db->setQuery($query);
-        $db->query();
+        $db->setQuery($query)->execute();
 
         $total = $db->getNumRows();
 
@@ -123,9 +127,7 @@ class OSDownloadsViewDownloads extends View\Site\Base
         $groups = $user->getAuthorisedViewLevels();
 
         if (!isset($items) || (count($items) && !in_array($items[0]->cat_access, $groups))) {
-            JError::raiseWarning(404, JText::_("COM_OSDOWNLOADS_THIS_CATEGORY_ISNT_AVAILABLE"));
-
-            return;
+            throw new Exception(JText::_("COM_OSDOWNLOADS_THIS_CATEGORY_ISNT_AVAILABLE"), 404);
         }
 
         // Categories

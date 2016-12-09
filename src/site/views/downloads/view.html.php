@@ -15,11 +15,40 @@ use Alledia\OSDownloads\Free\Joomla\View;
 
 class OSDownloadsViewDownloads extends View\Site\Base
 {
+    /**
+     * @var object[]
+     */
+    protected $categories = null;
+
+    /**
+     * @var bool
+     */
+    protected $showCategoryFilter = null;
+
+    /**
+     * @var object[]
+     */
+    protected $items = null;
+
+    /**
+     * @var object[]
+     */
+    protected $paths = null;
+
+    /**
+     * @var JPagination
+     */
+    protected $pagination = null;
+
+    /**
+     * @var bool
+     */
+    protected $isPro = null;
 
     public function display($tpl = null)
     {
         $app                 = JFactory::getApplication();
-        $db                  = JFactory::getDBO();
+        $db                  = JFactory::getDbo();
         $this->params        = clone($app->getParams('com_osdownloads'));
         $categoryIDs         = (array)$this->params->get("category_id");
         $includeChildFiles   = (bool)$this->params->get('include_child_files', 0);
@@ -100,7 +129,7 @@ class OSDownloadsViewDownloads extends View\Site\Base
         }
 
         // Categories
-        $query     = $db->getQuery(true)
+        $query = $db->getQuery(true)
             ->select('*')
             ->from('#__categories AS c')
             ->where(
@@ -128,12 +157,12 @@ class OSDownloadsViewDownloads extends View\Site\Base
 
         $this->buildBreadcrumbs($paths);
 
-        $this->assignRef("categories", $categories);
-        $this->assignRef("showCategoryFilter", $showCategoryFilter);
-        $this->assignRef("items", $items);
-        $this->assignRef("paths", $paths);
-        $this->assignRef("pagination", $pagination);
-        $this->assign("isPro", $extension->isPro());
+        $this->categories         = $categories;
+        $this->showCategoryFilter = $showCategoryFilter;
+        $this->items              = $items;
+        $this->paths              = $paths;
+        $this->pagination         = $pagination;
+        $this->isPro              = $extension->isPro();
 
         parent::display($tpl);
     }

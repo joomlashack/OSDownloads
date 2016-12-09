@@ -95,7 +95,7 @@ class OSDownloadsViewDownloads extends View\Site\Base
         if (!empty($categoryIDs)) {
             $ors = array(sprintf('cate_id IN (%s)', join(',', $categoryIDs)));
             if ($includeChildFiles) {
-                $ors[] = sprintf('cat.parent_id IN (%s)', $categoryIDs);
+                $ors[] = sprintf('cat.parent_id IN (%s)', join(',', $categoryIDs));
             }
             $query->where(sprintf('(%s)', join(' OR ', $ors)));
         }

@@ -113,7 +113,15 @@ class File
                             )
                         )
                     );
-                    static::$headers[$key] = get_headers($url, 1) ?: array();
+
+                    // Handle possibility of redirects
+                    if ($headers = @get_headers($url, 1)) {
+                        foreach ($headers as $property => $value) {
+                            if (!is_int($property)) {
+                                static::$headers[$key][$property] = is_array($value) ? array_pop($value) : $value;
+                            }
+                        }
+                    }
                 }
             }
         }

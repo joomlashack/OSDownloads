@@ -88,6 +88,11 @@ class OSDownloadsViewDownload extends LegacyView
                 if (!empty($this->headers['Content-Length'])) {
                     $this->fileSize = $this->headers['Content-Length'];
                 }
+
+                // Adjust for redirects
+                if (!empty($this->headers['Location'])) {
+                    $fileFullPath = $this->headers['Location'];
+                }
             }
 
         } else {

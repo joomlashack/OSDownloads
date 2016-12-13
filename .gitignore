@@ -57,7 +57,6 @@ error_log
 config.codekit
 .DS_Store
 phing/.DS_Store
-vendor
 
 build.properties
 composer.lock

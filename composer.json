@@ -18,8 +18,12 @@
             "email": "help@joomlashack.com"
         }
     ],
+    "config": {
+        "vendor-dir": "src/admin/vendor"
+    },
     "require": {
-        "php": ">= 5.3"
+        "php": ">= 5.3",
+        "pacely/mailchimp-apiv3": "dev-master"
     },
     "require-dev": {
         "codeception/codeception": "~2.0"

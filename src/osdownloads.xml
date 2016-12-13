@@ -71,6 +71,7 @@
             <folder>language</folder>
             <folder>library</folder>
             <folder>form</folder>
+            <folder>vendor</folder>
             <filename>abstract.script.installer.php</filename>
             <filename>access.xml</filename>
             <filename>config.xml</filename>

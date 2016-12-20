@@ -6,6 +6,7 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
+use Alledia\Framework\Factory;
 use Joomla\Utilities\ArrayHelper;
 
 defined('_JEXEC') or die();
@@ -24,8 +25,8 @@ class OsdownloadsRouter extends JComponentRouterBase
     /**
      * Class constructor.
      *
-     * @param   JApplicationCms  $app   Application-object that the router should use
-     * @param   JMenu            $menu  Menu-object that the router should use
+     * @param   JApplicationCms $app  Application-object that the router should use
+     * @param   JMenu           $menu Menu-object that the router should use
      *
      * @since   3.4
      */
@@ -43,14 +44,12 @@ class OsdownloadsRouter extends JComponentRouterBase
     /**
      * Build the route for the com_content component
      *
-     * @param   array  &$query  An array of URL arguments
+     * @param   array &$query An array of URL arguments
      *
      * @return  array  The URL arguments to use to assemble the subsequent URL.
      */
     public function build(&$query)
     {
-        $segments = array();
-
         $view   = ArrayHelper::getValue($query, 'view');
         $layout = ArrayHelper::getValue($query, 'layout');
         $id     = ArrayHelper::getValue($query, 'id');
@@ -64,8 +63,10 @@ class OsdownloadsRouter extends JComponentRouterBase
             $query['tmpl']
         );
 
-        if (!empty($task)) {
-            if (in_array($task, array('download', 'routedownload'))) {
+        $segments = array();
+        switch ($task) {
+            case 'download':
+            case 'routedownload':
                 if ($layout !== 'thankyou') {
                     $segments[] = $task;
                 } else {
@@ -78,20 +79,24 @@ class OsdownloadsRouter extends JComponentRouterBase
                 $this->appendCategoriesToSegments($segments, $catId);
 
                 $segments[] = $this->getFileAlias($id);
-            } elseif ($task === 'confirmemail') {
+                break;
+
+            case 'confirmemail':
                 $segments[] = 'confirmemail';
                 $segments[] = ArrayHelper::getValue($query, 'data');
 
                 unset($query['data']);
-            }
+                break;
         }
 
-        if (!empty($view)) {
-            if ($view === 'downloads') {
-                $segments[] = "category";
+        switch ($view) {
+            case 'downloads':
+                $segments[] = 'category';
 
                 $this->appendCategoriesToSegments($segments, $id);
-            } elseif ($view === 'item') {
+                break;
+
+            case 'item':
                 if ($layout === 'thankyou') {
                     $segments[] = "thankyou";
                 } else {
@@ -106,7 +111,7 @@ class OsdownloadsRouter extends JComponentRouterBase
 
                 // Append the file alias
                 $segments[] = $this->getFileAlias($id);
-            }
+                break;
         }
 
         return $segments;
@@ -119,50 +124,54 @@ class OsdownloadsRouter extends JComponentRouterBase
      */
     public function parse(&$segments)
     {
-        $lastSegmentIndex = count($segments) - 1;
-        $vars             = array();
+        $data     = $segments;
+        $viewTask = array_shift($data);
 
-        if ($segments[0] === 'category') {
-            $vars['view'] = 'downloads';
+        $vars = array();
+        switch ($viewTask) {
+            case 'category':
+                $vars['view'] = 'downloads';
 
-            if (isset($segments[1])) {
-                // Get category Id from category alias
-                $category = $this->getCategoryFromAlias($segments[$lastSegmentIndex]);
+                if ($data) {
+                    // Get category Id from category alias
+                    $category = $this->getCategoryFromAlias($data);
 
-                if (!empty($category)) {
-                    $vars['id'] = $category->id;
+                    if (!empty($category)) {
+                        $vars['id'] = $category->id;
+                    }
                 }
-            }
-        }
+                break;
 
-        if ($segments[0] === 'file') {
-            $vars['view'] = 'item';
-            $vars['id']   = $this->getFileIdFromAlias($segments[$lastSegmentIndex]);
-        }
 
-        if ($segments[0] === 'thankyou') {
-            $vars['view']   = 'item';
-            $vars['layout'] = 'thankyou';
-            $vars['tmpl']   = 'component';
-            $vars['task']   = 'routedownload';
-            $vars['id']     = $this->getFileIdFromAlias($segments[$lastSegmentIndex]);
-        }
+            case 'file':
+                $vars['view'] = 'item';
+                $vars['id']   = $this->getFileIdFromAlias(array_pop($data));
+                break;
 
-        if ($segments[0] === 'download') {
-            $vars['task'] = 'download';
-            $vars['tmpl'] = 'component';
-            $vars['id']   = $this->getFileIdFromAlias($segments[$lastSegmentIndex]);
-        }
+            case 'thankyou':
+                $vars['view']   = 'item';
+                $vars['layout'] = 'thankyou';
+                $vars['tmpl']   = 'component';
+                $vars['task']   = 'routedownload';
+                $vars['id']     = $this->getFileIdFromAlias(array_pop($data));
+                break;
 
-        if ($segments[0] === 'routedownload') {
-            $vars['task'] = 'routedownload';
-            $vars['tmpl'] = 'component';
-            $vars['id']   = $this->getFileIdFromAlias($segments[$lastSegmentIndex]);
-        }
+            case 'download':
+                $vars['task'] = 'download';
+                $vars['tmpl'] = 'component';
+                $vars['id']   = $this->getFileIdFromAlias(array_pop($data));
+                break;
 
-        if ($segments[0] === 'confirmemail') {
-            $vars['task'] = 'confirmemail';
-            $vars['data'] = $segments[$lastSegmentIndex];
+            case 'routedownload':
+                $vars['task'] = 'routedownload';
+                $vars['tmpl'] = 'component';
+                $vars['id']   = $this->getFileIdFromAlias(array_pop($data));
+                break;
+
+            case 'confirmemail':
+                $vars['task'] = 'confirmemail';
+                $vars['data'] = array_pop($data);
+                break;
         }
 
         return $vars;
@@ -320,12 +329,7 @@ class OsdownloadsRouter extends JComponentRouterBase
         $query = $db->getQuery(true)
             ->select('*')
             ->from('#__categories')
-            ->where(
-                array(
-                    'extension IN ("com_osdownloads", "system")',
-                    'id = ' . (int)$id
-                )
-            );
+            ->where('id = ' . (int)$id);
 
         $category = $db->setQuery($query)->loadObject();
 
@@ -346,20 +350,24 @@ class OsdownloadsRouter extends JComponentRouterBase
     /**
      * Returns the category as object based on the alias.
      *
-     * @param string $alias
+     * @param array $aliases
      *
      * @return stdClass
      */
-    protected function getCategoryFromAlias($alias)
+    protected function getCategoryFromAlias(array $aliases)
     {
         $db = JFactory::getDBO();
+
+        $level = count($aliases);
+        $alias = array_pop($aliases);
 
         $query = $db->getQuery(true)
             ->select('*')
             ->from('#__categories')
             ->where(
                 array(
-                    'extension IN ("com_osdownloads", "system")',
+                    'extension = ' . $db->quote('com_osdownloads'),
+                    'level = ' . $level,
                     'alias = ' . $db->quote($alias)
                 )
             );

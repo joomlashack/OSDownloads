@@ -33,4 +33,6 @@ if (defined('ALLEDIA_FRAMEWORK_LOADED')) {
     define('OSDOWNLOADS_MEDIA_URI', JUri::root() . 'media/com_osdownloads');
 
     Extension\Helper::loadLibrary('com_osdownloads');
+
+    require_once JPATH_ADMINISTRATOR . '/components/com_osdownloads/vendor/autoload.php';
 }

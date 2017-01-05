@@ -12,6 +12,7 @@ defined('_JEXEC') or die();
 
 use Alledia\Framework\Factory;
 use Alledia\Framework\Joomla\Table\Base as BaseTable;
+use Mailchimp\Mailchimp;
 use JEventDispatcher;
 use Exception;
 

@@ -47,13 +47,10 @@ class Email extends BaseTable
             }
 
             if ($result['status'] === 'unsubscribed') {
-                $interests = array();
-
                 // The email is not subscribed. Let's subscribe it.
                 $mc->post("lists/{$listId}/members/", array(
                     'email_address' => $this->email,
-                    'status'        => 'subscribed',
-                    'interests'     => $interests
+                    'status'        => 'subscribed'
                 ));
             }
         }

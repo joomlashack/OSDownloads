@@ -14,6 +14,7 @@ use Alledia\Framework\Factory;
 use Alledia\Framework\Joomla\Table\Base as BaseTable;
 use Alledia\OSDownloads\Free\MailChimpAPI;
 use JEventDispatcher;
+use Exception;
 
 
 class Email extends BaseTable

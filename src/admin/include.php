@@ -25,7 +25,7 @@ if (!defined('ALLEDIA_FRAMEWORK_LOADED')) {
     }
 }
 
-if (defined('ALLEDIA_FRAMEWORK_LOADED')) {
+if (defined('ALLEDIA_FRAMEWORK_LOADED') && !defined('OSDOWNLOADS_LOADED')) {
     // Define the constant that say OSDownloads is ok to run
     define('OSDOWNLOADS_LOADED', 1);
 

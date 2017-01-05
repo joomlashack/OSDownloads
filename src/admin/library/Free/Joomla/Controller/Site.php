@@ -33,10 +33,10 @@ class Site extends BaseController
         $params           = $app->getParams('com_osdownloads');
         $mailchimpConnect = $params->get("connect_mailchimp", 0);
 
-        $email = $app->input->getRaw('email');
+        $email = trim($app->input->getString('email'));
 
         // Must verify the e-mail before download?
-        if ($item->require_user_email == 1 || ($item->require_user_email == 2 && !empty($email))) {
+        if ($item->require_user_email == 1 || ($item->require_user_email == 2 && $email != '')) {
             if (!Helper::validateEmail($email)) {
                 $app->input->set('layout', 'error_invalid_email');
 

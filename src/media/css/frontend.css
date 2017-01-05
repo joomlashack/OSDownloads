@@ -219,18 +219,15 @@ Example markup
 }
 
 /* SHARE BUTTONS */
-.fb-like {
+#osdownloadsRequirementsPopup .fb-like {
     margin-left: 3px;
 }
 
-.fb-like iframe {
+#osdownloadsRequirementsPopup .fb-like iframe {
     top: -5px;
 }
 
-.fb_iframe_widget > span {
-    width: 450px !important;
-}
-
-.fb-like-box iframe {
+#osdownloadsRequirementsPopup .fb_iframe_widget > span,
+#osdownloadsRequirementsPopup .fb-like-box iframe {
     width: 450px !important;
 }

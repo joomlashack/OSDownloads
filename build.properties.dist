@@ -4,3 +4,6 @@ project.AllediaFramework.path=/path/to/AllediaFramework
 project.AllediaInstaller.path=/path/to/AllediaInstaller
 project.AllediaFreeDefaultFiles.path=/path/to/AllediaFreeDefaultFiles
 project.OSSystem.path=/path/to/OSSystem
+
+# If you are running php7, you will need to disable phplint
+#project.phplint=0

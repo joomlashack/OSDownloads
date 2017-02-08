@@ -22,7 +22,7 @@
         "vendor-dir": "src/admin/vendor"
     },
     "require": {
-        "php": ">= 5.3",
+        "php": ">= 5.5",
         "pacely/mailchimp-apiv3": "dev-master"
     },
     "require-dev": {

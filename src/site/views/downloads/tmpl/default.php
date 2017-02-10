@@ -135,7 +135,12 @@ JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundl
                     </div>
                 <?php endif; ?>
             <?php endforeach;?>
+        <?php else : ?>
+            <div class="osd-alert">
+                <?php echo JText::_('COM_OSDOWNLOADS_NO_DOWNLOADS'); ?>
+            </div>
         <?php endif; ?>
+
         <div class="clr"></div>
         <div class="osdownloads-pages-counter"><?php echo $this->pagination->getPagesCounter(); ?></div>
         <div class="osdownloads-pagination"><?php echo $this->pagination->getPagesLinks(); ?></div>

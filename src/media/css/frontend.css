@@ -94,6 +94,13 @@
     padding-right: 5px;
 }
 
+.osd-alert {
+    background: #fff1f0;
+    border: 1px solid rgba(216,80,48, 0.2);
+    color: #d85030;
+    padding: 15px;
+}
+
 /*  --------------------------------------------------
 Reveal Modals
 -------------------------------------------------- */

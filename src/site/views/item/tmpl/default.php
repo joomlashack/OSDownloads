@@ -60,6 +60,7 @@ if (! $this->isPro) {
         <?php if ($this->item->description_2):?>
             <div class="description2"><?php echo($this->item->description_2);?></div>
         <?php endif;?>
+
         <div class="osdownloadsactions">
             <div class="btn_download">
                 <a
@@ -85,7 +86,10 @@ if (! $this->isPro) {
                 </a>
             </div>
         </div>
-        <div><?php echo($this->item->description_3);?></div>
+
+        <?php if ($this->item->description_3): ?>
+            <div><?php echo($this->item->description_3);?></div>
+        <?php endif; ?>
     </form>
 </div>
 

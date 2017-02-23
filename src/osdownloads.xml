@@ -132,6 +132,8 @@
         </relatedExtensions>
         <obsolete>
             <file>administrator/manifests/packages/pkg_osdownloads.xml</file>
+            <file>media/com_osdownloads/css/frontend.min.css</file>
+            <file>media/com_osdownloads/js/jquery.osdownloads.min.js</file>
         </obsolete>
         <include>AllediaFreeDefaultFiles</include>
     </alledia>

@@ -123,7 +123,8 @@
       var loadCounter = 0;
 
       // Fix issue with unloaded iframes
-      if (this.contentDocument === null && this.contentWindow === null) {
+      // Customisation by Joomlashack
+      if (this.contentDocument == null && this.contentWindow == null) {
         return false;
       }
 

@@ -18,65 +18,54 @@ class Base extends Legacy
     public function display($tpl = null)
     {
         $this->prepareDocument();
-
+        
         parent::display($tpl);
     }
 
     /**
-	 * Method to prepares the document
-	 *
-	 * @return  void
-	 */
-	protected function prepareDocument()
-	{
+     * Method to prepares the document
+     *
+     * @return  void
+     */
+    protected function prepareDocument()
+    {
         $app    = \JFactory::getApplication();
-		$menus  = $app->getMenu();
-		$doc    = \JFactory::getDocument();
+        $menus  = $app->getMenu();
+        $doc    = \JFactory::getDocument();
         $params = $app->getParams();
-		$title  = null;
+        $title  = null;
 
-		// Because the application sets a default page title, we need to get it from the menu item itself
-		$menu = $menus->getActive();
+        // Because the application sets a default page title, we need to get it from the menu item itself
+        $menu = $menus->getActive();
 
-		if ($menu)
-		{
-			$params->def('page_heading', $params->get('page_title', $menu->title));
-		}
-		else
-		{
-			$params->def('page_heading', '');
-		}
+        if ($menu) {
+            $params->def('page_heading', $params->get('page_title', $menu->title));
+        } else {
+            $params->def('page_heading', '');
+        }
 
-		$title = $params->get('page_title', '');
+        $title = $params->get('page_title', '');
 
-		if (empty($title))
-		{
-			$title = $app->get('sitename');
-		}
-		elseif ($app->get('sitename_pagetitles', 0) == 1)
-		{
-			$title = \JText::sprintf('JPAGETITLE', $app->get('sitename'), $title);
-		}
-		elseif ($app->get('sitename_pagetitles', 0) == 2)
-		{
-			$title = \JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
-		}
+        if (empty($title)) {
+            $title = $app->get('sitename');
+        } elseif ($app->get('sitename_pagetitles', 0) == 1) {
+            $title = \JText::sprintf('JPAGETITLE', $app->get('sitename'), $title);
+        } elseif ($app->get('sitename_pagetitles', 0) == 2) {
+            $title = \JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
+        }
 
-		$doc->setTitle($title);
+        $doc->setTitle($title);
 
-		if ($params->get('menu-meta_description'))
-		{
-			$doc->setDescription($params->get('menu-meta_description'));
-		}
+        if ($params->get('menu-meta_description')) {
+            $doc->setDescription($params->get('menu-meta_description'));
+        }
 
-		if ($params->get('menu-meta_keywords'))
-		{
-			$doc->setMetadata('keywords', $params->get('menu-meta_keywords'));
-		}
+        if ($params->get('menu-meta_keywords')) {
+            $doc->setMetadata('keywords', $params->get('menu-meta_keywords'));
+        }
 
-		if ($params->get('robots'))
-		{
-			$doc->setMetadata('robots', $params->get('robots'));
-		}
-	}
+        if ($params->get('robots')) {
+            $doc->setMetadata('robots', $params->get('robots'));
+        }
+    }
 }

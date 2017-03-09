@@ -5,8 +5,8 @@
  * @copyright 2016 Open Source Training, LLC. All rights reserved
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+
+defined('_JEXEC') or die();
 
 $app = JFactory::getApplication();
 $db  = JFactory::getDbo();
@@ -36,8 +36,7 @@ $thankyoupage = str_replace('{{download_url}}', $downloadUrl, $thankyoupage);
 
 <div id="osdownloads-thankyou">
     <div class="contentopen thank">
-        <?php echo($thankyoupage);?>
-
-        <meta http-equiv="refresh" content="0;url=<?php echo $downloadUrl;?>">
+        <?php echo $thankyoupage; ?>
+        <meta http-equiv="refresh" content="0;url=<?php echo $downloadUrl; ?>">
     </div>
 </div>

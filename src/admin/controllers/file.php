@@ -9,6 +9,7 @@
 defined('_JEXEC') or die;
 
 use Alledia\Framework\Factory;
+use Joomla\Utilities\ArrayHelper;
 
 class OSDownloadsControllerFile extends JControllerForm
 {
@@ -30,7 +31,7 @@ class OSDownloadsControllerFile extends JControllerForm
         $this->extension->loadLibrary();
     }
 
-    public function save()
+    public function save($key = null, $urlVar = null)
     {
         $app = JFactory::getApplication();
 
@@ -40,11 +41,11 @@ class OSDownloadsControllerFile extends JControllerForm
         jimport('joomla.filesystem.folder');
 
         $row  = JTable::getInstance('Document', 'OsdownloadsTable');
-        $post = JRequest::get('post');
+        $post = $app->input->get('jform', array(), 'array');
 
-        $row->bind($post['jform']);
+        $row->bind($post);
 
-        $text    = $post['jform']['description_1'];
+        $text    = $post['description_1'];
         $text    = str_replace('<br>', '<br />', $text);
         $pattern = '#<hr\s+id=("|\')system-readmore("|\')\s*\/*>#i';
         $tagPos  = preg_match($pattern, $text);
@@ -74,8 +75,9 @@ class OSDownloadsControllerFile extends JControllerForm
             if (isset($fileName) && $fileName) {
                 $uploadDir = JPATH_SITE . "/media/com_osdownloads/files/";
 
-                if (isset($post["old_file"]) && JFile::exists(JPath::clean($uploadDir . $post["old_file"]))) {
-                    unlink(JPath::clean($uploadDir . $post["old_file"]));
+                $oldFile = $app->input->getPath('old_dir');
+                if ($oldFile && JFile::exists(JPath::clean($uploadDir . $oldFile))) {
+                    unlink(JPath::clean($uploadDir . $oldFile));
                 }
 
                 if (!JFolder::exists(JPath::clean($uploadDir))) {
@@ -126,16 +128,17 @@ class OSDownloadsControllerFile extends JControllerForm
     public function publish()
     {
         // Check for request forgeries
-        JRequest::checkToken() or jexit('Invalid Token');
+        JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
+        $app = JFactory::getApplication();
         $db   = JFactory::getDBO();
         $date = JFactory::getDate();
         $user = JFactory::getUser();
 
-        $cid     = JRequest::getVar('cid', array(), '', 'array');
+        $cid     = $app->input->get('cid', array(), 'array');
         $publish = ($this->getTask() == 'publish' ? 1 : 0);
 
-        JArrayHelper::toInteger($cid);
+        ArrayHelper::toInteger($cid);
 
         $cids = implode(',', $cid);
 
@@ -153,15 +156,15 @@ class OSDownloadsControllerFile extends JControllerForm
 
     public function delete()
     {
-        JRequest::checkToken() or jexit('Invalid Token');
+        JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
         JTable::addIncludePath(JPATH_COMPONENT.'/tables');
 
         jimport('joomla.filesystem.file');
 
         $db  = JFactory::getDBO();
-        $cid = JRequest::getVar('cid', array(), '', 'array');
+        $cid = JFactory::getApplication()->input->get('cid', array(), 'array');
 
-        JArrayHelper::toInteger($cid);
+        ArrayHelper::toInteger($cid);
 
         $cids = implode(',', $cid);
 

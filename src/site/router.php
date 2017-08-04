@@ -64,54 +64,57 @@ class OsdownloadsRouter extends JComponentRouterBase
         );
 
         $segments = array();
-        switch ($task) {
-            case 'download':
-            case 'routedownload':
-                if ($layout !== 'thankyou') {
-                    $segments[] = $task;
-                } else {
-                    $segments[] = 'thankyou';
-                }
+        if ($task) {
+            switch ($task) {
+                case 'routedownload':
+                case 'download':
+                    if ($layout !== 'thankyou') {
+                        $segments[] = $task;
+                    } else {
+                        $segments[] = 'thankyou';
+                    }
 
-                // Append the categories before the alias of the file
-                $catId = $this->getCategoryIdFromFile($id);
+                    // Append the categories before the alias of the file
+                    $catId = $this->getCategoryIdFromFile($id);
 
-                $this->appendCategoriesToSegments($segments, $catId);
-
-                $segments[] = $this->getFileAlias($id);
-                break;
-
-            case 'confirmemail':
-                $segments[] = 'confirmemail';
-                $segments[] = ArrayHelper::getValue($query, 'data');
-
-                unset($query['data']);
-                break;
-        }
-
-        switch ($view) {
-            case 'downloads':
-                $segments[] = 'category';
-
-                $this->appendCategoriesToSegments($segments, $id);
-                break;
-
-            case 'item':
-                if ($layout === 'thankyou') {
-                    $segments[] = "thankyou";
-                } else {
-                    $segments[] = "file";
-                }
-
-                $catId = $this->getCategoryIdFromFile($id);
-
-                if (!empty($catId)) {
                     $this->appendCategoriesToSegments($segments, $catId);
-                }
 
-                // Append the file alias
-                $segments[] = $this->getFileAlias($id);
-                break;
+                    $segments[] = $this->getFileAlias($id);
+                    break;
+
+                case 'confirmemail':
+                    $segments[] = 'confirmemail';
+                    $segments[] = ArrayHelper::getValue($query, 'data');
+
+                    unset($query['data']);
+                    break;
+            }
+
+        } else {
+            switch ($view) {
+                case 'downloads':
+                    $segments[] = 'category';
+
+                    $this->appendCategoriesToSegments($segments, $id);
+                    break;
+
+                case 'item':
+                    if ($layout === 'thankyou') {
+                        $segments[] = "thankyou";
+                    } else {
+                        $segments[] = "file";
+                    }
+
+                    $catId = $this->getCategoryIdFromFile($id);
+
+                    if (!empty($catId)) {
+                        $this->appendCategoriesToSegments($segments, $catId);
+                    }
+
+                    // Append the file alias
+                    $segments[] = $this->getFileAlias($id);
+                    break;
+            }
         }
 
         return $segments;

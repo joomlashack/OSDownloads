@@ -31,15 +31,23 @@ $iOSBrowser = stripos($_SERVER['HTTP_USER_AGENT'],"iPod")
     || stripos($_SERVER['HTTP_USER_AGENT'],"iPhone")
     || stripos($_SERVER['HTTP_USER_AGENT'],"iPad");
 
-$defaultMessage = $iOSBrowser ? 'COM_OSDOWNLOADS_CLICK_TO_DOWNLOAD_FILE_IOS' : 'COM_OSDOWNLOADS_CLICK_TO_DOWNLOAD_FILE';
-$defaultThankYou = sprintf(
-    '<h2>%s</h2><p>%s</p>',
-    JText::_('COM_OSDOWNLOADS_THANK_YOU'),
-    JText::sprintf($defaultMessage, $downloadUrl)
-);
-
 // Get a custom thank you page from the settings
-$thankyoupage = $this->params->get("thankyoupage", $defaultThankYou);
+$thankyoupage = $this->params->get("thankyoupage");
+
+if (empty($thankyoupage)) {
+    $defaultMessage = $iOSBrowser ? 'COM_OSDOWNLOADS_CLICK_TO_DOWNLOAD_FILE_IOS' : 'COM_OSDOWNLOADS_CLICK_TO_DOWNLOAD_FILE';
+
+    $thankyoupage = sprintf(
+        '<h2>%s</h2><p>%s</p>',
+        JText::_('COM_OSDOWNLOADS_THANK_YOU'),
+        JText::sprintf($defaultMessage, $downloadUrl)
+    );
+} elseif ($iOSBrowser) {
+    $thankyoupage .= sprintf(
+        '<p>%s</p>',
+        JText::sprintf('COM_OSDOWNLOADS_CLICK_TO_DOWNLOAD_FILE_IOS', $downloadUrl)
+    );
+}
 
 // Replace found tags in the thank you message by the respective information
 $thankyoupage = str_replace('{{download_url}}', $downloadUrl, $thankyoupage);
@@ -56,7 +64,7 @@ $thankyoupage = str_replace('{{download_url}}', $downloadUrl, $thankyoupage);
         min-height: 0 !important;
     }
 </style>
-<?php/
+
 <div id="osdownloads-thankyou">
     <div class="contentopen thank">
         <?php echo $thankyoupage; ?>

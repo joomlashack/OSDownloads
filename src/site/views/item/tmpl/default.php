@@ -109,7 +109,7 @@ if (!$this->isPro) {
                 <a
                     href="<?php echo JRoute::_("index.php?option=com_osdownloads&task=routedownload&tmpl=component&Itemid={$this->itemId}&id={$this->item->id}"); ?>"
                     id="osdownloadsDownloadButton"
-                    style="color:<?php echo($this->item->download_color); ?>"
+                    style="background:<?php echo($this->item->download_color); ?>;"
                     class="osdownloads-readmore readmore"
                     data-direct-page="<?php echo $this->item->direct_page; ?>"
                     data-require-email="<?php echo $this->item->require_user_email; ?>"

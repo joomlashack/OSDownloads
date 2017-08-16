@@ -61,7 +61,7 @@ if ($linkTo === 'download') {
                         <a
                             href="<?php echo JRoute::_('index.php?option=com_osdownloads&task=routedownload&tmpl=component&Itemid=' . $itemId . '&id=' . $file->id); ?>"
                             class="modosdownloadsDownloadButton"
-                            style="color:<?php echo $file->download_color;?>"
+                            style="background:<?php echo $file->download_color; ?>;"
                             data-direct-page="<?php echo $file->direct_page; ?>"
                             data-require-email="<?php echo $requireEmail; ?>"
                             data-require-agree="<?php echo $requireAgree ? 1 : 0; ?>"

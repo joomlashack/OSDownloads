@@ -26,6 +26,8 @@
     <languages folder="site/language">
         <language tag="en-GB">en-GB/en-GB.com_osdownloads.ini</language>
         <language tag="en-GB">en-GB/en-GB.com_osdownloads.sys.ini</language>
+        <language tag="fr-FR">fr-FR/fr-FR.com_osdownloads.ini</language>
+        <language tag="fr-FR">efr-FR/fr-FR.com_osdownloads.sys.ini</language>
     </languages>
 
     <media destination="com_osdownloads" folder="media">
@@ -82,6 +84,8 @@
         <languages folder="admin/language">
             <language tag="en-GB">en-GB/en-GB.com_osdownloads.ini</language>
             <language tag="en-GB">en-GB/en-GB.com_osdownloads.sys.ini</language>
+            <language tag="fr-FR">fr-FR/fr-FR.com_osdownloads.ini</language>
+            <language tag="fr-FR">efr-FR/fr-FR.com_osdownloads.sys.ini</language>
         </languages>
     </administration>
 

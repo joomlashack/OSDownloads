@@ -8,6 +8,10 @@
 
 namespace Alledia\OSDownloads\Free;
 
+use JEventDispatcher;
+use JPluginHelper;
+use JRoute;
+
 defined('_JEXEC') or die();
 
 class File
@@ -154,5 +158,16 @@ class File
 
         // Unable to determine from file name
         return null;
+    }
+
+    /**
+     * Returns the download url for the file.
+     *
+     * @param int $fileId
+     *
+     * @return string
+     */
+    public static function getDownloadUrl($fileId) {
+        return JRoute::_("index.php?option=com_osdownloads&task=download&tmpl=component&id={$fileId}");
     }
 }

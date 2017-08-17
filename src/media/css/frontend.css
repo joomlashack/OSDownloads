@@ -36,9 +36,29 @@
     margin-right:10px;
 }
 
-.btn_download
-{
-    margin-top:10px;
+.btn_download {
+    margin: 10px 0;
+}
+
+.btn_download > a,
+a.modosdownloadsDownloadButton {
+    color: #fff;
+    padding: 6px 10px;
+    background: #336699;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    text-decoration: none;
+}
+
+.btn_download > a:hover,
+.btn_download > a:focus,
+.btn_download > a:active,
+a.modosdownloadsDownloadButton:hover,
+a.modosdownloadsDownloadButton:focus,
+a.modosdownloadsDownloadButton:active {
+    color: #fff;
+    text-decoration: none;
 }
 
 .btn_download .osdownloads-readmore

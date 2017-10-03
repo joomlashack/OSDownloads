@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<config>
+<config addfieldpath="/administrator/components/com_osdownloads/form/fields">
     <fieldset
         name="general"
-        label="COM_OSDOWNLOADS_GENERAL"
-        addfieldpath="/administrator/components/com_osdownloads/form/fields">
+        label="COM_OSDOWNLOADS_GENERAL">
 
         <field
             name="popup_animation"
             type="radio"
             default="fade"
             class="btn-group"
-            label="COM_OSDOWNLOADS_POPUP_ANIMATION" >
+            label="COM_OSDOWNLOADS_POPUP_ANIMATION">
 
             <option value="none">COM_OSDOWNLOADS_NONE</option>
             <option value="fade">COM_OSDOWNLOADS_ANIMATION_FADE</option>
@@ -41,21 +40,20 @@
             <option value="1">JYES</option>
         </field>
 
-        <field type="spacer" />
+        <field type="spacer"/>
 
         <field
             name="thankyoupage"
             type="editor"
-            default=""
             filter="safehtml"
-            label="COM_OSDOWNLOADS_THANK_YOU_PAGE" />
+            label="COM_OSDOWNLOADS_THANK_YOU_PAGE"/>
 
         <field
             type="customfooter"
             name="customfooter"
             media="com_osdownloads"
             showgoproad="1"
-            jedurl="http://extensions.joomla.org/extensions/extension/directory-a-documentation/downloads/osdownloads" />
+            jedurl="http://extensions.joomla.org/extensions/extension/directory-a-documentation/downloads/osdownloads"/>
     </fieldset>
 
     <fieldset
@@ -67,7 +65,7 @@
             type="radio"
             class="btn-group"
             default="0"
-            label="COM_OSDOWNLOADS_CONNECT_TO_MAILCHIMP" >
+            label="COM_OSDOWNLOADS_CONNECT_TO_MAILCHIMP">
 
             <option value="0">JNO</option>
             <option value="1">JYES</option>
@@ -76,14 +74,12 @@
         <field
             name="mailchimp_api"
             type="text"
-            default=""
-            label="COM_OSDOWNLOADS_MAILCHIMP_API" />
+            label="COM_OSDOWNLOADS_MAILCHIMP_API"/>
 
         <field
             name="list_id"
             type="text"
-            default=""
-            label="COM_OSDOWNLOADS_LIST_ID" />
+            label="COM_OSDOWNLOADS_LIST_ID"/>
     </fieldset>
 
     <fieldset
@@ -99,6 +95,6 @@
             validate="rules"
             filter="rules"
             component="com_osdownloads"
-            section="component" />
+            section="component"/>
     </fieldset>
 </config>

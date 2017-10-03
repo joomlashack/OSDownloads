@@ -114,16 +114,22 @@
                 element="allediaframework">AllediaFramework</extension>
 
             <extension
-                type="plugin"
-                group="system"
-                element="ossystem"
-                publish="true"
-                ordering="first">OSSystem</extension>
+                type="module"
+                element="osdownloadsfiles"
+                uninstall="true"
+                updateversion="true">OSDownloadsFiles</extension>
 
             <extension
                 type="module"
                 uninstall="true"
                 element="osdownloadsfiles">OSDownloadsFiles</extension>
+
+            <extension
+                type="plugin"
+                group="system"
+                element="ossystem"
+                publish="true"
+                ordering="first">OSSystem</extension>
 
         </relatedExtensions>
 

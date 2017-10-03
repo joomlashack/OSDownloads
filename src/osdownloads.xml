@@ -131,6 +131,7 @@
 
             <extension
                 type="module"
+                uninstall="true"
                 element="osdownloadsfiles">OSDownloadsFiles</extension>
 
         </relatedExtensions>

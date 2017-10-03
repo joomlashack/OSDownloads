@@ -26,10 +26,10 @@
 
     <media destination="com_osdownloads" folder="media">
         <folder>css</folder>
-        <folder>js</folder>
-        <folder>images</folder>
         <folder>files</folder>
         <folder>fonts</folder>
+        <folder>images</folder>
+        <folder>js</folder>
     </media>
 
     <administration>
@@ -105,6 +105,9 @@
         <license>free</license>
         <targetplatform>3.7</targetplatform>
         <phpminimum>5.6</phpminimum>
+
+        <include>AllediaFreeDefaultFiles</include>
+
         <relatedExtensions>
             <extension
                 type="library"
@@ -123,7 +126,10 @@
                 element="osdownloadsfiles">OSDownloadsFiles</extension>
 
         </relatedExtensions>
+
         <obsolete>
+            <file>administrator/components/com_osdownloads/views/file/tmpl/default.j2.php</file>
+            <file>administrator/components/com_osdownloads/views/files/tmpl/default.j2.php</file>
             <file>administrator/language/en-GB/en-GB.com_osdownloads.ini</file>
             <file>administrator/language/en-GB/en-GB.com_osdownloads.sys.ini</file>
             <file>administrator/language/fa-IR/fa-IR.com_osdownloads.ini</file>
@@ -140,6 +146,5 @@
             <file>media/com_osdownloads/css/frontend.min.css</file>
             <file>media/com_osdownloads/js/jquery.osdownloads.min.js</file>
         </obsolete>
-        <include>AllediaFreeDefaultFiles</include>
     </alledia>
 </extension>

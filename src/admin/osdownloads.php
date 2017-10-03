@@ -12,6 +12,12 @@ jimport('legacy.controller.legacy');
 
 require_once 'include.php';
 
-$controller = JControllerLegacy::getInstance('osdownloads');
-$controller->execute(JFactory::getApplication()->input->get('task'));
-$controller->redirect();
+if (defined('OSDOWNLOADS_LOADED')) {
+    $controller = JControllerLegacy::getInstance('osdownloads');
+    $controller->execute(JFactory::getApplication()->input->get('task'));
+    $controller->redirect();
+
+} else {
+    echo '<h3>Joomlashack Framework is not installed</h3>';
+}
+

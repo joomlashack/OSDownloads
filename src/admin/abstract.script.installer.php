@@ -197,8 +197,6 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
             ->execute();
 
         $this->fixOrderingParamForMenus();
-
-        return true;
     }
 
     /**

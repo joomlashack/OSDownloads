@@ -2,7 +2,7 @@
 <metadata>
 	<layout title="COM_OSDOWNLOADS_DOWNLOADS_VIEW_DEFAULT_TITLE">
 		<message>
-			<![CDATA[com_osdownloads_downloads_view_default_desc]]>
+			<![CDATA[COM_OSDOWNLOADS_DOWNLOADS_VIEW_DEFAULT_DESC]]>
 		</message>
 	</layout>
 	<fields name="params">

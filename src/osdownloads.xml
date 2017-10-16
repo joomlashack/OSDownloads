@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.5" type="component" method="upgrade">
+<extension version="3.7" type="component" method="upgrade">
     <name>com_osdownloads</name>
     <author>Joomlashack</author>
-    <creationDate>August 17 2017</creationDate>
+    <creationDate>October 16 2017</creationDate>
     <copyright>Copyright (C) 2016 Open Source Training, LLC</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>help@joomlashack.com</authorEmail>
     <authorUrl>https://www.joomlashack.com</authorUrl>
-    <version>1.7.5</version>
+    <version>1.7.6</version>
     <variant>FREE</variant>
     <description>COM_OSDOWNLOADS_DESCRIPTION</description>
 
     <scriptfile>script.installer.php</scriptfile>
 
     <files folder="site">
+        <folder>language</folder>
         <folder>models</folder>
         <folder>tables</folder>
         <folder>views</folder>
@@ -23,19 +24,12 @@
         <filename>sef_ext.php</filename>
     </files>
 
-    <languages folder="site/language">
-        <language tag="en-GB">en-GB/en-GB.com_osdownloads.ini</language>
-        <language tag="en-GB">en-GB/en-GB.com_osdownloads.sys.ini</language>
-        <language tag="fr-FR">fr-FR/fr-FR.com_osdownloads.ini</language>
-        <language tag="fr-FR">efr-FR/fr-FR.com_osdownloads.sys.ini</language>
-    </languages>
-
     <media destination="com_osdownloads" folder="media">
         <folder>css</folder>
-        <folder>js</folder>
-        <folder>images</folder>
         <folder>files</folder>
         <folder>fonts</folder>
+        <folder>images</folder>
+        <folder>js</folder>
     </media>
 
     <administration>
@@ -65,28 +59,22 @@
 
         <files folder="admin">
             <folder>controllers</folder>
+            <folder>form</folder>
             <folder>helpers</folder>
-            <folder>sql</folder>
-            <folder>tables</folder>
-            <folder>views</folder>
-            <folder>models</folder>
             <folder>language</folder>
             <folder>library</folder>
-            <folder>form</folder>
+            <folder>models</folder>
+            <folder>sql</folder>
+            <folder>tables</folder>
             <folder>vendor</folder>
+            <folder>views</folder>
             <filename>abstract.script.installer.php</filename>
             <filename>access.xml</filename>
             <filename>config.xml</filename>
             <filename>controller.php</filename>
-            <filename>osdownloads.php</filename>
             <filename>include.php</filename>
+            <filename>osdownloads.php</filename>
         </files>
-        <languages folder="admin/language">
-            <language tag="en-GB">en-GB/en-GB.com_osdownloads.ini</language>
-            <language tag="en-GB">en-GB/en-GB.com_osdownloads.sys.ini</language>
-            <language tag="fr-FR">fr-FR/fr-FR.com_osdownloads.ini</language>
-            <language tag="fr-FR">efr-FR/fr-FR.com_osdownloads.sys.ini</language>
-        </languages>
     </administration>
 
     <install>
@@ -115,12 +103,26 @@
         <element>osdownloads</element>
         <namespace>OSDownloads</namespace>
         <license>free</license>
-        <targetplatform>3.*</targetplatform>
-        <phpminimum>5.5</phpminimum>
+        <targetplatform>3.7</targetplatform>
+        <phpminimum>5.6</phpminimum>
+
+        <include>AllediaFreeDefaultFiles</include>
+
         <relatedExtensions>
             <extension
                 type="library"
                 element="allediaframework">AllediaFramework</extension>
+
+            <extension
+                type="module"
+                element="osdownloadsfiles"
+                uninstall="true"
+                updateversion="true">OSDownloadsFiles</extension>
+
+            <extension
+                type="module"
+                uninstall="true"
+                element="osdownloadsfiles">OSDownloadsFiles</extension>
 
             <extension
                 type="plugin"
@@ -129,16 +131,26 @@
                 publish="true"
                 ordering="first">OSSystem</extension>
 
-            <extension
-                type="module"
-                element="osdownloadsfiles">OSDownloadsFiles</extension>
-
         </relatedExtensions>
+
         <obsolete>
+            <file>administrator/components/com_osdownloads/views/file/tmpl/default.j2.php</file>
+            <file>administrator/components/com_osdownloads/views/files/tmpl/default.j2.php</file>
+            <file>administrator/language/en-GB/en-GB.com_osdownloads.ini</file>
+            <file>administrator/language/en-GB/en-GB.com_osdownloads.sys.ini</file>
+            <file>administrator/language/fa-IR/fa-IR.com_osdownloads.ini</file>
+            <file>administrator/language/fa-IR/fa-IR.com_osdownloads.sys.ini</file>
+            <file>administrator/language/fr-FR/fr-FR.com_osdownloads.ini</file>
+            <file>administrator/language/fr-FR/fr-FR.com_osdownloads.sys.ini</file>
             <file>administrator/manifests/packages/pkg_osdownloads.xml</file>
+            <file>language/en-GB/en-GB.com_osdownloads.ini</file>
+            <file>language/en-GB/en-GB.com_osdownloads.sys.ini</file>
+            <file>language/fa-IR/fa-IR.com_osdownloads.ini</file>
+            <file>language/fa-IR/fa-IR.com_osdownloads.sys.ini</file>
+            <file>language/fr-FR/fr-FR.com_osdownloads.ini</file>
+            <file>language/fr-FR/fr-FR.com_osdownloads.sys.ini</file>
             <file>media/com_osdownloads/css/frontend.min.css</file>
             <file>media/com_osdownloads/js/jquery.osdownloads.min.js</file>
         </obsolete>
-        <include>AllediaFreeDefaultFiles</include>
     </alledia>
 </extension>

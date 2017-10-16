@@ -26,7 +26,12 @@ class Site extends BaseController
         parent::display();
     }
 
-    protected function processEmailRequirement(&$item)
+    /**
+     * @param object $item
+     *
+     * @return bool
+     */
+    protected function processEmailRequirement($item)
     {
         $app              = Factory::getApplication();
         $component        = FreeComponentSite::getInstance();
@@ -64,7 +69,12 @@ class Site extends BaseController
         return true;
     }
 
-    protected function processRequirements(&$item)
+    /**
+     * @param object $item
+     *
+     * @return bool
+     */
+    protected function processRequirements($item)
     {
         if ($item->require_agree == 1) {
             $app = \JFactory::getApplication();

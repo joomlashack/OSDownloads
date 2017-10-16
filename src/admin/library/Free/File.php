@@ -167,7 +167,8 @@ class File
      *
      * @return string
      */
-    public static function getDownloadUrl($fileId) {
+    public static function getDownloadUrl($fileId)
+    {
         return JRoute::_("index.php?option=com_osdownloads&task=download&tmpl=component&id={$fileId}");
     }
 }

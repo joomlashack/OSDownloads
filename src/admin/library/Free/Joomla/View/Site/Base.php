@@ -18,7 +18,7 @@ class Base extends Legacy
     public function display($tpl = null)
     {
         $this->prepareDocument();
-        
+
         parent::display($tpl);
     }
 

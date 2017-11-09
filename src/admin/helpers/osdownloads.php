@@ -3,33 +3,31 @@
  * @package   OSDownloads
  * @contact   www.joomlashack.com, help@joomlashack.com
  * @copyright 2016-2017 Open Source Training, LLC. All rights reserved
- * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
+ * @license   GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 
 defined('_JEXEC') or die;
 class OSDownloadsHelper
 {
+    /**
+     * @param string $vName
+     *
+     * @return void
+     */
     public static function addSubmenu($vName)
     {
-        // Joomla 3.x Backward Compatibility
-        if (JFactory::getApplication()->input->getCmd('option') == 'com_categories') {
-            $subMenuClass = 'JHtmlSidebar';
-        } else {
-            $subMenuClass = 'JSubMenuHelper';
-        }
-
-        $subMenuClass::addEntry(
+        JHtmlSidebar::addEntry(
             JText::_('COM_OSDOWNLOADS_SUBMENU_FILES'),
             'index.php?option=com_osdownloads&view=files',
             $vName == 'files'
         );
 
-        $subMenuClass::addEntry(
+        JHtmlSidebar::addEntry(
             JText::_('COM_OSDOWNLOADS_SUBMENU_CATEGORIES'),
             'index.php?option=com_categories&extension=com_osdownloads',
             $vName == 'categories'
         );
-        if ($vName=='categories') {
+        if ($vName == 'categories') {
             JToolBarHelper::title(
                 JText::sprintf(
                     'COM_CATEGORIES_CATEGORIES_TITLE',
@@ -39,7 +37,7 @@ class OSDownloadsHelper
             );
         }
 
-        $subMenuClass::addEntry(
+        JHtmlSidebar::addEntry(
             JText::_('COM_OSDOWNLOADS_SUBMENU_EMAILS'),
             'index.php?option=com_osdownloads&view=emails',
             $vName == 'emails'
@@ -54,6 +52,7 @@ class OSDownloadsHelper
      *
      * @param  int    $userId
      * @param  string $externalRef
+     *
      * @return array
      */
     public static function getAuthorizedFilesForUser($userId, $externalRef = '')
@@ -65,7 +64,7 @@ class OSDownloadsHelper
         $authorizedViewLevels = implode(',', $authorizedViewLevels);
 
         // Get the files the user has access to and external ref has the suffix .pro
-        $db = JFactory::getDbo();
+        $db    = JFactory::getDbo();
         $query = $db->getQuery(true)
             ->select('*')
             ->from('#__osdownloads_documents')

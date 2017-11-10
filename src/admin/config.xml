@@ -1,99 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config addfieldpath="/administrator/components/com_osdownloads/form/fields">
-    <fieldset
-        name="general"
-        label="COM_OSDOWNLOADS_GENERAL">
+    <fieldset name="general"
+              label="COM_OSDOWNLOADS_GENERAL">
 
-        <field
-            name="popup_animation"
-            type="list"
-            default="fade"
-            label="COM_OSDOWNLOADS_POPUP_ANIMATION">
-
+        <field name="popup_animation"
+               type="list"
+               default="fade"
+               label="COM_OSDOWNLOADS_POPUP_ANIMATION">
             <option value="none">COM_OSDOWNLOADS_NONE</option>
             <option value="fade">COM_OSDOWNLOADS_ANIMATION_FADE</option>
             <option value="fadeAndPop">COM_OSDOWNLOADS_ANIMATION_FADE_AND_POP</option>
         </field>
 
-        <field
-            name="show_readmore_button"
-            type="radio"
-            default="1"
-            class="btn-group btn-group-yesno"
-            label="COM_OSDOWNLOADS_SHOW_READMORE_BUTTON_LABEL"
-            description="COM_OSDOWNLOADS_SHOW_READMORE_BUTTON_DESC">
-
+        <field name="show_readmore_button"
+               type="radio"
+               default="1"
+               class="btn-group btn-group-yesno"
+               label="COM_OSDOWNLOADS_SHOW_READMORE_BUTTON_LABEL"
+               description="COM_OSDOWNLOADS_SHOW_READMORE_BUTTON_DESC">
             <option value="0">JNO</option>
             <option value="1">JYES</option>
         </field>
 
-        <field
-            name="show_download_button"
-            type="radio"
-            default="0"
-            class="btn-group btn-group-yesno"
-            label="COM_OSDOWNLOADS_SHOW_DOWNLOAD_BUTTON_LABEL"
-            description="COM_OSDOWNLOADS_SHOW_DOWNLOAD_BUTTON_DESC">
-
+        <field name="show_download_button"
+               type="radio"
+               default="0"
+               class="btn-group btn-group-yesno"
+               label="COM_OSDOWNLOADS_SHOW_DOWNLOAD_BUTTON_LABEL"
+               description="COM_OSDOWNLOADS_SHOW_DOWNLOAD_BUTTON_DESC">
             <option value="0">JNO</option>
             <option value="1">JYES</option>
         </field>
 
         <field type="spacer"/>
 
-        <field
-            name="thankyoupage"
-            type="editor"
-            filter="safehtml"
-            label="COM_OSDOWNLOADS_THANK_YOU_PAGE"/>
+        <field name="thankyoupage"
+               type="editor"
+               filter="safehtml"
+               label="COM_OSDOWNLOADS_THANK_YOU_PAGE"/>
 
-        <field
-            type="customfooter"
-            name="customfooter"
-            media="com_osdownloads"
-            showgoproad="1"
-            jedurl="http://extensions.joomla.org/extensions/extension/directory-a-documentation/downloads/osdownloads"/>
+        <field type="customfooter"
+               name="customfooter"
+               media="com_osdownloads"
+               showgoproad="1"
+               jedurl="http://extensions.joomla.org/extensions/extension/directory-a-documentation/downloads/osdownloads"/>
     </fieldset>
 
-    <fieldset
-        name="mailchimp"
-        label="COM_OSDOWNLOADS_FIELDSET_CONFIG_MAILCHIMP">
+    <fieldset name="mailchimp"
+              label="COM_OSDOWNLOADS_FIELDSET_CONFIG_MAILCHIMP">
 
-        <field
-            name="connect_mailchimp"
-            type="radio"
-            class="btn-group btn-group-yesno"
-            default="0"
-            label="COM_OSDOWNLOADS_CONNECT_TO_MAILCHIMP">
-
+        <field name="connect_mailchimp"
+               type="radio"
+               class="btn-group btn-group-yesno"
+               default="0"
+               label="COM_OSDOWNLOADS_CONNECT_TO_MAILCHIMP">
             <option value="0">JNO</option>
             <option value="1">JYES</option>
         </field>
 
-        <field
-            name="mailchimp_api"
-            type="text"
-            label="COM_OSDOWNLOADS_MAILCHIMP_API"/>
+        <field name="mailchimp_api"
+               type="text"
+               label="COM_OSDOWNLOADS_MAILCHIMP_API"/>
 
-        <field
-            name="list_id"
-            type="text"
-            label="COM_OSDOWNLOADS_LIST_ID"/>
+        <field name="list_id"
+               type="text"
+               label="COM_OSDOWNLOADS_LIST_ID"/>
     </fieldset>
 
-    <fieldset
-        name="permissions"
-        label="JCONFIG_PERMISSIONS_LABEL"
-        description="JCONFIG_PERMISSIONS_DESC">
+    <fieldset name="permissions"
+              label="JCONFIG_PERMISSIONS_LABEL"
+              description="JCONFIG_PERMISSIONS_DESC">
 
-        <field
-            name="rules"
-            type="rules"
-            label="JCONFIG_PERMISSIONS_LABEL"
-            class="inputbox"
-            validate="rules"
-            filter="rules"
-            component="com_osdownloads"
-            section="component"/>
+        <field name="rules"
+               type="rules"
+               label="JCONFIG_PERMISSIONS_LABEL"
+               class="inputbox"
+               validate="rules"
+               filter="rules"
+               component="com_osdownloads"
+               section="component"/>
     </fieldset>
 </config>

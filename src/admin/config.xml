@@ -6,9 +6,8 @@
 
         <field
             name="popup_animation"
-            type="radio"
+            type="list"
             default="fade"
-            class="btn-group"
             label="COM_OSDOWNLOADS_POPUP_ANIMATION">
 
             <option value="none">COM_OSDOWNLOADS_NONE</option>
@@ -20,7 +19,7 @@
             name="show_readmore_button"
             type="radio"
             default="1"
-            class="btn-group"
+            class="btn-group btn-group-yesno"
             label="COM_OSDOWNLOADS_SHOW_READMORE_BUTTON_LABEL"
             description="COM_OSDOWNLOADS_SHOW_READMORE_BUTTON_DESC">
 
@@ -32,7 +31,7 @@
             name="show_download_button"
             type="radio"
             default="0"
-            class="btn-group"
+            class="btn-group btn-group-yesno"
             label="COM_OSDOWNLOADS_SHOW_DOWNLOAD_BUTTON_LABEL"
             description="COM_OSDOWNLOADS_SHOW_DOWNLOAD_BUTTON_DESC">
 
@@ -63,7 +62,7 @@
         <field
             name="connect_mailchimp"
             type="radio"
-            class="btn-group"
+            class="btn-group btn-group-yesno"
             default="0"
             label="COM_OSDOWNLOADS_CONNECT_TO_MAILCHIMP">
 

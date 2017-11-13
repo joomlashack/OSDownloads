@@ -60,3 +60,5 @@ phing/.DS_Store
 
 build.properties
 composer.lock
+
+tests/_output/*

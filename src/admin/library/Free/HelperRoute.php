@@ -14,7 +14,22 @@ defined('_JEXEC') or die();
  * OSDownloads Component Route Helper.
  */
 abstract class HelperRoute
-{
+{	
+	/**
+	 * Sanitize an integer value to make sure we have only numbers.
+	 *
+	 * @var mixed $value
+	 *
+	 * @return integer
+	 */
+	public static function sanitizeInteger($value)
+	{
+		$value = (int) preg_replace('/[^0-9]/', '', $value);
+
+		return $value;
+	}
+
+
 	/**
 	 * Get the file download route.
 	 *
@@ -24,7 +39,7 @@ abstract class HelperRoute
 	 */
 	public static function getFileDownloadRoute($id)
 	{
-		$id = (int) preg_replace('/[^0-9]/', '', $id);
+		$id = static::sanitizeInteger($id);
 
 		// Create the link
 		$link = 'index.php?option=com_osdownloads&task=download&tmpl=component&id=' . $id;
@@ -42,14 +57,14 @@ abstract class HelperRoute
 	 */
 	public static function getFileRoute($id, $itemId = 0)
 	{
-		$id = (int) preg_replace('/[^0-9]/', '', $id);
+		$id = static::sanitizeInteger($id);
 
 		// Create the link
 		$link = "index.php?option=com_osdownloads&view=downloads&id={$id}";
 
 		// Should we add the item id?
 		if (! empty($itemId)) {
-			$itemId = (int) preg_replace('/[^0-9]/', '', $itemId);
+			$itemId = static::sanitizeInteger($itemId);
 
 			$link .= "&Itemid={$itemId}";
 		}

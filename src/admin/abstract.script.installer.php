@@ -16,6 +16,7 @@ if (file_exists($includePath)) {
 }
 
 use Alledia\Installer\AbstractScript;
+use Alledia\OSDownloads\Free\HelperRoute;
 
 class AbstractOSDownloadsInstallerScript extends AbstractScript
 {
@@ -322,7 +323,7 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
             ->select('params')
             ->select('id')
             ->from('#__menu')
-            ->where('link = ' . $db->quote('index.php?option=com_osdownloads&view=downloads'));
+            ->where('link = ' . $db->quote(HelperRoute::getFileListRoute()));
         $db->setQuery($query);
         $menus = $db->loadObjectList();
 

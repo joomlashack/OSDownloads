@@ -12,6 +12,7 @@ defined('_JEXEC') or die();
 
 use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
+use Alledia\OSDownloads\Free\HelperRoute;
 use Joomla\Registry\Registry;
 use JRoute;
 use JText;
@@ -123,7 +124,7 @@ class Item extends Base
         for ($i = $countPaths; $i >= 0; $i--) {
             $pathway->addItem(
                 $paths[$i]->title,
-                JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$paths[$i]->id}&Itemid={$itemID}")
+                JRoute::_(HelperRoute::getFileRoute($paths[$i]->id, $itemID))
             );
         }
     }

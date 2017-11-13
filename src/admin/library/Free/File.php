@@ -11,6 +11,7 @@ namespace Alledia\OSDownloads\Free;
 use JEventDispatcher;
 use JPluginHelper;
 use JRoute;
+use Alledia\OSDownloads\Free\HelperRoute;
 
 defined('_JEXEC') or die();
 
@@ -169,6 +170,6 @@ class File
      */
     public static function getDownloadUrl($fileId)
     {
-        return JRoute::_("index.php?option=com_osdownloads&task=download&tmpl=component&id={$fileId}");
+        return JRoute::_(HelperRoute::getFileDownloadRoute($fileId));
     }
 }

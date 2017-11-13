@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 require_once JPATH_SITE . '/components/com_osdownloads/models/item.php';
 
 use Alledia\OSDownloads\Free\Joomla\View;
-
+use Alledia\OSDownloads\Free\HelperRoute;
 
 class OSDownloadsViewDownloads extends View\Site\Base
 {
@@ -201,7 +201,7 @@ class OSDownloadsViewDownloads extends View\Site\Base
         for ($i = $countPaths; $i >= 0; $i--) {
             $pathway->addItem(
                 $paths[$i]->title,
-                JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$paths[$i]->id}" . "&Itemid={$itemID}")
+                JRoute::_(HelperRoute::getFileRoute($paths[$i]->id, $itemID))
             );
         }
     }

@@ -30,7 +30,7 @@ if (!$this->isPro) {
                 <?php
                 for ($i = count($this->paths) - 1; $i >= 0; $i--) :
                     ?>
-                    <a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$this->paths[$i]->id}")); ?>">
+                    <a href="<?php echo(JRoute::_(HelperRoute::getFileRoute($this->paths[$i]->id))); ?>">
                         <?php echo($this->paths[$i]->title); ?>
                     </a>
                     <?php

@@ -8,6 +8,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 use Alledia\Framework\Helper as AllediaHelper;
+use Alledia\OSDownloads\Free\HelperRoute;
 
 $app                    = JFactory::getApplication();
 $lang                   = JFactory::getLanguage();
@@ -23,13 +24,13 @@ JHtml::_('jquery.framework');
 JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundle.min.js');
 
 ?>
-<form action="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id=".$id."&Itemid=".$itemId));?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo(JRoute::_(HelperRoute::getFileRoute($id, $itemId)));?>" method="post" name="adminForm" id="adminForm">
     <div class="contentopen osdownloads-container">
         <?php if (!empty($this->paths)) : ?>
             <h2>
                 <?php for ($i = count($this->paths) - 1; $i >= 0; $i--):?>
                     <?php if ($i):?>
-                        <a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$this->paths[$i]->id}"."&Itemid=".$itemId));?>">
+                        <a href="<?php echo(JRoute::_(HelperRoute::getFileRoute($this->paths[$i]->id, $itemId)));?>">
                     <?php endif;?>
                     <?php echo($this->paths[$i]->title);?>
                     <?php if ($i > 0):?>
@@ -53,7 +54,7 @@ JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundl
                     <?php if (in_array($category->access, $authorizedAccessLevels)) : ?>
                         <div class="item<?php echo($i % $NumberOfColumn);?> cate_<?php echo($category->id);?>">
                             <h3>
-                                <a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=downloads&id={$category->id}"."&Itemid=".$itemId));?>">
+                                <a href="<?php echo(JRoute::_(HelperRoute::getFileRoute($category->id, $itemId)));?>">
                                     <?php echo($category->title);?>
                                 </a>
                             </h3>

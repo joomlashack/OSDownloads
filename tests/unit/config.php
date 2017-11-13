@@ -16,7 +16,7 @@
  * joomla: Must point to a locally installed version of joomla
  */
 $testPaths = array(
-    'joomla' => '/var/www/tests_osdownloads'
+    'joomla' => '/Users/anderson/Volumes/joomla'
 );
 
 // It isn't clear if this is needed. But it was recommended. We'll figure it out later

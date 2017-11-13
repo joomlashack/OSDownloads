@@ -11,7 +11,8 @@ It allows you to easily provide downloads in exchange for emails, which can in t
 
 ## Requirements
 
-Joomla 2.5.x or 3.x
+* php 5.6+
+* Joomla 3.7+
 
 ## License
 

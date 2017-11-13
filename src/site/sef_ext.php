@@ -1,29 +1,31 @@
 <?php
-/*
-* @package      SEF Advance
-* @copyright    Copyright (C) 2003-2013 Emir Sakic, http://www.sakic.net. All rights reserved.
-* @license      GNU/GPL, see LICENSE.TXT
-*
-* This program is free software; you can redistribute it and/or modify it
-* under the terms of the GNU General Public License as published by the
-* Free Software Foundation; either version 2 of the License, or
-* (at your option) any later version.
-*
-* This header must not be removed. Additional contributions/changes
-* may be added to this header as long as no information is deleted.
-*/
+/**
+ * @package      SEF Advance
+ * @copyright    Copyright (C) 2003-2013 Emir Sakic, http://www.sakic.net. All rights reserved.
+ * @contact      www.joomlashack.com, help@joomlashack.com
+ * @copyright    2016-2017 Open Source Training, LLC. All rights reserved
+ * @license      GNU/GPL, see LICENSE.TXT
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the
+ * Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This header must not be removed. Additional contributions/changes
+ * may be added to this header as long as no information is deleted.
+ */
 
 /**
-* SEF Advance component extension
-*
-* This extension will give the SEF Advance style URLs to the example component
-* Place this file (sef_ext.php) in the main component directory
-* Note that the class must be named: sef_componentname
-*
-* Copyright (C) 2003-2007 Emir Sakic, http://www.sakic.net, All rights reserved.
-*
-* Comments: for SEF Advance > v3.6
-**/
+ * SEF Advance component extension
+ *
+ * This extension will give the SEF Advance style URLs to the example component
+ * Place this file (sef_ext.php) in the main component directory
+ * Note that the class must be named: sef_componentname
+ *
+ * Copyright (C) 2003-2007 Emir Sakic, http://www.sakic.net, All rights reserved.
+ *
+ * Comments: for SEF Advance > v3.6
+ **/
 
 use Joomla\Utilities\ArrayHelper;
 use Joomla\Registry\Registry;
@@ -34,10 +36,10 @@ defined('_JEXEC') or die;
 class sef_osdownloads
 {
     /**
-    * Creates the SEF Advance URL out of the request
-    * Input: $string, string, The request URL (index.php?option=com_example&Itemid=$Itemid)
-    * Output: $sefstring, string, SEF Advance URL ($var1/$var2/)
-    **/
+     * Creates the SEF Advance URL out of the request
+     * Input: $string, string, The request URL (index.php?option=com_example&Itemid=$Itemid)
+     * Output: $sefstring, string, SEF Advance URL ($var1/$var2/)
+     **/
     public function create($string)
     {
         $string   = preg_replace('#^index\.php\?#', '', html_entity_decode($string));
@@ -83,7 +85,7 @@ class sef_osdownloads
                         $segments[] = 'categories';
 
                         $categories = $this->getCategoriesFromMenu($itemId);
-                        $segments = array_merge($segments, $categories);
+                        $segments   = array_merge($segments, $categories);
                         break;
 
                     case 'downloads':
@@ -107,13 +109,13 @@ class sef_osdownloads
     }
 
     /**
-    * Reverts to the query string out of the SEF Advance URL
-    * Input:
-    *    $segments, array, The SEF Advance URL split in arrays
-    *    $pos, int, The position offset for virtual directories (first virtual directory, which is the component name, begins at $pos+1)
-    * Output: $QUERY_STRING, string, query string (var1=$var1&var2=$var2)
-    *    Note that this will be added to already defined first part (option=com_example&Itemid=$Itemid)
-    **/
+     * Reverts to the query string out of the SEF Advance URL
+     * Input:
+     *    $segments, array, The SEF Advance URL split in arrays
+     *    $pos, int, The position offset for virtual directories (first virtual directory, which is the component name,
+     *    begins at $pos+1) Output: $QUERY_STRING, string, query string (var1=$var1&var2=$var2) Note that this will be
+     *    added to already defined first part (option=com_example&Itemid=$Itemid)
+     **/
     public function revert($segments, $pos)
     {
         array_shift($segments);
@@ -121,7 +123,6 @@ class sef_osdownloads
         $vars = array();
 
         if (isset($segments[0])) {
-
             switch ($segments[0]) {
                 case 'categories':
                     $vars['view'] = 'categories';
@@ -202,7 +203,7 @@ class sef_osdownloads
         $query = $db->getQuery(true)
             ->select('alias')
             ->from('#__menu')
-            ->where('id = ' . $db->quote((int) $itemId));
+            ->where('id = ' . $db->quote((int)$itemId));
 
         return $db->setQuery($query)->loadResult();
     }
@@ -240,7 +241,7 @@ class sef_osdownloads
         $query = $db->getQuery(true)
             ->select('params')
             ->from('#__menu')
-            ->where('id = ' . $db->quote((int) $itemId));
+            ->where('id = ' . $db->quote((int)$itemId));
 
         $params = $db->setQuery($query)->loadResult();
         $params = new Registry($params);

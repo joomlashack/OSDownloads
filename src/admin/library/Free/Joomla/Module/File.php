@@ -2,7 +2,7 @@
 /**
  * @package   com_osdownloads
  * @contact   www.joomlashack.com, help@joomlashack.com
- * @copyright 2016 Open Source Training, LLC. All rights reserved
+ * @copyright 2016-2017 Open Source Training, LLC. All rights reserved
  * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
@@ -13,7 +13,6 @@ defined('_JEXEC') or die();
 use Alledia\Framework\Joomla\Extension\AbstractFlexibleModule;
 use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
-use JModuleHelper;
 use JRoute;
 
 class File extends AbstractFlexibleModule
@@ -21,7 +20,8 @@ class File extends AbstractFlexibleModule
     public function init()
     {
         // Load the OSDownloads extension
-        Factory::getLanguage()->load('com_osdownloads');
+        $baseLang = Factory::getApplication()->isClient('site') ? JPATH_SITE : JPATH_ADMINISTRATOR;
+        Factory::getLanguage()->load('com_osdownloads', $baseLang . '/components/com_osdownloads');
         $osdownloads = FreeComponentSite::getInstance();
         $osdownloads->loadLibrary();
 
@@ -42,7 +42,7 @@ class File extends AbstractFlexibleModule
 
         $osdownloads = FreeComponentSite::getInstance();
         $model       = $osdownloads->getModel('Item');
-        $query = $model->getItemQuery();
+        $query       = $model->getItemQuery();
         $query->where("cate_id = " . $db->quote($this->params->get('category', 0)));
         $db->setQuery($query);
 

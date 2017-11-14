@@ -6,30 +6,15 @@
  * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
-namespace Alledia\OSDownloads\Free;
+namespace Alledia\OSDownloads\Free\Helper;
 
 defined('_JEXEC') or die();
 
 /**
  * OSDownloads Component Route Helper.
  */
-abstract class HelperRoute
+class Route
 {	
-	/**
-	 * Sanitize an integer value to make sure we have only numbers.
-	 *
-	 * @var mixed $value
-	 *
-	 * @return integer
-	 */
-	public static function sanitizeInteger($value)
-	{
-		$value = (int) preg_replace('/[^0-9]/', '', $value);
-
-		return $value;
-	}
-
-
 	/**
 	 * Get the file download route.
 	 *
@@ -37,9 +22,9 @@ abstract class HelperRoute
 	 *
 	 * @return  string  The file download route.
 	 */
-	public static function getFileDownloadRoute($id)
+	public function getFileDownloadRoute($id)
 	{
-		$id = static::sanitizeInteger($id);
+		$id = abs((int) $id);
 
 		// Create the link
 		$link = 'index.php?option=com_osdownloads&task=download&tmpl=component&id=' . $id;
@@ -55,16 +40,16 @@ abstract class HelperRoute
 	 *
 	 * @return  string  The file route.
 	 */
-	public static function getFileRoute($id, $itemId = 0)
+	public function getFileRoute($id, $itemId = 0)
 	{
-		$id = static::sanitizeInteger($id);
+		$id = abs((int) $id);
 
 		// Create the link
 		$link = "index.php?option=com_osdownloads&view=downloads&id={$id}";
 
 		// Should we add the item id?
 		if (! empty($itemId)) {
-			$itemId = static::sanitizeInteger($itemId);
+			$itemId = abs((int) $itemId);
 
 			$link .= "&Itemid={$itemId}";
 		}
@@ -80,7 +65,7 @@ abstract class HelperRoute
 	 *
 	 * @return  string  The file route.
 	 */
-	public static function getFileListRoute()
+	public function getFileListRoute()
 	{
 		// Create the link
 		$link = "index.php?option=com_osdownloads&view=downloads";

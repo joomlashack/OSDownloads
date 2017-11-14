@@ -10,7 +10,7 @@ namespace Alledia\OSDownloads\Free;
 
 defined('_JEXEC') or die();
 
-class Helper
+abstract class Helper
 {
     /**
      * Validate an email address. Used this to have the option to accept

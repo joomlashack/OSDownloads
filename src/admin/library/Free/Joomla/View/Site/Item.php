@@ -12,7 +12,7 @@ defined('_JEXEC') or die();
 
 use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
-use Alledia\OSDownloads\Free\HelperRoute;
+use Alledia\OSDownloads\Free\Container;
 use Joomla\Registry\Registry;
 use JRoute;
 use JText;
@@ -116,15 +116,16 @@ class Item extends Base
     {
         $this->buildPath($paths, $item->cate_id);
 
-        $app     = Factory::getApplication();
-        $pathway = $app->getPathway();
-        $itemID  = $app->input->getInt('Itemid');
+        $app       = Factory::getApplication();
+        $pathway   = $app->getPathway();
+        $itemID    = $app->input->getInt('Itemid');
+        $container = Container::getInstance();
 
         $countPaths = count($paths) - 1;
         for ($i = $countPaths; $i >= 0; $i--) {
             $pathway->addItem(
                 $paths[$i]->title,
-                JRoute::_(HelperRoute::getFileRoute($paths[$i]->id, $itemID))
+                JRoute::_($container->getHelperRoute()->getFileRoute($paths[$i]->id, $itemID))
             );
         }
     }

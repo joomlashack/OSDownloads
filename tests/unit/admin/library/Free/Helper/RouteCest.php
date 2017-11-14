@@ -1,10 +1,17 @@
 <?php
-require 'src/admin/library/Free/HelperRoute.php';
+require 'src/admin/library/Free/Helper/Route.php';
 
-use Alledia\OSDownloads\Free\HelperRoute;
+use Alledia\OSDownloads\Free\Helper\Route as HelperRoute;
 
-class HelperRouterCest
-{
+class RouteCest
+{   
+    protected $helper;
+
+    public function _before(UnitTester $I)
+    {
+        $this->helper = new HelperRoute;
+    }
+
     ########################################################
     #### File Download URL
     ########################################################
@@ -15,7 +22,7 @@ class HelperRouterCest
      */
     public function tryToGetFileDownloadRouteWithValidIntId(UnitTester $I)
     {
-        $route = HelperRoute::getFileDownloadRoute(12);
+        $route = $this->helper->getFileDownloadRoute(12);
 
         $I->assertEquals(
             "index.php?option=com_osdownloads&task=download&tmpl=component&id=12",
@@ -29,7 +36,7 @@ class HelperRouterCest
      */
     public function tryToGetFileDownloadRouteWithValidStringId(UnitTester $I)
     {
-        $route = HelperRoute::getFileDownloadRoute('12');
+        $route = $this->helper->getFileDownloadRoute('12');
 
         $I->assertEquals(
             "index.php?option=com_osdownloads&task=download&tmpl=component&id=12",
@@ -43,7 +50,7 @@ class HelperRouterCest
      */
     public function tryToGetFileDownloadRouteWithNegativeId(UnitTester $I)
     {
-        $route = HelperRoute::getFileDownloadRoute('-12');
+        $route = $this->helper->getFileDownloadRoute('-12');
 
         $I->assertEquals(
             "index.php?option=com_osdownloads&task=download&tmpl=component&id=12",
@@ -57,7 +64,7 @@ class HelperRouterCest
      */
     public function tryToGetFileDownloadRouteWithMaliciousStrings(UnitTester $I)
     {
-        $route = HelperRoute::getFileDownloadRoute('1"; SHOW DATABASES;');
+        $route = $this->helper->getFileDownloadRoute('1"; SHOW DATABASES;');
 
         $I->assertEquals(
             "index.php?option=com_osdownloads&task=download&tmpl=component&id=1",
@@ -75,7 +82,7 @@ class HelperRouterCest
      */
     public function tryToGetFileRouteWithValidIntIdAndItemID(UnitTester $I)
     {
-        $route = HelperRoute::getFileRoute(12, 1);
+        $route = $this->helper->getFileRoute(12, 1);
 
         $I->assertEquals(
             "index.php?option=com_osdownloads&view=downloads&id=12&Itemid=1",
@@ -89,7 +96,7 @@ class HelperRouterCest
      */
     public function tryToGetFileRouteWithValidStringIdAndItemID(UnitTester $I)
     {
-        $route = HelperRoute::getFileRoute('12', '1');
+        $route = $this->helper->getFileRoute('12', '1');
 
         $I->assertEquals(
             "index.php?option=com_osdownloads&view=downloads&id=12&Itemid=1",
@@ -103,7 +110,7 @@ class HelperRouterCest
      */
     public function tryToGetFileRouteWithNegativeIdAndItemId(UnitTester $I)
     {
-        $route = HelperRoute::getFileRoute('-12', 2);
+        $route = $this->helper->getFileRoute('-12', 2);
 
         $I->assertEquals(
             "index.php?option=com_osdownloads&view=downloads&id=12&Itemid=2",
@@ -117,7 +124,7 @@ class HelperRouterCest
      */
     public function tryToGetFileRouteWithMaliciousStringsAndItemId(UnitTester $I)
     {
-        $route = HelperRoute::getFileRoute('1"; SHOW DATABASES;', '2"; SHOW DATABASES;');
+        $route = $this->helper->getFileRoute('1"; SHOW DATABASES;', '2"; SHOW DATABASES;');
 
         $I->assertEquals(
             "index.php?option=com_osdownloads&view=downloads&id=1&Itemid=2",
@@ -131,7 +138,7 @@ class HelperRouterCest
      */
     public function tryToGetFileRouteWithValidIntIdWithoutItemId(UnitTester $I)
     {
-        $route = HelperRoute::getFileRoute(12);
+        $route = $this->helper->getFileRoute(12);
 
         $I->assertEquals(
             "index.php?option=com_osdownloads&view=downloads&id=12",
@@ -145,7 +152,7 @@ class HelperRouterCest
      */
     public function tryToGetFileRouteWithValidStringIdWithoutItemID(UnitTester $I)
     {
-        $route = HelperRoute::getFileRoute('12');
+        $route = $this->helper->getFileRoute('12');
 
         $I->assertEquals(
             "index.php?option=com_osdownloads&view=downloads&id=12",
@@ -159,7 +166,7 @@ class HelperRouterCest
      */
     public function tryToGetFileRouteWithNegativeIdWithoutItemId(UnitTester $I)
     {
-        $route = HelperRoute::getFileRoute('-12');
+        $route = $this->helper->getFileRoute('-12');
 
         $I->assertEquals(
             "index.php?option=com_osdownloads&view=downloads&id=12",
@@ -173,7 +180,7 @@ class HelperRouterCest
      */
     public function tryToGetFileRouteWithMaliciousStringsWithoutItemId(UnitTester $I)
     {
-        $route = HelperRoute::getFileRoute('1"; SHOW DATABASES;');
+        $route = $this->helper->getFileRoute('1"; SHOW DATABASES;');
 
         $I->assertEquals(
             "index.php?option=com_osdownloads&view=downloads&id=1",
@@ -190,7 +197,7 @@ class HelperRouterCest
      */
     public function tryToGetFileListRoute(UnitTester $I)
     {
-        $route = HelperRoute::getFileListRoute();
+        $route = $this->helper->getFileListRoute();
 
         $I->assertEquals(
             "index.php?option=com_osdownloads&view=downloads",

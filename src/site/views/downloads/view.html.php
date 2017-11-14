@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 require_once JPATH_SITE . '/components/com_osdownloads/models/item.php';
 
 use Alledia\OSDownloads\Free\Joomla\View;
-use Alledia\OSDownloads\Free\HelperRoute;
+use Alledia\OSDownloads\Free\Container;
 
 class OSDownloadsViewDownloads extends View\Site\Base
 {
@@ -193,15 +193,16 @@ class OSDownloadsViewDownloads extends View\Site\Base
 
     protected function buildBreadcrumbs($paths)
     {
-        $app     = JFactory::getApplication();
-        $pathway = $app->getPathway();
-        $itemID  = $app->input->getInt('Itemid');
+        $app       = JFactory::getApplication();
+        $pathway   = $app->getPathway();
+        $itemID    = $app->input->getInt('Itemid');
+        $container = Container::getInstance();
 
         $countPaths = count($paths) - 1;
         for ($i = $countPaths; $i >= 0; $i--) {
             $pathway->addItem(
                 $paths[$i]->title,
-                JRoute::_(HelperRoute::getFileRoute($paths[$i]->id, $itemID))
+                JRoute::_($container->getHelperRoute()->getFileRoute($paths[$i]->id, $itemID))
             );
         }
     }

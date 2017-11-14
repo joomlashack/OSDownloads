@@ -16,7 +16,7 @@ if (file_exists($includePath)) {
 }
 
 use Alledia\Installer\AbstractScript;
-use Alledia\OSDownloads\Free\HelperRoute;
+use Alledia\OSDownloads\Free\Container;
 
 class AbstractOSDownloadsInstallerScript extends AbstractScript
 {
@@ -316,14 +316,15 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
      */
     protected function fixOrderingParamForMenus()
     {
-        $db = JFactory::getDbo();
+        $db        = JFactory::getDbo();
+        $container = Container::getInstance();
 
         $query = $db->getQuery(true)
             ->select('link')
             ->select('params')
             ->select('id')
             ->from('#__menu')
-            ->where('link = ' . $db->quote(HelperRoute::getFileListRoute()));
+            ->where('link = ' . $db->quote($container->getHelperRoute()->getFileListRoute()));
         $db->setQuery($query);
         $menus = $db->loadObjectList();
 

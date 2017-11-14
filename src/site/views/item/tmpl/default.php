@@ -8,8 +8,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Alledia\Framework\Helper as AllediaHelper;
+use Alledia\OSDownloads\Free\Container;
 
-$lang = JFactory::getLanguage();
+$lang      = JFactory::getLanguage();
+$container = Container::getInstance();
 
 JHtml::_('jquery.framework');
 JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundle.min.js');
@@ -30,7 +32,7 @@ if (!$this->isPro) {
                 <?php
                 for ($i = count($this->paths) - 1; $i >= 0; $i--) :
                     ?>
-                    <a href="<?php echo(JRoute::_(HelperRoute::getFileRoute($this->paths[$i]->id))); ?>">
+                    <a href="<?php echo(JRoute::_($container->getHelperRoute()->getFileRoute($this->paths[$i]->id))); ?>">
                         <?php echo($this->paths[$i]->title); ?>
                     </a>
                     <?php

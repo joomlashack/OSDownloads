@@ -2,6 +2,7 @@
 require 'src/admin/library/Free/Helper/Route.php';
 
 use Alledia\OSDownloads\Free\Helper\Route as HelperRoute;
+use Codeception\Example;
 
 class RouteCest
 {   
@@ -17,57 +18,22 @@ class RouteCest
     ########################################################
 
     /**
-     * Try to get the file download route providing a valid integer as the id.
-     * It should return the URL with the given id.
+     * Try to get the file download route. It should return the URL with the
+     * given id, but sanitized. 
+     *
+     * @example {"id": 12}
+     * @example {"id": -12}
+     * @example {"id": "12"}
+     * @example {"id": "-12"}
+     * @example {"id": "12\"; SHOW DATABASES;"}
+     *
      */
-    public function tryToGetFileDownloadRouteWithValidIntId(UnitTester $I)
+    public function tryToGetFileDownloadRoute(UnitTester $I, Example $example)
     {
-        $route = $this->helper->getFileDownloadRoute(12);
+        $route = $this->helper->getFileDownloadRoute($example['id']);
 
         $I->assertEquals(
             'index.php?option=com_osdownloads&task=download&tmpl=component&id=12',
-            $route
-        );
-    }
-
-    /**
-     * Try to get the file download route providing a valid string as the id.
-     * It should return the URL with the given id.
-     */
-    public function tryToGetFileDownloadRouteWithValidStringId(UnitTester $I)
-    {
-        $route = $this->helper->getFileDownloadRoute('12');
-
-        $I->assertEquals(
-            'index.php?option=com_osdownloads&task=download&tmpl=component&id=12',
-            $route
-        );
-    }
-
-    /**
-     * Try to get the file download route providing a negative integer.
-     * It should return the URL with the given id, but without the minus sign.
-     */
-    public function tryToGetFileDownloadRouteWithNegativeId(UnitTester $I)
-    {
-        $route = $this->helper->getFileDownloadRoute('-12');
-
-        $I->assertEquals(
-            'index.php?option=com_osdownloads&task=download&tmpl=component&id=12',
-            $route
-        );
-    }
-
-    /**
-     * Try to get the file download route providing an invalid string as the id.
-     * It should return the URL with the id = 0.
-     */
-    public function tryToGetFileDownloadRouteWithMaliciousStrings(UnitTester $I)
-    {
-        $route = $this->helper->getFileDownloadRoute('1\'; SHOW DATABASES;');
-
-        $I->assertEquals(
-            'index.php?option=com_osdownloads&task=download&tmpl=component&id=1',
             $route
         );
     }
@@ -79,55 +45,19 @@ class RouteCest
     /**
      * Try to get the file route providing a valid integer as the id.
      * It should return the URL with the given id.
+     *
+     * @example {"id": 12, "itemid": 13}
+     * @example {"id": -12, "itemid": -13}
+     * @example {"id": "12", "itemid": "13"}
+     * @example {"id": "-12", "itemid": "-13"}
+     * @example {"id": "12\"; SHOW DATABASES;", "itemid": "13\"; DROP TABLE #_tests;"}
      */
-    public function tryToGetFileRouteWithValidIntIdAndItemID(UnitTester $I)
+    public function tryToGetFileRouteWithItemId(UnitTester $I, Example $example)
     {
-        $route = $this->helper->getFileRoute(12, 1);
+        $route = $this->helper->getFileRoute($example['id'], $example['itemid']);
 
         $I->assertEquals(
-            'index.php?option=com_osdownloads&view=downloads&id=12&Itemid=1',
-            $route
-        );
-    }
-
-    /**
-     * Try to get the file route providing a valid string as the id.
-     * It should return the URL with the given id.
-     */
-    public function tryToGetFileRouteWithValidStringIdAndItemID(UnitTester $I)
-    {
-        $route = $this->helper->getFileRoute('12', '1');
-
-        $I->assertEquals(
-            'index.php?option=com_osdownloads&view=downloads&id=12&Itemid=1',
-            $route
-        );
-    }
-
-    /**
-     * Try to get the file route providing a negative integer.
-     * It should return the URL with the given id, but without the minus sign.
-     */
-    public function tryToGetFileRouteWithNegativeIdAndItemId(UnitTester $I)
-    {
-        $route = $this->helper->getFileRoute('-12', 2);
-
-        $I->assertEquals(
-            'index.php?option=com_osdownloads&view=downloads&id=12&Itemid=2',
-            $route
-        );
-    }
-
-    /**
-     * Try to get the file route providing an invalid string as the id.
-     * It should return the URL with the id = 0.
-     */
-    public function tryToGetFileRouteWithMaliciousStringsAndItemId(UnitTester $I)
-    {
-        $route = $this->helper->getFileRoute('1\'; SHOW DATABASES;', '2\'; SHOW DATABASES;');
-
-        $I->assertEquals(
-            'index.php?option=com_osdownloads&view=downloads&id=1&Itemid=2',
+            'index.php?option=com_osdownloads&view=downloads&id=12&Itemid=13',
             $route
         );
     }
@@ -135,55 +65,19 @@ class RouteCest
     /**
      * Try to get the file route providing a valid integer as the id.
      * It should return the URL with the given id.
+     *
+     * @example {"id": 12}
+     * @example {"id": -12}
+     * @example {"id": "12"}
+     * @example {"id": "-12"}
+     * @example {"id": "12\"; SHOW DATABASES;"}
      */
-    public function tryToGetFileRouteWithValidIntIdWithoutItemId(UnitTester $I)
+    public function tryToGetFileRouteWithoutItemId(UnitTester $I, Example $example)
     {
-        $route = $this->helper->getFileRoute(12);
+        $route = $this->helper->getFileRoute($example['id']);
 
         $I->assertEquals(
             'index.php?option=com_osdownloads&view=downloads&id=12',
-            $route
-        );
-    }
-
-    /**
-     * Try to get the file route providing a valid string as the id.
-     * It should return the URL with the given id.
-     */
-    public function tryToGetFileRouteWithValidStringIdWithoutItemID(UnitTester $I)
-    {
-        $route = $this->helper->getFileRoute('12');
-
-        $I->assertEquals(
-            'index.php?option=com_osdownloads&view=downloads&id=12',
-            $route
-        );
-    }
-
-    /**
-     * Try to get the file route providing a negative integer.
-     * It should return the URL with the given id, but without the minus sign.
-     */
-    public function tryToGetFileRouteWithNegativeIdWithoutItemId(UnitTester $I)
-    {
-        $route = $this->helper->getFileRoute('-12');
-
-        $I->assertEquals(
-            'index.php?option=com_osdownloads&view=downloads&id=12',
-            $route
-        );
-    }
-
-    /**
-     * Try to get the file route providing an invalid string as the id.
-     * It should return the URL with the id = 0.
-     */
-    public function tryToGetFileRouteWithMaliciousStringsWithoutItemId(UnitTester $I)
-    {
-        $route = $this->helper->getFileRoute('1\'; SHOW DATABASES;');
-
-        $I->assertEquals(
-            'index.php?option=com_osdownloads&view=downloads&id=1',
             $route
         );
     }
@@ -210,113 +104,39 @@ class RouteCest
     ########################################################
 
     /**
-     * Try to get the view item route providing a valid integer as the id.
-     * It should return the URL with the given id.
+     * Try to get the view item route with item id.
+     *
+     * @example {"id": 12, "itemid": 13}
+     * @example {"id": -12, "itemid": -13}
+     * @example {"id": "12", "itemid": "13"}
+     * @example {"id": "-12", "itemid": "-13"}
+     * @example {"id": "12\"; SHOW DATABASES;", "itemid": "13\"; DROP TABLE #_tests;"}
      */
-    public function tryToGetViewItemRouteWithValidIntIdAndItemID(UnitTester $I)
+    public function tryToGetViewItemRouteWithItemId(UnitTester $I, Example $example)
     {
-        $route = $this->helper->getViewItemRoute(12, 1);
+        $route = $this->helper->getViewItemRoute($example['id'], $example['itemid']);
 
         $I->assertEquals(
-            'index.php?option=com_osdownloads&view=item&id=12&Itemid=1',
+            'index.php?option=com_osdownloads&view=item&id=12&Itemid=13',
             $route
         );
     }
 
     /**
-     * Try to get the view item route providing a valid string as the id.
-     * It should return the URL with the given id.
+     * Try to get the view item route without item id.
+     *
+     * @example {"id": 12}
+     * @example {"id": -12}
+     * @example {"id": "12"}
+     * @example {"id": "-12"}
+     * @example {"id": "12\"; SHOW DATABASES;"}
      */
-    public function tryToGetViewItemRouteWithValidStringIdAndItemID(UnitTester $I)
+    public function tryToGetViewItemRouteWithoutItemId(UnitTester $I, Example $example)
     {
-        $route = $this->helper->getViewItemRoute('12', '1');
-
-        $I->assertEquals(
-            'index.php?option=com_osdownloads&view=item&id=12&Itemid=1',
-            $route
-        );
-    }
-
-    /**
-     * Try to get the view item route providing a negative integer.
-     * It should return the URL with the given id, but without the minus sign.
-     */
-    public function tryToGetViewItemRouteWithNegativeIdAndItemId(UnitTester $I)
-    {
-        $route = $this->helper->getViewItemRoute('-12', 2);
-
-        $I->assertEquals(
-            'index.php?option=com_osdownloads&view=item&id=12&Itemid=2',
-            $route
-        );
-    }
-
-    /**
-     * Try to get the view item route providing an invalid string as the id.
-     * It should return the URL with the id = 0.
-     */
-    public function tryToGetViewItemRouteWithMaliciousStringsAndItemId(UnitTester $I)
-    {
-        $route = $this->helper->getViewItemRoute('1\'; SHOW DATABASES;', '2\'; SHOW DATABASES;');
-
-        $I->assertEquals(
-            'index.php?option=com_osdownloads&view=item&id=1&Itemid=2',
-            $route
-        );
-    }
-
-    /**
-     * Try to get the view item route providing a valid integer as the id.
-     * It should return the URL with the given id.
-     */
-    public function tryToGetViewItemRouteWithValidIntIdWithoutItemId(UnitTester $I)
-    {
-        $route = $this->helper->getViewItemRoute(12);
+        $route = $this->helper->getViewItemRoute($example['id']);
 
         $I->assertEquals(
             'index.php?option=com_osdownloads&view=item&id=12',
-            $route
-        );
-    }
-
-    /**
-     * Try to get the view item route providing a valid string as the id.
-     * It should return the URL with the given id.
-     */
-    public function tryToGetViewItemRouteWithValidStringIdWithoutItemID(UnitTester $I)
-    {
-        $route = $this->helper->getViewItemRoute('12');
-
-        $I->assertEquals(
-            'index.php?option=com_osdownloads&view=item&id=12',
-            $route
-        );
-    }
-
-    /**
-     * Try to get the view item route providing a negative integer.
-     * It should return the URL with the given id, but without the minus sign.
-     */
-    public function tryToGetViewItemRouteWithNegativeIdWithoutItemId(UnitTester $I)
-    {
-        $route = $this->helper->getViewItemRoute('-12');
-
-        $I->assertEquals(
-            'index.php?option=com_osdownloads&view=item&id=12',
-            $route
-        );
-    }
-
-    /**
-     * Try to get the view item route providing an invalid string as the id.
-     * It should return the URL with the id = 0.
-     */
-    public function tryToGetViewItemRouteWithMaliciousStringsWithoutItemId(UnitTester $I)
-    {
-        $route = $this->helper->getViewItemRoute('1\'; SHOW DATABASES;');
-
-        $I->assertEquals(
-            'index.php?option=com_osdownloads&view=item&id=1',
             $route
         );
     }
@@ -326,113 +146,39 @@ class RouteCest
     ########################################################
 
     /**
-     * Try to get the file download content route providing a valid integer as the id.
-     * It should return the URL with the given id.
+     * Try to get the file download content route with item id.
+     *
+     * @example {"id": 12, "itemid": 13}
+     * @example {"id": -12, "itemid": -13}
+     * @example {"id": "12", "itemid": "13"}
+     * @example {"id": "-12", "itemid": "-13"}
+     * @example {"id": "12\"; SHOW DATABASES;", "itemid": "13\"; DROP TABLE #_tests;"}
      */
-    public function tryToGetFileDownloadContentRouteWithValidIntIdAndItemID(UnitTester $I)
+    public function tryToGetFileDownloadContentRouteWithItemID(UnitTester $I, Example $example)
     {
-        $route = $this->helper->getFileDownloadContentRoute(12, 1);
+        $route = $this->helper->getFileDownloadContentRoute($example['id'], $example['itemid']);
 
         $I->assertEquals(
-            'index.php?option=com_osdownloads&task=routedownload&tmpl=component&id=12&Itemid=1',
+            'index.php?option=com_osdownloads&task=routedownload&tmpl=component&id=12&Itemid=13',
             $route
         );
     }
 
     /**
-     * Try to get the file download content route providing a valid string as the id.
-     * It should return the URL with the given id.
+     * Try to get the file download content route without item id.
+     *
+     * @example {"id": 12}
+     * @example {"id": -12}
+     * @example {"id": "12"}
+     * @example {"id": "-12"}
+     * @example {"id": "12\"; SHOW DATABASES;"}
      */
-    public function tryToGetFileDownloadContentRouteWithValidStringIdAndItemID(UnitTester $I)
+    public function tryToGetFileDownloadContentRouteWithoutItemID(UnitTester $I, Example $example)
     {
-        $route = $this->helper->getFileDownloadContentRoute('12', '1');
-
-        $I->assertEquals(
-            'index.php?option=com_osdownloads&task=routedownload&tmpl=component&id=12&Itemid=1',
-            $route
-        );
-    }
-
-    /**
-     * Try to get the file download content route providing a negative integer.
-     * It should return the URL with the given id, but without the minus sign.
-     */
-    public function tryToGetFileDownloadContentRouteWithNegativeIdAndItemId(UnitTester $I)
-    {
-        $route = $this->helper->getFileDownloadContentRoute('-12', 2);
-
-        $I->assertEquals(
-            'index.php?option=com_osdownloads&task=routedownload&tmpl=component&id=12&Itemid=2',
-            $route
-        );
-    }
-
-    /**
-     * Try to get the file download content route providing an invalid string as the id.
-     * It should return the URL with the id = 0.
-     */
-    public function tryToGetFileDownloadContentRouteWithMaliciousStringsAndItemId(UnitTester $I)
-    {
-        $route = $this->helper->getFileDownloadContentRoute('1\'; SHOW DATABASES;', '2\'; SHOW DATABASES;');
-
-        $I->assertEquals(
-            'index.php?option=com_osdownloads&task=routedownload&tmpl=component&id=1&Itemid=2',
-            $route
-        );
-    }
-
-    /**
-     * Try to get the file download content route providing a valid integer as the id.
-     * It should return the URL with the given id.
-     */
-    public function tryToGetFileDownloadContentRouteWithValidIntIdWithoutItemId(UnitTester $I)
-    {
-        $route = $this->helper->getFileDownloadContentRoute(12);
+        $route = $this->helper->getFileDownloadContentRoute($example['id']);
 
         $I->assertEquals(
             'index.php?option=com_osdownloads&task=routedownload&tmpl=component&id=12',
-            $route
-        );
-    }
-
-    /**
-     * Try to get the file download content route providing a valid string as the id.
-     * It should return the URL with the given id.
-     */
-    public function tryToGetFileDownloadContentRouteWithValidStringIdWithoutItemID(UnitTester $I)
-    {
-        $route = $this->helper->getFileDownloadContentRoute('12');
-
-        $I->assertEquals(
-            'index.php?option=com_osdownloads&task=routedownload&tmpl=component&id=12',
-            $route
-        );
-    }
-
-    /**
-     * Try to get the file download content route providing a negative integer.
-     * It should return the URL with the given id, but without the minus sign.
-     */
-    public function tryToGetFileDownloadContentRouteWithNegativeIdWithoutItemId(UnitTester $I)
-    {
-        $route = $this->helper->getFileDownloadContentRoute('-12');
-
-        $I->assertEquals(
-            'index.php?option=com_osdownloads&task=routedownload&tmpl=component&id=12',
-            $route
-        );
-    }
-
-    /**
-     * Try to get the file download content route providing an invalid string as the id.
-     * It should return the URL with the id = 0.
-     */
-    public function tryToGetFileDownloadContentRouteWithMaliciousStringsWithoutItemId(UnitTester $I)
-    {
-        $route = $this->helper->getFileDownloadContentRoute('1\'; SHOW DATABASES;');
-
-        $I->assertEquals(
-            'index.php?option=com_osdownloads&task=routedownload&tmpl=component&id=1',
             $route
         );
     }
@@ -442,57 +188,20 @@ class RouteCest
     ########################################################
 
     /**
-     * Try to get the admin file form route providing a valid integer as the id.
-     * It should return the URL with the given id.
+     * Try to get the admin file form route.
+     *
+     * @example {"id": 12}
+     * @example {"id": -12}
+     * @example {"id": "12"}
+     * @example {"id": "-12"}
+     * @example {"id": "12\"; SHOW DATABASES;"}
      */
-    public function tryToGetAdminFileFormRouteWithValidIntId(UnitTester $I)
+    public function tryToGetAdminFileFormRoute(UnitTester $I, Example $example)
     {
-        $route = $this->helper->getAdminFileFormRoute(12);
+        $route = $this->helper->getAdminFileFormRoute($example['id']);
 
         $I->assertEquals(
             'index.php?option=com_osdownloads&view=file&cid[]=12',
-            $route
-        );
-    }
-
-    /**
-     * Try to get the admin file form route providing a valid string as the id.
-     * It should return the URL with the given id.
-     */
-    public function tryToGetAdminFileFormRouteWithValidStringId(UnitTester $I)
-    {
-        $route = $this->helper->getAdminFileFormRoute('12');
-
-        $I->assertEquals(
-            'index.php?option=com_osdownloads&view=file&cid[]=12',
-            $route
-        );
-    }
-
-    /**
-     * Try to get the admin file form route providing a negative integer.
-     * It should return the URL with the given id, but without the minus sign.
-     */
-    public function tryToGetAdminFileFormRouteWithNegativeId(UnitTester $I)
-    {
-        $route = $this->helper->getAdminFileFormRoute('-12');
-
-        $I->assertEquals(
-            'index.php?option=com_osdownloads&view=file&cid[]=12',
-            $route
-        );
-    }
-
-    /**
-     * Try to get the admin file form route providing an invalid string as the id.
-     * It should return the URL with the id = 0.
-     */
-    public function tryToGetAdminFileFormRouteWithMaliciousStrings(UnitTester $I)
-    {
-        $route = $this->helper->getAdminFileFormRoute('1\'; SHOW DATABASES;');
-
-        $I->assertEquals(
-            'index.php?option=com_osdownloads&view=file&cid[]=1',
             $route
         );
     }

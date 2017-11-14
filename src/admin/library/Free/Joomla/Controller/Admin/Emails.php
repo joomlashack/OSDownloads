@@ -11,6 +11,7 @@ namespace Alledia\OSDownloads\Free\Joomla\Controller\Admin;
 use Alledia\Framework\Factory;
 use Alledia\Framework\Joomla\Controller\Base as BaseController;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
+use Alledia\OSDownloads\Free\Container;
 use JControllerLegacy;
 use JText;
 
@@ -23,14 +24,20 @@ class Emails extends JControllerLegacy
 {
     public function delete()
     {
-        $app = Factory::getApplication();
+        $app       = Factory::getApplication();
+        $container = Container::getInstance();
 
         $id_arr = $app->input->getVar('cid');
         $str_id = implode(',', $id_arr);
-        $db = Factory::getDBO();
-        $query = "DELETE FROM `#__osdownloads_emails` WHERE id IN (".$str_id.")";
+        $db     = Factory::getDBO();
+        
+        $query  = "DELETE FROM `#__osdownloads_emails` WHERE id IN (".$str_id.")";
         $db->setQuery($query);
         $db->query();
-        $this->setRedirect("index.php?option=com_osdownloads&view=emails", JText::_("COM_OSDOWNLOADS_EMAIL_IS_DELETED"));
+
+        $this->setRedirect(
+            $container->getHelperRoute()->getAdminEmailListRoute(),
+            JText::_("COM_OSDOWNLOADS_EMAIL_IS_DELETED")
+        );
     }
 }

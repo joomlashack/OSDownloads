@@ -7,10 +7,15 @@
  */
 
 defined('_JEXEC') or die;
+
+use Alledia\OSDownloads\Free\Container;
+
 class OSDownloadsHelper
 {
     public static function addSubmenu($vName)
     {
+        $container = Container::getInstance();
+
         // Joomla 3.x Backward Compatibility
         if (JFactory::getApplication()->input->getCmd('option') == 'com_categories') {
             $subMenuClass = 'JHtmlSidebar';
@@ -20,13 +25,13 @@ class OSDownloadsHelper
 
         $subMenuClass::addEntry(
             JText::_('COM_OSDOWNLOADS_SUBMENU_FILES'),
-            'index.php?option=com_osdownloads&view=files',
+            $container->getHelperRoute()->getAdminFileListRoute(),
             $vName == 'files'
         );
 
         $subMenuClass::addEntry(
             JText::_('COM_OSDOWNLOADS_SUBMENU_CATEGORIES'),
-            'index.php?option=com_categories&extension=com_osdownloads',
+            $container->getHelperRoute()->getAdminCategoryListRoute(),
             $vName == 'categories'
         );
         if ($vName=='categories') {
@@ -41,7 +46,7 @@ class OSDownloadsHelper
 
         $subMenuClass::addEntry(
             JText::_('COM_OSDOWNLOADS_SUBMENU_EMAILS'),
-            'index.php?option=com_osdownloads&view=emails',
+            $container->getHelperRoute()->getAdminEmailListRoute(),
             $vName == 'emails'
         );
 

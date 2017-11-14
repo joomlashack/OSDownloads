@@ -19,6 +19,7 @@ $authorizedAccessLevels = $user->getAuthorisedViewLevels();
 $itemId                 = $app->input->getInt('Itemid');
 $id                     = $app->input->getInt('id');
 $container              = Container::getInstance();
+
 $showModal = false;
 
 JHtml::_('jquery.framework');
@@ -87,18 +88,19 @@ JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundl
 
                 ?>
                 <?php if (in_array($file->access, $authorizedAccessLevels)) : ?>
-                    <div class="item_<?php echo($file->id);?>">
-                        <h3><a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$file->id."&Itemid=".$itemId));?>"><?php echo($file->name);?></a></h3>
+                    <div class="item_<?php echo $file->id;?>">
+                        <h3><a href="<?php echo JRoute::_($container->getHelperRoute()->getViewItemRoute($file->id, $itemId));?>"><?php echo($file->name);?></a></h3>
                         <div class="item_content"><?php echo($file->brief);?></div>
 
                         <?php if ($this->params->get('show_download_button', 0)) : ?>
                             <div class="osdownloadsactions">
                                 <div class="btn_download">
                                     <?php
-                                    $fileURL = JRoute::_('index.php?option=com_osdownloads&view=item&Itemid=' . $itemId . '&id=' . $file->id);
+                                    $fileURL = JRoute::_($container->getHelperRoute()->getViewItemRoute($file->id, $itemId));
+                                    $link    = JRoute::_($container->getHelperRoute()->getFileDownloadContentRoute($file->id, $itemId));
                                     ?>
                                     <a
-                                        href="<?php echo JRoute::_('index.php?option=com_osdownloads&task=routedownload&tmpl=component&Itemid=' . $itemId . '&id=' . $file->id); ?>"
+                                        href="<?php echo $link; ?>"
                                         class="osdownloadsDownloadButton"
                                         style="background:<?php echo $file->download_color;?>"
                                         data-direct-page="<?php echo $file->direct_page; ?>"
@@ -126,7 +128,7 @@ JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundl
                         <?php if ($this->params->get('show_readmore_button', 1)) : ?>
                             <div class="osdownloads-readmore-wrapper readmore_wrapper">
                                 <div class="osdownloads-readmore readmore">
-                                    <a href="<?php echo(JRoute::_("index.php?option=com_osdownloads&view=item&id=".$file->id."&Itemid=".$itemId));?>">
+                                    <a href="<?php echo JRoute::_($container->getHelperRoute()->getViewItemRoute($file->id, $itemId));?>">
                                         <?php echo(JText::_("COM_OSDOWNLOADS_READ_MORE"));?>
                                     </a>
                                 </div>

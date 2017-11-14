@@ -8,16 +8,26 @@
 
 defined('_JEXEC') or die;
 
+use Alledia\OSDownloads\Free\Container;
+
 JHtml::_('bootstrap.tooltip');
 JHtml::_('formbehavior.chosen', 'select');
 
 $listOrder = $this->lists['order'];
 $listDirn  = strtolower($this->lists['order_Dir']);
 $saveOrder = strtolower($listOrder) === 'doc.ordering asc';
+$container = Container::getInstance();
 
 if ($saveOrder) {
-    $saveOrderingUrl = 'index.php?option=com_osdownloads&task=files.saveOrderAjax&tmpl=component';
-    JHtml::_('sortablelist.sortable', 'documentList', 'adminForm', $listDirn, $saveOrderingUrl, false, true);
+    JHtml::_(
+        'sortablelist.sortable',
+        'documentList',
+        'adminForm',
+        $listDirn,
+        $container->getHelperRoute()->getAdminSaveOrderingRoute(),
+        false,
+        true
+    );
 }
 
 function category($name, $extension, $selected = null, $javascript = null, $order = null, $size = 1, $sel_cat = 1)
@@ -44,7 +54,7 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
 }
 
 ?>
-<form action="index.php?option=com_osdownloads" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo $container->getHelperRoute()->getAdminMainViewRoute(); ?>" method="post" name="adminForm" id="adminForm">
 
 <?php
 // Load search tools
@@ -173,7 +183,7 @@ JHtml::_('searchtools.form', '#adminForm', $options);
                         </div>
                     </td>
                     <td class="has-context span6">
-                        <a href="index.php?option=com_osdownloads&view=file&cid[]=<?php echo($item->id);?>"><?php echo ($item->name); ?></a>
+                        <a href="<?php echo $container->getHelperRoute()->getAdminFileFormRoute($item->id); ?>"><?php echo ($item->name); ?></a>
                         <span class="small">
                             <?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
                         </span>

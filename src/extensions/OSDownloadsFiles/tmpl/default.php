@@ -8,12 +8,15 @@
 defined('_JEXEC') or die;
 
 use Alledia\Framework\Helper as AllediaHelper;
+use Alledia\OSDownloads\Free\Container;
 
 jimport('joomla.application.component.helper');
 
-$app    = JFactory::getApplication();
-$doc    = JFactory::getDocument();
-$lang   = JFactory::getLanguage();
+$app       = JFactory::getApplication();
+$doc       = JFactory::getDocument();
+$lang      = JFactory::getLanguage();
+$container = Container::getInstance();
+
 $itemId = (int) $app->input->getInt('Itemid');
 
 $moduleTag = $this->params->get('module_tag', 'div');
@@ -56,10 +59,10 @@ if ($linkTo === 'download') {
                 <p>
                     <?php if ($linkTo === 'download') : ?>
                         <?php
-                        $fileURL = JRoute::_('index.php?option=com_osdownloads&view=item&Itemid=' . $itemId . '&id=' . $file->id);
+                        $fileURL = JRoute::_($container->getHelperRoute()->getViewItemRoute($file->id, $itemId));
                         ?>
                         <a
-                            href="<?php echo JRoute::_('index.php?option=com_osdownloads&task=routedownload&tmpl=component&Itemid=' . $itemId . '&id=' . $file->id); ?>"
+                            href="<?php echo JRoute::_($container->getHelperRoute()->getFileDownloadContentRoute($file->id, $itemId)); ?>"
                             class="modosdownloadsDownloadButton"
                             style="background:<?php echo $file->download_color; ?>;"
                             data-direct-page="<?php echo $file->direct_page; ?>"
@@ -81,7 +84,7 @@ if ($linkTo === 'download') {
                             </span>
                         </a>
                     <?php else: ?>
-                        <a class="modosdownloadsDownloadButton osdownloads-readmore readmore" href="<?php echo JRoute::_('index.php?option=com_osdownloads&view=item&Itemid=' . $itemId . '&id=' . $file->id); ?>" data-direct-page="<?php echo $file->direct_page; ?>">
+                        <a class="modosdownloadsDownloadButton osdownloads-readmore readmore" href="<?php echo JRoute::_($container->getHelperRoute()->getViewItemRoute($file->id, $itemId)); ?>" data-direct-page="<?php echo $file->direct_page; ?>">
                             <?php echo $this->params->get('link_label', JText::_('MOD_OSDOWNLOADSFILES_READ_MORE')); ?>
                         </a>
                         <br clear="all" />

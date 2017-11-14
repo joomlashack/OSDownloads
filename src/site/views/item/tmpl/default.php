@@ -109,7 +109,7 @@ if (!$this->isPro) {
         <div class="osdownloadsactions">
             <div class="btn_download">
                 <a
-                    href="<?php echo JRoute::_("index.php?option=com_osdownloads&task=routedownload&tmpl=component&Itemid={$this->itemId}&id={$this->item->id}"); ?>"
+                    href="<?php echo JRoute::_($container->getHelperRoute()->getFileDownloadContentRoute($this->item->id, $this->itemId)); ?>"
                     id="osdownloadsDownloadButton"
                     style="background:<?php echo($this->item->download_color); ?>;"
                     class="osdownloads-readmore readmore"

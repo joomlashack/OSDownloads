@@ -6,6 +6,8 @@
  * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 
+use Alledia\OSDownloads\Free\Container;
+
 defined('_JEXEC') or die;
 
 // Include the component HTML helpers.
@@ -17,9 +19,11 @@ JHtml::_('behavior.tooltip');
 JHtml::_('formbehavior.chosen', 'select');
 
 JFilterOutput::objectHTMLSafe($this->item);
-$editor = JFactory::getEditor();
 
-$index = strpos($this->item->file_path, "_");
+$editor    = JFactory::getEditor();
+$container = Container::getInstance();
+
+$index    = strpos($this->item->file_path, "_");
 $realname = substr($this->item->file_path, $index + 1);
 ?>
 
@@ -33,7 +37,7 @@ $realname = substr($this->item->file_path, $index + 1);
     }
 </script>
 
-<form action="<?php echo JRoute::_("index.php?option=com_osdownloads");?>" method="post" name="adminForm" enctype="multipart/form-data" id="item-form" class="form-validate">
+<form action="<?php echo JRoute::_($container->getHelperRoute()->getAdminMainViewRoute());?>" method="post" name="adminForm" enctype="multipart/form-data" id="item-form" class="form-validate">
 
     <div class="form-inline form-inline-header">
         <?php

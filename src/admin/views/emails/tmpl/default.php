@@ -6,9 +6,13 @@
  * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 
+use Alledia\OSDownloads\Free\Container;
+
 defined('_JEXEC') or die;
 
 JHtml::_('formbehavior.chosen', 'select');
+
+$container = Container::getInstance();
 
 function category($name, $extension, $selected = null, $javascript = null, $order = null, $size = 1, $sel_cat = 1)
     {
@@ -31,7 +35,7 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
 
 
 ?>
-<form action="index.php?option=com_osdownloads&view=emails" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo $container->getHelperRoute()->getAdminEmailListRoute(); ?>" method="post" name="adminForm" id="adminForm">
     <table width="100%">
         <tr>
             <td>

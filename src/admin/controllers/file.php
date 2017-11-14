@@ -10,6 +10,7 @@ defined('_JEXEC') or die;
 
 use Alledia\Framework\Factory;
 use Joomla\Utilities\ArrayHelper;
+use Alledia\OSDownloads\Free\Container;
 
 class OSDownloadsControllerFile extends JControllerForm
 {
@@ -33,7 +34,8 @@ class OSDownloadsControllerFile extends JControllerForm
 
     public function save($key = null, $urlVar = null)
     {
-        $app = JFactory::getApplication();
+        $app       = JFactory::getApplication();
+        $container = Container::getInstance();
 
         JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
         JTable::addIncludePath(JPATH_COMPONENT.'/tables');
@@ -108,7 +110,9 @@ class OSDownloadsControllerFile extends JControllerForm
 
                 if (!JFile::upload($fileTmpName, $filepath, false, false, $safeFileOptions)) {
                     // Upload failed and message already queued
-                    $this->setRedirect("index.php?option=com_osdownloads&view=file&cid=" . $row->id);
+                    $this->setRedirect(
+                        $container->getHelperRoute()->getAdminFileFormRoute($row->id)
+                    );
                     return;
                 }
             }
@@ -118,10 +122,17 @@ class OSDownloadsControllerFile extends JControllerForm
 
         switch ($this->getTask()) {
             case "apply":
-                $this->setRedirect("index.php?option=com_osdownloads&view=file&cid=" . $row->id, JText::_("COM_OSDOWNLOADS_DOCUMENT_IS_SAVED"));
+                $this->setRedirect(
+                    $container->getHelperRoute()->getAdminFileFormRoute($row->id),
+                    JText::_("COM_OSDOWNLOADS_DOCUMENT_IS_SAVED")
+                );
                 break;
+            
             default:
-                $this->setRedirect("index.php?option=com_osdownloads&view=files", JText::_("COM_OSDOWNLOADS_DOCUMENT_IS_SAVED"));
+                $this->setRedirect(
+                    $container->getHelperRoute()->getAdminFileListRoute(),
+                    JText::_("COM_OSDOWNLOADS_DOCUMENT_IS_SAVED")
+                );
         }
     }
 
@@ -130,10 +141,11 @@ class OSDownloadsControllerFile extends JControllerForm
         // Check for request forgeries
         JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
-        $app = JFactory::getApplication();
-        $db   = JFactory::getDBO();
-        $date = JFactory::getDate();
-        $user = JFactory::getUser();
+        $app       = JFactory::getApplication();
+        $db        = JFactory::getDBO();
+        $date      = JFactory::getDate();
+        $user      = JFactory::getUser();
+        $container = Container::getInstance();
 
         $cid     = $app->input->get('cid', array(), 'array');
         $publish = ($this->getTask() == 'publish' ? 1 : 0);
@@ -151,7 +163,9 @@ class OSDownloadsControllerFile extends JControllerForm
         if (!$db->query()) {
             JError::raiseError(500, $db->getErrorMsg());
         }
-        $this->setRedirect('index.php?option=com_osdownloads&view=files');
+        $this->setRedirect(
+            $container->getHelperRoute()->getAdminFileListRoute()
+        );
     }
 
     public function delete()
@@ -161,8 +175,9 @@ class OSDownloadsControllerFile extends JControllerForm
 
         jimport('joomla.filesystem.file');
 
-        $db  = JFactory::getDBO();
-        $cid = JFactory::getApplication()->input->get('cid', array(), 'array');
+        $db        = JFactory::getDBO();
+        $cid       = JFactory::getApplication()->input->get('cid', array(), 'array');
+        $container = Container::getInstance();
 
         ArrayHelper::toInteger($cid);
 
@@ -201,7 +216,9 @@ class OSDownloadsControllerFile extends JControllerForm
             }
         }
 
-        $this->setRedirect('index.php?option=com_osdownloads&view=files', JText::_("COM_OSDOWNLOADS_FILES_ARE_DELETED"));
-
+        $this->setRedirect(
+            $container->getHelperRoute()->getAdminFileListRoute(),
+            JText::_("COM_OSDOWNLOADS_FILES_ARE_DELETED")
+        );
     }
 }

@@ -27,10 +27,13 @@ class Emails extends JControllerLegacy
 
         $id_arr = $app->input->getVar('cid');
         $str_id = implode(',', $id_arr);
-        $db = Factory::getDBO();
-        $query = "DELETE FROM `#__osdownloads_emails` WHERE id IN (".$str_id.")";
-        $db->setQuery($query);
-        $db->query();
-        $this->setRedirect("index.php?option=com_osdownloads&view=emails", JText::_("COM_OSDOWNLOADS_EMAIL_IS_DELETED"));
+        $db     = Factory::getDBO();
+        $query  = "DELETE FROM `#__osdownloads_emails` WHERE id IN (" . $str_id . ")";
+        $db->setQuery($query)->execute();
+
+        $this->setRedirect(
+            "index.php?option=com_osdownloads&view=emails",
+            JText::_("COM_OSDOWNLOADS_EMAIL_IS_DELETED")
+        );
     }
 }

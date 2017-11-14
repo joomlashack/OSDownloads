@@ -23,9 +23,7 @@
     },
     "require": {
         "php": ">= 5.6",
-        "pacely/mailchimp-apiv3": "dev-master"
-    },
-    "require-dev": {
-        "codeception/codeception": "~2.0"
+        "pacely/mailchimp-apiv3": "dev-master",
+        "pimple/pimple": "~3.0"
     }
 }

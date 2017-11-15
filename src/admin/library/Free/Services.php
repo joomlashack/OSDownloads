@@ -33,10 +33,6 @@ class Services implements ServiceProviderInterface
     public function register(Pimple $pimple)
     {
         // Services
-        $pimple['helperSanitize'] = function (Container $c) {
-            return new Helper/Sanitize;
-        };
-
         $pimple['helperRoute'] = function (Container $c) {
             return new Helper/Route;
         };

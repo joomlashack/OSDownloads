@@ -12,8 +12,6 @@ modules:
         - Cli
     config:
         WebDriver:
-            url: 'http://127.0.0.1/tests_osdownloads/'
-            browser: phantomjs
-            capabilities:
-                webStorageEnabled: true
-                phantomjs.cli.args: ['--ignore-ssl-errors=true']
+            url: 'http://localhost:32770/'
+            browser: firefox
+            window_size: false

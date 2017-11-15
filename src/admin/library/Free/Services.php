@@ -34,7 +34,7 @@ class Services implements ServiceProviderInterface
     {
         // Services
         $pimple['helperRoute'] = function (Container $c) {
-            return new Helper/Route;
+            return new Helper\Route;
         };
     }
 }

@@ -24,7 +24,7 @@ if ($saveOrder) {
         'documentList',
         'adminForm',
         $listDirn,
-        $container->getHelperRoute()->getAdminSaveOrderingRoute(),
+        $container->helperRoute->getAdminSaveOrderingRoute(),
         false,
         true
     );
@@ -54,7 +54,7 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
 }
 
 ?>
-<form action="<?php echo $container->getHelperRoute()->getAdminMainViewRoute(); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo $container->helperRoute->getAdminMainViewRoute(); ?>" method="post" name="adminForm" id="adminForm">
 
 <?php
 // Load search tools
@@ -183,7 +183,7 @@ JHtml::_('searchtools.form', '#adminForm', $options);
                         </div>
                     </td>
                     <td class="has-context span6">
-                        <a href="<?php echo $container->getHelperRoute()->getAdminFileFormRoute($item->id); ?>"><?php echo ($item->name); ?></a>
+                        <a href="<?php echo $container->helperRoute->getAdminFileFormRoute($item->id); ?>"><?php echo ($item->name); ?></a>
                         <span class="small">
                             <?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
                         </span>

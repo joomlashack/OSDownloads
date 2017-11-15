@@ -59,10 +59,10 @@ if ($linkTo === 'download') {
                 <p>
                     <?php if ($linkTo === 'download') : ?>
                         <?php
-                        $fileURL = JRoute::_($container->getHelperRoute()->getViewItemRoute($file->id, $itemId));
+                        $fileURL = JRoute::_($container->helperRoute->getViewItemRoute($file->id, $itemId));
                         ?>
                         <a
-                            href="<?php echo JRoute::_($container->getHelperRoute()->getFileDownloadContentRoute($file->id, $itemId)); ?>"
+                            href="<?php echo JRoute::_($container->helperRoute->getFileDownloadContentRoute($file->id, $itemId)); ?>"
                             class="modosdownloadsDownloadButton"
                             style="background:<?php echo $file->download_color; ?>;"
                             data-direct-page="<?php echo $file->direct_page; ?>"
@@ -84,7 +84,7 @@ if ($linkTo === 'download') {
                             </span>
                         </a>
                     <?php else: ?>
-                        <a class="modosdownloadsDownloadButton osdownloads-readmore readmore" href="<?php echo JRoute::_($container->getHelperRoute()->getViewItemRoute($file->id, $itemId)); ?>" data-direct-page="<?php echo $file->direct_page; ?>">
+                        <a class="modosdownloadsDownloadButton osdownloads-readmore readmore" href="<?php echo JRoute::_($container->helperRoute->getViewItemRoute($file->id, $itemId)); ?>" data-direct-page="<?php echo $file->direct_page; ?>">
                             <?php echo $this->params->get('link_label', JText::_('MOD_OSDOWNLOADSFILES_READ_MORE')); ?>
                         </a>
                         <br clear="all" />

@@ -36,7 +36,7 @@ class Emails extends JControllerLegacy
         $db->query();
 
         $this->setRedirect(
-            $container->getHelperRoute()->getAdminEmailListRoute(),
+            $container->helperRoute->getAdminEmailListRoute(),
             JText::_("COM_OSDOWNLOADS_EMAIL_IS_DELETED")
         );
     }

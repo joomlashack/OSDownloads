@@ -26,13 +26,13 @@ JHtml::_('jquery.framework');
 JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundle.min.js');
 
 ?>
-<form action="<?php echo(JRoute::_($container->getHelperRoute()->getFileRoute($id, $itemId)));?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo(JRoute::_($container->helperRoute->getFileRoute($id, $itemId)));?>" method="post" name="adminForm" id="adminForm">
     <div class="contentopen osdownloads-container">
         <?php if (!empty($this->paths)) : ?>
             <h2>
                 <?php for ($i = count($this->paths) - 1; $i >= 0; $i--):?>
                     <?php if ($i):?>
-                        <a href="<?php echo(JRoute::_($container->getHelperRoute()->getFileRoute($this->paths[$i]->id, $itemId)));?>">
+                        <a href="<?php echo(JRoute::_($container->helperRoute->getFileRoute($this->paths[$i]->id, $itemId)));?>">
                     <?php endif;?>
                     <?php echo($this->paths[$i]->title);?>
                     <?php if ($i > 0):?>
@@ -56,7 +56,7 @@ JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundl
                     <?php if (in_array($category->access, $authorizedAccessLevels)) : ?>
                         <div class="item<?php echo($i % $NumberOfColumn);?> cate_<?php echo($category->id);?>">
                             <h3>
-                                <a href="<?php echo(JRoute::_($container->getHelperRoute()->getFileRoute($category->id, $itemId)));?>">
+                                <a href="<?php echo(JRoute::_($container->helperRoute->getFileRoute($category->id, $itemId)));?>">
                                     <?php echo($category->title);?>
                                 </a>
                             </h3>
@@ -89,15 +89,15 @@ JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundl
                 ?>
                 <?php if (in_array($file->access, $authorizedAccessLevels)) : ?>
                     <div class="item_<?php echo $file->id;?>">
-                        <h3><a href="<?php echo JRoute::_($container->getHelperRoute()->getViewItemRoute($file->id, $itemId));?>"><?php echo($file->name);?></a></h3>
+                        <h3><a href="<?php echo JRoute::_($container->helperRoute->getViewItemRoute($file->id, $itemId));?>"><?php echo($file->name);?></a></h3>
                         <div class="item_content"><?php echo($file->brief);?></div>
 
                         <?php if ($this->params->get('show_download_button', 0)) : ?>
                             <div class="osdownloadsactions">
                                 <div class="btn_download">
                                     <?php
-                                    $fileURL = JRoute::_($container->getHelperRoute()->getViewItemRoute($file->id, $itemId));
-                                    $link    = JRoute::_($container->getHelperRoute()->getFileDownloadContentRoute($file->id, $itemId));
+                                    $fileURL = JRoute::_($container->helperRoute->getViewItemRoute($file->id, $itemId));
+                                    $link    = JRoute::_($container->helperRoute->getFileDownloadContentRoute($file->id, $itemId));
                                     ?>
                                     <a
                                         href="<?php echo $link; ?>"
@@ -128,7 +128,7 @@ JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundl
                         <?php if ($this->params->get('show_readmore_button', 1)) : ?>
                             <div class="osdownloads-readmore-wrapper readmore_wrapper">
                                 <div class="osdownloads-readmore readmore">
-                                    <a href="<?php echo JRoute::_($container->getHelperRoute()->getViewItemRoute($file->id, $itemId));?>">
+                                    <a href="<?php echo JRoute::_($container->helperRoute->getViewItemRoute($file->id, $itemId));?>">
                                         <?php echo(JText::_("COM_OSDOWNLOADS_READ_MORE"));?>
                                     </a>
                                 </div>

@@ -32,7 +32,7 @@ if (!$this->isPro) {
                 <?php
                 for ($i = count($this->paths) - 1; $i >= 0; $i--) :
                     ?>
-                    <a href="<?php echo(JRoute::_($container->getHelperRoute()->getFileRoute($this->paths[$i]->id))); ?>">
+                    <a href="<?php echo(JRoute::_($container->helperRoute->getFileRoute($this->paths[$i]->id))); ?>">
                         <?php echo($this->paths[$i]->title); ?>
                     </a>
                     <?php
@@ -109,7 +109,7 @@ if (!$this->isPro) {
         <div class="osdownloadsactions">
             <div class="btn_download">
                 <a
-                    href="<?php echo JRoute::_($container->getHelperRoute()->getFileDownloadContentRoute($this->item->id, $this->itemId)); ?>"
+                    href="<?php echo JRoute::_($container->helperRoute->getFileDownloadContentRoute($this->item->id, $this->itemId)); ?>"
                     id="osdownloadsDownloadButton"
                     style="background:<?php echo($this->item->download_color); ?>;"
                     class="osdownloads-readmore readmore"

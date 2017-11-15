@@ -317,7 +317,7 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
     protected function fixOrderingParamForMenus()
     {
         require JPATH_SITE . '/administrator/components/com_osdownloads/include.php';
-        
+
         $db        = JFactory::getDbo();
         $container = Factory::getContainer();
 
@@ -326,7 +326,7 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
             ->select('params')
             ->select('id')
             ->from('#__menu')
-            ->where('link = ' . $db->quote($container->getHelperRoute()->getFileListRoute()));
+            ->where('link = ' . $db->quote($container->helperRoute->getFileListRoute()));
         $db->setQuery($query);
         $menus = $db->loadObjectList();
 

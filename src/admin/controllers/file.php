@@ -111,7 +111,7 @@ class OSDownloadsControllerFile extends JControllerForm
                 if (!JFile::upload($fileTmpName, $filepath, false, false, $safeFileOptions)) {
                     // Upload failed and message already queued
                     $this->setRedirect(
-                        $container->getHelperRoute()->getAdminFileFormRoute($row->id)
+                        $container->helperRoute->getAdminFileFormRoute($row->id)
                     );
                     return;
                 }
@@ -123,14 +123,14 @@ class OSDownloadsControllerFile extends JControllerForm
         switch ($this->getTask()) {
             case "apply":
                 $this->setRedirect(
-                    $container->getHelperRoute()->getAdminFileFormRoute($row->id),
+                    $container->helperRoute->getAdminFileFormRoute($row->id),
                     JText::_("COM_OSDOWNLOADS_DOCUMENT_IS_SAVED")
                 );
                 break;
             
             default:
                 $this->setRedirect(
-                    $container->getHelperRoute()->getAdminFileListRoute(),
+                    $container->helperRoute->getAdminFileListRoute(),
                     JText::_("COM_OSDOWNLOADS_DOCUMENT_IS_SAVED")
                 );
         }
@@ -164,7 +164,7 @@ class OSDownloadsControllerFile extends JControllerForm
             JError::raiseError(500, $db->getErrorMsg());
         }
         $this->setRedirect(
-            $container->getHelperRoute()->getAdminFileListRoute()
+            $container->helperRoute->getAdminFileListRoute()
         );
     }
 
@@ -217,7 +217,7 @@ class OSDownloadsControllerFile extends JControllerForm
         }
 
         $this->setRedirect(
-            $container->getHelperRoute()->getAdminFileListRoute(),
+            $container->helperRoute->getAdminFileListRoute(),
             JText::_("COM_OSDOWNLOADS_FILES_ARE_DELETED")
         );
     }

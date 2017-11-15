@@ -172,6 +172,6 @@ class File
     {
         $container = Factory::getContainer();
 
-        return JRoute::_($container->getHelperRoute()->getFileDownloadRoute($fileId));
+        return JRoute::_($container->helperRoute->getFileDownloadRoute($fileId));
     }
 }

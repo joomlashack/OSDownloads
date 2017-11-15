@@ -25,13 +25,13 @@ class OSDownloadsHelper
 
         $subMenuClass::addEntry(
             JText::_('COM_OSDOWNLOADS_SUBMENU_FILES'),
-            $container->getHelperRoute()->getAdminFileListRoute(),
+            $container->helperRoute->getAdminFileListRoute(),
             $vName == 'files'
         );
 
         $subMenuClass::addEntry(
             JText::_('COM_OSDOWNLOADS_SUBMENU_CATEGORIES'),
-            $container->getHelperRoute()->getAdminCategoryListRoute(),
+            $container->helperRoute->getAdminCategoryListRoute(),
             $vName == 'categories'
         );
         if ($vName=='categories') {
@@ -46,7 +46,7 @@ class OSDownloadsHelper
 
         $subMenuClass::addEntry(
             JText::_('COM_OSDOWNLOADS_SUBMENU_EMAILS'),
-            $container->getHelperRoute()->getAdminEmailListRoute(),
+            $container->helperRoute->getAdminEmailListRoute(),
             $vName == 'emails'
         );
 

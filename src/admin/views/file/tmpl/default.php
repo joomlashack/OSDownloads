@@ -37,7 +37,7 @@ $realname = substr($this->item->file_path, $index + 1);
     }
 </script>
 
-<form action="<?php echo JRoute::_($container->getHelperRoute()->getAdminMainViewRoute());?>" method="post" name="adminForm" enctype="multipart/form-data" id="item-form" class="form-validate">
+<form action="<?php echo JRoute::_($container->helperRoute->getAdminMainViewRoute());?>" method="post" name="adminForm" enctype="multipart/form-data" id="item-form" class="form-validate">
 
     <div class="form-inline form-inline-header">
         <?php

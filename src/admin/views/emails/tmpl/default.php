@@ -35,7 +35,7 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
 
 
 ?>
-<form action="<?php echo $container->getHelperRoute()->getAdminEmailListRoute(); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo $container->helperRoute->getAdminEmailListRoute(); ?>" method="post" name="adminForm" id="adminForm">
     <table width="100%">
         <tr>
             <td>

@@ -202,7 +202,7 @@ class OSDownloadsViewDownloads extends View\Site\Base
         for ($i = $countPaths; $i >= 0; $i--) {
             $pathway->addItem(
                 $paths[$i]->title,
-                JRoute::_($container->getHelperRoute()->getFileRoute($paths[$i]->id, $itemID))
+                JRoute::_($container->helperRoute->getFileRoute($paths[$i]->id, $itemID))
             );
         }
     }

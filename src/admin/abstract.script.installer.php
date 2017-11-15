@@ -316,6 +316,8 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
      */
     protected function fixOrderingParamForMenus()
     {
+        require JPATH_SITE . '/administrator/components/com_osdownloads/include.php';
+        
         $db        = JFactory::getDbo();
         $container = Container::getInstance();
 

@@ -61,25 +61,6 @@ class Container extends \Pimple\Container
     }
 
     /**
-     * Magic method to return attributes using get methods
-     *
-     * @param string  $name
-     * @param array   $args
-     *
-     * @return mix
-     */
-    public function __call($name, $args)
-    {
-        if (strpos($name, 'get') === 0 && !$args) {
-            $key = strtolower(substr($name, 3));
-            if (isset($this[$key])) {
-                return $this[$key];
-            }
-        }
-        return null;
-    }
-
-    /**
      * Get the current instance
      *
      * @return Container

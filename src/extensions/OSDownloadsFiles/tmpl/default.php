@@ -8,14 +8,14 @@
 defined('_JEXEC') or die;
 
 use Alledia\Framework\Helper as AllediaHelper;
-use Alledia\OSDownloads\Free\Container;
+use Alledia\OSDownloads\Free\Factory;
 
 jimport('joomla.application.component.helper');
 
 $app       = JFactory::getApplication();
 $doc       = JFactory::getDocument();
 $lang      = JFactory::getLanguage();
-$container = Container::getInstance();
+$container = Factory::getContainer();
 
 $itemId = (int) $app->input->getInt('Itemid');
 

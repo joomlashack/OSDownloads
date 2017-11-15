@@ -8,10 +8,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Alledia\Framework\Helper as AllediaHelper;
-use Alledia\OSDownloads\Free\Container;
+use Alledia\OSDownloads\Free\Factory;
 
 $lang      = JFactory::getLanguage();
-$container = Container::getInstance();
+$container = Factory::getContainer();
 
 JHtml::_('jquery.framework');
 JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundle.min.js');

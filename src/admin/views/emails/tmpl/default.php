@@ -6,13 +6,13 @@
  * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 
-use Alledia\OSDownloads\Free\Container;
+use Alledia\OSDownloads\Free\Factory;
 
 defined('_JEXEC') or die;
 
 JHtml::_('formbehavior.chosen', 'select');
 
-$container = Container::getInstance();
+$container = Factory::getContainer();
 
 function category($name, $extension, $selected = null, $javascript = null, $order = null, $size = 1, $sel_cat = 1)
     {

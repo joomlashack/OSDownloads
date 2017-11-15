@@ -10,7 +10,7 @@ defined('_JEXEC') or die;
 
 use Alledia\Framework\Factory;
 use Joomla\Utilities\ArrayHelper;
-use Alledia\OSDownloads\Free\Container;
+use Alledia\OSDownloads\Free\Factory;
 
 class OSDownloadsControllerFile extends JControllerForm
 {
@@ -35,7 +35,7 @@ class OSDownloadsControllerFile extends JControllerForm
     public function save($key = null, $urlVar = null)
     {
         $app       = JFactory::getApplication();
-        $container = Container::getInstance();
+        $container = Factory::getContainer();
 
         JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
         JTable::addIncludePath(JPATH_COMPONENT.'/tables');
@@ -145,7 +145,7 @@ class OSDownloadsControllerFile extends JControllerForm
         $db        = JFactory::getDBO();
         $date      = JFactory::getDate();
         $user      = JFactory::getUser();
-        $container = Container::getInstance();
+        $container = Factory::getContainer();
 
         $cid     = $app->input->get('cid', array(), 'array');
         $publish = ($this->getTask() == 'publish' ? 1 : 0);
@@ -177,7 +177,7 @@ class OSDownloadsControllerFile extends JControllerForm
 
         $db        = JFactory::getDBO();
         $cid       = JFactory::getApplication()->input->get('cid', array(), 'array');
-        $container = Container::getInstance();
+        $container = Factory::getContainer();
 
         ArrayHelper::toInteger($cid);
 

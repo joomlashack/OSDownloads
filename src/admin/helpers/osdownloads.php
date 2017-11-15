@@ -8,13 +8,13 @@
 
 defined('_JEXEC') or die;
 
-use Alledia\OSDownloads\Free\Container;
+use Alledia\OSDownloads\Free\Factory;
 
 class OSDownloadsHelper
 {
     public static function addSubmenu($vName)
     {
-        $container = Container::getInstance();
+        $container = Factory::getContainer();
 
         // Joomla 3.x Backward Compatibility
         if (JFactory::getApplication()->input->getCmd('option') == 'com_categories') {

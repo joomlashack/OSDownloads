@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 require_once JPATH_SITE . '/components/com_osdownloads/models/item.php';
 
 use Alledia\OSDownloads\Free\Joomla\View;
-use Alledia\OSDownloads\Free\Container;
+use Alledia\OSDownloads\Free\Factory;
 
 class OSDownloadsViewDownloads extends View\Site\Base
 {
@@ -196,7 +196,7 @@ class OSDownloadsViewDownloads extends View\Site\Base
         $app       = JFactory::getApplication();
         $pathway   = $app->getPathway();
         $itemID    = $app->input->getInt('Itemid');
-        $container = Container::getInstance();
+        $container = Factory::getContainer();
 
         $countPaths = count($paths) - 1;
         for ($i = $countPaths; $i >= 0; $i--) {

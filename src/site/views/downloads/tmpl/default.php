@@ -8,7 +8,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 use Alledia\Framework\Helper as AllediaHelper;
-use Alledia\OSDownloads\Free\Container;
+use Alledia\OSDownloads\Free\Factory;
 
 $app                    = JFactory::getApplication();
 $lang                   = JFactory::getLanguage();
@@ -18,7 +18,7 @@ $user                   = JFactory::getUser();
 $authorizedAccessLevels = $user->getAuthorisedViewLevels();
 $itemId                 = $app->input->getInt('Itemid');
 $id                     = $app->input->getInt('id');
-$container              = Container::getInstance();
+$container              = Factory::getContainer();
 
 $showModal = false;
 

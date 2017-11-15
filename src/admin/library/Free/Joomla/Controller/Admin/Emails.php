@@ -11,7 +11,7 @@ namespace Alledia\OSDownloads\Free\Joomla\Controller\Admin;
 use Alledia\Framework\Factory;
 use Alledia\Framework\Joomla\Controller\Base as BaseController;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
-use Alledia\OSDownloads\Free\Container;
+use Alledia\OSDownloads\Free\Factory;
 use JControllerLegacy;
 use JText;
 
@@ -25,7 +25,7 @@ class Emails extends JControllerLegacy
     public function delete()
     {
         $app       = Factory::getApplication();
-        $container = Container::getInstance();
+        $container = Factory::getContainer();
 
         $id_arr = $app->input->getVar('cid');
         $str_id = implode(',', $id_arr);

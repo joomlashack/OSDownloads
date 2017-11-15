@@ -8,7 +8,7 @@
 
 defined('_JEXEC') or die;
 
-use Alledia\OSDownloads\Free\Container;
+use Alledia\OSDownloads\Free\Factory;
 
 JHtml::_('bootstrap.tooltip');
 JHtml::_('formbehavior.chosen', 'select');
@@ -16,7 +16,7 @@ JHtml::_('formbehavior.chosen', 'select');
 $listOrder = $this->lists['order'];
 $listDirn  = strtolower($this->lists['order_Dir']);
 $saveOrder = strtolower($listOrder) === 'doc.ordering asc';
-$container = Container::getInstance();
+$container = Factory::getContainer();
 
 if ($saveOrder) {
     JHtml::_(

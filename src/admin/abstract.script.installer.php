@@ -16,7 +16,7 @@ if (file_exists($includePath)) {
 }
 
 use Alledia\Installer\AbstractScript;
-use Alledia\OSDownloads\Free\Container;
+use Alledia\OSDownloads\Free\Factory;
 
 class AbstractOSDownloadsInstallerScript extends AbstractScript
 {
@@ -319,7 +319,7 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
         require JPATH_SITE . '/administrator/components/com_osdownloads/include.php';
         
         $db        = JFactory::getDbo();
-        $container = Container::getInstance();
+        $container = Factory::getContainer();
 
         $query = $db->getQuery(true)
             ->select('link')

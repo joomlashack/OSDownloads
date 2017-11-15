@@ -11,7 +11,7 @@ namespace Alledia\OSDownloads\Free;
 use JEventDispatcher;
 use JPluginHelper;
 use JRoute;
-use Alledia\OSDownloads\Free\Container;
+use Alledia\OSDownloads\Free\Factory;
 
 defined('_JEXEC') or die();
 
@@ -170,7 +170,7 @@ class File
      */
     public static function getDownloadUrl($fileId)
     {
-        $container = Container::getInstance();
+        $container = Factory::getContainer();
 
         return JRoute::_($container->getHelperRoute()->getFileDownloadRoute($fileId));
     }

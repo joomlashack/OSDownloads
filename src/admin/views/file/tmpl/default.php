@@ -6,7 +6,7 @@
  * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 
-use Alledia\OSDownloads\Free\Container;
+use Alledia\OSDownloads\Free\Factory;
 
 defined('_JEXEC') or die;
 
@@ -21,7 +21,7 @@ JHtml::_('formbehavior.chosen', 'select');
 JFilterOutput::objectHTMLSafe($this->item);
 
 $editor    = JFactory::getEditor();
-$container = Container::getInstance();
+$container = Factory::getContainer();
 
 $index    = strpos($this->item->file_path, "_");
 $realname = substr($this->item->file_path, $index + 1);

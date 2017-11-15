@@ -12,7 +12,7 @@ defined('_JEXEC') or die();
 
 use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
-use Alledia\OSDownloads\Free\Factory;
+use Alledia\OSDownloads\Free\Factory as OSDFactory;
 use Joomla\Registry\Registry;
 use JRoute;
 use JText;
@@ -119,7 +119,7 @@ class Item extends Base
         $app       = Factory::getApplication();
         $pathway   = $app->getPathway();
         $itemID    = $app->input->getInt('Itemid');
-        $container = Factory::getContainer();
+        $container = OSDFactory::getContainer();
 
         $countPaths = count($paths) - 1;
         for ($i = $countPaths; $i >= 0; $i--) {

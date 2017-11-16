@@ -11,7 +11,7 @@ namespace Alledia\OSDownloads\Free\Joomla\Controller\Admin;
 use Alledia\Framework\Factory;
 use Alledia\Framework\Joomla\Controller\Base as BaseController;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
-use Alledia\OSDownloads\Free\Factory;
+use Alledia\OSDownloads\Free\Factory as OSDFactory;
 use JControllerLegacy;
 use JText;
 
@@ -25,12 +25,12 @@ class Emails extends JControllerLegacy
     public function delete()
     {
         $app       = Factory::getApplication();
-        $container = Factory::getContainer();
+        $container = OSDFactory::getContainer();
 
         $id_arr = $app->input->getVar('cid');
         $str_id = implode(',', $id_arr);
         $db     = Factory::getDBO();
-        
+
         $query  = "DELETE FROM `#__osdownloads_emails` WHERE id IN (".$str_id.")";
         $db->setQuery($query);
         $db->query();

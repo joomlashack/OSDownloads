@@ -8,6 +8,7 @@
 
 use Alledia\Framework\Factory;
 use Joomla\Utilities\ArrayHelper;
+use Alledia\OSDownloads\Free\Factory as OSDFactory;
 
 defined('_JEXEC') or die();
 
@@ -50,6 +51,8 @@ class OsdownloadsRouter extends JComponentRouterBase
      */
     public function build(&$query)
     {
+        $container = OSDFactory::getContainer();
+
         $view   = ArrayHelper::getValue($query, 'view');
         $layout = ArrayHelper::getValue($query, 'layout');
         $id     = ArrayHelper::getValue($query, 'id');
@@ -75,11 +78,11 @@ class OsdownloadsRouter extends JComponentRouterBase
                     }
 
                     // Append the categories before the alias of the file
-                    $catId = $this->getCategoryIdFromFile($id);
+                    $catId = $container->helperSEF->getCategoryIdFromFile($id);
 
-                    $this->appendCategoriesToSegments($segments, $catId);
+                    $container->helperSEF->appendCategoriesToSegments($segments, $catId);
 
-                    $segments[] = $this->getFileAlias($id);
+                    $segments[] = $container->helperSEF->getFileAlias($id);
                     break;
 
                 case 'confirmemail':
@@ -95,7 +98,7 @@ class OsdownloadsRouter extends JComponentRouterBase
                 case 'downloads':
                     $segments[] = 'category';
 
-                    $this->appendCategoriesToSegments($segments, $id);
+                    $container->helperSEF->appendCategoriesToSegments($segments, $id);
                     break;
 
                 case 'item':
@@ -105,14 +108,14 @@ class OsdownloadsRouter extends JComponentRouterBase
                         $segments[] = "file";
                     }
 
-                    $catId = $this->getCategoryIdFromFile($id);
+                    $catId = $container->helperSEF->getCategoryIdFromFile($id);
 
                     if (!empty($catId)) {
-                        $this->appendCategoriesToSegments($segments, $catId);
+                        $container->helperSEF->appendCategoriesToSegments($segments, $catId);
                     }
 
                     // Append the file alias
-                    $segments[] = $this->getFileAlias($id);
+                    $segments[] = $container->helperSEF->getFileAlias($id);
                     break;
             }
         }
@@ -127,6 +130,8 @@ class OsdownloadsRouter extends JComponentRouterBase
      */
     public function parse(&$segments)
     {
+        $container = OSDFactory::getContainer();
+        
         $data     = $segments;
         $viewTask = array_shift($data);
 
@@ -137,7 +142,7 @@ class OsdownloadsRouter extends JComponentRouterBase
 
                 if ($data) {
                     // Get category Id from category alias
-                    $category = $this->getCategoryFromAlias($data);
+                    $category = $container->helperSEF->getCategoryFromAlias($data);
 
                     if (!empty($category)) {
                         $vars['id'] = $category->id;
@@ -145,10 +150,9 @@ class OsdownloadsRouter extends JComponentRouterBase
                 }
                 break;
 
-
             case 'file':
                 $vars['view'] = 'item';
-                $vars['id']   = $this->getFileIdFromAlias(array_pop($data));
+                $vars['id']   = $container->helperSEF->getFileIdFromAlias(array_pop($data));
                 break;
 
             case 'thankyou':
@@ -156,19 +160,19 @@ class OsdownloadsRouter extends JComponentRouterBase
                 $vars['layout'] = 'thankyou';
                 $vars['tmpl']   = 'component';
                 $vars['task']   = 'routedownload';
-                $vars['id']     = $this->getFileIdFromAlias(array_pop($data));
+                $vars['id']     = $container->helperSEF->getFileIdFromAlias(array_pop($data));
                 break;
 
             case 'download':
                 $vars['task'] = 'download';
                 $vars['tmpl'] = 'component';
-                $vars['id']   = $this->getFileIdFromAlias(array_pop($data));
+                $vars['id']   = $container->helperSEF->getFileIdFromAlias(array_pop($data));
                 break;
 
             case 'routedownload':
                 $vars['task'] = 'routedownload';
                 $vars['tmpl'] = 'component';
-                $vars['id']   = $this->getFileIdFromAlias(array_pop($data));
+                $vars['id']   = $container->helperSEF->getFileIdFromAlias(array_pop($data));
                 break;
 
             case 'confirmemail':
@@ -178,216 +182,5 @@ class OsdownloadsRouter extends JComponentRouterBase
         }
 
         return $vars;
-    }
-
-    /**
-     * Build the path to a category, considering the parent categories.
-     *
-     * @param array $categories
-     * @param int   $catId
-     */
-    protected function buildCategoriesPath(&$categories, $catId)
-    {
-        if (empty($catId)) {
-            return;
-        }
-
-        $category = $this->getCategory($catId);
-
-        if (!empty($category) && $category->alias !== 'root') {
-            $categories[] = $category->alias;
-        }
-
-        if (!empty($category) && $category->parent_id) {
-            $this->buildCategoriesPath($categories, $category->parent_id);
-        }
-    }
-
-    /**
-     * Append the category path to the segments.
-     *
-     * @param array $segments
-     * @param int   $catId
-     */
-    protected function appendCategoriesToSegments(&$segments, $catId)
-    {
-        // Append the categories before the alias of the file
-        $categories = array();
-
-        $this->buildCategoriesPath($categories, $catId);
-
-        for ($i = count($categories) - 1; $i >= 0; $i--) {
-            $segments[] = $categories[$i];
-        }
-    }
-
-    /**
-     * Returns the alias of a file based on the file id.
-     *
-     * @param int $id
-     *
-     * @return string
-     */
-    protected function getFileAlias($id)
-    {
-        $db = JFactory::getDbo();
-
-        $query = $db->getQuery(true)
-            ->select('alias')
-            ->from('#__osdownloads_documents')
-            ->where('id = ' . $db->quote((int)$id));
-
-        $alias = $db->setQuery($query)->loadResult();
-
-        if (empty($alias)) {
-            JLog::add(
-                JText::sprintf(
-                    'COM_OSDOWNLOADS_ERROR_FILE_NOT_FOUND',
-                    $id,
-                    'getFileAlias'
-                ),
-                JLog::WARNING
-            );
-        }
-
-        return $alias;
-    }
-
-    /**
-     * Returns the id of a file based on the file's alias.
-     *
-     * @param string $alias
-     *
-     * @return string
-     */
-    protected function getFileIdFromAlias($alias)
-    {
-        $db = JFactory::getDbo();
-
-        $query = $db->getQuery(true)
-            ->select('id')
-            ->from('#__osdownloads_documents')
-            ->where('alias = ' . $db->quote($alias));
-
-        $id = $db->setQuery($query)->loadResult();
-
-        if (empty($id)) {
-            JLog::add(
-                JText::sprintf(
-                    'COM_OSDOWNLOADS_ERROR_FILE_NOT_FOUND',
-                    $alias,
-                    'getFileIdFromAlias'
-                ),
-                JLog::WARNING
-            );
-        }
-
-        return $id;
-    }
-
-    /**
-     * Returns the category id based on the file id.
-     *
-     * @param int $fileId
-     *
-     * @return int
-     */
-    protected function getCategoryIdFromFile($fileId)
-    {
-        $db = JFactory::getDbo();
-
-        $query = $db->getQuery(true)
-            ->select('cate_id')
-            ->from('#__osdownloads_documents')
-            ->where('id = ' . (int)$fileId);
-
-
-        $catId = $db->setQuery($query)->loadResult();
-
-        if (empty($catId)) {
-            JLog::add(
-                JText::sprintf(
-                    'COM_OSDOWNLOADS_ERROR_FILE_NOT_FOUND',
-                    $fileId,
-                    'getCategoryIdFromFile'
-                ),
-                JLog::WARNING
-            );
-        }
-
-        return $catId;
-    }
-
-    /**
-     * Returns the category as object based on the id.
-     *
-     * @param int $id
-     *
-     * @return stdClass
-     */
-    protected function getCategory($id)
-    {
-        $db = JFactory::getDBO();
-
-        $query = $db->getQuery(true)
-            ->select('*')
-            ->from('#__categories')
-            ->where('id = ' . (int)$id);
-
-        $category = $db->setQuery($query)->loadObject();
-
-        if (!is_object($category)) {
-            JLog::add(
-                JText::sprintf(
-                    'COM_OSDOWNLOADS_ERROR_CATEGORY_NOT_FOUND',
-                    $id,
-                    'getCategory'
-                ),
-                JLog::WARNING
-            );
-        }
-
-        return $category;
-    }
-
-    /**
-     * Returns the category as object based on the alias.
-     *
-     * @param array $aliases
-     *
-     * @return stdClass
-     */
-    protected function getCategoryFromAlias(array $aliases)
-    {
-        $db = JFactory::getDBO();
-
-        $level = count($aliases);
-        $alias = array_pop($aliases);
-
-        $query = $db->getQuery(true)
-            ->select('*')
-            ->from('#__categories')
-            ->where(
-                array(
-                    'extension = ' . $db->quote('com_osdownloads'),
-                    'level = ' . $level,
-                    'alias = ' . $db->quote($alias)
-                )
-            );
-
-        $category = $db->setQuery($query)->loadObject();
-
-        if (!is_object($category)) {
-            JLog::add(
-                JText::sprintf(
-                    'COM_OSDOWNLOADS_ERROR_CATEGORY_NOT_FOUND',
-                    $alias,
-                    'getCategoryFromAlias'
-                ),
-                JLog::WARNING
-            );
-        }
-
-        return $category;
     }
 }

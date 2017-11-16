@@ -28,8 +28,8 @@
  **/
 
 use Joomla\Utilities\ArrayHelper;
-use Joomla\Registry\Registry;
 use Alledia\Framework\Factory;
+use Alledia\OSDownloads\Free\Factory as OSDFactory;
 
 defined('_JEXEC') or die;
 
@@ -42,31 +42,38 @@ class sef_osdownloads
      **/
     public function create($string)
     {
+        $container = OSDFactory::getContainer();
+
         $string   = preg_replace('#^index\.php\?#', '', html_entity_decode($string));
         $query    = array();
         $segments = array();
         parse_str($string, $query);
 
-        $id     = ArrayHelper::getValue($query, 'id');
         $itemId = ArrayHelper::getValue($query, 'Itemid');
+        $id     = ArrayHelper::getValue($query, 'id');
+
+        // Sometime the ID is empty. We try to recover it from the menu item
+        if (empty($id)) {
+            $id = $container->helperSEF->getFileIdFromMenuItemId($itemId);
+        }
 
         if (isset($query['task'])) {
             if (ArrayHelper::getValue($query, 'layout') === 'thankyou') {
                 // /osdownloads/thankyou/{file-alias}
                 $segments[] = 'thankyou';
-                $segments[] = $this->getFileAlias($id);
+                $segments[] = $container->helperSEF->getFileAlias($id);
             } else {
                 switch ($query['task']) {
                     case 'routedownload':
                         // /osdownloads/routedownload/{file-alias}
                         $segments[] = 'routedownload';
-                        $segments[] = $this->getFileAlias($id);
+                        $segments[] = $container->helperSEF->getFileAlias($id);
                         break;
 
                     case 'download':
                         // /osdownloads/download/{file-alias}
                         $segments[] = 'download';
-                        $segments[] = $this->getFileAlias($id);
+                        $segments[] = $container->helperSEF->getFileAlias($id);
                         break;
 
                     case 'confirmemail':
@@ -84,20 +91,23 @@ class sef_osdownloads
                         // /osdownloads/categories/{categories-aliases}
                         $segments[] = 'categories';
 
-                        $categories = $this->getCategoriesFromMenu($itemId);
+                        $categories = $container->helperSEF->getCategoriesFromMenu($itemId);
                         $segments   = array_merge($segments, $categories);
                         break;
 
                     case 'downloads':
                         // /osdownloads/downloads/{category-alias}
                         $segments[] = 'downloads';
-                        $segments[] = $this->getCategoryAlias($id);
+
+                        if (!empty($id)) {
+                            $segments[] = $container->helperSEF->getCategoryAlias($id);
+                        }
                         break;
 
                     case 'item':
                         // /osdownloads/item/{file-alias}
                         $segments[] = 'item';
-                        $segments[] = $this->getFileAlias($id);
+                        $segments[] = $container->helperSEF->getFileAlias($id);
                         break;
                 }
             }
@@ -118,6 +128,8 @@ class sef_osdownloads
      **/
     public function revert($segments, $pos)
     {
+        $container = OSDFactory::getContainer();
+
         array_shift($segments);
 
         $vars = array();
@@ -130,7 +142,7 @@ class sef_osdownloads
 
                     $ids = array();
                     foreach ($segments as $alias) {
-                        $id = $this->getCategoryId($alias);
+                        $id = $container->helperSEF->getCategoryId($alias);
 
                         if (!empty($id)) {
                             $ids[] = $id;
@@ -142,25 +154,25 @@ class sef_osdownloads
 
                 case 'downloads':
                     $vars['view'] = 'downloads';
-                    $vars['id']   = $this->getCategoryId($segments[1]);
+                    $vars['id']   = $container->helperSEF->getCategoryId($segments[1]);
                     break;
 
                 case 'item':
                     $vars['view'] = 'item';
-                    $vars['id']   = $this->getFileIdFromAlias($segments[1]);
+                    $vars['id']   = $container->helperSEF->getFileIdFromAlias($segments[1]);
                     break;
 
                 case 'routedownload':
                     $vars['task'] = 'routedownload';
                     $vars['tmpl'] = 'component';
-                    $vars['id']   = $this->getFileIdFromAlias($segments[1]);
+                    $vars['id']   = $container->helperSEF->getFileIdFromAlias($segments[1]);
                     break;
 
                 case 'download':
                     $vars['task'] = 'download';
                     $vars['view'] = 'downloads';
                     $vars['tmpl'] = 'component';
-                    $vars['id']   = $this->getFileIdFromAlias($segments[1]);
+                    $vars['id']   = $container->helperSEF->getFileIdFromAlias($segments[1]);
                     break;
 
                 case 'thankyou':
@@ -168,7 +180,7 @@ class sef_osdownloads
                     $vars['layout'] = 'thankyou';
                     $vars['tmpl']   = 'component';
                     $vars['task']   = 'routedownload';
-                    $vars['id']     = $this->getFileIdFromAlias($segments[1]);
+                    $vars['id']     = $container->helperSEF->getFileIdFromAlias($segments[1]);
                     break;
 
                 case 'confirmemail':
@@ -187,192 +199,5 @@ class sef_osdownloads
         $query = http_build_query($vars);
 
         return $query;
-    }
-
-    /**
-     * Return the alias of a menu based on it's menu item id.
-     *
-     * @param int $itemId
-     *
-     * @return string
-     */
-    protected function getMenuAlias($itemId)
-    {
-        $db = Factory::getDbo();
-
-        $query = $db->getQuery(true)
-            ->select('alias')
-            ->from('#__menu')
-            ->where('id = ' . $db->quote((int)$itemId));
-
-        return $db->setQuery($query)->loadResult();
-    }
-
-    /**
-     * Return the alias of a menu based on it's menu item id.
-     *
-     * @param int $alias
-     *
-     * @return string
-     */
-    protected function getMenuItemId($alias)
-    {
-        $db = Factory::getDbo();
-
-        $query = $db->getQuery(true)
-            ->select('id')
-            ->from('#__menu')
-            ->where('alias = ' . $db->quote($alias));
-
-        return (int)$db->setQuery($query)->loadResult();
-    }
-
-    /**
-     * Return the list of selected categories for the specific menu.
-     *
-     * @param int $itemId
-     *
-     * @return array
-     */
-    protected function getCategoriesFromMenu($itemId)
-    {
-        $db = Factory::getDbo();
-
-        $query = $db->getQuery(true)
-            ->select('params')
-            ->from('#__menu')
-            ->where('id = ' . $db->quote((int)$itemId));
-
-        $params = $db->setQuery($query)->loadResult();
-        $params = new Registry($params);
-
-        $categories = $params->get('category_id', array());
-
-        $list = array();
-        if (!empty($categories)) {
-            foreach ($categories as $categoryId) {
-                $list[] = $this->getCategoryAlias($categoryId);
-            }
-        }
-
-        return $list;
-    }
-
-    /**
-     * Returns the category's alias based on the id.
-     *
-     * @param int $id
-     *
-     * @return string
-     */
-    protected function getCategoryAlias($id)
-    {
-        $db = JFactory::getDBO();
-
-        $query = $db->getQuery(true)
-            ->select('alias')
-            ->from('#__categories')
-            ->where(
-                array(
-                    'extension IN ("com_osdownloads", "system")',
-                    'id = ' . (int)$id
-                )
-            );
-
-        $alias = $db->setQuery($query)->loadResult();
-
-        return urlencode($alias);
-    }
-
-    /**
-     * Returns the category's id based on the alias.
-     *
-     * @param string $alias
-     *
-     * @return int
-     */
-    protected function getCategoryId($alias)
-    {
-        $alias = urldecode($alias);
-
-        $db = JFactory::getDBO();
-
-        $query = $db->getQuery(true)
-            ->select('id')
-            ->from('#__categories')
-            ->where(
-                array(
-                    'extension IN ("com_osdownloads", "system")',
-                    'alias = ' . $db->quote($alias)
-                )
-            );
-
-        return (int)$db->setQuery($query)->loadResult();
-    }
-
-    /**
-     * Returns the alias of a file based on the file id.
-     *
-     * @param int $id
-     *
-     * @return string
-     */
-    protected function getFileAlias($id)
-    {
-        $db = JFactory::getDbo();
-
-        $query = $db->getQuery(true)
-            ->select('alias')
-            ->from('#__osdownloads_documents')
-            ->where('id = ' . $db->quote((int)$id));
-
-        $alias = $db->setQuery($query)->loadResult();
-
-        if (empty($alias)) {
-            JLog::add(
-                JText::sprintf(
-                    'COM_OSDOWNLOADS_ERROR_FILE_NOT_FOUND',
-                    $id,
-                    'getFileAlias'
-                ),
-                JLog::WARNING
-            );
-        }
-
-        return urlencode($alias);
-    }
-
-    /**
-     * Returns the id of a file based on the file's alias.
-     *
-     * @param string $alias
-     *
-     * @return string
-     */
-    protected function getFileIdFromAlias($alias)
-    {
-        $alias = urldecode($alias);
-
-        $db = JFactory::getDbo();
-
-        $query = $db->getQuery(true)
-            ->select('id')
-            ->from('#__osdownloads_documents')
-            ->where('alias = ' . $db->quote($alias));
-
-        $id = $db->setQuery($query)->loadResult();
-
-        if (empty($id)) {
-            JLog::add(
-                JText::sprintf(
-                    'COM_OSDOWNLOADS_ERROR_FILE_NOT_FOUND',
-                    $alias,
-                    'getFileIdFromAlias'
-                ),
-                JLog::WARNING
-            );
-        }
-
-        return $id;
     }
 }

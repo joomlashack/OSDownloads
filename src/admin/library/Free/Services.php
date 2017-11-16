@@ -36,5 +36,9 @@ class Services implements ServiceProviderInterface
         $pimple['helperRoute'] = function (Container $c) {
             return new Helper\Route;
         };
+
+        $pimple['helperSEF'] = function (Container $c) {
+            return new Helper\SEF;
+        };
     }
 }

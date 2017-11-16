@@ -215,4 +215,41 @@ class RouterCest
         $I->assertEquals('category12', $segments[3]);
         $I->assertEquals('file1', $segments[4]);
     }
+
+    /**
+     * Try to parse segments for sub
+     * 
+     * view: 'item', id: 1 ==> 0: 'file', 1..n: [category_aliases], n+1: [file_alias]
+     *
+     * @example {"view": "item", "id": 1}
+     */
+    public function tryToBuildRouteSegmentsForViewItem(UnitTester $I, Example $example)
+    {
+        $query = [
+            'view'   => $example['view'],
+            'id'     => $example['id'],
+        ];
+
+        $segments = $this->router->build($query);
+
+        $I->assertEquals('file', $segments[0]);
+        $I->assertEquals('category10', $segments[1]);
+        $I->assertEquals('category11', $segments[2]);
+        $I->assertEquals('category12', $segments[3]);
+        $I->assertEquals('file1', $segments[4]);
+    }
+
+    // PARSE
+    // thankyou/category10/category11/category12/file1
+
+    // category
+    // category/category10
+
+    // file/category10/category11/category12/file1
+
+    // download/category10/category11/category12/file1
+
+    // routedownload/category10/category11/category12/file1
+
+    // confirmemail/889ec873b0e085c1724ec0ca560d3cfe
 }

@@ -197,6 +197,9 @@ class sef_osdownloads
         $input = Factory::getApplication()->input;
         foreach ($vars as $var => $value) {
             $input->set($var, $value);
+            
+            $_GET[$var]     = $value;
+            $_REQUEST[$var] = $value;
         }
 
         $query = http_build_query($vars);

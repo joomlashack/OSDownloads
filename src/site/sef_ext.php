@@ -130,7 +130,10 @@ class sef_osdownloads
     {
         $container = OSDFactory::getContainer();
 
-        array_shift($segments);
+        /* Our first variable always starts at $pos+2...
+         * @see https://www.sakic.net/support/sef-advance-extensions/
+         */
+        $segments = array_slice($segments, $pos+2);
 
         $vars = array();
 

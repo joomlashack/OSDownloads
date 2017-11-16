@@ -400,7 +400,7 @@ class SEF
         if (!empty($view)) {
            switch ($view) {
                 case 'downloads':
-                    $segments[] = 'category';
+                    $segments[] = 'files';
 
                     $this->appendCategoriesToSegments($segments, $id);
                     break;
@@ -442,6 +442,8 @@ class SEF
             $viewTask = array_shift($segments);
 
             switch ($viewTask) {
+                case 'files':
+                // @deprecated: use "files" instead
                 case 'category':
                     $vars['view'] = 'downloads';
 

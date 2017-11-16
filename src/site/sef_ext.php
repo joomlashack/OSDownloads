@@ -44,75 +44,16 @@ class sef_osdownloads
     {
         $container = OSDFactory::getContainer();
 
+        // Remove index.php from the string
         $string   = preg_replace('#^index\.php\?#', '', html_entity_decode($string));
         $query    = array();
         $segments = array();
         parse_str($string, $query);
 
-        $itemId = ArrayHelper::getValue($query, 'Itemid');
-        $id     = ArrayHelper::getValue($query, 'id');
+        // Build the segments
+        $segments = $container->helperSEF->getRouteSegmentsFromQuery($query);
 
-        // Sometime the ID is empty. We try to recover it from the menu item
-        if (empty($id)) {
-            $id = $container->helperSEF->getFileIdFromMenuItemId($itemId);
-        }
-
-        if (isset($query['task'])) {
-            if (ArrayHelper::getValue($query, 'layout') === 'thankyou') {
-                // /osdownloads/thankyou/{file-alias}
-                $segments[] = 'thankyou';
-                $segments[] = $container->helperSEF->getFileAlias($id);
-            } else {
-                switch ($query['task']) {
-                    case 'routedownload':
-                        // /osdownloads/routedownload/{file-alias}
-                        $segments[] = 'routedownload';
-                        $segments[] = $container->helperSEF->getFileAlias($id);
-                        break;
-
-                    case 'download':
-                        // /osdownloads/download/{file-alias}
-                        $segments[] = 'download';
-                        $segments[] = $container->helperSEF->getFileAlias($id);
-                        break;
-
-                    case 'confirmemail':
-                        // /osdownloads/confirmemail/{data}
-                        $segments[] = 'confirmemail';
-                        $segments[] = ArrayHelper::getValue($query, 'data');
-                        break;
-                }
-            }
-
-        } else {
-            if (isset($query['view'])) {
-                switch ($query['view']) {
-                    case 'categories':
-                        // /osdownloads/categories/{categories-aliases}
-                        $segments[] = 'categories';
-
-                        $categories = $container->helperSEF->getCategoriesFromMenu($itemId);
-                        $segments   = array_merge($segments, $categories);
-                        break;
-
-                    case 'downloads':
-                        // /osdownloads/downloads/{category-alias}
-                        $segments[] = 'downloads';
-
-                        if (!empty($id)) {
-                            $segments[] = $container->helperSEF->getCategoryAlias($id);
-                        }
-                        break;
-
-                    case 'item':
-                        // /osdownloads/item/{file-alias}
-                        $segments[] = 'item';
-                        $segments[] = $container->helperSEF->getFileAlias($id);
-                        break;
-                }
-            }
-        }
-
+        // Convert to string
         $sefString = implode('/', $segments) . '/';
 
         return $sefString;
@@ -135,73 +76,19 @@ class sef_osdownloads
          */
         $segments = array_slice($segments, $pos+2);
 
-        $vars = array();
-
-        if (isset($segments[0])) {
-            switch ($segments[0]) {
-                case 'categories':
-                    $vars['view'] = 'categories';
-                    array_shift($segments);
-
-                    $ids = array();
-                    foreach ($segments as $alias) {
-                        $id = $container->helperSEF->getCategoryId($alias);
-
-                        if (!empty($id)) {
-                            $ids[] = $id;
-                        }
-                    }
-
-                    $vars['id'] = $ids;
-                    break;
-
-                case 'downloads':
-                    $vars['view'] = 'downloads';
-                    $vars['id']   = $container->helperSEF->getCategoryId($segments[1]);
-                    break;
-
-                case 'item':
-                    $vars['view'] = 'item';
-                    $vars['id']   = $container->helperSEF->getFileIdFromAlias($segments[1]);
-                    break;
-
-                case 'routedownload':
-                    $vars['task'] = 'routedownload';
-                    $vars['tmpl'] = 'component';
-                    $vars['id']   = $container->helperSEF->getFileIdFromAlias($segments[1]);
-                    break;
-
-                case 'download':
-                    $vars['task'] = 'download';
-                    $vars['view'] = 'downloads';
-                    $vars['tmpl'] = 'component';
-                    $vars['id']   = $container->helperSEF->getFileIdFromAlias($segments[1]);
-                    break;
-
-                case 'thankyou':
-                    $vars['view']   = 'item';
-                    $vars['layout'] = 'thankyou';
-                    $vars['tmpl']   = 'component';
-                    $vars['task']   = 'routedownload';
-                    $vars['id']     = $container->helperSEF->getFileIdFromAlias($segments[1]);
-                    break;
-
-                case 'confirmemail':
-                    $vars['task'] = 'confirmemail';
-                    $vars['data'] = $segments[1];
-                    break;
-            }
-        }
+        // Get the query vars
+        $vars = $container->helperSEF->getQueryFromRouteSegments($segments);
 
         // Apply the variables to the input
         $input = Factory::getApplication()->input;
         foreach ($vars as $var => $value) {
             $input->set($var, $value);
-            
+
             $_GET[$var]     = $value;
             $_REQUEST[$var] = $value;
         }
 
+        // Convert to URL query string
         $query = http_build_query($vars);
 
         return $query;

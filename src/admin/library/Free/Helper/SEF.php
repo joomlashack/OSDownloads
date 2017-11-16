@@ -10,6 +10,7 @@ namespace Alledia\OSDownloads\Free\Helper;
 
 use Alledia\Framework\Factory;
 use Joomla\Registry\Registry;
+use Joomla\Utilities\ArrayHelper;
 use JFactory;
 use JLog;
 use JText;
@@ -20,7 +21,7 @@ defined('_JEXEC') or die();
  * OSDownloads Component Route Helper.
  */
 class SEF
-{	
+{
 	/**
      * Returns the category id based on the file id.
      *
@@ -342,5 +343,150 @@ class SEF
         }
 
         return null;
+    }
+
+    /**
+     * Build route segments returning an array.
+     *
+     * @param  array  $query
+     *
+     * @return array
+     */
+    public function getRouteSegmentsFromQuery(array $query)
+    {
+        $segments = array();
+        $itemId   = ArrayHelper::getValue($query, 'Itemid');
+        $id       = ArrayHelper::getValue($query, 'id');
+        $view     = ArrayHelper::getValue($query, 'view');
+        $layout   = ArrayHelper::getValue($query, 'layout');
+        $task     = ArrayHelper::getValue($query, 'task');
+        $data     = ArrayHelper::getValue($query, 'data');
+
+        // Sometime the ID is empty. We try to recover it from the menu item
+        if (empty($id) && !empty($itemId)) {
+            $id = $this->getFileIdFromMenuItemId($itemId);
+        }
+
+        // Task has higher priority over view
+        if (!empty($task)) {
+            switch ($task) {
+                case 'routedownload':
+                case 'download':
+                    if ($layout !== 'thankyou') {
+                        $segments[] = $task;
+                    } else {
+                        $segments[] = 'thankyou';
+                    }
+
+                    // Append the categories before the alias of the file
+                    $catId = $this->getCategoryIdFromFile($id);
+
+                    $this->appendCategoriesToSegments($segments, $catId);
+
+                    $segments[] = $this->getFileAlias($id);
+                    break;
+
+                case 'confirmemail':
+                    $segments[] = 'confirmemail';
+                    $segments[] = $data;
+
+                    break;
+            }
+
+            return $segments;
+        }
+
+        // If there is no recognized tasks, try to get the view
+        if (!empty($view)) {
+           switch ($view) {
+                case 'downloads':
+                    $segments[] = 'category';
+
+                    $this->appendCategoriesToSegments($segments, $id);
+                    break;
+
+                case 'item':
+                    if ($layout === 'thankyou') {
+                        $segments[] = "thankyou";
+                    } else {
+                        $segments[] = "file";
+                    }
+
+                    $catId = $this->getCategoryIdFromFile($id);
+
+                    if (!empty($catId)) {
+                        $this->appendCategoriesToSegments($segments, $catId);
+                    }
+
+                    // Append the file alias
+                    $segments[] = $this->getFileAlias($id);
+                    break;
+            }
+        }
+
+        return $segments;
+    }
+
+    /**
+     * Get the query vars from the route segments.
+     *
+     * @param  array  $segments
+     *
+     * @return string
+     */
+    public function getQueryFromRouteSegments(array $segments)
+    {
+        $vars = array();
+
+        if (!empty($segments)) {
+            $viewTask = array_shift($segments);
+
+            switch ($viewTask) {
+                case 'category':
+                    $vars['view'] = 'downloads';
+
+                    if (!empty($segments)) {
+                        // Get category Id from category alias
+                        $category = $this->getCategoryFromAlias($segments);
+
+                        if (!empty($category)) {
+                            $vars['id'] = $category->id;
+                        }
+                    }
+                    break;
+
+                case 'file':
+                    $vars['view'] = 'item';
+                    $vars['id']   = $this->getFileIdFromAlias(array_pop($segments));
+                    break;
+
+                case 'thankyou':
+                    $vars['view']   = 'item';
+                    $vars['layout'] = 'thankyou';
+                    $vars['tmpl']   = 'component';
+                    $vars['task']   = 'routedownload';
+                    $vars['id']     = $this->getFileIdFromAlias(array_pop($segments));
+                    break;
+
+                case 'download':
+                    $vars['task'] = 'download';
+                    $vars['tmpl'] = 'component';
+                    $vars['id']   = $this->getFileIdFromAlias(array_pop($segments));
+                    break;
+
+                case 'routedownload':
+                    $vars['task'] = 'routedownload';
+                    $vars['tmpl'] = 'component';
+                    $vars['id']   = $this->getFileIdFromAlias(array_pop($segments));
+                    break;
+
+                case 'confirmemail':
+                    $vars['task'] = 'confirmemail';
+                    $vars['data'] = array_pop($segments);
+                    break;
+            }
+        }
+
+        return $vars;
     }
 }

@@ -346,6 +346,29 @@ class SEF
     }
 
     /**
+     * Returns the last item of the array not considering empty items.
+     * Somes rotes, with trailing slash can produce an empty segment item,
+     * specially when using SEF Advance. The array is modified, having the
+     * last items removed.
+     *
+     * @param  array  $array
+     *
+     * @return mix
+     */
+    public function getLastNoEmptyArrayItem(array &$array)
+    {
+        if (!empty($array)) {
+            $lastItem = array_pop($array);
+
+            if (empty($lastItem)) {
+                $lastItem = $this->getLastNoEmptyArrayItem($array);
+            }
+        }
+
+        return $lastItem;
+    }
+
+    /**
      * Build route segments returning an array.
      *
      * @param  array  $query
@@ -458,28 +481,36 @@ class SEF
                     break;
 
                 case 'file':
+                    $id = $this->getLastNoEmptyArrayItem($segments);
+
                     $vars['view'] = 'item';
-                    $vars['id']   = $this->getFileIdFromAlias(array_pop($segments));
+                    $vars['id']   = $this->getFileIdFromAlias($id);
                     break;
 
                 case 'thankyou':
+                    $id = $this->getLastNoEmptyArrayItem($segments);
+
                     $vars['view']   = 'item';
                     $vars['layout'] = 'thankyou';
                     $vars['tmpl']   = 'component';
                     $vars['task']   = 'routedownload';
-                    $vars['id']     = $this->getFileIdFromAlias(array_pop($segments));
+                    $vars['id']     = $this->getFileIdFromAlias($id);
                     break;
 
                 case 'download':
+                    $id = $this->getLastNoEmptyArrayItem($segments);
+
                     $vars['task'] = 'download';
                     $vars['tmpl'] = 'component';
-                    $vars['id']   = $this->getFileIdFromAlias(array_pop($segments));
+                    $vars['id']   = $this->getFileIdFromAlias($id);
                     break;
 
                 case 'routedownload':
+                    $id = $this->getLastNoEmptyArrayItem($segments);
+
                     $vars['task'] = 'routedownload';
                     $vars['tmpl'] = 'component';
-                    $vars['id']   = $this->getFileIdFromAlias(array_pop($segments));
+                    $vars['id']   = $this->getFileIdFromAlias($id);
                     break;
 
                 case 'confirmemail':

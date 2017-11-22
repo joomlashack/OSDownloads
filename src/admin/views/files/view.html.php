@@ -15,6 +15,11 @@ require_once __DIR__ . '/../../models/items.php';
 
 class OSDownloadsViewFiles extends OSDownloadsViewAbstract
 {
+    /**
+     * @var string
+     */
+    protected $sidebar = null;
+    
     public function __construct()
     {
         $model = JModelLegacy::getInstance('OSDownloadsModelItems');
@@ -74,6 +79,7 @@ class OSDownloadsViewFiles extends OSDownloadsViewAbstract
         $this->extension     = $extension;
 
         $this->addToolbar();
+        $this->sidebar = JHtmlSidebar::render();
 
         parent::display($tpl);
     }

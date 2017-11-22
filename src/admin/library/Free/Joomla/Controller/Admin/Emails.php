@@ -31,9 +31,8 @@ class Emails extends JControllerLegacy
         $str_id = implode(',', $id_arr);
         $db     = Factory::getDBO();
 
-        $query  = "DELETE FROM `#__osdownloads_emails` WHERE id IN (".$str_id.")";
-        $db->setQuery($query);
-        $db->query();
+        $query  = "DELETE FROM `#__osdownloads_emails` WHERE id IN (" . $str_id . ")";
+        $db->setQuery($query)->execute();
 
         $this->setRedirect(
             $container->helperRoute->getAdminEmailListRoute(),

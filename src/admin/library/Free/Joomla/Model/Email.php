@@ -14,6 +14,7 @@ use Alledia\Framework\Joomla\Model\Base as BaseModel;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Helper;
+use OsdownloadsTableEmail;
 
 class Email extends BaseModel
 {
@@ -22,15 +23,25 @@ class Email extends BaseModel
         // Method to allow inheritance
     }
 
+    /**
+     * @param string $email
+     * @param int    $documentId
+     *
+     * @return OsdownloadsTableEmail
+     */
     public function insert($email, $documentId)
     {
+        /**
+         * @var FreeComponentSite      $component
+         * @var OsdownloadsTableEmail $row
+         */
         $component = FreeComponentSite::getInstance();
-        $row = $component->getTable('Email');
+        $row       = $component->getTable('Email');
 
         if (Helper::validateEmail($email)) {
             $row->email = $email;
 
-            $row->document_id = (int) $documentId;
+            $row->document_id     = (int)$documentId;
             $row->downloaded_date = Factory::getDate()->toSQL();
 
             $this->prepareRow($row);
@@ -40,15 +51,21 @@ class Email extends BaseModel
             return $row;
         }
 
-        return false;
+        return null;
     }
 
+    /**
+     * @param $emailId
+     *
+     * @return OsdownloadsTableEmail
+     */
     public function getEmail($emailId)
     {
+        /** @var OsdownloadsTableEmail $row */
         $component = FreeComponentSite::getInstance();
-        $row = $component->getTable('Email');
+        $row       = $component->getTable('Email');
 
-        $row->load((int) $emailId);
+        $row->load((int)$emailId);
 
         return $row;
     }

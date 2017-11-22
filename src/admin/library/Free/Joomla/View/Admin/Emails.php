@@ -8,9 +8,10 @@
 
 namespace Alledia\OSDownloads\Free\Joomla\View\Admin;
 
+use Alledia\Framework\Joomla\Extension\Licensed;
 use Alledia\OSDownloads\Free\Joomla\View\Legacy as LegacyView;
 use Alledia\Framework\Factory;
-use stdClass;
+use JHtmlSidebar;
 use JPagination;
 use JToolBarHelper;
 use JText;
@@ -20,30 +21,86 @@ defined('_JEXEC') or die();
 
 class Emails extends LegacyView
 {
+    /**
+     * @var string
+     */
+    protected $sidebar = null;
+
+    /**
+     * @var object
+     */
+    protected $flt = null;
+
+    /**
+     * @var array
+     */
+    protected $lists = null;
+
+    /**
+     * @var object[]
+     */
+    protected $items = null;
+
+    /**
+     * @var JPagination
+     */
+    protected $pagination = null;
+
+    /**
+     * @var bool
+     */
+    protected $isPro = false;
+    /**
+     * @var Licensed
+     */
+    protected $extension = null;
+
     public function display($tpl = null)
     {
-        global $option;
         $app = Factory::getApplication();
 
-        if (!isset($this->flt)) {
-            $this->flt = new stdClass;
-        }
+        $this->flt = (object)array(
+            'search'  => $app->getUserStateFromRequest('osdownloads.email.request.search', 'search', ""),
+            'cate_id' => $app->getUserStateFromRequest('osdownloads.email.request.cate_id', 'cate_id')
+        );
 
-        $limit              = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int');
-        $limitstart         = $app->getUserStateFromRequest('osdownloads.request.limitstart', 'limitstart', 0, 'int');
-        $this->flt->search  = $app->getUserStateFromRequest('osdownloads.email.request.search', 'search', "");
-        $this->flt->cate_id = $app->getUserStateFromRequest('osdownloads.email.request.cate_id', 'cate_id');
-        $filter_order       = $app->getUserStateFromRequest("osdownloads.email.filter_order", 'filter_order', 'email.id', 'cmd');
-        $filter_order_Dir   = $app->getUserStateFromRequest("osdownloads.email.filter_order_Dir", 'filter_order_Dir', 'DESC', 'word');
-        $filter_confirmed   = $app->getUserStateFromRequest("osdownloads.email.filter_confirmed", 'filter_confirmed', '-1', 'int');
+        $limit = $app->getUserStateFromRequest(
+            'global.list.limit',
+            'limit',
+            $app->get('list_limit'),
+            'int'
+        );
+
+        $limitstart = $app->getUserStateFromRequest('osdownloads.request.limitstart', 'limitstart', 0, 'int');
+
+        $filter_order = $app->getUserStateFromRequest(
+            "osdownloads.email.filter_order",
+            'filter_order',
+            'email.id',
+            'cmd'
+        );
+
+        $filter_order_Dir = $app->getUserStateFromRequest(
+            "osdownloads.email.filter_order_Dir",
+            'filter_order_Dir',
+            'DESC',
+            'word'
+        );
+
+        $filter_confirmed = $app->getUserStateFromRequest(
+            "osdownloads.email.filter_confirmed",
+            'filter_confirmed',
+            '-1',
+            'int'
+        );
 
         $db = Factory::getDBO();
-        $query = $db->getQuery(true);
 
-        $query->select("email.*, doc.name AS doc_name, cat.title AS cate_name");
-        $query->from("#__osdownloads_emails email");
-        $query->join("LEFT", "#__osdownloads_documents doc ON (email.document_id = doc.id)");
-        $query->join("LEFT", "#__categories cat ON (cat.id = doc.cate_id)");
+        $query = $db->getQuery(true)
+            ->select("email.*, doc.name AS doc_name, cat.title AS cate_name")
+            ->from("#__osdownloads_emails email")
+            ->leftJoin("#__osdownloads_documents doc ON (email.document_id = doc.id)")
+            ->leftJoin("#__categories cat ON (cat.id = doc.cate_id)");
 
         if ($this->flt->search) {
             $query->where("email.email LIKE '%{$this->flt->search}%' OR doc.name LIKE '%{$this->flt->search}%'");
@@ -58,31 +115,29 @@ class Emails extends LegacyView
 
         $query->order(" $filter_order  $filter_order_Dir");
 
-        $db->setQuery($query);
-        $db->query();
+        $db->setQuery($query)->execute();
         $total = $db->getNumRows();
 
         jimport('joomla.html.pagination');
-        $pagination = new JPagination($total, $limitstart, $limit);
-        $db->setQuery($query, $pagination->limitstart, $pagination->limit);
-        $items = (array) $db->loadObjectList();
+        $this->pagination = new JPagination($total, $limitstart, $limit);
+        $db->setQuery($query, $this->pagination->limitstart, $this->pagination->limit);
+        $this->items = (array)$db->loadObjectList();
 
-        $lists = array();
-        $lists['order_Dir']        = $filter_order_Dir;
-        $lists['order']            = $filter_order;
-        $lists['filter_confirmed'] = $filter_confirmed;
+        $this->lists = array(
+            'order_Dir'        => $filter_order_Dir,
+            'order'            => $filter_order,
+            'filter_confirmed' => $filter_confirmed
+        );
 
         // Load the extension
-        $extension = Factory::getExtension('OSDownloads', 'component');
-        $extension->loadLibrary();
+        $this->extension = Factory::getExtension('OSDownloads', 'component');
+        $this->extension->loadLibrary();
 
-        $this->assignRef('lists', $lists);
-        $this->assignRef("items", $items);
-        $this->assignRef("pagination", $pagination);
-        $this->assignRef("extension", $extension);
-        $this->assign("isPro", $extension->isPro());
+        $this->isPro = $this->extension->isPro();
 
         $this->addToolbar();
+        $this->sidebar = JHtmlSidebar::render();
+
         parent::display($tpl);
     }
 

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<form>
-    <fieldset name="file" addfieldpath="/administrator/components/com_osdownloads/models/fields" >
+<form addfieldpath="/administrator/components/com_osdownloads/form/fields">
+    <fieldset name="file">
         <field name="name"
-            type="text"
-            label="COM_OSDOWNLOADS_NAME"
-            description="COM_OSDOWNLOADS_NAME_DESC"
-            class="input-xxlarge input-large-text"
-            size="40"
-            required="true" />
+               type="text"
+               label="COM_OSDOWNLOADS_NAME"
+               description="COM_OSDOWNLOADS_NAME_DESC"
+               class="input-xxlarge input-large-text"
+               size="40"
+               required="true"/>
 
         <field
             name="alias"
@@ -23,14 +23,14 @@
             name="file"
             type="file"
             label="COM_OSDOWNLOADS_UPLOAD_FILE"
-            description="COM_OSDOWNLOADS_UPLOAD_FILE_DESC" />
+            description="COM_OSDOWNLOADS_UPLOAD_FILE_DESC"/>
 
         <field
             name="file_url"
             type="text"
             label="COM_OSDOWNLOADS_FILE_URL"
             description="COM_OSDOWNLOADS_FILE_URL_DESC"
-            class="input-xxlarge" />
+            class="input-xxlarge"/>
 
         <field
             name="description_1"
@@ -69,7 +69,7 @@
             label="COM_OSDOWNLOADS_CATEGORY"
             description="COM_OSDOWNLOADS_CATEGORY_DESC"
             extension="com_osdownloads"
-            class="" />
+            class=""/>
 
         <field
             name="published"
@@ -99,11 +99,11 @@
             readonly="true"/>
     </fieldset>
 
-    <fieldset name="requirements" addfieldpath="/administrator/components/com_content/models/fields" >
+    <fieldset name="requirements" addfieldpath="/administrator/components/com_content/models/fields">
         <field
             name="require_email"
-            type="radio"
-            class="btn-group"
+            type="list"
+            class="chzn-color chzn-color-state"
             default="0"
             label="COM_OSDOWNLOADS_REQUIRE_EMAIL"
             description="COM_OSDOWNLOADS_REQUIRE_EMAIL_DESC">
@@ -115,7 +115,7 @@
         <field
             name="require_agree"
             type="radio"
-            class="btn-group"
+            class="btn-group btn-group-yesno"
             default="0"
             label="COM_OSDOWNLOADS_REQUIRE_AGREEMENT"
             description="COM_OSDOWNLOADS_AGREEMENT_TIP">
@@ -124,27 +124,27 @@
         </field>
 
         <field name="agreement_article_id"
-            type="modal_article"
-            label="COM_OSDOWNLOADS_AGREEMENT_ARTICLE_LABEL"
-            edit="true"
-            clear="true"
-            description="COM_OSDOWNLOADS_AGREEMENT_ARTICLE_DESC"
+               type="modal_article"
+               label="COM_OSDOWNLOADS_AGREEMENT_ARTICLE_LABEL"
+               edit="true"
+               clear="true"
+               description="COM_OSDOWNLOADS_AGREEMENT_ARTICLE_DESC"
         />
     </fieldset>
 
-    <fieldset name="advanced" addfieldpath="/administrator/components/com_osdownloads/models/fields" >
+    <fieldset name="advanced">
         <field
             name="download_text"
             type="text"
             default=""
             label="COM_OSDOWNLOADS_DOWNLOAD_TEXT"
-            description="COM_OSDOWNLOADS_DOWNLOAD_TEXT_DESC" />
+            description="COM_OSDOWNLOADS_DOWNLOAD_TEXT_DESC"/>
 
         <field
             name="download_color"
             type="color"
             label="COM_OSDOWNLOADS_DOWNLOAD_COLOR"
-            description="COM_OSDOWNLOADS_DOWNLOAD_COLOR_DESC" />
+            description="COM_OSDOWNLOADS_DOWNLOAD_COLOR_DESC"/>
 
         <field
             name="documentation_link"
@@ -152,7 +152,7 @@
             default=""
             class="input-xxlarge"
             label="COM_OSDOWNLOADS_DOCUMENTATION_LINK"
-            description="COM_OSDOWNLOADS_LINK_TIP" />
+            description="COM_OSDOWNLOADS_LINK_TIP"/>
 
         <field
             name="demo_link"
@@ -160,7 +160,7 @@
             default=""
             class="input-xxlarge"
             label="COM_OSDOWNLOADS_DEMO_LINK"
-            description="COM_OSDOWNLOADS_LINK_TIP" />
+            description="COM_OSDOWNLOADS_LINK_TIP"/>
 
         <field
             name="support_link"
@@ -168,14 +168,14 @@
             default=""
             class="input-xxlarge"
             label="COM_OSDOWNLOADS_SUPPORT_LINK"
-            description="COM_OSDOWNLOADS_LINK_TIP" />
+            description="COM_OSDOWNLOADS_LINK_TIP"/>
 
         <field
             name="other_name"
             type="text"
             default=""
             label="COM_OSDOWNLOADS_OTHER_NAME"
-            description="COM_OSDOWNLOADS_OTHER_TIP" />
+            description="COM_OSDOWNLOADS_OTHER_TIP"/>
 
         <field
             name="other_link"
@@ -183,7 +183,7 @@
             default=""
             class="input-xxlarge"
             label="COM_OSDOWNLOADS_OTHER_LINK"
-            description="COM_OSDOWNLOADS_OTHER_TIP" />
+            description="COM_OSDOWNLOADS_OTHER_TIP"/>
 
         <field
             name="direct_page"
@@ -191,7 +191,7 @@
             default=""
             class="input-xxlarge"
             label="COM_OSDOWNLOADS_DIRECT_PAGE"
-            description="COM_OSDOWNLOADS_LINK_TIP" />
+            description="COM_OSDOWNLOADS_LINK_TIP"/>
 
         <field
             name="external_ref"
@@ -199,6 +199,6 @@
             default=""
             class="input-xxlarge"
             label="COM_OSDOWNLOADS_EXTERNAL_REFERENCE"
-            description="COM_OSDOWNLOADS_EXTERNAL_REFERENCE_DESC" />
+            description="COM_OSDOWNLOADS_EXTERNAL_REFERENCE_DESC"/>
     </fieldset>
 </form>

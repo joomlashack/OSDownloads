@@ -2,12 +2,12 @@
 <extension type="module" version="2.5.0" client="site" method="upgrade">
     <name>MOD_OSDOWNLOADSFILES</name>
     <author>Joomlashack</author>
-    <creationDate>October 20 2017</creationDate>
+    <creationDate>November 20 2017</creationDate>
     <copyright>Copyright (C) 2016 Open Source Training, LLC</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <authorEmail>help@joomlashack.com</authorEmail>
     <authorUrl>http://www.joomlashack.com</authorUrl>
-    <version>1.7.7b1</version>
+    <version>1.7.8b1</version>
     <description>MOD_OSDOWNLOADFILES_DESC</description>
 
     <alledia>

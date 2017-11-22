@@ -21,5 +21,5 @@ defined('_JEXEC') or die( 'Restricted access' );
 </style>
 
 <h2><?php echo JText::_('COM_OSDOWNLOADS_ERROR'); ?></h2>
-<strong><?php echo JText::_('COM_OSDOWNLOADS_THIS_DOWNLOAD_TOO_BIG'); ?></strong>
-<p><?php echo JText::_('COM_OSDOWNLOADS_DOWNLOAD_CONTACT_ADMIN'); ?></p>
+<strong><?php echo JText::_('COM_OSDOWNLOADS_THIS_DOWNLOAD_IS_TOO_BIG'); ?></strong>
+<p><?php echo JText::_('COM_OSDOWNLOADS_CONTACT_ADMIN'); ?></p>

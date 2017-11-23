@@ -196,7 +196,7 @@ class sef_osdownloads
 
             case 'confirmemail':
                 $vars['task'] = 'confirmemail';
-                $vars['data'] = $data;
+                $vars['data'] = $container->helperSEF->getLastNoEmptyArrayItem($segments);
                 $vars['tmpl'] = 'component';
 
                 break;

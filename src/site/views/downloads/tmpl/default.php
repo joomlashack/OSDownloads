@@ -28,20 +28,6 @@ JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundl
 ?>
 <form action="<?php echo(JRoute::_($container->helperRoute->getFileRoute($id, $itemId)));?>" method="post" name="adminForm" id="adminForm">
     <div class="contentopen osdownloads-container">
-        <?php if (!empty($this->paths)) : ?>
-            <h2>
-                <?php for ($i = count($this->paths) - 1; $i >= 0; $i--):?>
-                    <?php if ($i):?>
-                        <a href="<?php echo(JRoute::_($container->helperRoute->getFileRoute($this->paths[$i]->id, $itemId)));?>">
-                    <?php endif;?>
-                    <?php echo($this->paths[$i]->title);?>
-                    <?php if ($i > 0):?>
-                        </a> <span class="divider">::</span>
-                    <?php endif;?>
-                <?php endfor;?>
-            </h2>
-        <?php endif; ?>
-
         <?php if (isset($this->paths[0])) : ?>
             <div class="sub_title">
                 <?php echo($this->paths[0]->description);?>

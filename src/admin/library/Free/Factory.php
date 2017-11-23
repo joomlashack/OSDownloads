@@ -35,7 +35,15 @@ abstract class Factory extends \JFactory
 
         // Instantiate the container and services
         $container = new Container;
-        $container->register(new Services);
+
+        // Decide what services to load. Free or Pro?
+        if (class_exists('\\Alledia\\OSDownloads\\Pro\\Services')) {
+            $services = new \Alledia\OSDownloads\Pro\Services;
+        } else {
+            $services = new Services;
+        }
+
+        $container->register($services);
 
         static::$container = $container;
 

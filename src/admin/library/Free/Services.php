@@ -40,5 +40,9 @@ class Services implements ServiceProviderInterface
         $pimple['helperSEF'] = function (Container $c) {
             return new Helper\SEF;
         };
+
+        $pimple['helperView'] = function (Container $c) {
+            return new Helper\View;
+        };
     }
 }

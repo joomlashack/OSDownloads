@@ -13,6 +13,7 @@ defined('_JEXEC') or die();
 use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Alledia\OSDownloads\Free\Factory as OSDFactory;
+use Alledia\OSDownloads\Free\Helper\View as HelperView;
 use Joomla\Registry\Registry;
 use JRoute;
 use JText;
@@ -58,13 +59,14 @@ class Item extends Base
     {
         $app       = Factory::getApplication();
         $component = FreeComponentSite::getInstance();
+        $container = OSDFactory::getContainer();
         $model     = $component->getModel('Item');
         $params    = $app->getParams('com_osdownloads');
-        $id        = (int)$app->input->getInt('id');
-        $itemId    = (int)$app->input->getInt('Itemid');
+        $id        = (int) $app->input->getInt('id');
+        $itemId    = (int) $app->input->getInt('Itemid');
 
         if (empty($id)) {
-            $id = (int)$params->get("document_id");
+            $id = (int) $params->get("document_id");
         }
 
         $item = $model->getItem($id);
@@ -73,60 +75,26 @@ class Item extends Base
             throw new \Exception(JText::_('COM_OSDOWNLOADS_THIS_DOWNLOAD_ISNT_AVAILABLE'), 404);
         }
 
-        $paths = null;
-        $this->buildBreadcrumbs($paths, $item);
+        // Breadcrumbs
+        $container->helperView->buildCategoryBreadcrumbs($item->cate_id);
 
         // Load the extension
         $component->loadLibrary();
-        $isPro = $component->isPro();
 
+        // Set template vars
         $this->item   = $item;
         $this->itemId = $itemId;
-        $this->paths  = $paths;
         $this->params = $params;
-        $this->isPro  = $isPro;
+        $this->isPro  = $component->isPro();
         $this->model  = $model;
+        /**
+         * Temporary backward compatibility for user's template overrides.
+         *
+         * @var array
+         * @deprecated  1.9.9  Use JPathway and the breadcrumb module instead to display the breadcrumbs
+         */
+        $this->paths  = array();
 
         parent::display($tpl);
-    }
-
-    public function buildPath(&$paths, $categoryID)
-    {
-        if (empty($categoryID)) {
-            return;
-        }
-
-        $db = Factory::getDbo();
-        $db->setQuery("SELECT *
-                       FROM `#__categories`
-                       WHERE extension='com_osdownloads'
-                           AND id = " . $db->q((int)$categoryID));
-        $category = $db->loadObject();
-
-        if ($category) {
-            $paths[] = $category;
-        }
-
-        if ($category && $category->parent_id) {
-            $this->buildPath($paths, $category->parent_id);
-        }
-    }
-
-    protected function buildBreadcrumbs(&$paths, $item)
-    {
-        $this->buildPath($paths, $item->cate_id);
-
-        $app       = Factory::getApplication();
-        $pathway   = $app->getPathway();
-        $itemID    = $app->input->getInt('Itemid');
-        $container = OSDFactory::getContainer();
-
-        $countPaths = count($paths) - 1;
-        for ($i = $countPaths; $i >= 0; $i--) {
-            $pathway->addItem(
-                $paths[$i]->title,
-                JRoute::_($container->helperRoute->getFileRoute($paths[$i]->id, $itemID))
-            );
-        }
     }
 }

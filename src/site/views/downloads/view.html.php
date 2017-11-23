@@ -12,6 +12,7 @@ require_once JPATH_SITE . '/components/com_osdownloads/models/item.php';
 
 use Alledia\OSDownloads\Free\Joomla\View;
 use Alledia\OSDownloads\Free\Factory;
+use Alledia\OSDownloads\Free\Helper\View as HelperView;
 
 class OSDownloadsViewDownloads extends View\Site\Base
 {
@@ -69,9 +70,6 @@ class OSDownloadsViewDownloads extends View\Site\Base
         $app->setUserState("com_osdownloads.files.filter_order", $this->params->get('ordering', 'doc.ordering'));
         $app->setUserState("com_osdownloads.files.filter_order_Dir", $this->params->get('ordering_dir', 'asc'));
 
-        // Paths
-        $paths = array();
-
         $id = $app->input->getInt('id');
 
         if (empty($id)) {
@@ -81,13 +79,10 @@ class OSDownloadsViewDownloads extends View\Site\Base
         }
 
         if (!empty($id)) {
-            $this->buildPath($paths, $id);
-
-            $categoryIDs = (array)$id;
+            $categoryIDs = (array) $id;
         }
 
         $model = JModelLegacy::getInstance('OSDownloadsModelItem');
-
         $query = $model->getItemQuery();
 
         $query->select('cat.access as cat_access');
@@ -157,53 +152,22 @@ class OSDownloadsViewDownloads extends View\Site\Base
         // Category filter
         $showCategoryFilter = $this->params->get('show_category_filter', false);
 
-        $this->buildBreadcrumbs($paths);
+        $container = Factory::getContainer();
+        $container->helperView->buildCategoryBreadcrumbs($id);
 
         $this->categories         = $categories;
         $this->showCategoryFilter = $showCategoryFilter;
         $this->items              = $items;
-        $this->paths              = $paths;
         $this->pagination         = $pagination;
         $this->isPro              = $extension->isPro();
+        /**
+         * Temporary backward compatibility for user's template overrides.
+         *
+         * @var array
+         * @deprecated  1.9.9  Use JPathway and the breadcrumb module instead to display the breadcrumbs
+         */
+        $this->paths  = array();
 
         parent::display($tpl);
-    }
-
-    public function buildPath(&$paths, $categoryID)
-    {
-        if (empty($categoryID)) {
-            return;
-        }
-
-        $db = JFactory::getDBO();
-        $db->setQuery("SELECT *
-                       FROM `#__categories`
-                       WHERE extension='com_osdownloads'
-                           AND id = " . $db->q((int)$categoryID));
-        $category = $db->loadObject();
-
-        if ($category) {
-            $paths[] = $category;
-        }
-
-        if ($category && $category->parent_id) {
-            $this->buildPath($paths, $category->parent_id);
-        }
-    }
-
-    protected function buildBreadcrumbs($paths)
-    {
-        $app       = JFactory::getApplication();
-        $pathway   = $app->getPathway();
-        $itemID    = $app->input->getInt('Itemid');
-        $container = Factory::getContainer();
-
-        $countPaths = count($paths) - 1;
-        for ($i = $countPaths; $i >= 0; $i--) {
-            $pathway->addItem(
-                $paths[$i]->title,
-                JRoute::_($container->helperRoute->getFileRoute($paths[$i]->id, $itemID))
-            );
-        }
     }
 }

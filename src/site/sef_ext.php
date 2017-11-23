@@ -50,10 +50,105 @@ class sef_osdownloads
         $segments = array();
         parse_str($string, $query);
 
-        // Build the segments
-        $segments = $container->helperSEF->getRouteSegmentsFromQuery($query);
+        /*----------  Build the route  ----------*/
+        $container = OSDFactory::getContainer();
 
-        // Convert to string
+        $itemId = ArrayHelper::getValue($query, 'Itemid');
+        $id     = ArrayHelper::getValue($query, 'id');
+        $view   = ArrayHelper::getValue($query, 'view');
+        $layout = ArrayHelper::getValue($query, 'layout');
+        $task   = ArrayHelper::getValue($query, 'task');
+        $data   = ArrayHelper::getValue($query, 'data');
+
+        /*----------  Subsection comment block  ----------*/
+
+        if (isset($query['task'])) {
+            unset($query['task']);
+
+            switch ($task) {
+                case 'routedownload':
+                case 'download':
+                    if ($layout !== 'thankyou') {
+                        $segments[] = $task;
+                    } else {
+                        $segments[] = 'thankyou';
+                    }
+
+                    // Append the categories before the alias of the file
+                    $catId = $container->helperSEF->getCategoryIdFromFile($id);
+
+                    $container->helperSEF->appendCategoriesToSegments($segments, $catId);
+
+                    $segments[] = $container->helperSEF->getFileAlias($id);
+
+                    break;
+
+                case 'confirmemail':
+                    $segments[] = 'confirmemail';
+                    $segments[] = $data;
+
+                    break;
+            }
+
+            if (isset($query['tmpl'])) {
+                unset($query['tmpl']);
+            }
+
+            if (isset($query['id'])) {
+                unset($query['id']);
+            }
+
+            return $segments;
+        }
+
+        // If there is no recognized tasks, try to get the view
+        if (isset($query['view'])) {
+            unset($query['view']);
+
+            if (isset($query['id'])) {
+                unset($query['id']);
+            }
+
+           switch ($view) {
+                case 'downloads':
+                    $segments[] = 'downloads';
+                    $container->helperSEF->appendCategoriesToSegments($segments, $id);
+
+                    break;
+
+                case 'categories':
+                    $segments[] = 'categories';
+                    $container->helperSEF->appendCategoriesToSegments($segments, $id);
+
+                    break;
+
+                case 'item':
+                    // Task segments
+                    $segments[] = "item";
+
+                    // If the id is empty, we try to get it using the item id
+                    if (empty($id)) {
+                        $id = $container->helperSEF->getFileIdFromMenuItemId($itemId);
+                    }
+
+                    $catId = $container->helperSEF->getCategoryIdFromFile($id);
+                    if (!empty($catId)) {
+                        $container->helperSEF->appendCategoriesToSegments($segments, $catId);
+                    }
+
+                    // Append the file alias
+                    $segments[] = $container->helperSEF->getFileAlias($id);
+
+                    break;
+            }
+        }
+
+        // Remove tmp=component
+        if (isset($query['tmpl']) && 'component' === $query['tmpl']) {
+            unset($query['tmpl']);
+        }
+
+        /*----------  Convert to string  ----------*/
         $sefString = implode('/', $segments) . '/';
 
         return $sefString;
@@ -70,16 +165,77 @@ class sef_osdownloads
     public function revert($segments, $pos)
     {
         $container = OSDFactory::getContainer();
+        $vars      = array();
 
         /* Our first variable always starts at $pos+2...
          * @see https://www.sakic.net/support/sef-advance-extensions/
          */
         $segments = array_slice($segments, $pos+2);
 
-        // Get the query vars
-        $vars = $container->helperSEF->getQueryFromRouteSegments($segments);
+        /*----------  Build the route  ----------*/
+        $firstSegment = array_shift($segments);
 
-        // Apply the variables to the input
+        switch ($firstSegment) {
+            case 'routedownload':
+            case 'download':
+                $vars['task'] = $firstSegment;
+
+                if ('thankyou' === reset($segments)) {
+                    array_shift($segments);
+                    $vars['layout'] = 'thankyou';
+                }
+
+                // File id
+                $id = $container->helperSEF->getFileIdFromAlias(
+                    $container->helperSEF->getLastNoEmptyArrayItem($segments)
+                );
+
+                $vars['tmpl'] = 'component';
+
+                break;
+
+            case 'confirmemail':
+                $vars['task'] = 'confirmemail';
+                $vars['data'] = $data;
+                $vars['tmpl'] = 'component';
+
+                break;
+
+
+            case 'downloads':
+                $vars['view'] = 'downloads';
+
+                // Category id
+                $category = $container->helperSEF->getCategoryFromAlias(
+                    $container->helperSEF->getLastNoEmptyArrayItem($segments)
+                );
+                $vars['id'] = $category->id;
+
+                break;
+
+            case 'categories':
+                $vars['view'] = 'categories';
+
+                // Category id
+                $category = $container->helperSEF->getCategoryFromAlias(
+                    $container->helperSEF->getLastNoEmptyArrayItem($segments)
+                );
+                $vars['id'] = $category->id;
+
+                break;
+
+            case 'item':
+                $vars['view'] = 'item';
+
+                // File id
+                $vars['id'] = $container->helperSEF->getFileIdFromAlias(
+                    $container->helperSEF->getLastNoEmptyArrayItem($segments)
+                );
+
+                break;
+        }
+
+        /*----------  Apply the variables to the input  ----------*/
         $input = Factory::getApplication()->input;
         foreach ($vars as $var => $value) {
             $input->set($var, $value);

@@ -28,12 +28,6 @@ JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundl
 ?>
 <form action="<?php echo(JRoute::_($container->helperRoute->getFileRoute($id, $itemId)));?>" method="post" name="adminForm" id="adminForm">
     <div class="contentopen osdownloads-container">
-        <?php if (isset($this->paths[0])) : ?>
-            <div class="sub_title">
-                <?php echo($this->paths[0]->description);?>
-            </div>
-        <?php endif; ?>
-
         <?php if ($this->showCategoryFilter && count($this->categories) > 1) : ?>
             <div class="category_filter">
                 <?php

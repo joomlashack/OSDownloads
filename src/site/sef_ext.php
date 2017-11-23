@@ -97,49 +97,47 @@ class sef_osdownloads
             if (isset($query['id'])) {
                 unset($query['id']);
             }
+        } else {
+            // If there is no recognized tasks, try to get the view
+            if (isset($query['view'])) {
+                unset($query['view']);
 
-            return $segments;
-        }
+                if (isset($query['id'])) {
+                    unset($query['id']);
+                }
 
-        // If there is no recognized tasks, try to get the view
-        if (isset($query['view'])) {
-            unset($query['view']);
+               switch ($view) {
+                    case 'downloads':
+                        $segments[] = 'downloads';
+                        $container->helperSEF->appendCategoriesToSegments($segments, $id);
 
-            if (isset($query['id'])) {
-                unset($query['id']);
-            }
+                        break;
 
-           switch ($view) {
-                case 'downloads':
-                    $segments[] = 'downloads';
-                    $container->helperSEF->appendCategoriesToSegments($segments, $id);
+                    case 'categories':
+                        $segments[] = 'categories';
+                        $container->helperSEF->appendCategoriesToSegments($segments, $id);
 
-                    break;
+                        break;
 
-                case 'categories':
-                    $segments[] = 'categories';
-                    $container->helperSEF->appendCategoriesToSegments($segments, $id);
+                    case 'item':
+                        // Task segments
+                        $segments[] = "item";
 
-                    break;
+                        // If the id is empty, we try to get it using the item id
+                        if (empty($id)) {
+                            $id = $container->helperSEF->getFileIdFromMenuItemId($itemId);
+                        }
 
-                case 'item':
-                    // Task segments
-                    $segments[] = "item";
+                        $catId = $container->helperSEF->getCategoryIdFromFile($id);
+                        if (!empty($catId)) {
+                            $container->helperSEF->appendCategoriesToSegments($segments, $catId);
+                        }
 
-                    // If the id is empty, we try to get it using the item id
-                    if (empty($id)) {
-                        $id = $container->helperSEF->getFileIdFromMenuItemId($itemId);
-                    }
+                        // Append the file alias
+                        $segments[] = $container->helperSEF->getFileAlias($id);
 
-                    $catId = $container->helperSEF->getCategoryIdFromFile($id);
-                    if (!empty($catId)) {
-                        $container->helperSEF->appendCategoriesToSegments($segments, $catId);
-                    }
-
-                    // Append the file alias
-                    $segments[] = $container->helperSEF->getFileAlias($id);
-
-                    break;
+                        break;
+                }
             }
         }
 

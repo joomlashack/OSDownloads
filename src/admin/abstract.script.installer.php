@@ -198,6 +198,7 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
             ->execute();
 
         $this->fixOrderingParamForMenus();
+        $this->fixDownloadsViewParams();
     }
 
     /**
@@ -351,6 +352,62 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
                         ->where('id = ' . $menu->id);
                     $db->setQuery($query);
                     $db->execute();
+                }
+            }
+        }
+    }
+
+    /**
+     * Detect legacy settings and fix the downloads view params. If legacy data
+     * is found, warn the user. We call legacy data, the param category_id with
+     * multiple values, in the downloads view. Represented issues for SEF
+     * URLs, so we refactored allowing only one category.
+     */
+    protected function fixDownloadsViewParams()
+    {
+        $db  = JFactory::getDbo();
+        $app = JFactory::getApplication();
+
+        // Look for menu items for Category view
+        $query = $db->getQuery(true)
+            ->select(
+                array(
+                    'id',
+                    'params',
+                )
+            )
+            ->from('#__menu')
+            ->where('link = ' . $db->quote('index.php?option=com_osdownloads&view=downloads'));
+        $menuList = $db->setQuery($query)->loadObjectList();
+
+        if (!empty($menuList)) {
+            foreach ($menuList as $menu) {
+                $params = json_decode($menu->params);
+
+                // Does it have the old param and multiple categories selected?
+                if (isset($params->category_id) && is_array($params->category_id) && !empty($params->category_id)) {
+                    // Get the first category for the new param. If empty, use 0, the root category
+                    $id = (int) $params->category_id[0];
+
+                    unset($params->category_id);
+
+                    // Update the link adding the selected category
+                    $link = 'index.php?option=com_osdownloads&view=downloads&id=' . $id;
+
+                    $query = $db->getQuery(true)
+                        ->update('#__menu')
+                        ->where('id = ' . (int) $menu->id)
+                        ->set('link = ' . $db->quote($link))
+                        ->set('params = ' . $db->quote(json_encode($params)));
+                    $db->setQuery($query)->execute();
+
+                    $app->enqueueMessage(
+                        sprintf(
+                            JText::_('Only one category is allowed for the OSDOwnloads Category Files view. The params for menu item %s were upgraded.'),
+                            $menu->id
+                        ),
+                        'warning'
+                    );
                 }
             }
         }

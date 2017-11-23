@@ -14,6 +14,7 @@ use Joomla\Utilities\ArrayHelper;
 use JFactory;
 use JLog;
 use JText;
+use SefAdvanceHelper;
 
 defined('_JEXEC') or die();
 
@@ -195,16 +196,13 @@ class SEF
     /**
      * Returns the category as object based on the alias.
      *
-     * @param array $aliases
+     * @param string $alias
      *
      * @return stdClass
      */
-    public function getCategoryFromAlias(array $aliases)
+    public function getCategoryFromAlias($alias)
     {
         $db = JFactory::getDBO();
-
-        $level = count($aliases);
-        $alias = array_pop($aliases);
 
         $query = $db->getQuery(true)
             ->select('*')
@@ -212,7 +210,6 @@ class SEF
             ->where(
                 array(
                     'extension = ' . $db->quote('com_osdownloads'),
-                    'level = ' . $level,
                     'alias = ' . $db->quote($alias)
                 )
             );
@@ -346,6 +343,98 @@ class SEF
     }
 
     /**
+     * Returns the menu alias of the menu item.
+     *
+     * @param int $itemId
+     *
+     * @return string
+     */
+    public function getMenuItemAliasFromItemId($itemId)
+    {
+        $db = JFactory::getDbo();
+
+        $query = $db->getQuery(true)
+            ->select('alias')
+            ->from('#__menu')
+            ->where('id = ' . $db->quote($itemId));
+
+        $alias = $db->setQuery($query)->loadResult();
+
+        return $alias;
+    }
+
+    /**
+     * Look for a menu item id with the category id
+     *
+     * @param int $categoryId
+     *
+     * @return int
+     */
+    public function findCategoryMenuItemId($categoryId)
+    {
+        $db = JFactory::getDbo();
+
+        // Look for the exact menu
+        $query = $db->getQuery(true)
+            ->select('id')
+            ->from('#__menu')
+            ->where('type = ' . $db->quote('component'))
+            ->where('published = ' . $db->quote('1'))
+            ->where('link = ' . $db->quote(Route::getFileRoute($categoryId)));
+
+        $id = (int) $db->setQuery($query)->loadResult();
+
+        if (empty($id)) {
+            /*
+             * Iterates through the entire category tree
+             * while it finds a category linked to menu
+             */
+            // Get the category tree
+            $db = JFactory::getDBO();
+            $query = $db->getQuery(true)
+                ->select('parent.id AS id')
+                ->from('#__categories AS node')
+                ->join('', '#__categories AS parent ON node.lft BETWEEN parent.lft AND parent.rgt')
+                ->where('parent.extension = ' . $db->quote($option))
+                ->where('node.id = ' . (int) $id);
+
+            $categories = $db->setQuery($query)->loadObjectList();
+
+            // Reverse the tree and remove the last node
+            array_pop($categories);
+            $categories = array_reverse($categories);
+
+            // Build the URL
+            foreach ($categories as $category) {
+                $query = $db->getQuery(true)
+                    ->select('id')
+                    ->from('#__menu')
+                    ->where('type  = ' . $db->quote('component'))
+                    ->where('published = ' . $db->quote('1'))
+                    ->where('link = ' . $db->quote(Route::getFileRoute($category->id)));
+
+                $db->setQuery($query);
+
+                if ($id = $db->loadResult()) {
+                    break;
+                }
+            }
+
+            if (empty($id)) {
+                $app         = JFactory::getApplication();
+                $defaultMenu = $app->getMenu()->getDefault();
+
+                $id = 1;
+                if (isset($defaultMenu->id)) {
+                    $id = $defaultMenu->id;
+                }
+            }
+        }
+
+        return $id;
+    }
+
+    /**
      * Returns the last item of the array not considering empty items.
      * Somes rotes, with trailing slash can produce an empty segment item,
      * specially when using SEF Advance. The array is modified, having the
@@ -366,160 +455,5 @@ class SEF
         }
 
         return $lastItem;
-    }
-
-    /**
-     * Build route segments returning an array.
-     *
-     * @param  array  $query
-     *
-     * @return array
-     */
-    public function getRouteSegmentsFromQuery(array $query)
-    {
-        $segments = array();
-        $itemId   = ArrayHelper::getValue($query, 'Itemid');
-        $id       = ArrayHelper::getValue($query, 'id');
-        $view     = ArrayHelper::getValue($query, 'view');
-        $layout   = ArrayHelper::getValue($query, 'layout');
-        $task     = ArrayHelper::getValue($query, 'task');
-        $data     = ArrayHelper::getValue($query, 'data');
-
-        // Sometimes the ID is empty. We try to recover it from the menu item
-        if (empty($id) && !empty($itemId)) {
-            $id = $this->getFileIdFromMenuItemId($itemId);
-        }
-
-        // Task has higher priority over view
-        if (!empty($task)) {
-            switch ($task) {
-                case 'routedownload':
-                case 'download':
-                    if ($layout !== 'thankyou') {
-                        $segments[] = $task;
-                    } else {
-                        $segments[] = 'thankyou';
-                    }
-
-                    // Append the categories before the alias of the file
-                    $catId = $this->getCategoryIdFromFile($id);
-
-                    $this->appendCategoriesToSegments($segments, $catId);
-
-                    $segments[] = $this->getFileAlias($id);
-                    break;
-
-                case 'confirmemail':
-                    $segments[] = 'confirmemail';
-                    $segments[] = $data;
-
-                    break;
-            }
-
-            return $segments;
-        }
-
-        // If there is no recognized tasks, try to get the view
-        if (!empty($view)) {
-           switch ($view) {
-                case 'downloads':
-                    $segments[] = 'files';
-
-                    $this->appendCategoriesToSegments($segments, $id);
-                    break;
-
-                case 'item':
-                    if ($layout === 'thankyou') {
-                        $segments[] = "thankyou";
-                    } else {
-                        $segments[] = "file";
-                    }
-
-                    $catId = $this->getCategoryIdFromFile($id);
-
-                    if (!empty($catId)) {
-                        $this->appendCategoriesToSegments($segments, $catId);
-                    }
-
-                    // Append the file alias
-                    $segments[] = $this->getFileAlias($id);
-                    break;
-            }
-        }
-
-        return $segments;
-    }
-
-    /**
-     * Get the query vars from the route segments.
-     *
-     * @param  array  $segments
-     *
-     * @return string
-     */
-    public function getQueryFromRouteSegments(array $segments)
-    {
-        $vars = array();
-
-        if (!empty($segments)) {
-            $viewTask = array_shift($segments);
-
-            switch ($viewTask) {
-                case 'files':
-                // @deprecated: use "files" instead
-                case 'category':
-                    $vars['view'] = 'downloads';
-
-                    if (!empty($segments)) {
-                        // Get category Id from category alias
-                        $category = $this->getCategoryFromAlias($segments);
-
-                        if (!empty($category)) {
-                            $vars['id'] = $category->id;
-                        }
-                    }
-                    break;
-
-                case 'file':
-                    $id = $this->getLastNoEmptyArrayItem($segments);
-
-                    $vars['view'] = 'item';
-                    $vars['id']   = $this->getFileIdFromAlias($id);
-                    break;
-
-                case 'thankyou':
-                    $id = $this->getLastNoEmptyArrayItem($segments);
-
-                    $vars['view']   = 'item';
-                    $vars['layout'] = 'thankyou';
-                    $vars['tmpl']   = 'component';
-                    $vars['task']   = 'routedownload';
-                    $vars['id']     = $this->getFileIdFromAlias($id);
-                    break;
-
-                case 'download':
-                    $id = $this->getLastNoEmptyArrayItem($segments);
-
-                    $vars['task'] = 'download';
-                    $vars['tmpl'] = 'component';
-                    $vars['id']   = $this->getFileIdFromAlias($id);
-                    break;
-
-                case 'routedownload':
-                    $id = $this->getLastNoEmptyArrayItem($segments);
-
-                    $vars['task'] = 'routedownload';
-                    $vars['tmpl'] = 'component';
-                    $vars['id']   = $this->getFileIdFromAlias($id);
-                    break;
-
-                case 'confirmemail':
-                    $vars['task'] = 'confirmemail';
-                    $vars['data'] = array_pop($segments);
-                    break;
-            }
-        }
-
-        return $vars;
     }
 }

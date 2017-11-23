@@ -9,6 +9,7 @@
 use Alledia\Framework\Factory;
 use Joomla\Utilities\ArrayHelper;
 use Alledia\OSDownloads\Free\Factory as OSDFactory;
+use Joomla\CMS\Component\Router\RouterBase;
 
 defined('_JEXEC') or die();
 
@@ -21,7 +22,7 @@ if (!defined('OSDOWNLOADS_LOADED')) {
 /**
  * Routing class from com_osdownloads
  */
-class OsdownloadsRouter extends JComponentRouterBase
+class OsdownloadsRouter extends RouterBase
 {
     /**
      * Class constructor.
@@ -51,17 +52,97 @@ class OsdownloadsRouter extends JComponentRouterBase
      */
     public function build(&$query)
     {
+        $segments  = array();
         $container = OSDFactory::getContainer();
 
-        // Build the segments
-        $segments = $container->helperSEF->getRouteSegmentsFromQuery($query);
+        $itemId = ArrayHelper::getValue($query, 'Itemid');
+        $id     = ArrayHelper::getValue($query, 'id');
+        $view   = ArrayHelper::getValue($query, 'view');
+        $layout = ArrayHelper::getValue($query, 'layout');
+        $task   = ArrayHelper::getValue($query, 'task');
+        $data   = ArrayHelper::getValue($query, 'data');
 
-        // Cleanup the query
-        $remove = array('view', 'layout', 'id', 'task', 'tmpl', 'data');
-        foreach ($query as $key => $value) {
-            if (isset($query[$key])) {
-                unset($query[$key]);
+        /*----------  Subsection comment block  ----------*/
+
+        if (isset($query['task'])) {
+            unset($query['task']);
+
+            switch ($task) {
+                case 'routedownload':
+                case 'download':
+                    if ($layout !== 'thankyou') {
+                        $segments[] = $task;
+                    } else {
+                        $segments[] = 'thankyou';
+                    }
+
+                    // Append the categories before the alias of the file
+                    $catId = $container->helperSEF->getCategoryIdFromFile($id);
+
+                    $container->helperSEF->appendCategoriesToSegments($segments, $catId);
+
+                    $segments[] = $container->helperSEF->getFileAlias($id);
+
+                    break;
+
+                case 'confirmemail':
+                    $segments[] = 'confirmemail';
+                    $segments[] = $data;
+
+                    break;
             }
+
+            if (isset($query['tmpl'])) {
+                unset($query['tmpl']);
+            }
+
+            if (isset($query['id'])) {
+                unset($query['id']);
+            }
+
+            return $segments;
+        }
+
+        // If there is no recognized tasks, try to get the view
+        if (isset($query['view'])) {
+            unset($query['view']);
+
+            if (isset($query['id'])) {
+                unset($query['id']);
+            }
+
+           switch ($view) {
+                case 'downloads':
+                    $segments[] = 'downloads';
+                    $container->helperSEF->appendCategoriesToSegments($segments, $id);
+
+                    break;
+
+                case 'categories':
+                    $segments[] = 'categories';
+                    $container->helperSEF->appendCategoriesToSegments($segments, $id);
+
+                    break;
+
+                case 'item':
+                    // Task segments
+                    $segments[] = "item";
+
+                    $catId = $container->helperSEF->getCategoryIdFromFile($id);
+                    if (!empty($catId)) {
+                        $container->helperSEF->appendCategoriesToSegments($segments, $catId);
+                    }
+
+                    // Append the file alias
+                    $segments[] = $container->helperSEF->getFileAlias($id);
+
+                    break;
+            }
+        }
+
+        // Remove tmp=component
+        if (isset($query['tmpl']) && 'component' === $query['tmpl']) {
+            unset($query['tmpl']);
         }
 
         return $segments;
@@ -74,10 +155,62 @@ class OsdownloadsRouter extends JComponentRouterBase
      */
     public function parse(&$segments)
     {
+        $vars      = array();
         $container = OSDFactory::getContainer();
 
-        // Get the query vars
-        $vars = $container->helperSEF->getQueryFromRouteSegments($segments);
+        $firstSegment = array_shift($segments);
+
+        switch ($firstSegment) {
+            case 'routedownload':
+            case 'download':
+                $vars['task'] = $firstSegment;
+
+                if ('thankyou' === reset($segments)) {
+                    array_shift($segments);
+                    $vars['layout'] = 'thankyou';
+                }
+
+                // File id
+                $id = $container->helperSEF->getFileIdFromAlias(last($segments));
+
+                $vars['tmpl'] = 'component';
+
+                break;
+
+            case 'confirmemail':
+                $vars['task'] = 'confirmemail';
+                $vars['data'] = $data;
+                $vars['tmpl'] = 'component';
+
+                break;
+
+
+            case 'downloads':
+                $vars['view'] = 'downloads';
+
+                // Category id
+                $category = $container->helperSEF->getCategoryFromAlias(last($segments));
+                $vars['id'] = $category->id;
+
+                break;
+
+            case 'categories':
+                $vars['view'] = 'categories';
+
+                // Category id
+                $category = $container->helperSEF->getCategoryFromAlias(last($segments));
+                $vars['id'] = $category->id;
+
+                break;
+
+            case 'item':
+                $vars['view'] = 'item';
+
+                // File id
+                $vars['id'] = $container->helperSEF->getFileIdFromAlias(last($segments));
+
+                break;
+        }
 
         return $vars;
     }

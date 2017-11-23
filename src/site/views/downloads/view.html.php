@@ -64,6 +64,10 @@ class OSDownloadsViewDownloads extends View\Site\Base
         $extension->loadLibrary();
 
         $id = $app->input->getInt('id', 1);
+        // If empty, we assume id = 1 to hit the Root category
+        if (empty($id)) {
+            $id = 1;
+        }
 
         $model = JModelLegacy::getInstance('OSDownloadsModelItem');
         $query = $model->getItemQuery();

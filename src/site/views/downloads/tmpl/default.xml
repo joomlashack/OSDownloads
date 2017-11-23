@@ -1,96 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="COM_OSDOWNLOADS_DOWNLOADS_VIEW_DEFAULT_TITLE">
-		<message>
-			<![CDATA[COM_OSDOWNLOADS_DOWNLOADS_VIEW_DEFAULT_DESC]]>
-		</message>
-	</layout>
-	<fields name="params">
-		<fieldset name="basic" label="COM_OSDOWNLOADS_OPTIONS">
-			<field name="category_id" type="category"
-				multiple="true"
-				extension="com_osdownloads"
-				required="true"
-				label="COM_OSDOWNLOADS_CATEGORIES_LABEL"
-				description="COM_OSDOWNLOADS_CATEGORIES_DESC" />
+    <layout title="COM_OSDOWNLOADS_DOWNLOADS_VIEW_DEFAULT_TITLE">
+        <message>
+            <![CDATA[COM_OSDOWNLOADS_DOWNLOADS_VIEW_DEFAULT_DESC]]>
+        </message>
+    </layout>
+    <fields name="params">
+        <fieldset name="basic" label="COM_OSDOWNLOADS_OPTIONS">
+            <field name="category_id" type="category"
+                   multiple="true"
+                   extension="com_osdownloads"
+                   required="true"
+                   label="COM_OSDOWNLOADS_CATEGORIES_LABEL"
+                   description="COM_OSDOWNLOADS_CATEGORIES_DESC"/>
 
-			<field name="include_child_files"
-				type="radio"
-				class="btn-group"
-				default="0"
-				label="COM_OSDOWNLOADS_INCLUDE_FILES_CHILD_CATEGORIES_LABEL"
-				description="COM_OSDOWNLOADS_INCLUDE_FILES_CHILD_CATEGORIES_DESC">
-				<option value="0">JNO</option>
-				<option value="1">JYES</option>
-			</field>
+            <field name="include_child_files"
+                   type="radio"
+                   class="btn-group btn-group-yesno"
+                   default="0"
+                   label="COM_OSDOWNLOADS_INCLUDE_FILES_CHILD_CATEGORIES_LABEL"
+                   description="COM_OSDOWNLOADS_INCLUDE_FILES_CHILD_CATEGORIES_DESC">
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
 
-			<field name="show_child_categories"
-				type="radio"
-				class="btn-group"
-				default="1"
-				label="COM_OSDOWNLOADS_CHILD_CATEGORIES_LABEL"
-				description="COM_OSDOWNLOADS_CHILD_CATEGORIES_DESC" >
-				<option value="0">JNO</option>
-				<option value="1">JYES</option>
-			</field>
+            <field name="show_child_categories"
+                   type="radio"
+                   class="btn-group btn-group-yesno"
+                   default="1"
+                   label="COM_OSDOWNLOADS_CHILD_CATEGORIES_LABEL"
+                   description="COM_OSDOWNLOADS_CHILD_CATEGORIES_DESC">
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
 
-			<field name="number_of_column"
-				type="text"
-				size="2"
-				default=""
-				label="COM_OSDOWNLOADS_NUMBER_OF_COLUMN" />
+            <field name="number_of_column"
+                   type="text"
+                   size="2"
+                   default=""
+                   label="COM_OSDOWNLOADS_NUMBER_OF_COLUMN"/>
 
-			<field name="show_download_count"
-				type="radio"
-				class="btn-group"
-				default="0"
-				label="COM_OSDOWNLOADS_SHOW_DOWNLOAD_COUNT" >
-				<option value="0">JNO</option>
-				<option value="1">JYES</option>
-			</field>
+            <field name="show_download_count"
+                   type="radio"
+                   class="btn-group btn-group-yesno"
+                   default="0"
+                   label="COM_OSDOWNLOADS_SHOW_DOWNLOAD_COUNT">
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
 
-			<field name="show_category"
-				type="radio"
-				class="btn-group"
-				default="0"
-				label="COM_OSDOWNLOADS_SHOW_CATEGORY" >
-				<option value="0">JNO</option>
-				<option value="1">JYES</option>
-			</field>
+            <field name="show_category"
+                   type="radio"
+                   class="btn-group btn-group-yesno"
+                   default="0"
+                   label="COM_OSDOWNLOADS_SHOW_CATEGORY">
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
 
-			<field name="show_category_filter"
-				type="radio"
-				class="btn-group"
-				default="0"
-				label="COM_OSDOWNLOADS_SHOW_CATEGORY_FILTER" >
-				<option value="0">JNO</option>
-				<option value="1">JYES</option>
-			</field>
+            <field name="show_category_filter"
+                   type="radio"
+                   class="btn-group btn-group-yesno"
+                   default="0"
+                   label="COM_OSDOWNLOADS_SHOW_CATEGORY_FILTER">
+                <option value="0">JNO</option>
+                <option value="1">JYES</option>
+            </field>
 
-			<field
-				name="ordering"
-				type="list"
-				default="ordering"
-				label="COM_OSDOWNLOADSFILES_FIELD_ORDERING_LABEL"
-				description="COM_OSDOWNLOADSFILES_FIELD_ORDERING_DESC">
+            <field name="ordering"
+                   type="list"
+                   default="ordering"
+                   label="COM_OSDOWNLOADSFILES_FIELD_ORDERING_LABEL"
+                   description="COM_OSDOWNLOADSFILES_FIELD_ORDERING_DESC">
+                <option value="doc.ordering">COM_OSDOWNLOADSFILES_ORDERING</option>
+                <option value="doc.name">COM_OSDOWNLOADSFILES_NAME</option>
+                <option value="doc.downloaded">COM_OSDOWNLOADSFILES_DOWNLOADED</option>
+                <option value="doc.created_time">COM_OSDOWNLOADSFILES_CREATED_TIME</option>
+                <option value="doc.modified_time">COM_OSDOWNLOADSFILES_MODIFIED_TIME</option>
+            </field>
 
-				<option value="doc.ordering">COM_OSDOWNLOADSFILES_ORDERING</option>
-				<option value="doc.name">COM_OSDOWNLOADSFILES_NAME</option>
-				<option value="doc.downloaded">COM_OSDOWNLOADSFILES_DOWNLOADED</option>
-				<option value="doc.created_time">COM_OSDOWNLOADSFILES_CREATED_TIME</option>
-				<option value="doc.modified_time">COM_OSDOWNLOADSFILES_MODIFIED_TIME</option>
-			</field>
-
-			<field
-				name="ordering_dir"
-				type="list"
-				default="asc"
-				label="COM_OSDOWNLOADSFILES_FIELD_ORDERING_DIR_LABEL"
-				description="COM_OSDOWNLOADSFILES_FIELD_ORDERING_DIR_DESC">
-
-				<option value="asc">COM_OSDOWNLOADSFILES_ASC</option>
-				<option value="desc">COM_OSDOWNLOADSFILES_DESC</option>
-			</field>
-		</fieldset>
-	</fields>
+            <field name="ordering_dir"
+                   type="list"
+                   default="asc"
+                   label="COM_OSDOWNLOADSFILES_FIELD_ORDERING_DIR_LABEL"
+                   description="COM_OSDOWNLOADSFILES_FIELD_ORDERING_DIR_DESC">
+                <option value="asc">COM_OSDOWNLOADSFILES_ASC</option>
+                <option value="desc">COM_OSDOWNLOADSFILES_DESC</option>
+            </field>
+        </fieldset>
+    </fields>
 </metadata>

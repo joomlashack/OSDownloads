@@ -68,7 +68,7 @@ $thankyoupage = str_replace('{{download_url}}', $downloadUrl, $thankyoupage);
 <div id="osdownloads-thankyou">
     <div class="contentopen thank">
         <?php echo $thankyoupage; ?>
-        <?php if (! $iOSBrowser) : ?>
+        <?php if (!$iOSBrowser) : ?>
             <meta http-equiv="refresh" content="0;url=<?php echo $downloadUrl; ?>">
         <?php endif; ?>
     </div>

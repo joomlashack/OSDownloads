@@ -385,7 +385,7 @@ class SEF
         $task     = ArrayHelper::getValue($query, 'task');
         $data     = ArrayHelper::getValue($query, 'data');
 
-        // Sometime the ID is empty. We try to recover it from the menu item
+        // Sometimes the ID is empty. We try to recover it from the menu item
         if (empty($id) && !empty($itemId)) {
             $id = $this->getFileIdFromMenuItemId($itemId);
         }

@@ -111,21 +111,25 @@ class OSDownloadsViewDownloads extends View\Site\Base
         }
 
         /*----------  Child Categories  ----------*/
-        $query = $db->getQuery(true)
-            ->select('*')
-            ->from('#__categories AS c')
-            ->where(
-                array(
-                    'extension = ' . $db->quote('com_osdownloads'),
-                    'published = 1',
-                    'parent_id = ' . $db->quote($id),
-                    sprintf('access IN (%s)', join(',', $groups))
-                )
-            )
-            ->order('c.lft ASC');
+        $categories = array();
 
-        $db->setQuery($query);
-        $categories = $db->loadObjectList();
+        if ($showChildCategories) {
+            $query = $db->getQuery(true)
+                ->select('*')
+                ->from('#__categories AS c')
+                ->where(
+                    array(
+                        'extension = ' . $db->quote('com_osdownloads'),
+                        'published = 1',
+                        'parent_id = ' . $db->quote($id),
+                        sprintf('access IN (%s)', join(',', $groups))
+                    )
+                )
+                ->order('c.lft ASC');
+
+            $db->setQuery($query);
+            $categories = $db->loadObjectList();
+        }
 
         // Category filter
         $showCategoryFilter = $this->params->get('show_category_filter', false);

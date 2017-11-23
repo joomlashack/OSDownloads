@@ -13,12 +13,12 @@ use Alledia\OSDownloads\Free\Factory;
 $app                    = JFactory::getApplication();
 $lang                   = JFactory::getLanguage();
 $doc                    = JFactory::getDocument();
+$container              = Factory::getContainer();
 $NumberOfColumn         = $this->params->get("number_of_column", 1);
 $user                   = JFactory::getUser();
 $authorizedAccessLevels = $user->getAuthorisedViewLevels();
 $itemId                 = $app->input->getInt('Itemid');
 $id                     = $app->input->getInt('id');
-$container              = Factory::getContainer();
 
 $showModal = false;
 

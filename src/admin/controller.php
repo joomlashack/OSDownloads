@@ -9,6 +9,9 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.controller');
 
+use Alledia\OSDownloads\Free\Helper\Helper;
+
+
 class OSDownloadsController extends JControllerLegacy
 {
     protected $default_view = "files";
@@ -37,7 +40,7 @@ class OSDownloadsController extends JControllerLegacy
 
         if ($view !== 'file') {
             require_once JPATH_COMPONENT.'/helpers/osdownloads.php';
-            OSDownloadsHelper::addSubmenu($app->input->getCmd('view', $view));
+            Helper::addSubmenu($app->input->getCmd('view', $view));
         }
 
         parent::display();

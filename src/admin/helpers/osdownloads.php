@@ -12,11 +12,20 @@ defined('_JEXEC') or die;
 
 /**
  * Backward compatibility for the helper. We moved it to improve inheritance between
- * Free and Pro versions. Some plugins still call this class.
+ * Free and Pro versions. Some plugins still call this class, including com_files.
  *
  * @deprecated 1.8.0  Use the Alledia\OSDownloads\Free\Helper\Helper class instead.
  */
-class OSDownloadsHelper extends Helper;
-{
 
+if (class_exists('\\Alledia\\OSDownloads\\Free\\Pro\\Helper')) {
+	class OSDownloadsHelper extends Alledia\OSDownloads\Pro\Helper\Helper
+	{
+
+	}
+
+} else {
+	class OSDownloadsHelper extends Helper
+	{
+
+	}
 }

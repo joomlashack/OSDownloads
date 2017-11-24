@@ -13,6 +13,7 @@ use JText;
 use JToolBarHelper;
 use JAccess;
 use JFactory;
+use JHtml;
 
 defined('_JEXEC') or die();
 

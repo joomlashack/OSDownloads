@@ -6,7 +6,7 @@
  * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
-namespace Alledia\OSDownloads\Free;
+namespace Alledia\OSDownloads\Free\Helper;
 
 defined('_JEXEC') or die();
 

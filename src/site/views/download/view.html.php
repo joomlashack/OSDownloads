@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Alledia\OSDownloads\Free\File;
-use Alledia\OSDownloads\Free\Helper;
+use Alledia\OSDownloads\Free\Helper\Helper;
 use Alledia\OSDownloads\Free\Joomla\View\Legacy as LegacyView;
 
 

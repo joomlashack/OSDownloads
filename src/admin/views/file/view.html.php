@@ -43,6 +43,19 @@ class OSDownloadsViewFile extends OSDownloadsViewAbstract
 
         $this->form->bind($item);
 
+        /*===============================================
+        =            Trigger content plugins            =
+        ===============================================*/
+        // In the Pro version this will allow com_files to save the custom fields values.
+
+        JPluginHelper::importPlugin('content');
+        $dispatcher = JEventDispatcher::getInstance();
+
+        // Trigger the form preparation event.
+        $dispatcher->trigger('onContentPrepareForm', array($this->form, $item));
+
+        /*=====  End of Trigger content plugins  ======*/
+
         // Load the extension
         $extension = Factory::getExtension('OSDownloads', 'component');
         $extension->loadLibrary();

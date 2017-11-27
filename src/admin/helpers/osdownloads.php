@@ -17,12 +17,11 @@ defined('_JEXEC') or die;
  * @deprecated 1.8.0  Use the Alledia\OSDownloads\Free\Helper\Helper class instead.
  */
 
-if (class_exists('\\Alledia\\OSDownloads\\Free\\Pro\\Helper')) {
+if (class_exists('\\Alledia\\OSDownloads\\Pro\\Helper\\Helper')) {
 	class OSDownloadsHelper extends Alledia\OSDownloads\Pro\Helper\Helper
 	{
 
 	}
-
 } else {
 	class OSDownloadsHelper extends Helper
 	{

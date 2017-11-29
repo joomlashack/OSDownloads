@@ -106,7 +106,7 @@ class sef_osdownloads
                     unset($query['id']);
                 }
 
-               switch ($view) {
+                switch ($view) {
                     case 'downloads':
                         $segments[] = 'downloads';
                         $container->helperSEF->appendCategoriesToSegments($segments, $id);
@@ -168,7 +168,7 @@ class sef_osdownloads
         /* Our first variable always starts at $pos+2...
          * @see https://www.sakic.net/support/sef-advance-extensions/
          */
-        $segments = array_slice($segments, $pos+2);
+        $segments = array_slice($segments, $pos + 2);
 
         /*----------  Build the route  ----------*/
         $firstSegment = array_shift($segments);
@@ -204,7 +204,7 @@ class sef_osdownloads
                 $vars['view'] = 'downloads';
 
                 // Category id
-                $category = $container->helperSEF->getCategoryFromAlias(
+                $category   = $container->helperSEF->getCategoryFromAlias(
                     $container->helperSEF->getLastNoEmptyArrayItem($segments)
                 );
                 $vars['id'] = $category->id;
@@ -215,7 +215,7 @@ class sef_osdownloads
                 $vars['view'] = 'categories';
 
                 // Category id
-                $category = $container->helperSEF->getCategoryFromAlias(
+                $category   = $container->helperSEF->getCategoryFromAlias(
                     $container->helperSEF->getLastNoEmptyArrayItem($segments)
                 );
                 $vars['id'] = $category->id;

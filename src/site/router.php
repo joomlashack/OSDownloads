@@ -55,7 +55,6 @@ class OsdownloadsRouter extends RouterBase
         $segments  = array();
         $container = OSDFactory::getContainer();
 
-        $itemId = ArrayHelper::getValue($query, 'Itemid');
         $id     = ArrayHelper::getValue($query, 'id');
         $view   = ArrayHelper::getValue($query, 'view');
         $layout = ArrayHelper::getValue($query, 'layout');
@@ -111,7 +110,7 @@ class OsdownloadsRouter extends RouterBase
                 unset($query['id']);
             }
 
-           switch ($view) {
+            switch ($view) {
                 case 'downloads':
                     $segments[] = 'downloads';
                     $container->helperSEF->appendCategoriesToSegments($segments, $id);
@@ -189,7 +188,7 @@ class OsdownloadsRouter extends RouterBase
                 $vars['view'] = 'downloads';
 
                 // Category id
-                $category = $container->helperSEF->getCategoryFromAlias(last($segments));
+                $category   = $container->helperSEF->getCategoryFromAlias(last($segments));
                 $vars['id'] = $category->id;
 
                 break;
@@ -198,7 +197,7 @@ class OsdownloadsRouter extends RouterBase
                 $vars['view'] = 'categories';
 
                 // Category id
-                $category = $container->helperSEF->getCategoryFromAlias(last($segments));
+                $category   = $container->helperSEF->getCategoryFromAlias(last($segments));
                 $vars['id'] = $category->id;
 
                 break;

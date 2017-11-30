@@ -178,7 +178,7 @@ class OsdownloadsRouter extends RouterBase
 
             case 'confirmemail':
                 $vars['task'] = 'confirmemail';
-                $vars['data'] = $data;
+                $vars['data'] = last($segments);
                 $vars['tmpl'] = 'component';
 
                 break;

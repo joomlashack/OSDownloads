@@ -42,8 +42,6 @@ class sef_osdownloads
      **/
     public function create($string)
     {
-        $container = OSDFactory::getContainer();
-
         // Remove index.php from the string
         $string   = preg_replace('#^index\.php\?#', '', html_entity_decode($string));
         $query    = array();

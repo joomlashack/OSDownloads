@@ -21,16 +21,16 @@ class OSDownloadsViewFile extends OSDownloadsViewAbstract
 
     public function display($tpl = null)
     {
-        $this->form = $this->get('Form');
-        $this->model = $this->getModel();
-
-        JTable::addIncludePath(JPATH_COMPONENT . '/tables');
-
         $app = JFactory::getApplication();
         $cid = $app->input->get('cid', array(), 'array');
         $cid = (int)array_shift($cid);
 
+        $this->model = $this->getModel();
+        $this->model->getState()->set('file.id', $cid);
 
+        $this->form = $this->get('Form');
+
+        JTable::addIncludePath(JPATH_COMPONENT . '/tables');
 
         $item = JTable::getInstance("document", "OSDownloadsTable");
         $item->load($cid);
@@ -50,9 +50,6 @@ class OSDownloadsViewFile extends OSDownloadsViewAbstract
 
         JPluginHelper::importPlugin('content');
         $dispatcher = JEventDispatcher::getInstance();
-
-        // Trigger the form preparation event.
-        $dispatcher->trigger('onContentPrepareForm', array($this->form, $item));
 
         /*=====  End of Trigger content plugins  ======*/
 

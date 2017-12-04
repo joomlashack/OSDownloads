@@ -8,6 +8,8 @@
 
 namespace Alledia\OSDownloads\Free;
 
+use Alledia\OSDownloads\Free\Helper\Route;
+
 defined('_JEXEC') or die();
 
 /**
@@ -15,9 +17,9 @@ defined('_JEXEC') or die();
  *
  * @package OSDownloads
  *
- * @property HelperRoute       helperRoute
+ * @property Route helperRoute
  *
- * @method HelperRoute         getHelperRoute()
+ * @method Route  getHelperRoute()
  */
 class Container extends \Pimple\Container
 {
@@ -26,10 +28,10 @@ class Container extends \Pimple\Container
      */
     protected static $instance;
 
-    /** 
+    /**
      * The constructor. Allow to set the initial value for services.
      *
-     * @param array  $values
+     * @param array $values
      */
     public function __construct(array $values = array())
     {
@@ -40,14 +42,14 @@ class Container extends \Pimple\Container
             ),
             $values
         );
-        
+
         parent::__construct($values);
     }
 
     /**
      * Magic method to get attributes.
      *
-     * @param string  $name
+     * @param string $name
      *
      * @return mix
      */
@@ -67,7 +69,7 @@ class Container extends \Pimple\Container
      */
     public static function getInstance()
     {
-        if (! empty(static::$instance)) {
+        if (!empty(static::$instance)) {
             return static::$instance;
         }
 

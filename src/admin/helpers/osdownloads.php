@@ -10,6 +10,12 @@ defined('_JEXEC') or die;
 
 use Alledia\OSDownloads\Free\Factory;
 
+if (!defined('OSDOWNLOADS_LOADED')) {
+    $path = JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
+    if (is_file($path)) {
+        require_once $path;
+    }
+}
 
 class OSDownloadsHelper
 {

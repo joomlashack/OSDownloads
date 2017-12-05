@@ -20,7 +20,7 @@
             />
         </fieldset>
     </fields>
-z
+
     <fields name="params">
         <fieldset name="basic" label="COM_OSDOWNLOADS_OPTIONS">
             <field name="include_child_files"

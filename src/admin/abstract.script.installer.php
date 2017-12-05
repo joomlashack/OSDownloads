@@ -199,6 +199,7 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
 
         $this->fixOrderingParamForMenus();
         $this->fixDownloadsViewParams();
+        $this->fixItemViewParams();
     }
 
     /**
@@ -408,6 +409,50 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
                         ),
                         'warning'
                     );
+                }
+            }
+        }
+    }
+
+    /**
+     * Detect legacy settings and fix the item view params
+     */
+    protected function fixItemViewParams()
+    {
+        $db  = JFactory::getDbo();
+        $app = JFactory::getApplication();
+
+        // Look for menu items for Item view
+        $query = $db->getQuery(true)
+            ->select(
+                array(
+                    'id',
+                    'params',
+                )
+            )
+            ->from('#__menu')
+            ->where('link = ' . $db->quote('index.php?option=com_osdownloads&view=item'));
+        $menuList = $db->setQuery($query)->loadObjectList();
+
+        if (!empty($menuList)) {
+            foreach ($menuList as $menu) {
+                $params = json_decode($menu->params);
+
+                // Does it have the old param?
+                if (isset($params->document_id) && !empty($params->document_id)) {
+                    $id = (int) $params->document_id;
+
+                    unset($params->document_id);
+
+                    // Update the link adding the selected category
+                    $link = 'index.php?option=com_osdownloads&view=item&id=' . $id;
+
+                    $query = $db->getQuery(true)
+                        ->update('#__menu')
+                        ->where('id = ' . (int) $menu->id)
+                        ->set('link = ' . $db->quote($link))
+                        ->set('params = ' . $db->quote(json_encode($params)));
+                    $db->setQuery($query)->execute();
                 }
             }
         }

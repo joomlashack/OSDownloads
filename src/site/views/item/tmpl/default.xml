@@ -5,14 +5,20 @@
 			<![CDATA[COM_OSDOWNLOADS_FILE_VIEW_DEFAULT_DESC]]>
 		</message>
 	</layout>
+
+	<fields name="request">
+        <fieldset name="request">
+            <field name="id"
+                   type="modal_document"
+                   label="COM_OSDOWNLOADS_FILE"
+                   size="1"
+                   default=""
+            />
+        </fieldset>
+    </fields>
+
 	<fields name="params">
 		<fieldset name="basic" label="COM_OSDOWNLOADS_OPTIONS" addfieldpath="/components/com_osdownloads/models/fields">
-			<field name="document_id"
-				type="modal_document"
-				size="1"
-				default=""
-				label="COM_OSDOWNLOADS_FILE" />
-
 			<field name="show_download_count"
 				type="radio"
 				default="0"

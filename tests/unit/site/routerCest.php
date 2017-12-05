@@ -13,8 +13,7 @@ class RouterCest
         $this->router  = Stub::make(
             'OsdownloadsRouter',
             [
-                'getCategoryIdFromFile' => function($id)
-                {
+                'getCategoryIdFromFile' => function ($id) {
                     switch ($id) {
                         case 1:
                             return 12;
@@ -24,8 +23,7 @@ class RouterCest
                     return 0;
                 },
 
-                'getCategory' => function($id)
-                {
+                'getCategory' => function ($id) {
                     $categories = [
                         10 => (object) [
                             'parent_id' => null,
@@ -44,8 +42,7 @@ class RouterCest
                     return $categories[$id];
                 },
 
-                'getFileAlias' => function($id)
-                {
+                'getFileAlias' => function ($id) {
                     switch ($id) {
                         case 1:
                             return 'file1';
@@ -171,7 +168,7 @@ class RouterCest
 
     /**
      * Try to build route segments for the thank you page in the item view.
-     * 
+     *
      *  view: 'item', layout: 'thankyou', id: 1 ==> 0: 'thankyou', 1..n: [category_aliases], n+1: [file_alias]
      *
      * @example {"view": "item", "layout": "thankyou", "id": 1}
@@ -195,7 +192,7 @@ class RouterCest
 
     /**
      * Try to build route segments for the item view
-     * 
+     *
      * view: 'item', id: 1 ==> 0: 'file', 1..n: [category_aliases], n+1: [file_alias]
      *
      * @example {"view": "item", "id": 1}
@@ -218,7 +215,7 @@ class RouterCest
 
     /**
      * Try to parse segments for sub
-     * 
+     *
      * view: 'item', id: 1 ==> 0: 'file', 1..n: [category_aliases], n+1: [file_alias]
      *
      * @example {"view": "item", "id": 1}

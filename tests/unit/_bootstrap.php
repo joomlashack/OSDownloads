@@ -8,6 +8,8 @@ define('JPATH_ADMINISTRATOR', MOCKUP_PATH . '/administrator');
 require MOCKUP_PATH . '/jimport.php';
 require MOCKUP_PATH . '/JComponentRouterBase.php';
 require MOCKUP_PATH . '/JLog.php';
+require MOCKUP_PATH . '/JError.php';
+require MOCKUP_PATH . '/JText.php';
 require MOCKUP_PATH . '/ArrayHelper.php';
 require MOCKUP_PATH . '/RouterBase.php';
 require MOCKUP_PATH . '/OSDFreeFactory.php';

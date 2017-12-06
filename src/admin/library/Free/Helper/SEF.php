@@ -30,7 +30,7 @@ class SEF
      *
      * @return int
      */
-    public function getCategoryIdFromFile($fileId)
+    public function getCategoryIdFromFileId($fileId)
     {
         $db = JFactory::getDbo();
 
@@ -47,7 +47,7 @@ class SEF
                 JText::sprintf(
                     'COM_OSDOWNLOADS_ERROR_FILE_NOT_FOUND',
                     $fileId,
-                    'getCategoryIdFromFile'
+                    'getCategoryIdFromFileId'
                 ),
                 JLog::WARNING
             );
@@ -228,6 +228,26 @@ class SEF
         }
 
         return $category;
+    }
+
+    /**
+     * Returns the file category as object based on the file id.
+     *
+     * @param int $id
+     *
+     * @return stdClass
+     */
+    public function getCategoryFromFileId($fileId)
+    {
+        $catId = $this->getCategoryIdFromFileId($fileId);
+
+        if (!empty($catId)) {
+            $category = $this->getCategory($catId);
+
+            return $category;
+        }
+
+        return false;
     }
 
     /**

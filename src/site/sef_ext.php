@@ -73,7 +73,7 @@ class sef_osdownloads
                     }
 
                     // Append the categories before the alias of the file
-                    $catId = $container->helperSEF->getCategoryIdFromFile($id);
+                    $catId = $container->helperSEF->getCategoryIdFromFileId($id);
 
                     $container->helperSEF->appendCategoriesToSegments($segments, $catId);
 
@@ -126,7 +126,7 @@ class sef_osdownloads
                             $id = $container->helperSEF->getFileIdFromMenuItemId($itemId);
                         }
 
-                        $catId = $container->helperSEF->getCategoryIdFromFile($id);
+                        $catId = $container->helperSEF->getCategoryIdFromFileId($id);
                         if (!empty($catId)) {
                             $container->helperSEF->appendCategoriesToSegments($segments, $catId);
                         }

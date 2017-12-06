@@ -91,7 +91,7 @@ class OsdownloadsRouter extends RouterBase
                     }
 
                     // Append the categories before the alias of the file
-                    $catId = $this->container->helperSEF->getCategoryIdFromFile($id);
+                    $catId = $this->container->helperSEF->getCategoryIdFromFileId($id);
 
                     $this->container->helperSEF->appendCategoriesToSegments($segments, $catId);
 
@@ -146,7 +146,7 @@ class OsdownloadsRouter extends RouterBase
                  *
                  */
                 case 'item':
-                    $catId = $this->container->helperSEF->getCategoryIdFromFile($id);
+                    $catId = $this->container->helperSEF->getCategoryIdFromFileId($id);
                     if (!empty($catId)) {
                         $this->container->helperSEF->appendCategoriesToSegments($segments, $catId);
                     }
@@ -194,8 +194,30 @@ class OsdownloadsRouter extends RouterBase
                         $vars['layout'] = 'thankyou';
                     }
 
+                    $alias = array_pop($segments);
+
+                    $id = $this->container->helperSEF->getFileIdFromAlias($alias);
+
+                    // Check if the file exists
+                    if (empty($id)) {
+                        JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
+                    }
+
+                    $category = $this->container->helperSEF->getCategoryFromFileId($id);
+
+                    // Check if the category was foud
+                    if (empty($category)) {
+                        JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
+                    }
+
+                    // Check if the path is correct
+                    $path = implode('/', $segments);
+                    if ($path !== $category->path) {
+                        JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
+                    }
+
                     // File id
-                    $vars['id'] = $this->container->helperSEF->getFileIdFromAlias(end($segments));
+                    $vars['id'] = $id;
 
                     $vars['tmpl'] = 'component';
 
@@ -225,14 +247,33 @@ class OsdownloadsRouter extends RouterBase
                             // Look for a file with the given alias
                             $id = $this->container->helperSEF->getFileIdFromAlias($segments[$indexSecToLast]);
 
-                            if (!empty($id)) {
-                                $vars['view']   = 'item';
-                                $vars['tmpl']   = 'component';
-                                $vars['layout'] = 'thankyou';
-                                $vars['id']     = $id;
-
-                                break;
+                            if (empty($id)) {
+                                JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
                             }
+
+                            $segments = array_splice($segments, 0, -3);
+
+                            // Check the category path
+                            $category = $this->container->helperSEF->getCategoryFromFileId($id);
+
+                            // Check if the category was foud
+                            if (empty($category)) {
+                                JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
+                            }
+
+                            // Check if the path is correct
+                            $path = implode('/', $segments);
+
+                            if ($path !== $category->path) {
+                                JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
+                            }
+
+                            $vars['view']   = 'item';
+                            $vars['tmpl']   = 'component';
+                            $vars['layout'] = 'thankyou';
+                            $vars['id']     = $id;
+
+                            break;
                         }
                     }
 
@@ -254,12 +295,30 @@ class OsdownloadsRouter extends RouterBase
                             // Look for a file with the given alias
                             $id = $this->container->helperSEF->getFileIdFromAlias(end($segments));
 
-                            if (!empty($id)) {
-                                $vars['view'] = 'item';
-                                $vars['id']   = $id;
+                            $segments = array_splice($segments, 0, -2);
 
-                                break;
+                            // Check if the file exists
+                            if (empty($id)) {
+                                JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
                             }
+
+                            $category = $this->container->helperSEF->getCategoryFromFileId($id);
+
+                            // Check if the category was foud
+                            if (empty($category)) {
+                                JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
+                            }
+
+                            // Check if the path is correct
+                            $path = implode('/', $segments);
+                            if ($path !== $category->path) {
+                                JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
+                            }
+
+                            $vars['view'] = 'item';
+                            $vars['id']   = $id;
+
+                            break;
                         }
                     }
 
@@ -267,7 +326,7 @@ class OsdownloadsRouter extends RouterBase
                      *
                      * A list of files
                      *
-                     * The list of files has the last segment equals to "files".                     *
+                     * The list of files has the last segment equals to "files".
                      */
                     if ('files' === end($segments)) {
                         $vars['view'] = 'downloads';
@@ -284,6 +343,18 @@ class OsdownloadsRouter extends RouterBase
 
                         $category = $this->container->helperSEF->getCategoryFromAlias(end($segments));
 
+                        // Check if the category was foud
+                        if (empty($category)) {
+                            JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
+                        }
+
+                        // Check if the path is correct
+                        $path = implode('/', $segments);
+                        if ($path !== $category->path) {
+                            JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
+                        }
+
+                        // It is ok, return the id
                         $vars['id'] = $category->id;
 
                         break;
@@ -315,6 +386,18 @@ class OsdownloadsRouter extends RouterBase
                     // Try to locate the repective category based on the alias
                     $category = $this->container->helperSEF->getCategoryFromAlias(end($segments));
 
+                    // Check if the category was foud
+                    if (empty($category)) {
+                        JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
+                    }
+
+                    // Check if the path is correct
+                    $path = implode('/', $segments);
+                    if ($path !== $category->path) {
+                        JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
+                    }
+
+                    // It is ok, return the id
                     $vars['id'] = $category->id;
 
                     break;

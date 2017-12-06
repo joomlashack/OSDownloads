@@ -50,14 +50,14 @@ class RouterCest
          */
         $files = [
             1 => (object) [
-                'id'          => 1,
-                'alias'       => 'file_1',
-                'category_id' => 3,
+                'id'      => 1,
+                'alias'   => 'file_1',
+                'cate_id' => 3,
             ],
             2 => (object) [
-                'id'          => 2,
-                'alias'       => 'file_2',
-                'category_id' => 1,
+                'id'      => 2,
+                'alias'   => 'file_2',
+                'cate_id' => 1,
             ],
         ];
         $files['file_1'] = &$files[1];
@@ -93,25 +93,51 @@ class RouterCest
                 return false;
             }
 
-            public function getCategoryIdFromFile($alias)
+            public function getCategoryIdFromFileId($alias)
             {
                 global $files;
 
-                return $files[$alias]->category_id;
+                if (isset($files[$alias])) {
+                    return $files[$alias]->cate_id;
+                }
+
+                return false;
+            }
+
+            public function getCategoryFromFileId($fileId)
+            {
+                global $categories;
+                global $files;
+
+                if (!isset($files[$fileId])) {
+                    return false;
+                }
+
+                $catId = $files[$fileId]->cate_id;
+
+                return $categories[$catId];
             }
 
             public function getFileAlias($id)
             {
                 global $files;
 
-                return $files[$id]->alias;
+                if (isset($files[$id])) {
+                    return $files[$id]->alias;
+                }
+
+                return false;
             }
 
             public function getFileIdFromAlias($alias)
             {
                 global $files;
 
-                return $files[$alias]->id;
+                if (isset($files[$alias])) {
+                    return $files[$alias]->id;
+                }
+
+                return false;
             }
         };
 
@@ -419,6 +445,220 @@ class RouterCest
 
         $I->assertArrayNotHasKey('layout', $vars);
         $I->assertArrayNotHasKey('tmpl', $vars);
+    }
+
+    /*======================================
+    =            Invalid Routes            =
+    ======================================*/
+
+    /**
+     * Try to parse route segments of invalid URLs, expecting the error 404.
+     *
+     * List of categories: Invalid category alias
+     * @example {"route": "invalid_category_alias"}
+     * @example {"route": "23"}
+     * @example {"route": "category_1/category_2_invalid"}
+     * @example {"route": "category_1/category_2/invalid1"}
+     */
+    public function tryToGetError404ForListOfCategoriesWithInvalidCategory(UnitTester $I, Example $example)
+    {
+        $I->expectException(
+            new Exception('COM_OSDOWNLOADS_NOT_FOUND'),
+            function () use ($example) {
+                $segments = explode('/', $example['route']);
+
+                $vars = $this->router->parse($segments);
+            }
+        );
+    }
+
+    /**
+     * Try to parse route segments of invalid URLs, expecting the error 404.
+     *
+     * List of categories: Valid category alias, but invalid path
+     * @example {"route": "category_2/category_1"}
+     * @example {"route": "category_1_invalid/category_2"}
+     * @example {"route": "category_1/category_2_invalid/category_3"}
+     * @example {"route": "category_2/category_3"}
+     */
+    public function tryToGetError404ForListOfCategoriesWithValidCategoryButInvalidPath(UnitTester $I, Example $example)
+    {
+        $I->expectException(
+            new Exception('COM_OSDOWNLOADS_NOT_FOUND'),
+            function () use ($example) {
+                $segments = explode('/', $example['route']);
+
+                $vars = $this->router->parse($segments);
+            }
+        );
+    }
+
+    /**
+     * Try to parse route segments of invalid URLs, expecting the error 404.
+     *
+     * List of files: Invalid category alias
+     * @example {"route": "3/items"}
+     * @example {"route": "category_invalid/items"}
+     * @example {"route": "category_1/category_invalid/items"}
+     * @example {"route": "category_1/category_2/category_invalid/items"}
+     */
+    public function tryToGetError404ForListOfFilesWithInvalidCategoryAlias(UnitTester $I, Example $example)
+    {
+        $I->expectException(
+            new Exception('COM_OSDOWNLOADS_NOT_FOUND'),
+            function () use ($example) {
+                $segments = explode('/', $example['route']);
+
+                $vars = $this->router->parse($segments);
+            }
+        );
+    }
+
+    /**
+     * Try to parse route segments of invalid URLs, expecting the error 404.
+     *
+     * List of files: Valid category alias, but invalid path
+     * @example {"route": "category_invalid/items"}
+     * @example {"route": "category_invalid/category_1/items"}
+     * @example {"route": "category_invalid/category_2/items"}
+     * @example {"route": "category_1/category_2_invalid/category_3/items"}
+     */
+    public function tryToGetError404ForListOfFilesWithCategoryButInvalidPath(UnitTester $I, Example $example)
+    {
+        $I->expectException(
+            new Exception('COM_OSDOWNLOADS_NOT_FOUND'),
+            function () use ($example) {
+                $segments = explode('/', $example['route']);
+
+                $vars = $this->router->parse($segments);
+            }
+        );
+    }
+
+    /**
+     * Try to parse route segments of invalid URLs, expecting the error 404.
+     *
+     * Single file: Invalid file alias
+     * @example {"route": "files/file_invalid"}
+     * @example {"route": "category_1/files/file_invalid"}
+     * @example {"route": "category_1/category_2/files/file_invalid"}
+     * @example {"route": "category_1/category_2/category_3/files/file_invalid"}
+     */
+    public function tryToGetError404ForSingleFileWithInvalidAlias(UnitTester $I, Example $example)
+    {
+        $I->expectException(
+            new Exception('COM_OSDOWNLOADS_NOT_FOUND'),
+            function () use ($example) {
+                $segments = explode('/', $example['route']);
+
+                $vars = $this->router->parse($segments);
+            }
+        );
+    }
+
+    /**
+     * Try to parse route segments of invalid URLs, expecting the error 404.
+     *
+     * Single file: Valid file alias, but invalid path
+     * @example {"route": "files/file_1"}
+     * @example {"route": "category_1/files/file_1"}
+     * @example {"route": "category_1/category_2/files/file_1"}
+     * @example {"route": "category_1/category_2_invalid/files/file_1"}
+     * @example {"route": "category_1/category_2/category_3_invalid/files/file_1"}
+     */
+    public function tryToGetError404ForSingleFileWithInvalidPath(UnitTester $I, Example $example)
+    {
+        $I->expectException(
+            new Exception('COM_OSDOWNLOADS_NOT_FOUND'),
+            function () use ($example) {
+                $segments = explode('/', $example['route']);
+
+                $vars = $this->router->parse($segments);
+            }
+        );
+    }
+
+    /**
+     * Try to parse route segments of invalid URLs, expecting the error 404.
+     *
+     * Download: Invalid file alias
+     * @example {"route": "download/file_invalid"}
+     * @example {"route": "download/category_1/file_invalid"}
+     * @example {"route": "download/category_1/category_2/category_3/file_invalid"}
+     */
+    public function tryToGetError404ForDownloadingInvalidFile(UnitTester $I, Example $example)
+    {
+        $I->expectException(
+            new Exception('COM_OSDOWNLOADS_NOT_FOUND'),
+            function () use ($example) {
+                $segments = explode('/', $example['route']);
+
+                $vars = $this->router->parse($segments);
+            }
+        );
+    }
+
+    /**
+     * Try to parse route segments of invalid URLs, expecting the error 404.
+     *
+     * Download: Valid file alias, but invalid path
+     * @example {"route": "download/file_1"}
+     * @example {"route": "download/category_1/file_1"}
+     * @example {"route": "download/category_3/file_1"}
+     * @example {"route": "download/category_1/category_2/file_1"}
+     * @example {"route": "download/category_1/category_2/category_3_invalid/file_1"}
+     */
+    public function tryToGetError404ForDownloadingWithValidFileButInvalidPath(UnitTester $I, Example $example)
+    {
+        $I->expectException(
+            new Exception('COM_OSDOWNLOADS_NOT_FOUND'),
+            function () use ($example) {
+                $segments = explode('/', $example['route']);
+
+                $vars = $this->router->parse($segments);
+            }
+        );
+    }
+
+    /**
+     * Try to parse route segments of invalid URLs, expecting the error 404.
+     *
+     * Route Download: Invalid file alias
+     * @example {"route": "routedownload/file_invalid"}
+     * @example {"route": "routedownload/category_1/category_2/category_3/file_invalid"}
+     */
+    public function tryToGetError404ForRoutingDownloadWithInvalidFile(UnitTester $I, Example $example)
+    {
+        $I->expectException(
+            new Exception('COM_OSDOWNLOADS_NOT_FOUND'),
+            function () use ($example) {
+                $segments = explode('/', $example['route']);
+
+                $vars = $this->router->parse($segments);
+            }
+        );
+    }
+
+    /**
+     * Try to parse route segments of invalid URLs, expecting the error 404.
+     *
+     * Route Download: Valid file alias, but invalid path
+     * @example {"route": "routedownload/file_1"}
+     * @example {"route": "routedownload/category_1/file_1"}
+     * @example {"route": "routedownload/category_3/file_1"}
+     * @example {"route": "routedownload/category_1/category_2/file_1"}
+     * @example {"route": "routedownload/category_1/category_2/category_3_invalid/file_1"}
+     */
+    public function tryToGetError404ForRoutingDownloadWithValidFileButInvalidPath(UnitTester $I, Example $example)
+    {
+        $I->expectException(
+            new Exception('COM_OSDOWNLOADS_NOT_FOUND'),
+            function () use ($example) {
+                $segments = explode('/', $example['route']);
+
+                $vars = $this->router->parse($segments);
+            }
+        );
     }
 
     /*=====  End of TESTS FOR THE PARSER  ======*/

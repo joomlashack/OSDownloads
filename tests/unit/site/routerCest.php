@@ -347,5 +347,28 @@ class RouterCest
         $I->assertEquals($example['id'], $vars['id']);
     }
 
+    /**
+     * Try to parse route segments for a single file.
+     *
+     * @example {"id": 1, "route": "category_1/category_2/category_3/files/file_1"}
+     * @example {"id": 2, "route": "category_1/files/file_2"}
+     */
+    public function tryToParseRouteSegmentsForASingleFile(UnitTester $I, Example $example)
+    {
+        $segments = explode('/', $example['route']);
+
+        $vars = $this->router->parse($segments);
+
+        $I->assertArrayHasKey('view', $vars);
+        $I->assertEquals('item', $vars['view']);
+
+        $I->assertArrayHasKey('id', $vars);
+        $I->assertEquals($example['id'], $vars['id']);
+
+        $I->assertArrayNotHasKey('layout', $vars);
+        $I->assertArrayNotHasKey('tmpl', $vars);
+    }
+
+
     /*=====  End of TESTS FOR THE PARSER  ======*/
 }

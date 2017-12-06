@@ -10,47 +10,111 @@ class RouterCest
 
     public function _before(UnitTester $I)
     {
+        global $files;
+        global $categories;
+
+        /**
+         *
+         * Dummy categories
+         *
+         */
+        $categories = [
+            1 => (object) [
+                'id'        => 1,
+                'alias'     => 'category_1',
+                'path'      => 'category_1',
+                'parent_id' => null,
+            ],
+            2 => (object) [
+                'id'        => 2,
+                'alias'     => 'category_2',
+                'path'      => 'category_1/category_2',
+                'parent_id' => 1,
+            ],
+            3 => (object) [
+                'id'        => 3,
+                'alias'     => 'category_3',
+                'path'      => 'category_1/category_2/category_3',
+                'parent_id' => 2,
+            ],
+        ];
+        // Add index by alias
+        $categories['category_1'] = &$categories[1];
+        $categories['category_2'] = &$categories[2];
+        $categories['category_3'] = &$categories[3];
+
+        /**
+         *
+         * Dummy files
+         *
+         */
+        $files = [
+            1 => (object) [
+                'id'          => 1,
+                'alias'       => 'file_1',
+                'category_id' => 3,
+            ],
+            2 => (object) [
+                'id'          => 2,
+                'alias'       => 'file_2',
+                'category_id' => 1,
+            ],
+        ];
+        $files['file_1'] = &$files[1];
+        $files['file_2'] = &$files[2];
+
+        /**
+         *
+         * Dummy router
+         *
+         */
+        $container = new class {
+            public $helperSEF;
+        };
+
+        $container->helperSEF = new class {
+            public function appendCategoriesToSegments(&$segments, $catid)
+            {
+                global $categories;
+
+                $category = $categories[$catid];
+
+                $segments = array_merge($segments, explode('/', $category->path));
+            }
+
+            public function getCategoryFromAlias($alias)
+            {
+                global $categories;
+
+                return $categories[$alias];
+            }
+
+            public function getCategoryIdFromFile($alias)
+            {
+                global $files;
+
+                return $files[$alias]->category_id;
+            }
+
+            public function getFileAlias($id)
+            {
+                global $files;
+
+                return $files[$id]->alias;
+            }
+
+            public function getFileIdFromAlias($alias)
+            {
+                global $files;
+
+                return $files[$alias]->id;
+            }
+        };
+
         $this->router  = Stub::make(
             'OsdownloadsRouter',
             [
-                'getCategoryIdFromFile' => function ($id) {
-                    switch ($id) {
-                        case 1:
-                            return 12;
-                            break;
-                    }
-
-                    return 0;
-                },
-
-                'getCategory' => function ($id) {
-                    $categories = [
-                        10 => (object) [
-                            'parent_id' => null,
-                            'alias'     => 'category10'
-                        ],
-                        11 => (object) [
-                            'parent_id' => 10,
-                            'alias'     => 'category11'
-                        ],
-                        12 => (object) [
-                            'parent_id' => 11,
-                            'alias'     => 'category12'
-                        ]
-                    ];
-
-                    return $categories[$id];
-                },
-
-                'getFileAlias' => function ($id) {
-                    switch ($id) {
-                        case 1:
-                            return 'file1';
-                            break;
-                    }
-
-                    return false;
-                }
+                'container' => $container,
             ]
         );
     }
@@ -82,43 +146,12 @@ class RouterCest
     }
 
     /**
-     * Try to build route segments for the 'thank you' page in the routedownload and download tasks.
-     *
-     * task: 'routedownload', layout: 'thankyou', 'id': 1 ==> 0: 'thankyou', 1..n: [category_aliases], n+1: [file_alias]
-     * task: 'download', layout: 'thankyou', 'id': 1 ==> 0: 'thankyou', 1..n: [category_aliases], n+1: [file_alias]
-     *
-     * @example {"task": "routedownload", "layout": "thankyou", "id": "1"}
-     * @example {"task": "download", "layout": "thankyou", "id": "1"}
-     */
-    public function tryToBuildRouteSegmentsForThankyouPageInRoutedownloadAndDownloadTasks(UnitTester $I, Example $example)
-    {
-        $query = [
-            'task'   => $example['task'],
-            'layout' => $example['layout'],
-            'id'     => $example['id'],
-        ];
-
-        $segments = $this->router->build($query);
-
-        $I->assertEquals('thankyou', $segments[0]);
-        $I->assertEquals('category10', $segments[1]);
-        $I->assertEquals('category11', $segments[2]);
-        $I->assertEquals('category12', $segments[3]);
-        $I->assertEquals('file1', $segments[4]);
-    }
-
-    /**
      * Try to build route segments for the routedownload and download tasks.
      *
-     * task: 'routedownload', layout: 'any', id: 1 ==> 0: 'routedownload', 1..n: [category_aliases], n+1: [file_alias]
-     * task: 'routedownload', layout: null, id: 1 ==> 0: 'routedownload', 1..n: [category_aliases], n+1: [file_alias]
-     * task: 'download', layout: 'any', id: 1 ==> 0: 'download', 1..n: [category_aliases], n+1: [file_alias]
-     * task: 'download', layout: null, id: 1 ==> 0: 'download', 1..n: [category_aliases], n+1: [file_alias]
-     *
-     * @example {"task": "routedownload", "layout": "any-layout", "id": "1"}
-     * @example {"task": "routedownload", "id": "1"}
-     * @example {"task": "download", "layout": "any-layout", "id": "1"}
-     * @example {"task": "download", "id": "1"}
+     * @example {"task": "routedownload", "layout": "any-layout", "id": "1", "route": "routedownload/category_1/category_2/category_3/file_1"}
+     * @example {"task": "routedownload", "id": "1", "route": "routedownload/category_1/category_2/category_3/file_1"}
+     * @example {"task": "download", "layout": "any-layout", "id": "1", "route": "download/category_1/category_2/category_3/file_1"}
+     * @example {"task": "download", "id": "1", "route": "download/category_1/category_2/category_3/file_1"}
      */
     public function tryToBuildRouteSegmentsForRoutedownloadAndDownloadTasks(UnitTester $I, Example $example)
     {
@@ -131,13 +164,9 @@ class RouterCest
             $query['layout'] = $example['layout'];
         }
 
-        $segments = $this->router->build($query);
+        $route = implode('/', $this->router->build($query));
 
-        $I->assertEquals($example['task'], $segments[0]);
-        $I->assertEquals('category10', $segments[1]);
-        $I->assertEquals('category11', $segments[2]);
-        $I->assertEquals('category12', $segments[3]);
-        $I->assertEquals('file1', $segments[4]);
+        $I->assertEquals($example['route'], $route);
     }
 
     /**
@@ -145,8 +174,8 @@ class RouterCest
      *
      * task: 'confirmemail' ==> 0: 'confirmemail', 1: [query_data]
      *
-     * @example {"task": "confirmemail", "data": "889ec873b0e085c1724ec0ca560d3cfe"}
-     * @example {"task": "confirmemail", "data": "4d43e82c9633e2c57df71042d9976135", "view": "any-view"}
+     * @example {"task": "confirmemail", "data": "889ec873b0e085c1724ec0ca560d3cfe", "route": "confirmemail/889ec873b0e085c1724ec0ca560d3cfe"}
+     * @example {"task": "confirmemail", "data": "4d43e82c9633e2c57df71042d9976135", "view": "any-view", "route": "confirmemail/4d43e82c9633e2c57df71042d9976135"}
      */
     public function tryToBuildRouteSegmentsForConfirmEmailTask(UnitTester $I, Example $example)
     {
@@ -159,19 +188,16 @@ class RouterCest
             $query['view'] = $example['view'];
         }
 
-        $segments = $this->router->build($query);
+        $route = implode('/', $this->router->build($query));
 
-        $I->assertEquals('confirmemail', $segments[0]);
-        $I->assertEquals($example['data'], $segments[1]);
-        $I->assertEquals(2, count($segments), 'The route should contain only 2 segments: task and data');
+        $I->assertEquals($example['route'], $route);
     }
 
     /**
      * Try to build route segments for the thank you page in the item view.
      *
-     *  view: 'item', layout: 'thankyou', id: 1 ==> 0: 'thankyou', 1..n: [category_aliases], n+1: [file_alias]
-     *
-     * @example {"view": "item", "layout": "thankyou", "id": 1}
+     * @example {"view": "item", "layout": "thankyou", "id": 1, "route": "category_1/category_2/category_3/files/file_1/thankyou"}
+     * @example {"view": "item", "layout": "thankyou", "id": 2, "route": "category_1/files/file_2/thankyou"}
      */
     public function tryToBuildRouteSegmentsForViewItemThankYouPage(UnitTester $I, Example $example)
     {
@@ -181,72 +207,78 @@ class RouterCest
             'id'     => $example['id'],
         ];
 
-        $segments = $this->router->build($query);
+        $route = implode('/', $this->router->build($query));
 
-        $I->assertEquals('thankyou', $segments[0]);
-        $I->assertEquals('category10', $segments[1]);
-        $I->assertEquals('category11', $segments[2]);
-        $I->assertEquals('category12', $segments[3]);
-        $I->assertEquals('file1', $segments[4]);
+        $I->assertEquals($example['route'], $route);
     }
 
     /**
-     * Try to build route segments for the item view
+     * Try to build route segments for a single file.
      *
-     * view: 'item', id: 1 ==> 0: 'file', 1..n: [category_aliases], n+1: [file_alias]
-     *
-     * @example {"view": "item", "id": 1}
+     * @example {"view": "item", "id": 1, "route": "category_1/category_2/category_3/files/file_1"}
+     * @example {"view": "item", "id": 2, "route": "category_1/files/file_2"}
      */
-    public function tryToBuildRouteSegmentsForViewItem(UnitTester $I, Example $example)
+    public function tryToBuildRouteSegmentsForASingleFile(UnitTester $I, Example $example)
     {
         $query = [
             'view'   => $example['view'],
             'id'     => $example['id'],
         ];
 
-        $segments = $this->router->build($query);
+        $route = implode('/', $this->router->build($query));
 
-        $I->assertEquals('file', $segments[0]);
-        $I->assertEquals('category10', $segments[1]);
-        $I->assertEquals('category11', $segments[2]);
-        $I->assertEquals('category12', $segments[3]);
-        $I->assertEquals('file1', $segments[4]);
+        $I->assertEquals($example['route'], $route);
     }
 
     /**
-     * Try to parse segments for sub
+     * Try to build route segments for a list of files.
      *
-     * view: 'item', id: 1 ==> 0: 'file', 1..n: [category_aliases], n+1: [file_alias]
-     *
-     * @example {"view": "item", "id": 1}
+     * @example {"view": "downloads", "id": 1, "route": "category_1/files"}
+     * @example {"view": "downloads", "id": 2, "route": "category_1/category_2/files"}
+     * @example {"view": "downloads", "id": 3, "route": "category_1/category_2/category_3/files"}
      */
-    public function tryToBuildRouteSegmentsForViewItem(UnitTester $I, Example $example)
+    public function tryToBuildRouteSegmentsForAListOfFiles(UnitTester $I, Example $example)
     {
         $query = [
             'view'   => $example['view'],
             'id'     => $example['id'],
         ];
 
-        $segments = $this->router->build($query);
+        $route = implode('/', $this->router->build($query));
 
-        $I->assertEquals('file', $segments[0]);
-        $I->assertEquals('category10', $segments[1]);
-        $I->assertEquals('category11', $segments[2]);
-        $I->assertEquals('category12', $segments[3]);
-        $I->assertEquals('file1', $segments[4]);
+        $I->assertEquals($example['route'], $route);
+    }
+
+    /**
+     * Try to build route segments for a list of categories. (Pro version)
+     *
+     * @example {"view": "categories", "id": 1, "route": "category_1"}
+     * @example {"view": "categories", "id": 2, "route": "category_1/category_2"}
+     * @example {"view": "categories", "id": 3, "route": "category_1/category_2/category_3"}
+     */
+    public function tryToBuildRouteSegmentsForAListOfCategories(UnitTester $I, Example $example)
+    {
+        $query = [
+            'view'   => $example['view'],
+            'id'     => $example['id'],
+        ];
+
+        $route = implode('/', $this->router->build($query));
+
+        $I->assertEquals($example['route'], $route);
     }
 
     // PARSE
-    // thankyou/category10/category11/category12/file1
+    // thankyou/category_1/category_2/category_3/file1
 
     // category
-    // category/category10
+    // category/category_1
 
-    // file/category10/category11/category12/file1
+    // file/category_1/category_2/category_3/file1
 
-    // download/category10/category11/category12/file1
+    // download/category_1/category_2/category_3/file1
 
-    // routedownload/category10/category11/category12/file1
+    // routedownload/category_1/category_2/category_3/file1
 
     // confirmemail/889ec873b0e085c1724ec0ca560d3cfe
 }

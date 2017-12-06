@@ -24,6 +24,8 @@ if (!defined('OSDOWNLOADS_LOADED')) {
  */
 class OsdownloadsRouter extends RouterBase
 {
+    protected $container;
+
     /**
      * Class constructor.
      *
@@ -41,6 +43,16 @@ class OsdownloadsRouter extends RouterBase
             JLog::ALL,
             array('com_osdownloads.router')
         );
+
+        $this->setContainer();
+    }
+
+    /**
+     * Set the container to the class
+     */
+    public function setContainer()
+    {
+        $this->container = OSDFactory::getContainer();
     }
 
     /**
@@ -53,7 +65,6 @@ class OsdownloadsRouter extends RouterBase
     public function build(&$query)
     {
         $segments  = array();
-        $container = OSDFactory::getContainer();
 
         $id     = ArrayHelper::getValue($query, 'id');
         $view   = ArrayHelper::getValue($query, 'view');
@@ -61,11 +72,15 @@ class OsdownloadsRouter extends RouterBase
         $task   = ArrayHelper::getValue($query, 'task');
         $data   = ArrayHelper::getValue($query, 'data');
 
+        unset($query['view']);
+        unset($query['layout']);
+        unset($query['id']);
+        unset($query['task']);
+        unset($query['tmpl']);
+
         /*----------  Subsection comment block  ----------*/
 
-        if (isset($query['task'])) {
-            unset($query['task']);
-
+        if (!empty($task)) {
             switch ($task) {
                 case 'routedownload':
                 case 'download':
@@ -76,11 +91,11 @@ class OsdownloadsRouter extends RouterBase
                     }
 
                     // Append the categories before the alias of the file
-                    $catId = $container->helperSEF->getCategoryIdFromFile($id);
+                    $catId = $this->container->helperSEF->getCategoryIdFromFile($id);
 
-                    $container->helperSEF->appendCategoriesToSegments($segments, $catId);
+                    $this->container->helperSEF->appendCategoriesToSegments($segments, $catId);
 
-                    $segments[] = $container->helperSEF->getFileAlias($id);
+                    $segments[] = $this->container->helperSEF->getFileAlias($id);
 
                     break;
 
@@ -91,57 +106,56 @@ class OsdownloadsRouter extends RouterBase
                     break;
             }
 
-            if (isset($query['tmpl'])) {
-                unset($query['tmpl']);
-            }
-
-            if (isset($query['id'])) {
-                unset($query['id']);
-            }
-
             return $segments;
         }
 
         // If there is no recognized tasks, try to get the view
-        if (isset($query['view'])) {
-            unset($query['view']);
-
-            if (isset($query['id'])) {
-                unset($query['id']);
-            }
-
+        if (!empty($view)) {
             switch ($view) {
-                case 'downloads':
-                    $segments[] = 'downloads';
-                    $container->helperSEF->appendCategoriesToSegments($segments, $id);
-
-                    break;
-
+                /**
+                 *
+                 * List of categories
+                 *
+                 */
                 case 'categories':
-                    $segments[] = 'categories';
-                    $container->helperSEF->appendCategoriesToSegments($segments, $id);
+                    $this->container->helperSEF->appendCategoriesToSegments($segments, $id);
 
                     break;
 
-                case 'item':
-                    // Task segments
-                    $segments[] = "item";
+                /**
+                 *
+                 * List of files
+                 *
+                 */
+                case 'downloads':
+                    $this->container->helperSEF->appendCategoriesToSegments($segments, $id);
+                    $segments[] = 'files';
 
-                    $catId = $container->helperSEF->getCategoryIdFromFile($id);
+                    break;
+
+                /**
+                 *
+                 * A single file
+                 *
+                 */
+                case 'item':
+                    $catId = $this->container->helperSEF->getCategoryIdFromFile($id);
                     if (!empty($catId)) {
-                        $container->helperSEF->appendCategoriesToSegments($segments, $catId);
+                        $this->container->helperSEF->appendCategoriesToSegments($segments, $catId);
                     }
 
+                    $segments[] = "files";
+
                     // Append the file alias
-                    $segments[] = $container->helperSEF->getFileAlias($id);
+                    $segments[] = $this->container->helperSEF->getFileAlias($id);
+
+                    // Check if the thankyou layout was requested
+                    if ('thankyou' === $layout) {
+                        $segments[] = 'thankyou';
+                    }
 
                     break;
             }
-        }
-
-        // Remove tmp=component
-        if (isset($query['tmpl']) && 'component' === $query['tmpl']) {
-            unset($query['tmpl']);
         }
 
         return $segments;
@@ -154,61 +168,104 @@ class OsdownloadsRouter extends RouterBase
      */
     public function parse(&$segments)
     {
-        $vars      = array();
-        $container = OSDFactory::getContainer();
+        $vars = array();
 
-        $firstSegment = array_shift($segments);
+        if (!empty($segments)) {
+            switch ($segments[0]) {
+                /**
+                 *
+                 * Tasks
+                 *
+                 */
+                case 'routedownload':
+                case 'download':
+                    $vars['task'] = array_shift($segments);
 
-        switch ($firstSegment) {
-            case 'routedownload':
-            case 'download':
-                $vars['task'] = $firstSegment;
+                    if ('thankyou' === reset($segments)) {
+                        array_shift($segments);
 
-                if ('thankyou' === reset($segments)) {
-                    array_shift($segments);
-                    $vars['layout'] = 'thankyou';
-                }
+                        $vars['layout'] = 'thankyou';
+                    }
 
-                // File id
-                $id = $container->helperSEF->getFileIdFromAlias(last($segments));
+                    // File id
+                    $id = $this->container->helperSEF->getFileIdFromAlias(last($segments));
 
-                $vars['tmpl'] = 'component';
+                    $vars['tmpl'] = 'component';
 
-                break;
+                    break;
 
-            case 'confirmemail':
-                $vars['task'] = 'confirmemail';
-                $vars['data'] = last($segments);
-                $vars['tmpl'] = 'component';
+                case 'confirmemail':
+                    $vars['task'] = 'confirmemail';
+                    $vars['data'] = last($segments);
+                    $vars['tmpl'] = 'component';
 
-                break;
+                    break;
+
+                default:
+                    /**
+                     *
+                     * A single file
+                     *
+                     * Single files have the file alias as the last segment in the route.
+                     * The second to last is "files". We check it, if compatible we check
+                     * the last one looking for a file with the respective alias.
+                     *
+                     */
+                    // Get the index of the prior the last segment
+                    $indexSecToLast = count($segments) - 2;
+
+                    // If exists, we check if it is the "files" segment
+                    if (isset($segments[$indexSecToLast])) {
+                        if ('files' === $segments[$indexSecToLast]) {
+                            // Look for a file with the given alias
+                            $id = $this->container->helperSEF->getFileIdFromAlias(last($segments));
+
+                            if (!empty($id)) {
+                                $vars['view'] = 'item';
+                                $vars['id']   = $id;
+
+                                break;
+                            }
+                        }
+                    }
+
+                    /**
+                     *
+                     * A list of files
+                     *
+                     * The list of files has the last segment equals to "files".                     *
+                     */
+                    if ('files' === last($segments)) {
+                        $vars['view'] = 'downloads';
+
+                        // Get the category id
+                        array_pop($segments);
+
+                        $category   = $this->container->helperSEF->getCategoryFromAlias(last($segments));
+                        $vars['id'] = $category->id;
+                    }
+
+                    /**
+                     *
+                     * A list of categories
+                     *
+                     */
 
 
-            case 'downloads':
-                $vars['view'] = 'downloads';
+                case 'downloads':
 
-                // Category id
-                $category   = $container->helperSEF->getCategoryFromAlias(last($segments));
-                $vars['id'] = $category->id;
 
-                break;
+                    break;
 
-            case 'categories':
-                $vars['view'] = 'categories';
+                case 'categories':
+                    $vars['view'] = 'categories';
 
-                // Category id
-                $category   = $container->helperSEF->getCategoryFromAlias(last($segments));
-                $vars['id'] = $category->id;
+                    // Category id
+                    $category   = $this->container->helperSEF->getCategoryFromAlias(last($segments));
+                    $vars['id'] = $category->id;
 
-                break;
-
-            case 'item':
-                $vars['view'] = 'item';
-
-                // File id
-                $vars['id'] = $container->helperSEF->getFileIdFromAlias(last($segments));
-
-                break;
+                    break;
+            }
         }
 
         return $vars;

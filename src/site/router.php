@@ -113,6 +113,13 @@ class OsdownloadsRouter extends RouterBase
         if (!empty($view)) {
             switch ($view) {
                 /**
+
+                    TODO:
+                    - Filter this for the Pro version only
+
+                 */
+
+                /**
                  *
                  * List of categories
                  *

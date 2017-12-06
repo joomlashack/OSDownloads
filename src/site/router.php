@@ -288,19 +288,6 @@ class OsdownloadsRouter extends RouterBase
                      *
                      */
 
-
-                case 'downloads':
-
-
-                    break;
-
-                case 'categories':
-                    $vars['view'] = 'categories';
-
-                    // Category id
-                    $category   = $this->container->helperSEF->getCategoryFromAlias(last($segments));
-                    $vars['id'] = $category->id;
-
                     break;
             }
         }

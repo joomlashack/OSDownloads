@@ -204,6 +204,33 @@ class OsdownloadsRouter extends RouterBase
                 default:
                     /**
                      *
+                     * Thank you page?
+                     *
+                     * The thank you page is identified by the last segment and
+                     * relates to the view "item".
+                     */
+                    if ('thankyou' === end($segments)) {
+                        // Get the index of the second to last segment
+                        $indexSecToLast = count($segments) - 2;
+
+                        // If exists, we check if it is a valid file alias
+                        if (isset($segments[$indexSecToLast])) {
+                            // Look for a file with the given alias
+                            $id = $this->container->helperSEF->getFileIdFromAlias($segments[$indexSecToLast]);
+
+                            if (!empty($id)) {
+                                $vars['view']   = 'item';
+                                $vars['tmpl']   = 'component';
+                                $vars['layout'] = 'thankyou';
+                                $vars['id']     = $id;
+
+                                break;
+                            }
+                        }
+                    }
+
+                    /**
+                     *
                      * A single file
                      *
                      * Single files have the file alias as the last segment in the route.
@@ -211,7 +238,7 @@ class OsdownloadsRouter extends RouterBase
                      * the last one looking for a file with the respective alias.
                      *
                      */
-                    // Get the index of the prior the last segment
+                    // Get the index of the second to last segment
                     $indexSecToLast = count($segments) - 2;
 
                     // If exists, we check if it is the "files" segment

@@ -322,6 +322,30 @@ class RouterCest
         $I->assertEquals('component', $vars['tmpl']);
     }
 
+    /**
+     * Try to parse route segments for the thank you page in the item view.
+     *
+     * @example {"id": 1, "route": "category_1/category_2/category_3/files/file_1/thankyou"}
+     * @example {"id": 2, "route": "category_1/files/file_2/thankyou"}
+     */
+    public function tryToParseRouteSegmentsForViewItemThankYouPage(UnitTester $I, Example $example)
+    {
+        $segments = explode('/', $example['route']);
+
+        $vars = $this->router->parse($segments);
+
+        $I->assertArrayHasKey('view', $vars);
+        $I->assertEquals('item', $vars['view']);
+
+        $I->assertArrayHasKey('layout', $vars);
+        $I->assertEquals('thankyou', $vars['layout']);
+
+        $I->assertArrayHasKey('tmpl', $vars);
+        $I->assertEquals('component', $vars['tmpl']);
+
+        $I->assertArrayHasKey('id', $vars);
+        $I->assertEquals($example['id'], $vars['id']);
+    }
 
     /*=====  End of TESTS FOR THE PARSER  ======*/
 }

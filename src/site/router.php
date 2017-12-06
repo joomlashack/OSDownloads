@@ -268,8 +268,18 @@ class OsdownloadsRouter extends RouterBase
                         // Get the category id
                         array_pop($segments);
 
-                        $category   = $this->container->helperSEF->getCategoryFromAlias(end($segments));
+                        // If there is no more segments, we should display the root category
+                        if (empty($segments)) {
+                            $vars['id'] = 0;
+
+                            break;
+                        }
+
+                        $category = $this->container->helperSEF->getCategoryFromAlias(end($segments));
+
                         $vars['id'] = $category->id;
+
+                        break;
                     }
 
                     /**

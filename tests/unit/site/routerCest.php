@@ -86,7 +86,11 @@ class RouterCest
             {
                 global $categories;
 
-                return $categories[$alias];
+                if (isset($categories[$alias])) {
+                    return $categories[$alias];
+                }
+
+                return false;
             }
 
             public function getCategoryIdFromFile($alias)
@@ -369,6 +373,29 @@ class RouterCest
         $I->assertArrayNotHasKey('tmpl', $vars);
     }
 
+    /**
+     * Try to parse route segments for a list of files.
+     *
+     * @example {"id": 0, "route": "files"}
+     * @example {"id": 1, "route": "category_1/files"}
+     * @example {"id": 2, "route": "category_1/category_2/files"}
+     * @example {"id": 3, "route": "category_1/category_2/category_3/files"}
+     */
+    public function tryToParseRouteSegmentsForAListOfFiles(UnitTester $I, Example $example)
+    {
+        $segments = explode('/', $example['route']);
+
+        $vars = $this->router->parse($segments);
+
+        $I->assertArrayHasKey('view', $vars);
+        $I->assertEquals('downloads', $vars['view']);
+
+        $I->assertArrayHasKey('id', $vars);
+        $I->assertEquals($example['id'], $vars['id']);
+
+        $I->assertArrayNotHasKey('layout', $vars);
+        $I->assertArrayNotHasKey('tmpl', $vars);
+    }
 
     /*=====  End of TESTS FOR THE PARSER  ======*/
 }

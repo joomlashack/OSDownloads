@@ -188,7 +188,7 @@ class OsdownloadsRouter extends RouterBase
                     }
 
                     // File id
-                    $id = $this->container->helperSEF->getFileIdFromAlias(last($segments));
+                    $vars['id'] = $this->container->helperSEF->getFileIdFromAlias(end($segments));
 
                     $vars['tmpl'] = 'component';
 
@@ -196,7 +196,7 @@ class OsdownloadsRouter extends RouterBase
 
                 case 'confirmemail':
                     $vars['task'] = 'confirmemail';
-                    $vars['data'] = last($segments);
+                    $vars['data'] = end($segments);
                     $vars['tmpl'] = 'component';
 
                     break;
@@ -218,7 +218,7 @@ class OsdownloadsRouter extends RouterBase
                     if (isset($segments[$indexSecToLast])) {
                         if ('files' === $segments[$indexSecToLast]) {
                             // Look for a file with the given alias
-                            $id = $this->container->helperSEF->getFileIdFromAlias(last($segments));
+                            $id = $this->container->helperSEF->getFileIdFromAlias(end($segments));
 
                             if (!empty($id)) {
                                 $vars['view'] = 'item';
@@ -235,13 +235,13 @@ class OsdownloadsRouter extends RouterBase
                      *
                      * The list of files has the last segment equals to "files".                     *
                      */
-                    if ('files' === last($segments)) {
+                    if ('files' === end($segments)) {
                         $vars['view'] = 'downloads';
 
                         // Get the category id
                         array_pop($segments);
 
-                        $category   = $this->container->helperSEF->getCategoryFromAlias(last($segments));
+                        $category   = $this->container->helperSEF->getCategoryFromAlias(end($segments));
                         $vars['id'] = $category->id;
                     }
 

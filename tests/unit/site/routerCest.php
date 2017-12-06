@@ -118,6 +118,9 @@ class RouterCest
             ]
         );
     }
+    /*=============================================
+    =            TESTS FOR THE BUILDER            =
+    =============================================*/
 
     /**
      * Try to build route segments and check if the used query elements were
@@ -171,8 +174,6 @@ class RouterCest
 
     /**
      * Try to build route segments for the confirmemail task.
-     *
-     * task: 'confirmemail' ==> 0: 'confirmemail', 1: [query_data]
      *
      * @example {"task": "confirmemail", "data": "889ec873b0e085c1724ec0ca560d3cfe", "route": "confirmemail/889ec873b0e085c1724ec0ca560d3cfe"}
      * @example {"task": "confirmemail", "data": "4d43e82c9633e2c57df71042d9976135", "view": "any-view", "route": "confirmemail/4d43e82c9633e2c57df71042d9976135"}
@@ -268,17 +269,59 @@ class RouterCest
         $I->assertEquals($example['route'], $route);
     }
 
-    // PARSE
-    // thankyou/category_1/category_2/category_3/file1
+    /*=====  End of TESTS FOR THE BUILDER  ======*/
 
-    // category
-    // category/category_1
 
-    // file/category_1/category_2/category_3/file1
+    /*============================================
+    =            TESTS FOR THE PARSER            =
+    ============================================*/
 
-    // download/category_1/category_2/category_3/file1
+    /**
+     * Try to parse route segments for the routedownload and download tasks routes.
+     *
+     * @example {"task": "routedownload", "id": "1", "route": "routedownload/category_1/category_2/category_3/file_1"}
+     * * @example {"task": "routedownload", "id": "2", "route": "routedownload/category_1/file_2"}
+     * @example {"task": "download", "id": "1", "route": "download/category_1/category_2/category_3/file_1"}
+     * @example {"task": "download", "id": "2", "route": "download/category_1/file_2"}
+     */
+    public function tryToParseRouteSegmentsForRoutedownloadAndDownloadTasks(UnitTester $I, Example $example)
+    {
+        $segments = explode('/', $example['route']);
 
-    // routedownload/category_1/category_2/category_3/file1
+        $vars = $this->router->parse($segments);
 
-    // confirmemail/889ec873b0e085c1724ec0ca560d3cfe
+        $I->assertArrayHasKey('task', $vars);
+        $I->assertEquals($example['task'], $vars['task']);
+
+        $I->assertArrayHasKey('id', $vars);
+        $I->assertEquals($example['id'], $vars['id']);
+
+        $I->assertArrayHasKey('tmpl', $vars);
+        $I->assertEquals('component', $vars['tmpl']);
+    }
+
+    /**
+     * Try to parse route segments for the confirmemail task.
+     *
+     * @example {"task": "confirmemail", "data": "889ec873b0e085c1724ec0ca560d3cfe", "route": "confirmemail/889ec873b0e085c1724ec0ca560d3cfe"}
+     * @example {"task": "confirmemail", "data": "4d43e82c9633e2c57df71042d9976135", "route": "confirmemail/4d43e82c9633e2c57df71042d9976135"}
+     */
+    public function tryToParseRouteSegmentsForConfirmEmailTask(UnitTester $I, Example $example)
+    {
+        $segments = explode('/', $example['route']);
+
+        $vars = $this->router->parse($segments);
+
+        $I->assertArrayHasKey('task', $vars);
+        $I->assertEquals($example['task'], $vars['task']);
+
+        $I->assertArrayHasKey('data', $vars);
+        $I->assertEquals($example['data'], $vars['data']);
+
+        $I->assertArrayHasKey('tmpl', $vars);
+        $I->assertEquals('component', $vars['tmpl']);
+    }
+
+
+    /*=====  End of TESTS FOR THE PARSER  ======*/
 }

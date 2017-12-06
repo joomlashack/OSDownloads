@@ -397,5 +397,29 @@ class RouterCest
         $I->assertArrayNotHasKey('tmpl', $vars);
     }
 
+    /**
+     * Try to parse route segments for a list of categories. (Pro version)
+     *
+     * @example {"id": 0, "route": ""}
+     * @example {"id": 1, "route": "category_1"}
+     * @example {"id": 2, "route": "category_1/category_2"}
+     * @example {"id": 3, "route": "category_1/category_2/category_3"}
+     */
+    public function tryToParseRouteSegmentsForAListOfCategories(UnitTester $I, Example $example)
+    {
+        $segments = explode('/', $example['route']);
+
+        $vars = $this->router->parse($segments);
+
+        $I->assertArrayHasKey('view', $vars);
+        $I->assertEquals('categories', $vars['view']);
+
+        $I->assertArrayHasKey('id', $vars);
+        $I->assertEquals($example['id'], $vars['id']);
+
+        $I->assertArrayNotHasKey('layout', $vars);
+        $I->assertArrayNotHasKey('tmpl', $vars);
+    }
+
     /*=====  End of TESTS FOR THE PARSER  ======*/
 }

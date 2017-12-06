@@ -283,10 +283,32 @@ class OsdownloadsRouter extends RouterBase
                     }
 
                     /**
+
+                        TODO:
+                        - Filter this for the Pro version only
+
+                     */
+
+
+                    /**
                      *
                      * A list of categories
                      *
+                     * The list of categories is identified by segments representing the nested categories.
+                     * It is the default view as well, if there is no segments.
                      */
+                    $vars['view'] = 'categories';
+
+                    if (empty($segments) || empty($segments[0])) {
+                        $vars['id'] = 0;
+
+                        break;
+                    }
+
+                    // Try to locate the repective category based on the alias
+                    $category = $this->container->helperSEF->getCategoryFromAlias(end($segments));
+
+                    $vars['id'] = $category->id;
 
                     break;
             }

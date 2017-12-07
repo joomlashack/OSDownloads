@@ -6,6 +6,7 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
+use Alledia\Framework\Factory;
 use Joomla\Utilities\ArrayHelper;
 use Alledia\OSDownloads\Free\Factory as OSDFactory;
 use Joomla\CMS\Component\Router\RouterBase;
@@ -115,6 +116,56 @@ class OsdownloadsRouter extends RouterBase
     }
 
     /**
+     * Returns the menu item based on the item id we provide.
+     *
+     * @param  int $itemId
+     * @return JMenuItem|null
+     */
+    protected function getMenuItem($itemId)
+    {
+        $menu = Factory::getApplication()->getMenu()->getItem($itemId);
+
+        return $menu;
+    }
+
+    /**
+     * Get the view set for the menu item, based on the item id.
+     *
+     * @param  int $itemId
+     * @return string
+     */
+    protected function getMenuItemQueryView($itemId)
+    {
+        $menuItem = $this->getMenuItem($itemId);
+        $view     = null;
+
+        if ('com_osdownloads' === $menuItem->component) {
+            $view = $menuItem->query['view'];
+        }
+
+
+        return $view;
+    }
+
+    /**
+     * Get the id set for the menu item, based on the item id.
+     *
+     * @param  int $itemId
+     * @return string
+     */
+    protected function getMenuItemQueryId($itemId)
+    {
+        $menuItem = $this->getMenuItem($itemId);
+        $id       = null;
+
+        if ('com_osdownloads' === $menuItem->component) {
+            $id = $menuItem->query['id'];
+        }
+
+        return $id;
+    }
+
+    /**
      * Build the route for the com_content component
      *
      * @param   array &$query An array of URL arguments
@@ -123,6 +174,10 @@ class OsdownloadsRouter extends RouterBase
      */
     public function build(&$query)
     {
+        /*====================================================
+        =            Extract variables from query            =
+        ====================================================*/
+
         $segments  = array();
 
         $id     = ArrayHelper::getValue($query, 'id');
@@ -130,6 +185,7 @@ class OsdownloadsRouter extends RouterBase
         $layout = ArrayHelper::getValue($query, 'layout');
         $task   = ArrayHelper::getValue($query, 'task');
         $data   = ArrayHelper::getValue($query, 'data');
+        $itemId = ArrayHelper::getValue($query, 'Itemid');
 
         unset($query['view']);
         unset($query['layout']);
@@ -137,7 +193,22 @@ class OsdownloadsRouter extends RouterBase
         unset($query['task']);
         unset($query['tmpl']);
 
-        /*----------  Subsection comment block  ----------*/
+        // Try to get the view. If no view is provided but we have Itemid,
+        // find out the view.
+        if (empty($view) && !empty($itemId)) {
+            $view = $this->getMenuItemQueryView($itemId);
+        }
+
+        if (empty($id) && !empty($itemId)) {
+            $id = $this->getMenuItemQueryId($itemId);
+        }
+
+        /*=====  End of Extract variables from query  ======*/
+
+
+        /*==============================================
+        =            Try to build the route            =
+        ==============================================*/
 
         if (!empty($task)) {
             switch ($task) {
@@ -223,6 +294,8 @@ class OsdownloadsRouter extends RouterBase
                     break;
             }
         }
+
+        /*=====  End of Try to build the route  ======*/
 
         return $segments;
     }

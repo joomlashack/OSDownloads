@@ -295,7 +295,7 @@ class RouterCest
     }
 
     /**
-     * Try to build route segments for a single file.
+     * Try to build route segments for a single file
      *
      * @example {"view": "item", "id": 1, "route": "category_1/category_2/category_3/files/file_1"}
      * @example {"view": "item", "id": 2, "route": "category_1/files/file_2"}
@@ -305,6 +305,23 @@ class RouterCest
         $query = [
             'view'   => $example['view'],
             'id'     => $example['id'],
+        ];
+
+        $route = implode('/', $this->router->build($query));
+
+        $I->assertEquals($example['route'], $route);
+    }
+
+    /**
+     * Try to build route segments for a single file but only based on the item id.
+     *
+     * @example {"Itemid": "101", "id": 1, "route": "category_1/category_2/category_3/files/file_1"}
+     * @example {"Itemid": "102", "id": 2, "route": "category_1/files/file_2"}
+     */
+    public function tryToBuildRouteSegmentsForASingleFileBasedOnItemId(UnitTester $I, Example $example)
+    {
+        $query = [
+            'Itemid' => $example['Itemid'],
         ];
 
         $route = implode('/', $this->router->build($query));
@@ -324,6 +341,24 @@ class RouterCest
         $query = [
             'view'   => $example['view'],
             'id'     => $example['id'],
+        ];
+
+        $route = implode('/', $this->router->build($query));
+
+        $I->assertEquals($example['route'], $route);
+    }
+
+    /**
+     * Try to build route segments for a list of files based on the item id.
+     *
+     * @example {"Itemid": "201", "route": "category_1/files"}
+     * @example {"Itemid": "202", "route": "category_1/category_2/files"}
+     * @example {"Itemid": "203", "route": "category_1/category_2/category_3/files"}
+     */
+    public function tryToBuildRouteSegmentsForAListOfFilesBasedOnItemId(UnitTester $I, Example $example)
+    {
+        $query = [
+            'Itemid' => $example['Itemid'],
         ];
 
         $route = implode('/', $this->router->build($query));

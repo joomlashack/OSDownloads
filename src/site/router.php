@@ -66,13 +66,13 @@ class OsdownloadsRouter extends RouterBase
     {
         // Check if the category was foud
         if (empty($category)) {
-            JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
+            JError::raiseError(404, JText::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'));
         }
 
         // Check if the path is correct
         $path = implode('/', $segments);
         if ($path !== $category->path) {
-            JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
+            JError::raiseError(404, JText::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'));
         }
     }
 
@@ -221,7 +221,7 @@ class OsdownloadsRouter extends RouterBase
 
                     // Check if the file exists
                     if (empty($id)) {
-                        JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
+                        JError::raiseError(404, JText::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'));
                     }
 
                     $category = $this->container->helperSEF->getCategoryFromFileId($id);
@@ -260,7 +260,7 @@ class OsdownloadsRouter extends RouterBase
                             $id = $this->container->helperSEF->getFileIdFromAlias($segments[$indexSecToLast]);
 
                             if (empty($id)) {
-                                JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
+                                JError::raiseError(404, JText::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'));
                             }
 
                             $segments = array_splice($segments, 0, -3);
@@ -301,7 +301,7 @@ class OsdownloadsRouter extends RouterBase
 
                             // Check if the file exists
                             if (empty($id)) {
-                                JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
+                                JError::raiseError(404, JText::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'));
                             }
 
                             $category = $this->container->helperSEF->getCategoryFromFileId($id);

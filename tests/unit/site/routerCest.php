@@ -463,7 +463,7 @@ class RouterCest
     public function tryToGetError404ForListOfCategoriesWithInvalidCategory(UnitTester $I, Example $example)
     {
         $I->expectException(
-            new Exception('COM_OSDOWNLOADS_NOT_FOUND'),
+            new Exception('COM_OSDOWNLOADS_ERROR_NOT_FOUND'),
             function () use ($example) {
                 $segments = explode('/', $example['route']);
 
@@ -484,7 +484,7 @@ class RouterCest
     public function tryToGetError404ForListOfCategoriesWithValidCategoryButInvalidPath(UnitTester $I, Example $example)
     {
         $I->expectException(
-            new Exception('COM_OSDOWNLOADS_NOT_FOUND'),
+            new Exception('COM_OSDOWNLOADS_ERROR_NOT_FOUND'),
             function () use ($example) {
                 $segments = explode('/', $example['route']);
 
@@ -505,7 +505,7 @@ class RouterCest
     public function tryToGetError404ForListOfFilesWithInvalidCategoryAlias(UnitTester $I, Example $example)
     {
         $I->expectException(
-            new Exception('COM_OSDOWNLOADS_NOT_FOUND'),
+            new Exception('COM_OSDOWNLOADS_ERROR_NOT_FOUND'),
             function () use ($example) {
                 $segments = explode('/', $example['route']);
 
@@ -526,7 +526,7 @@ class RouterCest
     public function tryToGetError404ForListOfFilesWithCategoryButInvalidPath(UnitTester $I, Example $example)
     {
         $I->expectException(
-            new Exception('COM_OSDOWNLOADS_NOT_FOUND'),
+            new Exception('COM_OSDOWNLOADS_ERROR_NOT_FOUND'),
             function () use ($example) {
                 $segments = explode('/', $example['route']);
 
@@ -547,7 +547,7 @@ class RouterCest
     public function tryToGetError404ForSingleFileWithInvalidAlias(UnitTester $I, Example $example)
     {
         $I->expectException(
-            new Exception('COM_OSDOWNLOADS_NOT_FOUND'),
+            new Exception('COM_OSDOWNLOADS_ERROR_NOT_FOUND'),
             function () use ($example) {
                 $segments = explode('/', $example['route']);
 
@@ -569,7 +569,7 @@ class RouterCest
     public function tryToGetError404ForSingleFileWithInvalidPath(UnitTester $I, Example $example)
     {
         $I->expectException(
-            new Exception('COM_OSDOWNLOADS_NOT_FOUND'),
+            new Exception('COM_OSDOWNLOADS_ERROR_NOT_FOUND'),
             function () use ($example) {
                 $segments = explode('/', $example['route']);
 
@@ -589,7 +589,7 @@ class RouterCest
     public function tryToGetError404ForDownloadingInvalidFile(UnitTester $I, Example $example)
     {
         $I->expectException(
-            new Exception('COM_OSDOWNLOADS_NOT_FOUND'),
+            new Exception('COM_OSDOWNLOADS_ERROR_NOT_FOUND'),
             function () use ($example) {
                 $segments = explode('/', $example['route']);
 
@@ -611,7 +611,7 @@ class RouterCest
     public function tryToGetError404ForDownloadingWithValidFileButInvalidPath(UnitTester $I, Example $example)
     {
         $I->expectException(
-            new Exception('COM_OSDOWNLOADS_NOT_FOUND'),
+            new Exception('COM_OSDOWNLOADS_ERROR_NOT_FOUND'),
             function () use ($example) {
                 $segments = explode('/', $example['route']);
 
@@ -630,7 +630,7 @@ class RouterCest
     public function tryToGetError404ForRoutingDownloadWithInvalidFile(UnitTester $I, Example $example)
     {
         $I->expectException(
-            new Exception('COM_OSDOWNLOADS_NOT_FOUND'),
+            new Exception('COM_OSDOWNLOADS_ERROR_NOT_FOUND'),
             function () use ($example) {
                 $segments = explode('/', $example['route']);
 
@@ -652,7 +652,7 @@ class RouterCest
     public function tryToGetError404ForRoutingDownloadWithValidFileButInvalidPath(UnitTester $I, Example $example)
     {
         $I->expectException(
-            new Exception('COM_OSDOWNLOADS_NOT_FOUND'),
+            new Exception('COM_OSDOWNLOADS_ERROR_NOT_FOUND'),
             function () use ($example) {
                 $segments = explode('/', $example['route']);
 

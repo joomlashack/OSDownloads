@@ -114,6 +114,54 @@ a.modosdownloadsDownloadButton:active {
     padding-right: 5px;
 }
 
+/*===============================
+=            COLUMNS            =
+===============================*/
+
+.osdownloads-container .category_filter.columns-2 div.column,
+.osdownloads-container .category_filter.columns-3 div.column,
+.osdownloads-container .category_filter.columns-4 div.column,
+.osdownloads-container .category_filter.columns-5 div.column,
+.osdownloads-container .category_filter.columns-6 div.column,
+.osdownloads-container .category_filter.columns-7 div.column,
+.osdownloads-container .category_filter.columns-8 div.column {
+    display: block;
+    float: left;
+}
+
+.osdownloads-container .category_filter.columns-2 div.column {
+    width: 50%;
+}
+
+.osdownloads-container .category_filter.columns-3 div.column {
+    width: 33.3333%;
+}
+
+.osdownloads-container .category_filter.columns-4 div.column {
+    width: 25%;
+}
+
+.osdownloads-container .category_filter.columns-5 div.column {
+    width: 20%;
+}
+
+.osdownloads-container .category_filter.columns-6 div.column {
+    width: 16.6666666667%;
+}
+
+.osdownloads-container .category_filter.columns-7 div.column {
+    width: 14.2857142857%;
+}
+
+.osdownloads-container .category_filter.columns-8 div.column {
+    width: 12.5%;
+}
+
+
+/*=====  End of COLUMNS  ======*/
+
+
+
 .osd-alert {
     background: #fff1f0;
     border: 1px solid rgba(216,80,48, 0.2);

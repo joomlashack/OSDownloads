@@ -14,7 +14,7 @@ $app                    = JFactory::getApplication();
 $lang                   = JFactory::getLanguage();
 $doc                    = JFactory::getDocument();
 $container              = Factory::getContainer();
-$NumberOfColumn         = $this->params->get("number_of_column", 1);
+$numberOfColumns        = (int)$this->params->get("number_of_column", 1);
 $user                   = JFactory::getUser();
 $authorizedAccessLevels = $user->getAuthorisedViewLevels();
 $itemId                 = $app->input->getInt('Itemid');
@@ -29,12 +29,12 @@ JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundl
 <form action="<?php echo(JRoute::_($container->helperRoute->getFileRoute($id, $itemId)));?>" method="post" name="adminForm" id="adminForm">
     <div class="contentopen osdownloads-container">
         <?php if ($this->showCategoryFilter && count($this->categories) > 1) : ?>
-            <div class="category_filter">
+            <div class="category_filter columns-<?php echo $numberOfColumns; ?>">
                 <?php
                 $i = 0;
                 foreach($this->categories as $category):?>
                     <?php if (in_array($category->access, $authorizedAccessLevels)) : ?>
-                        <div class="item<?php echo($i % $NumberOfColumn);?> cate_<?php echo($category->id);?>">
+                        <div class="column column-<?php echo $i % $numberOfColumns; ?> item<?php echo($i % $numberOfColumns);?> cate_<?php echo($category->id);?>">
                             <h3>
                                 <a href="<?php echo(JRoute::_($container->helperRoute->getFileRoute($category->id, $itemId)));?>">
                                     <?php echo($category->title);?>
@@ -44,7 +44,7 @@ JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundl
                                 <?php echo($category->description);?>
                             </div>
                         </div>
-                        <?php if ($NumberOfColumn && $i % $NumberOfColumn == $NumberOfColumn - 1):?>
+                        <?php if ($numberOfColumns && $i % $numberOfColumns == $numberOfColumns - 1):?>
                             <div class="seperator"></div>
                             <div class="clr"></div>
                         <?php endif;?>

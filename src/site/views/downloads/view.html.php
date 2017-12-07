@@ -55,7 +55,7 @@ class OSDownloadsViewDownloads extends View\Site\Base
     {
         $app                 = JFactory::getApplication();
         $db                  = JFactory::getDbo();
-        $this->params        = $app->getParams('com_osdownloads');
+        $this->params        = $app->getParams();
         $includeChildFiles   = (bool)$this->params->get('include_child_files', 0);
         $showChildCategories = (bool)$this->params->get('show_child_categories', 1);
 

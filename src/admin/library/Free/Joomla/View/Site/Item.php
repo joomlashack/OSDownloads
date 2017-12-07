@@ -61,7 +61,7 @@ class Item extends Base
         $component = FreeComponentSite::getInstance();
         $container = OSDFactory::getContainer();
         $model     = $component->getModel('Item');
-        $params    = $app->getParams('com_osdownloads');
+        $params    = $app->getParams();
         $id        = (int) $app->input->getInt('id');
         $itemId    = (int) $app->input->getInt('Itemid');
 

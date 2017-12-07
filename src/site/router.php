@@ -56,6 +56,27 @@ class OsdownloadsRouter extends RouterBase
     }
 
     /**
+     * Check if the category and path are correct. If category is empty, or we
+     * have a wrong path, trigger a 404 error.
+     *
+     * @param  stdClass $category
+     * @param  array    $segments
+     */
+    protected function checkCategoryAndPath($category, $segments)
+    {
+        // Check if the category was foud
+        if (empty($category)) {
+            JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
+        }
+
+        // Check if the path is correct
+        $path = implode('/', $segments);
+        if ($path !== $category->path) {
+            JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
+        }
+    }
+
+    /**
      * Build the route for the com_content component
      *
      * @param   array &$query An array of URL arguments
@@ -205,16 +226,7 @@ class OsdownloadsRouter extends RouterBase
 
                     $category = $this->container->helperSEF->getCategoryFromFileId($id);
 
-                    // Check if the category was foud
-                    if (empty($category)) {
-                        JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
-                    }
-
-                    // Check if the path is correct
-                    $path = implode('/', $segments);
-                    if ($path !== $category->path) {
-                        JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
-                    }
+                    $this->checkCategoryAndPath($category, $segments);
 
                     // File id
                     $vars['id'] = $id;
@@ -256,17 +268,7 @@ class OsdownloadsRouter extends RouterBase
                             // Check the category path
                             $category = $this->container->helperSEF->getCategoryFromFileId($id);
 
-                            // Check if the category was foud
-                            if (empty($category)) {
-                                JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
-                            }
-
-                            // Check if the path is correct
-                            $path = implode('/', $segments);
-
-                            if ($path !== $category->path) {
-                                JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
-                            }
+                            $this->checkCategoryAndPath($category, $segments);
 
                             $vars['view']   = 'item';
                             $vars['tmpl']   = 'component';
@@ -304,16 +306,7 @@ class OsdownloadsRouter extends RouterBase
 
                             $category = $this->container->helperSEF->getCategoryFromFileId($id);
 
-                            // Check if the category was foud
-                            if (empty($category)) {
-                                JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
-                            }
-
-                            // Check if the path is correct
-                            $path = implode('/', $segments);
-                            if ($path !== $category->path) {
-                                JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
-                            }
+                            $this->checkCategoryAndPath($category, $segments);
 
                             $vars['view'] = 'item';
                             $vars['id']   = $id;
@@ -343,16 +336,7 @@ class OsdownloadsRouter extends RouterBase
 
                         $category = $this->container->helperSEF->getCategoryFromAlias(end($segments));
 
-                        // Check if the category was foud
-                        if (empty($category)) {
-                            JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
-                        }
-
-                        // Check if the path is correct
-                        $path = implode('/', $segments);
-                        if ($path !== $category->path) {
-                            JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
-                        }
+                        $this->checkCategoryAndPath($category, $segments);
 
                         // It is ok, return the id
                         $vars['id'] = $category->id;
@@ -386,16 +370,7 @@ class OsdownloadsRouter extends RouterBase
                     // Try to locate the repective category based on the alias
                     $category = $this->container->helperSEF->getCategoryFromAlias(end($segments));
 
-                    // Check if the category was foud
-                    if (empty($category)) {
-                        JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
-                    }
-
-                    // Check if the path is correct
-                    $path = implode('/', $segments);
-                    if ($path !== $category->path) {
-                        JError::raiseError(404, JText::_('COM_OSDOWNLOADS_NOT_FOUND'));
-                    }
+                    $this->checkCategoryAndPath($category, $segments);
 
                     // It is ok, return the id
                     $vars['id'] = $category->id;

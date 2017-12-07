@@ -131,7 +131,7 @@ class OSDownloadsViewDownload extends LegacyView
      */
     protected function checkMemory()
     {
-        if ($this->isLocal) {
+        if ($this->fileSize) {
             $memoryLimit = ini_get('memory_limit');
             if (preg_match('/(\d+)([a-z])/i', $memoryLimit, $memory)) {
                 $memory = $memory[1] * pow(2, stripos('-KMG', $memory[2]) * 10);

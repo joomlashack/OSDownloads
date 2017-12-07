@@ -232,10 +232,10 @@ class RouterCest
     /**
      * Try to build route segments for the routedownload and download tasks.
      *
-     * @example {"task": "routedownload", "layout": "any-layout", "id": "1", "route": "routedownload/category_1/category_2/category_3/file_1"}
-     * @example {"task": "routedownload", "id": "1", "route": "routedownload/category_1/category_2/category_3/file_1"}
-     * @example {"task": "download", "layout": "any-layout", "id": "1", "route": "download/category_1/category_2/category_3/file_1"}
-     * @example {"task": "download", "id": "1", "route": "download/category_1/category_2/category_3/file_1"}
+     * @example {"task": "routedownload", "layout": "any-layout", "id": "1", "route": "category_1/category_2/category_3/routedownload/file_1"}
+     * @example {"task": "routedownload", "id": "1", "route": "category_1/category_2/category_3/routedownload/file_1"}
+     * @example {"task": "download", "layout": "any-layout", "id": "1", "route": "category_1/category_2/category_3/download/file_1"}
+     * @example {"task": "download", "id": "1", "route": "category_1/category_2/category_3/download/file_1"}
      */
     public function tryToBuildRouteSegmentsForRoutedownloadAndDownloadTasks(UnitTester $I, Example $example)
     {
@@ -390,10 +390,10 @@ class RouterCest
     /**
      * Try to parse route segments for the routedownload and download tasks routes.
      *
-     * @example {"task": "routedownload", "id": "1", "route": "routedownload/category_1/category_2/category_3/file_1"}
-     * * @example {"task": "routedownload", "id": "2", "route": "routedownload/category_1/file_2"}
-     * @example {"task": "download", "id": "1", "route": "download/category_1/category_2/category_3/file_1"}
-     * @example {"task": "download", "id": "2", "route": "download/category_1/file_2"}
+     * @example {"task": "routedownload", "id": "1", "route": "category_1/category_2/category_3/routedownload/file_1"}
+     * * @example {"task": "routedownload", "id": "2", "route": "category_1/routedownload/file_2"}
+     * @example {"task": "download", "id": "1", "route": "category_1/category_2/category_3/download/file_1"}
+     * @example {"task": "download", "id": "2", "route": "category_1/download/file_2"}
      */
     public function tryToParseRouteSegmentsForRoutedownloadAndDownloadTasks(UnitTester $I, Example $example)
     {
@@ -716,10 +716,10 @@ class RouterCest
      *
      * Download: Valid file alias, but invalid path
      * @example {"route": "download/file_1"}
-     * @example {"route": "download/category_1/file_1"}
-     * @example {"route": "download/category_3/file_1"}
-     * @example {"route": "download/category_1/category_2/file_1"}
-     * @example {"route": "download/category_1/category_2/category_3_invalid/file_1"}
+     * @example {"route": "category_1/download/file_1"}
+     * @example {"route": "category_3/download/file_1"}
+     * @example {"route": "category_1/category_2/download/file_1"}
+     * @example {"route": "category_1/category_2/category_3_invalid/download/file_1"}
      */
     public function tryToGetError404ForDownloadingWithValidFileButInvalidPath(UnitTester $I, Example $example)
     {
@@ -738,7 +738,7 @@ class RouterCest
      *
      * Route Download: Invalid file alias
      * @example {"route": "routedownload/file_invalid"}
-     * @example {"route": "routedownload/category_1/category_2/category_3/file_invalid"}
+     * @example {"route": "category_1/category_2/category_3/routedownload/file_invalid"}
      */
     public function tryToGetError404ForRoutingDownloadWithInvalidFile(UnitTester $I, Example $example)
     {
@@ -757,10 +757,10 @@ class RouterCest
      *
      * Route Download: Valid file alias, but invalid path
      * @example {"route": "routedownload/file_1"}
-     * @example {"route": "routedownload/category_1/file_1"}
-     * @example {"route": "routedownload/category_3/file_1"}
-     * @example {"route": "routedownload/category_1/category_2/file_1"}
-     * @example {"route": "routedownload/category_1/category_2/category_3_invalid/file_1"}
+     * @example {"route": "category_1/routedownload/file_1"}
+     * @example {"route": "category_3/routedownload/file_1"}
+     * @example {"route": "category_1/category_2/routedownload/file_1"}
+     * @example {"route": "category_1/category_2/category_3_invalid/routedownload/file_1"}
      */
     public function tryToGetError404ForRoutingDownloadWithValidFileButInvalidPath(UnitTester $I, Example $example)
     {

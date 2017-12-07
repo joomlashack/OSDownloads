@@ -143,16 +143,16 @@ class OsdownloadsRouter extends RouterBase
             switch ($task) {
                 case 'routedownload':
                 case 'download':
-                    if ($layout !== 'thankyou') {
-                        $segments[] = $task;
-                    } else {
-                        $segments[] = 'thankyou';
-                    }
-
                     // Append the categories before the alias of the file
                     $catId = $this->container->helperSEF->getCategoryIdFromFileId($id);
 
                     $this->container->helperSEF->appendCategoriesToSegments($segments, $catId);
+
+                    $segments[] = $task;
+
+                    if ($layout === 'thankyou') {
+                        $segments[] = 'thankyou';
+                    }
 
                     $segments[] = $this->container->helperSEF->getFileAlias($id);
 
@@ -236,26 +236,118 @@ class OsdownloadsRouter extends RouterBase
     {
         $vars = array();
 
+        // Check the second to last segment
+        $indexSecToLast = count($segments) - 2;
         if (!empty($segments)) {
-            switch ($segments[0]) {
-                /**
-                 *
-                 * Tasks
-                 *
-                 */
-                case 'routedownload':
-                case 'download':
-                    $vars['task'] = array_shift($segments);
+            if (isset($segments[$indexSecToLast])) {
+                switch ($segments[$indexSecToLast]) {
+                    /**
+                     *
+                     * Tasks
+                     *
+                     */
+                    case 'routedownload':
+                    case 'download':
+                    case 'thankyou':
+                        // If thank you, we need to get the third to last segment
+                        $segmentsToCleanUp = 1;
+                        if ('thankyou' === $segments[$indexSecToLast]) {
+                            $task = $segments[$indexSecToLast - 1];
 
-                    if ('thankyou' === reset($segments)) {
-                        array_shift($segments);
+                            $segmentsToCleanUp = 2;
+                        } else {
+                            $task = $segments[$indexSecToLast];
+                        }
 
-                        $vars['layout'] = 'thankyou';
+                        $alias = array_pop($segments);
+
+                        // Get the file id
+                        $id = $this->container->helperSEF->getFileIdFromAlias($alias);
+
+                        // Check if the file exists
+                        if (empty($id)) {
+                            JError::raiseError(404, JText::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'));
+                        }
+
+                        // Clean up the segments
+                        $segments = array_splice($segments, 0, - $segmentsToCleanUp);
+
+                        // Check the categories path
+                        $category = $this->container->helperSEF->getCategoryFromFileId($id);
+                        $this->checkCategoryAndPath($category, $segments);
+
+                        // Set the vars
+                        $vars['task'] = $task;
+                        $vars['id'] = $id;
+                        $vars['tmpl'] = 'component';
+
+                        return $vars;
+
+                    case 'confirmemail':
+                        // Set the vars
+                        $vars['task'] = 'confirmemail';
+                        $vars['data'] = end($segments);
+                        $vars['tmpl'] = 'component';
+
+                        return $vars;
+                }
+            }
+
+            /**
+             *
+             * Thank you page?
+             *
+             * The thank you page is identified by the last segment and
+             * relates to the view "item".
+             */
+            if ('thankyou' === end($segments)) {
+                // Get the index of the second to last segment
+                $indexSecToLast = count($segments) - 2;
+
+                // If exists, we check if it is a valid file alias
+                if (isset($segments[$indexSecToLast])) {
+                    // Look for a file with the given alias
+                    $id = $this->container->helperSEF->getFileIdFromAlias($segments[$indexSecToLast]);
+
+                    if (empty($id)) {
+                        JError::raiseError(404, JText::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'));
                     }
 
-                    $alias = array_pop($segments);
+                    $segments = array_splice($segments, 0, -3);
 
-                    $id = $this->container->helperSEF->getFileIdFromAlias($alias);
+                    // Check the category path
+                    $category = $this->container->helperSEF->getCategoryFromFileId($id);
+                    $this->checkCategoryAndPath($category, $segments);
+
+                    // Set the vars
+                    $vars['view']   = 'item';
+                    $vars['tmpl']   = 'component';
+                    $vars['layout'] = 'thankyou';
+                    $vars['id']     = $id;
+
+                    return $vars;
+                }
+            }
+
+            /**
+             *
+             * A single file
+             *
+             * Single files have the file alias as the last segment in the route.
+             * The second to last is "files". We check it, if compatible we check
+             * the last one looking for a file with the respective alias.
+             *
+             */
+            // Get the index of the second to last segment
+            $indexSecToLast = count($segments) - 2;
+
+            // If exists, we check if it is the "files" segment
+            if (isset($segments[$indexSecToLast])) {
+                if ($this->customSegments['files'] === $segments[$indexSecToLast]) {
+                    // Look for a file with the given alias
+                    $id = $this->container->helperSEF->getFileIdFromAlias(end($segments));
+
+                    $segments = array_splice($segments, 0, -2);
 
                     // Check if the file exists
                     if (empty($id)) {
@@ -266,155 +358,75 @@ class OsdownloadsRouter extends RouterBase
 
                     $this->checkCategoryAndPath($category, $segments);
 
-                    // File id
-                    $vars['id'] = $id;
+                    // Set the vars
+                    $vars['view'] = 'item';
+                    $vars['id']   = $id;
 
-                    $vars['tmpl'] = 'component';
-
-                    break;
-
-                case 'confirmemail':
-                    $vars['task'] = 'confirmemail';
-                    $vars['data'] = end($segments);
-                    $vars['tmpl'] = 'component';
-
-                    break;
-
-                default:
-                    /**
-                     *
-                     * Thank you page?
-                     *
-                     * The thank you page is identified by the last segment and
-                     * relates to the view "item".
-                     */
-                    if ('thankyou' === end($segments)) {
-                        // Get the index of the second to last segment
-                        $indexSecToLast = count($segments) - 2;
-
-                        // If exists, we check if it is a valid file alias
-                        if (isset($segments[$indexSecToLast])) {
-                            // Look for a file with the given alias
-                            $id = $this->container->helperSEF->getFileIdFromAlias($segments[$indexSecToLast]);
-
-                            if (empty($id)) {
-                                JError::raiseError(404, JText::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'));
-                            }
-
-                            $segments = array_splice($segments, 0, -3);
-
-                            // Check the category path
-                            $category = $this->container->helperSEF->getCategoryFromFileId($id);
-
-                            $this->checkCategoryAndPath($category, $segments);
-
-                            $vars['view']   = 'item';
-                            $vars['tmpl']   = 'component';
-                            $vars['layout'] = 'thankyou';
-                            $vars['id']     = $id;
-
-                            break;
-                        }
-                    }
-
-                    /**
-                     *
-                     * A single file
-                     *
-                     * Single files have the file alias as the last segment in the route.
-                     * The second to last is "files". We check it, if compatible we check
-                     * the last one looking for a file with the respective alias.
-                     *
-                     */
-                    // Get the index of the second to last segment
-                    $indexSecToLast = count($segments) - 2;
-
-                    // If exists, we check if it is the "files" segment
-                    if (isset($segments[$indexSecToLast])) {
-                        if ($this->customSegments['files'] === $segments[$indexSecToLast]) {
-                            // Look for a file with the given alias
-                            $id = $this->container->helperSEF->getFileIdFromAlias(end($segments));
-
-                            $segments = array_splice($segments, 0, -2);
-
-                            // Check if the file exists
-                            if (empty($id)) {
-                                JError::raiseError(404, JText::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'));
-                            }
-
-                            $category = $this->container->helperSEF->getCategoryFromFileId($id);
-
-                            $this->checkCategoryAndPath($category, $segments);
-
-                            $vars['view'] = 'item';
-                            $vars['id']   = $id;
-
-                            break;
-                        }
-                    }
-
-                    /**
-                     *
-                     * A list of files
-                     *
-                     * The list of files has the last segment equals to "files".
-                     */
-                    if (end($segments) === $this->customSegments['files']) {
-                        $vars['view'] = 'downloads';
-
-                        // Get the category id
-                        array_pop($segments);
-
-                        // If there is no more segments, we should display the root category
-                        if (empty($segments)) {
-                            $vars['id'] = 0;
-
-                            break;
-                        }
-
-                        $category = $this->container->helperSEF->getCategoryFromAlias(end($segments));
-
-                        $this->checkCategoryAndPath($category, $segments);
-
-                        // It is ok, return the id
-                        $vars['id'] = $category->id;
-
-                        break;
-                    }
-
-                    /**
-
-                        TODO:
-                        - Filter this for the Pro version only
-
-                     */
-
-
-                    /**
-                     *
-                     * A list of categories
-                     *
-                     * The list of categories is identified by segments representing the nested categories.
-                     * It is the default view as well, if there is no segments.
-                     */
-                    $vars['view'] = 'categories';
-
-                    if (empty($segments) || empty($segments[0])) {
-                        $vars['id'] = 0;
-
-                        break;
-                    }
-
-                    // Try to locate the repective category based on the alias
-                    $category = $this->container->helperSEF->getCategoryFromAlias(end($segments));
-
-                    $this->checkCategoryAndPath($category, $segments);
-
-                    // It is ok, return the id
-                    $vars['id'] = $category->id;
-
-                    break;
+                    return $vars;
+                }
             }
+
+            /**
+             *
+             * A list of files
+             *
+             * The list of files has the last segment equals to "files".
+             */
+            if (end($segments) === $this->customSegments['files']) {
+                $vars['view'] = 'downloads';
+
+                // Get the category id
+                array_pop($segments);
+
+                // If there is no more segments, we should display the root category
+                if (empty($segments)) {
+                    $vars['id'] = 0;
+
+                    return $vars;
+                }
+
+                $category = $this->container->helperSEF->getCategoryFromAlias(end($segments));
+
+                $this->checkCategoryAndPath($category, $segments);
+
+                // It is ok, return the id
+                $vars['id'] = $category->id;
+
+                return $vars;
+            }
+
+            /**
+
+                TODO:
+                - Filter this for the Pro version only
+
+             */
+
+
+            /**
+             *
+             * A list of categories
+             *
+             * The list of categories is identified by segments representing the nested categories.
+             * It is the default view as well, if there is no segments.
+             */
+            $vars['view'] = 'categories';
+
+            if (empty($segments) || empty($segments[0])) {
+                $vars['id'] = 0;
+
+                return $vars;
+            }
+
+            // Try to locate the repective category based on the alias
+            $category = $this->container->helperSEF->getCategoryFromAlias(end($segments));
+
+            $this->checkCategoryAndPath($category, $segments);
+
+            // It is ok, return the id
+            $vars['id'] = $category->id;
+
+            return $vars;
         }
 
         return $vars;

@@ -85,21 +85,31 @@ class Item extends Base
         // Process the content plugins
         JPluginHelper::importPlugin('content');
 
+        // Make compatible with content plugins
+        $item->text = null;
+
         $dispatcher = JEventDispatcher::getInstance();
-        $offset = 0;
+        $offset     = 0;
         $dispatcher->trigger('onContentPrepare', array('com_osdownloads.file', &$item, &$item->params, $offset));
 
-        // Store the events for later
-        $item->event = new stdClass;
+        $afterDisplayTitle    = $dispatcher->trigger(
+            'onContentAfterTitle',
+            array('com_osdownloads.file', &$item, &$item->params, $offset)
+        );
+        $beforeDisplayContent = $dispatcher->trigger(
+            'onContentBeforeDisplay',
+            array('com_osdownloads.file', &$item, &$item->params, $offset)
+        );
+        $afterDisplayContent  = $dispatcher->trigger(
+            'onContentAfterDisplay',
+            array('com_osdownloads.file', &$item, &$item->params, $offset)
+        );
 
-        $results = $dispatcher->trigger('onContentAfterTitle', array('com_osdownloads.file', &$item, &$item->params, $offset));
-        $item->event->afterDisplayTitle = trim(implode("\n", $results));
-
-        $results = $dispatcher->trigger('onContentBeforeDisplay', array('com_osdownloads.file', &$item, &$item->params, $offset));
-        $item->event->beforeDisplayContent = trim(implode("\n", $results));
-
-        $results = $dispatcher->trigger('onContentAfterDisplay', array('com_osdownloads.file', &$item, &$item->params, $offset));
-        $item->event->afterDisplayContent = trim(implode("\n", $results));
+        $item->event = (object)array(
+            'afterDisplayTitle'    => trim(implode("\n", $afterDisplayTitle)),
+            'beforeDisplayContent' => trim(implode("\n", $beforeDisplayContent)),
+            'afterDisplayContent'  => trim(implode("\n", $afterDisplayContent))
+        );
 
         $this->item   = $item;
         $this->itemId = $itemId;

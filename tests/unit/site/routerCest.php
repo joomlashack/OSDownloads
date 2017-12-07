@@ -144,10 +144,61 @@ class RouterCest
         $this->router  = Stub::make(
             'OsdownloadsRouter',
             [
-                'container' => $container,
+                'container'      => $container,
+                'customSegments' => ['files' => 'files'],
             ]
         );
     }
+
+    /*===========================================
+    =            CUSTOM SEGMENTS            =
+    ===========================================*/
+
+    /**
+     * Try to get current custom segments
+     *
+     * @example {"custom_segment": "files"}
+     * @example {"custom_segment": "customA"}
+     * @example {"custom_segment": "custom_B"}
+     */
+    public function tryToGetCurrentCustomSegments(UnitTester $I, Example $example)
+    {
+        // Force a new set of custom segments
+        $mock = Stub::copy(
+            $this->router,
+            [
+                'customSegments' => [
+                    'files' => $example['custom_segment'],
+                ]
+            ]
+        );
+
+        $segments = $mock->getCustomSegments();
+
+        $I->assertArrayHasKey('files', $segments);
+        $I->assertEquals($example['custom_segment'], $segments['files']);
+    }
+
+    /**
+     * Try to customize the "files" segment
+     *
+     * @example {"segments": {"files": "files"}, "expected": "files"}
+     * @example {"segments": {"files": "customA"}, "expected": "customA"}
+     * @example {"segments": {"files": "custom_B"}, "expected": "custom_B"}
+     * @example {"segments": {"other": "any_one"}, "expected": "files"}
+     */
+    public function tryToCustomizeTheFilesSegment(UnitTester $I, Example $example)
+    {
+        $this->router->setCustomSegments($example['segments']);
+
+        $customSegments = $this->router->getCustomSegments();
+
+        $I->assertArrayHasKey('files', $customSegments);
+        $I->assertEquals($example['expected'], $customSegments['files']);
+    }
+
+    /*=====  End of CUSTOM SEGMENTS  ======*/
+
     /*=============================================
     =            TESTS FOR THE BUILDER            =
     =============================================*/
@@ -278,6 +329,36 @@ class RouterCest
         $route = implode('/', $this->router->build($query));
 
         $I->assertEquals($example['route'], $route);
+    }
+
+     /**
+     * Try to build route segments for a list of files with custom segment.
+     *
+     * @example {"view": "downloads", "id": 1, "segment": "files_custom_segment", "route": "category_1/files_custom_segment"}
+     * @example {"view": "downloads", "id": 2, "segment": "files_custom_segment2", "route": "category_1/category_2/files_custom_segment2"}
+     * @example {"view": "downloads", "id": 3, "segment": "files_custom_segment3", "route": "category_1/category_2/category_3/files_custom_segment3"}
+     */
+    public function tryToBuildRouteSegmentsForAListOfFilesWithCustomSegment(UnitTester $I, Example $example)
+    {
+        $query = [
+            'view'   => $example['view'],
+            'id'     => $example['id'],
+        ];
+
+        // Force custom segments
+        $mock = Stub::copy(
+            $this->router,
+            [
+                'customSegments' => ['files' => $example['segment']],
+            ]
+        );
+
+        $route = implode('/', $mock->build($query));
+
+        $I->assertEquals($example['route'], $route);
+
+        // Restore the default segment
+        $this->router->setCustomSegments(['files' => 'files']);
     }
 
     /**
@@ -412,6 +493,38 @@ class RouterCest
         $segments = explode('/', $example['route']);
 
         $vars = $this->router->parse($segments);
+
+        $I->assertArrayHasKey('view', $vars);
+        $I->assertEquals('downloads', $vars['view']);
+
+        $I->assertArrayHasKey('id', $vars);
+        $I->assertEquals($example['id'], $vars['id']);
+
+        $I->assertArrayNotHasKey('layout', $vars);
+        $I->assertArrayNotHasKey('tmpl', $vars);
+    }
+
+    /**
+     * Try to parse route segments for a list of files with custom segment
+     *
+     * @example {"id": 0, "segment": "files_custom_segment", "route": "files_custom_segment"}
+     * @example {"id": 1, "segment": "files_custom_segment2", "route": "category_1/files_custom_segment2"}
+     * @example {"id": 2, "segment": "files_custom_segment2", "route": "category_1/category_2/files_custom_segment2"}
+     * @example {"id": 3, "segment": "files_custom_segment3", "route": "category_1/category_2/category_3/files_custom_segment3"}
+     */
+    public function tryToParseRouteSegmentsForAListOfFilesWithCustomSegment(UnitTester $I, Example $example)
+    {
+        $segments = explode('/', $example['route']);
+
+        // Force custom segments
+        $mock = Stub::copy(
+            $this->router,
+            [
+                'customSegments' => ['files' => $example['segment']],
+            ]
+        );
+
+        $vars = $mock->parse($segments);
 
         $I->assertArrayHasKey('view', $vars);
         $I->assertEquals('downloads', $vars['view']);

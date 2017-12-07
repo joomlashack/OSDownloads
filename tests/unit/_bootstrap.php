@@ -13,3 +13,4 @@ require MOCKUP_PATH . '/JText.php';
 require MOCKUP_PATH . '/ArrayHelper.php';
 require MOCKUP_PATH . '/RouterBase.php';
 require MOCKUP_PATH . '/OSDFreeFactory.php';
+require MOCKUP_PATH . '/JFactory.php';

@@ -6,7 +6,6 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
-use Alledia\Framework\Factory;
 use Joomla\Utilities\ArrayHelper;
 use Alledia\OSDownloads\Free\Factory as OSDFactory;
 use Joomla\CMS\Component\Router\RouterBase;
@@ -27,6 +26,17 @@ class OsdownloadsRouter extends RouterBase
     protected $container;
 
     /**
+     * An array with custom segments:
+     *
+     * array(
+     *     'files' => 'files',
+     * )
+     *
+     * @var array
+     */
+    protected $customSegments;
+
+    /**
      * Class constructor.
      *
      * @param   JApplicationCms $app  Application-object that the router should use
@@ -45,6 +55,7 @@ class OsdownloadsRouter extends RouterBase
         );
 
         $this->setContainer();
+        $this->setCustomSegments();
     }
 
     /**
@@ -53,6 +64,33 @@ class OsdownloadsRouter extends RouterBase
     public function setContainer()
     {
         $this->container = OSDFactory::getContainer();
+    }
+
+    /**
+     * Allow to set custom segments for routes.
+     *
+     * @param array $segments
+     */
+    public function setCustomSegments($segments = array())
+    {
+        $params = JFactory::getApplication()->getParams('com_osdownloads');
+
+        // Default values
+        $default = array(
+            'files' => $params->get('route_segment_files', 'files'),
+        );
+
+        $this->customSegments = array_merge($default, $segments);
+    }
+
+    /**
+     * Get a list of custom segments.
+     *
+     * @return array
+     */
+    public function getCustomSegments()
+    {
+        return $this->customSegments;
     }
 
     /**
@@ -157,7 +195,7 @@ class OsdownloadsRouter extends RouterBase
                  */
                 case 'downloads':
                     $this->container->helperSEF->appendCategoriesToSegments($segments, $id);
-                    $segments[] = 'files';
+                    $segments[] = $this->customSegments['files'];
 
                     break;
 
@@ -172,7 +210,7 @@ class OsdownloadsRouter extends RouterBase
                         $this->container->helperSEF->appendCategoriesToSegments($segments, $catId);
                     }
 
-                    $segments[] = "files";
+                    $segments[] = $this->customSegments['files'];
 
                     // Append the file alias
                     $segments[] = $this->container->helperSEF->getFileAlias($id);
@@ -293,7 +331,7 @@ class OsdownloadsRouter extends RouterBase
 
                     // If exists, we check if it is the "files" segment
                     if (isset($segments[$indexSecToLast])) {
-                        if ('files' === $segments[$indexSecToLast]) {
+                        if ($this->customSegments['files'] === $segments[$indexSecToLast]) {
                             // Look for a file with the given alias
                             $id = $this->container->helperSEF->getFileIdFromAlias(end($segments));
 
@@ -321,7 +359,7 @@ class OsdownloadsRouter extends RouterBase
                      *
                      * The list of files has the last segment equals to "files".
                      */
-                    if ('files' === end($segments)) {
+                    if (end($segments) === $this->customSegments['files']) {
                         $vars['view'] = 'downloads';
 
                         // Get the category id

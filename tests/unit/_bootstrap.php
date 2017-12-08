@@ -14,4 +14,5 @@ require MOCKUP_PATH . '/ArrayHelper.php';
 require MOCKUP_PATH . '/RouterBase.php';
 require MOCKUP_PATH . '/OSDFreeFactory.php';
 require MOCKUP_PATH . '/JFactory.php';
+require MOCKUP_PATH . '/Menus.php';
 require MOCKUP_PATH . '/AllediaFactory.php';

@@ -202,6 +202,12 @@ class OsdownloadsRouter extends RouterBase
         if (empty($id) && !empty($itemId)) {
             $id = $this->getMenuItemQueryId($itemId);
         }
+        /**
+
+            TODO:
+            - If an OSDownloads menu, extract all menu item link vars to the query, not only view and id (most commons);
+
+         */
 
         /*=====  End of Extract variables from query  ======*/
 
@@ -214,17 +220,42 @@ class OsdownloadsRouter extends RouterBase
             switch ($task) {
                 case 'routedownload':
                 case 'download':
-                    // Append the categories before the alias of the file
                     $catId = $this->container->helperSEF->getCategoryIdFromFileId($id);
 
-                    $this->container->helperSEF->appendCategoriesToSegments($segments, $catId);
+                    // Is there a menu item for the file?
+                    $menu = $this->container->helperSEF->getMenuItemForFile($id);
+                    if (!empty($menu)) {
+                        // Yes, add the segments from the menu
+                        $segments = $this->container->helperSEF->appendMenuPathToSegments($segments, $menu);
+                    } else {
+                        // No. Is there a menu for any parent category of the file?
+                        $menu = $this->container->helperSEF->getMenuItemForCategoryTreeRecursively($catId);
 
+                        if (!empty($menu)) {
+                            // Yes, add the segments from the menu
+                            $segments = $this->container->helperSEF->appendMenuPathToSegments($segments, $menu);
+                        }
+                    }
+
+                    /**
+
+                        TODO:
+                        - REMOVE the segments of categories already covered by the menu item segments
+
+                     */
+
+
+                    // The task/layout segments
                     $segments[] = $task;
 
                     if ($layout === 'thankyou') {
                         $segments[] = 'thankyou';
                     }
 
+                    // Categories segments
+                    $segments = $this->container->helperSEF->appendCategoriesToSegments($segments, $catId);
+
+                    // File segment
                     $segments[] = $this->container->helperSEF->getFileAlias($id);
 
                     break;
@@ -255,7 +286,7 @@ class OsdownloadsRouter extends RouterBase
                  *
                  */
                 case 'categories':
-                    $this->container->helperSEF->appendCategoriesToSegments($segments, $id);
+                    $segments = $this->container->helperSEF->appendCategoriesToSegments($segments, $id);
 
                     break;
 
@@ -265,7 +296,7 @@ class OsdownloadsRouter extends RouterBase
                  *
                  */
                 case 'downloads':
-                    $this->container->helperSEF->appendCategoriesToSegments($segments, $id);
+                    $segments = $this->container->helperSEF->appendCategoriesToSegments($segments, $id);
                     $segments[] = $this->customSegments['files'];
 
                     break;
@@ -278,7 +309,7 @@ class OsdownloadsRouter extends RouterBase
                 case 'item':
                     $catId = $this->container->helperSEF->getCategoryIdFromFileId($id);
                     if (!empty($catId)) {
-                        $this->container->helperSEF->appendCategoriesToSegments($segments, $catId);
+                        $segments = $this->container->helperSEF->appendCategoriesToSegments($segments, $catId);
                     }
 
                     $segments[] = $this->customSegments['files'];

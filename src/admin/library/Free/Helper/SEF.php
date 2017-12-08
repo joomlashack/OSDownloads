@@ -40,9 +40,9 @@ class SEF
             ->where('id = ' . (int)$fileId);
 
 
-        $catId = $db->setQuery($query)->loadResult();
+        $categoryId = $db->setQuery($query)->loadResult();
 
-        if (empty($catId)) {
+        if (empty($categoryId)) {
             JLog::add(
                 JText::sprintf(
                     'COM_OSDOWNLOADS_ERROR_FILE_NOT_FOUND',
@@ -53,22 +53,22 @@ class SEF
             );
         }
 
-        return $catId;
+        return $categoryId;
     }
 
     /**
      * Build the path to a category, considering the parent categories.
      *
      * @param array $categories
-     * @param int   $catId
+     * @param int   $categoryId
      */
-    public function buildCategoriesPath(&$categories, $catId)
+    public function buildCategoriesPath(&$categories, $categoryId)
     {
-        if (empty($catId)) {
+        if (empty($categoryId)) {
             return;
         }
 
-        $category = $this->getCategory($catId);
+        $category = $this->getCategory($categoryId);
 
         if (!empty($category) && $category->alias !== 'root') {
             $categories[] = $category->alias;
@@ -80,21 +80,47 @@ class SEF
     }
 
     /**
-     * Append the category path to the segments.
+     * Append the category path to the segments and return the new array
+     * of segments
      *
      * @param array $segments
-     * @param int   $catId
+     * @param int   $categoryId
+     *
+     * @return  array
      */
-    public function appendCategoriesToSegments(&$segments, $catId)
+    public function appendCategoriesToSegments($segments, $categoryId)
     {
         // Append the categories before the alias of the file
         $categories = array();
 
-        $this->buildCategoriesPath($categories, $catId);
+        $this->buildCategoriesPath($categories, $categoryId);
 
         for ($i = count($categories) - 1; $i >= 0; $i--) {
             $segments[] = $categories[$i];
         }
+
+        return $segments;
+    }
+
+    /**
+     * Append menu path segments to the segments array, returning the new
+     * array of segments.
+     *
+     * @param  array     $segments
+     * @param  JMenuItem $menu
+     *
+     * @return array
+     */
+    public function appendMenuPathToSegments($segments, $menu)
+    {
+        if (is_array($segments) && isset($menu->path)) {
+            $segments = array_merge(
+                $segments,
+                explode('/', $menu->path)
+            );
+        }
+
+        return $segments;
     }
 
     /**
@@ -239,98 +265,15 @@ class SEF
      */
     public function getCategoryFromFileId($fileId)
     {
-        $catId = $this->getCategoryIdFromFileId($fileId);
+        $categoryId = $this->getCategoryIdFromFileId($fileId);
 
-        if (!empty($catId)) {
-            $category = $this->getCategory($catId);
+        if (!empty($categoryId)) {
+            $category = $this->getCategory($categoryId);
 
             return $category;
         }
 
         return false;
-    }
-
-    /**
-     * Return the list of selected categories for the specific menu.
-     *
-     * @param int $itemId
-     *
-     * @return array
-     */
-    public function getCategoriesFromMenu($itemId)
-    {
-        $db = Factory::getDbo();
-
-        $query = $db->getQuery(true)
-            ->select('params')
-            ->from('#__menu')
-            ->where('id = ' . $db->quote((int)$itemId));
-
-        $params = $db->setQuery($query)->loadResult();
-        $params = new Registry($params);
-
-        $categories = $params->get('category_id', array());
-
-        $list = array();
-        if (!empty($categories)) {
-            foreach ($categories as $categoryId) {
-                $list[] = $this->getCategoryAlias($categoryId);
-            }
-        }
-
-        return $list;
-    }
-
-    /**
-     * Returns the category's alias based on the id.
-     *
-     * @param int $id
-     *
-     * @return string
-     */
-    public function getCategoryAlias($id)
-    {
-        $db = JFactory::getDBO();
-
-        $query = $db->getQuery(true)
-            ->select('alias')
-            ->from('#__categories')
-            ->where(
-                array(
-                    'extension IN ("com_osdownloads", "system")',
-                    'id = ' . (int)$id
-                )
-            );
-
-        $alias = $db->setQuery($query)->loadResult();
-
-        return urlencode($alias);
-    }
-
-    /**
-     * Returns the category's id based on the alias.
-     *
-     * @param string $alias
-     *
-     * @return int
-     */
-    public function getCategoryId($alias)
-    {
-        $alias = urldecode($alias);
-
-        $db = JFactory::getDBO();
-
-        $query = $db->getQuery(true)
-            ->select('id')
-            ->from('#__categories')
-            ->where(
-                array(
-                    'extension IN ("com_osdownloads", "system")',
-                    'alias = ' . $db->quote($alias)
-                )
-            );
-
-        return (int)$db->setQuery($query)->loadResult();
     }
 
     /**
@@ -342,6 +285,8 @@ class SEF
      */
     public function getFileIdFromMenuItemId($itemId)
     {
+        throw new Exception("Refactor for the id in the query", 1);
+
         $db = JFactory::getDbo();
 
         $query = $db->getQuery(true)
@@ -363,95 +308,52 @@ class SEF
     }
 
     /**
-     * Returns the menu alias of the menu item.
+     * Look for a menu item related to the given category id.
      *
-     * @param int $itemId
+     * @param  int $categoryId
      *
-     * @return string
+     * @return stdClass|false
      */
-    public function getMenuItemAliasFromItemId($itemId)
-    {
-        $db = JFactory::getDbo();
-
-        $query = $db->getQuery(true)
-            ->select('alias')
-            ->from('#__menu')
-            ->where('id = ' . $db->quote($itemId));
-
-        $alias = $db->setQuery($query)->loadResult();
-
-        return $alias;
-    }
-
-    /**
-     * Look for a menu item id with the category id
-     *
-     * @param int $categoryId
-     *
-     * @return int
-     */
-    public function findCategoryMenuItemId($categoryId)
+    public function getMenuItemForCategory($categoryId)
     {
         $db = JFactory::getDbo();
 
         // Look for the exact menu
         $query = $db->getQuery(true)
-            ->select('id')
+            ->select('*')
             ->from('#__menu')
             ->where('type = ' . $db->quote('component'))
             ->where('published = ' . $db->quote('1'))
             ->where('link = ' . $db->quote(Route::getFileRoute($categoryId)));
 
-        $id = (int) $db->setQuery($query)->loadResult();
+        $menu = $db->setQuery($query)->loadObject();
 
-        if (empty($id)) {
-            /*
-             * Iterates through the entire category tree
-             * while it finds a category linked to menu
-             */
-            // Get the category tree
-            $db = JFactory::getDBO();
-            $query = $db->getQuery(true)
-                ->select('parent.id AS id')
-                ->from('#__categories AS node')
-                ->join('', '#__categories AS parent ON node.lft BETWEEN parent.lft AND parent.rgt')
-                ->where('parent.extension = ' . $db->quote($option))
-                ->where('node.id = ' . (int) $id);
+        return $menu;
+    }
 
-            $categories = $db->setQuery($query)->loadObjectList();
+    /**
+     * Look for a menu item related to the most close category up in the tree,
+     * recursively, including the root category.
+     *
+     * @param  int $categoryId
+     *
+     * @return JMenuItem|false
+     */
+    public function getMenuItemForCategoryTreeRecursively($categoryId)
+    {
+        // Is there a menu for the given category?
+        $menu = $this->getMenuItemForCategory($categoryId);
 
-            // Reverse the tree and remove the last node
-            array_pop($categories);
-            $categories = array_reverse($categories);
+        if (empty($menu)) {
+            // No menu found. Try the parent category.
+            $category = $this->container->helperSEF->getCategory($categoryId);
 
-            // Build the URL
-            foreach ($categories as $category) {
-                $query = $db->getQuery(true)
-                    ->select('id')
-                    ->from('#__menu')
-                    ->where('type  = ' . $db->quote('component'))
-                    ->where('published = ' . $db->quote('1'))
-                    ->where('link = ' . $db->quote(Route::getFileRoute($category->id)));
-
-                $db->setQuery($query);
-
-                if ($id = $db->loadResult()) {
-                    break;
-                }
-            }
-
-            if (empty($id)) {
-                $app         = JFactory::getApplication();
-                $defaultMenu = $app->getMenu()->getDefault();
-
-                $id = 1;
-                if (isset($defaultMenu->id)) {
-                    $id = $defaultMenu->id;
-                }
+            if (!empty($category)) {
+                return $this->getMenuItemForCategoryTreeRecursively((int) $category->parent_id);
             }
         }
 
-        return $id;
+        return $menu;
     }
 
     /**

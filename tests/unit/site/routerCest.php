@@ -505,10 +505,11 @@ class RouterCest
      *
      * Menu items tree:
      *   - menu-category-1
-     *       - file-1
+     *       - menu-file-1
      *       - menu-category-2
-     *   - file-2
-     *   - file-3
+     *   - menu-file-2
+     *   - menu-other-extension-1
+     *       - menu-file-3
      *
      * @example {"task": "routedownload", "id": "1", "route": "menu-category-1/menu-file-1/routedownload", "layout": "any-layout"}
      * @example {"task": "routedownload", "id": "1", "route": "menu-category-1/menu-file-1/routedownload"}
@@ -530,6 +531,83 @@ class RouterCest
      */
     public function buildRouteForDownloadTasksWithMenuItemForTheFile(UnitTester $I, Example $example)
     {
+        // Menus
+        global $menus;
+
+        $menus = [
+            'category-1' => (object) [
+                'id'        => '101',
+                'alias'     => 'menu-category-1',
+                'path'      => 'menu-category-1',
+                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=1',
+                'parent_id' => '1',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'client_id' => '0',
+            ],
+
+            'category-2' => (object) [
+                'id'        => '102',
+                'alias'     => 'menu-category-2',
+                'path'      => 'menu-category-1/menu-category-2',
+                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=2',
+                'parent_id' => '101',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'client_id' => '0',
+            ],
+
+            'file-1' => (object) [
+                'id'        => '103',
+                'alias'     => 'menu-file-1',
+                'path'      => 'menu-category-1/menu-file-1',
+                'link'      => 'index.php?option=com_osdownloads&view=item&id=1',
+                'parent_id' => '101',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'client_id' => '0',
+            ],
+
+            'file-2' => (object) [
+                'id'        => '104',
+                'alias'     => 'menu-file-2',
+                'path'      => 'menu-file-2',
+                'link'      => 'index.php?option=com_osdownloads&view=item&id=2',
+                'parent_id' => '1',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'client_id' => '0',
+            ],
+
+            'other-extension-1' => (object) [
+                'id'        => '105',
+                'alias'     => 'menu-other-extension-1',
+                'path'      => 'menu-other-extension-1',
+                'link'      => 'index.php?option=com_3rdext&view=home&id=4',
+                'parent_id' => '1',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'client_id' => '0',
+            ],
+
+            'file-3' => (object) [
+                'id'        => '106',
+                'alias'     => 'menu-file-3',
+                'path'      => 'menu-file-3',
+                'link'      => 'index.php?option=com_osdownloads&view=item&id=3',
+                'parent_id' => '105',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'client_id' => '0',
+            ],
+        ];
+
         $query = [
             'task' => $example['task'],
             'id'   => $example['id'],

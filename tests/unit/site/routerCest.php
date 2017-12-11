@@ -107,7 +107,7 @@ class RouterCest
         };
 
         $container->helperSEF = new class {
-            public function appendCategoriesToSegments($segments, $catId)
+            public function appendCategoriesToSegments($segments, $catId, $categorySegmentToSkip = null)
             {
                 global $categories;
 
@@ -117,10 +117,21 @@ class RouterCest
 
                 $category = $categories[$catId];
 
-                $segments = array_merge(
-                    $segments,
-                    explode('/', $category->path)
-                );
+                $path = $category->path;
+
+                if (!empty($categorySegmentToSkip)) {
+                    $path = str_replace($categorySegmentToSkip, '', $path);
+                }
+
+                if (!empty($path)) {
+                    $segments = array_merge(
+                        $segments,
+                        explode('/', $path)
+                    );
+                }
+
+                // Remove empty segments
+                $segments = array_filter($segments);
 
                 return $segments;
             }
@@ -143,6 +154,17 @@ class RouterCest
 
                 if (isset($categories[$alias])) {
                     return $categories[$alias];
+                }
+
+                return false;
+            }
+
+            public function getCategory($id)
+            {
+                global $categories;
+
+                if (isset($categories[$id])) {
+                    return $categories[$id];
                 }
 
                 return false;
@@ -221,11 +243,26 @@ class RouterCest
                 }
 
                 $category = $categories[$categoryId];
-                if (!empty($category['parent_id'])) {
-                    return $this->getMenuItemForCategoryTreeRecursively();
+
+                if (!empty($category->parent_id)) {
+                    return $this->getMenuItemForCategoryTreeRecursively($category->parent_id);
+                }
+
+                // Check the root category, since no other category seems to be on a menu
+                if ($categoryId > 0) {
+                    return $this->getMenuItemForCategoryTreeRecursively(0);
                 }
 
                 return false;
+            }
+
+            public function getIdFromLink($link)
+            {
+                $vars = [];
+
+                parse_str($link, $vars);
+
+                return $vars['id'];
             }
         };
 

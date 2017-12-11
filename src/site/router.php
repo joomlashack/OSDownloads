@@ -220,6 +220,9 @@ class OsdownloadsRouter extends RouterBase
             switch ($task) {
                 case 'routedownload':
                 case 'download':
+                    $skipCategoryAndFileSegments = false;
+                    $categorySegmentToSkip       = '';
+
                     $catId = $this->container->helperSEF->getCategoryIdFromFileId($id);
 
                     // Is there a menu item for the file?
@@ -227,13 +230,24 @@ class OsdownloadsRouter extends RouterBase
                     if (!empty($menu)) {
                         // Yes, add the segments from the menu
                         $segments = $this->container->helperSEF->appendMenuPathToSegments($segments, $menu);
+                        $skipCategoryAndFileSegments = true;
                     } else {
                         // No. Is there a menu for any parent category of the file?
                         $menu = $this->container->helperSEF->getMenuItemForCategoryTreeRecursively($catId);
 
                         if (!empty($menu)) {
                             // Yes, add the segments from the menu
-                            $segments = $this->container->helperSEF->appendMenuPathToSegments($segments, $menu);
+                            $segments     = $this->container->helperSEF->appendMenuPathToSegments($segments, $menu);
+
+                            // Get the segments of the category from the menu to exclude them from the route
+                            $menuCatId    = $this->container->helperSEF->getIdFromLink($menu->link);
+                            $menuCategory = $this->container->helperSEF->getCategory($menuCatId);
+
+                            // Check if is an object, because if it is related to the root menu, it won't have
+                            // a category register
+                            if (is_object($menuCategory)) {
+                                $categorySegmentToSkip = $menuCategory->path;
+                            }
                         }
                     }
 
@@ -244,7 +258,6 @@ class OsdownloadsRouter extends RouterBase
 
                      */
 
-
                     // The task/layout segments
                     $segments[] = $task;
 
@@ -252,8 +265,12 @@ class OsdownloadsRouter extends RouterBase
                         $segments[] = 'thankyou';
                     }
 
+                    if ($skipCategoryAndFileSegments) {
+                        break;
+                    }
+
                     // Categories segments
-                    $segments = $this->container->helperSEF->appendCategoriesToSegments($segments, $catId);
+                    $segments = $this->container->helperSEF->appendCategoriesToSegments($segments, $catId, $categorySegmentToSkip);
 
                     // File segment
                     $segments[] = $this->container->helperSEF->getFileAlias($id);

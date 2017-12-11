@@ -59,10 +59,11 @@ class SEF
     /**
      * Build the path to a category, considering the parent categories.
      *
-     * @param array $categories
-     * @param int   $categoryId
+     * @param array  $categories
+     * @param int    $categoryId
+     * @param string $categorySegmentToSkip
      */
-    public function buildCategoriesPath(&$categories, $categoryId)
+    public function buildCategoriesPath(&$categories, $categoryId, $categorySegmentToSkip = null)
     {
         if (empty($categoryId)) {
             return;
@@ -70,7 +71,12 @@ class SEF
 
         $category = $this->getCategory($categoryId);
 
-        if (!empty($category) && $category->alias !== 'root') {
+        $categoriesToSkip = array();
+        if (!empty($categorySegmentToSkip)) {
+            $categoriesToSkip = explode('/', $categorySegmentToSkip);
+        }
+
+        if (!empty($category) && $category->alias !== 'root' && ! in_array($category->alias, $categoriesToSkip)) {
             $categories[] = $category->alias;
         }
 
@@ -83,17 +89,18 @@ class SEF
      * Append the category path to the segments and return the new array
      * of segments
      *
-     * @param array $segments
-     * @param int   $categoryId
+     * @param array  $segments
+     * @param int    $categoryId
+     * @param string $categorySegmentToSkip
      *
      * @return  array
      */
-    public function appendCategoriesToSegments($segments, $categoryId)
+    public function appendCategoriesToSegments($segments, $categoryId, $categorySegmentToSkip = null)
     {
         // Append the categories before the alias of the file
         $categories = array();
 
-        $this->buildCategoriesPath($categories, $categoryId);
+        $this->buildCategoriesPath($categories, $categoryId, $categorySegmentToSkip);
 
         for ($i = count($categories) - 1; $i >= 0; $i--) {
             $segments[] = $categories[$i];
@@ -277,31 +284,20 @@ class SEF
     }
 
     /**
-     * Returns the id of the file set as the document in the menu
+     * Returns the id found in the query of the link.
      *
-     * @param int $itemId
+     * @param string link
      *
      * @return int|null
      */
-    public function getFileIdFromMenuItemId($itemId)
+    public function getIdFromLink($link)
     {
-        throw new Exception("Refactor for the id in the query", 1);
+        $vars = array();
 
-        $db = JFactory::getDbo();
+        parse_str($link, $vars);
 
-        $query = $db->getQuery(true)
-            ->select('params')
-            ->from('#__menu')
-            ->where('id = ' . $db->quote($itemId));
-
-        $params = $db->setQuery($query)->loadResult();
-
-        if (!empty($params)) {
-            $params = json_decode($params);
-
-            if (is_object($params) && isset($params->document_id)) {
-                return $params->document_id;
-            }
+        if (isset($vars['id'])) {
+            return (int) $vars['id'];
         }
 
         return null;

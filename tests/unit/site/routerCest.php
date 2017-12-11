@@ -651,8 +651,8 @@ class RouterCest
     /**
      * Try to build route segments for the thank you page in the item view.
      *
-     * @example {"view": "item", "layout": "thankyou", "id": 1, "route": "category-1/category-2/category-3/files/file-1/thankyou"}
-     * @example {"view": "item", "layout": "thankyou", "id": 2, "route": "category-1/files/file-2/thankyou"}
+     * @example {"view": "item", "layout": "thankyou", "id": 1, "route": "category-1/file-1/thankyou"}
+     * @example {"view": "item", "layout": "thankyou", "id": 2, "route": "category-1/category-2/file-2/thankyou"}
      */
     public function tryToBuildRouteSegmentsForViewItemThankYouPage(UnitTester $I, Example $example)
     {
@@ -670,8 +670,8 @@ class RouterCest
     /**
      * Try to build route segments for a single file
      *
-     * @example {"view": "item", "id": 1, "route": "category-1/category-2/category-3/files/file-1"}
-     * @example {"view": "item", "id": 2, "route": "category-1/files/file-2"}
+     * @example {"view": "item", "id": 1, "route": "category-1/file-1"}
+     * @example {"view": "item", "id": 2, "route": "category-1/category-2/file-2"}
      */
     public function tryToBuildRouteSegmentsForASingleFile(UnitTester $I, Example $example)
     {
@@ -688,8 +688,8 @@ class RouterCest
     /**
      * Try to build route segments for a single file but only based on the item id.
      *
-     * @example {"Itemid": "101", "id": 1, "route": "category-1/category-2/category-3/files/file-1"}
-     * @example {"Itemid": "102", "id": 2, "route": "category-1/files/file-2"}
+     * @example {"Itemid": "101", "id": 1, "route": "category-1/file-1"}
+     * @example {"Itemid": "102", "id": 2, "route": "category-1/category-2/file-2"}
      */
     public function tryToBuildRouteSegmentsForASingleFileBasedOnItemId(UnitTester $I, Example $example)
     {

@@ -329,8 +329,6 @@ class OsdownloadsRouter extends RouterBase
                         $segments = $this->container->helperSEF->appendCategoriesToSegments($segments, $catId);
                     }
 
-                    $segments[] = $this->customSegments['files'];
-
                     // Append the file alias
                     $segments[] = $this->container->helperSEF->getFileAlias($id);
 

@@ -221,6 +221,17 @@ class RouterCest
                 return false;
             }
 
+            public function getFileFromAlias($alias)
+            {
+                global $files;
+
+                if (isset($files[$alias])) {
+                    return $files[$alias];
+                }
+
+                return false;
+            }
+
             public function getMenuItemForFile($id)
             {
                 global $files;
@@ -231,6 +242,34 @@ class RouterCest
                 }
 
                 return false;
+            }
+
+            public function getMenuItemsForComponent()
+            {
+                global $menus;
+
+                $filteredMenus = array();
+
+                foreach ($menus as $menu) {
+                    if (substr_count($menu->link, 'option=com_osdownloads')) {
+                        $filteredMenus[] = $menu;
+                    }
+                }
+
+                return $filteredMenus;
+            }
+
+            public function getMenuItemsFromPath($path)
+            {
+                global $menus;
+
+                foreach ($menus as $menu) {
+                    if ($menu->path === $path) {
+                        return $menu;
+                    }
+                }
+
+                return null;
             }
 
             public function getMenuItemForCategoryTreeRecursively($categoryId)
@@ -622,6 +661,128 @@ class RouterCest
         $I->assertEquals($example['route'], $route);
     }
 
+    /**
+     * Try to parse route segments for the routedownload and download tasks routes.
+     *
+     * @example {"task": "routedownload", "id": "1", "route": "routedownload/category-1/file-1"}
+     * @example {"task": "routedownload", "id": "2", "route": "routedownload/category-1/category-2/file-2"}
+     * @example {"task": "routedownload", "id": "3", "route": "routedownload/category-1/category-2/category-3/file-3"}
+     * @example {"task": "routedownload", "id": "4", "route": "routedownload/category-4/file-4"}
+     *
+     * @example {"task": "download", "id": "1", "route": "download/category-1/file-1"}
+     * @example {"task": "download", "id": "2", "route": "download/category-1/category-2/file-2"}
+     * @example {"task": "download", "id": "3", "route": "download/category-1/category-2/category-3/file-3"}
+     * @example {"task": "download", "id": "4", "route": "download/category-4/file-4"}
+     */
+    public function tryToParseRouteSegmentsForRoutedownloadAndDownloadTasksWithoutMenu(UnitTester $I, Example $example)
+    {
+        // Menus
+        global $menus;
+
+        $menus = [];
+
+        $segments = explode('/', $example['route']);
+
+        $vars = $this->router->parse($segments);
+
+        $I->assertArrayHasKey('task', $vars);
+        $I->assertEquals($example['task'], $vars['task']);
+
+        $I->assertArrayHasKey('id', $vars);
+        $I->assertEquals($example['id'], $vars['id']);
+
+        $I->assertArrayHasKey('tmpl', $vars);
+        $I->assertEquals('component', $vars['tmpl']);
+    }
+
+    /**
+     * Try to parse route segments for the routedownload and download tasks routes.
+     *
+     * Menu items tree:
+     * - menu-category-1
+     * - menu-category-3
+     *     - menu-file-3
+     * - menu-file-4
+     *
+     * @example {"task": "routedownload", "id": "1", "route": "menu-category-1/routedownload/file-1"}
+     * @example {"task": "routedownload", "id": "2", "route": "menu-category-1/routedownload/category-2/file-2"}
+     * @example {"task": "routedownload", "id": "3", "route": "menu-category-3/menu-file-3/routedownload"}
+     * @example {"task": "routedownload", "id": "4", "route": "menu-file-4/routedownload"}
+     *
+     * @example {"task": "download", "id": "1", "route": "menu-category-1/download/file-1"}
+     * @example {"task": "download", "id": "2", "route": "menu-category-1/download/category-2/file-2"}
+     * @example {"task": "download", "id": "3", "route": "menu-category-3/menu-file-3/download"}
+     * @example {"task": "download", "id": "4", "route": "menu-file-4/download"}
+     */
+    public function tryToParseRouteSegmentsForRoutedownloadAndDownloadTasksWithMenu(UnitTester $I, Example $example)
+    {
+        // Menus
+        global $menus;
+
+        $menus = [
+            'category-1' => (object) [
+                'id'        => '101',
+                'alias'     => 'menu-category-1',
+                'path'      => 'menu-category-1',
+                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=1',
+                'parent_id' => '1',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'client_id' => '0',
+            ],
+
+            'category-2' => (object) [
+                'id'        => '102',
+                'alias'     => 'menu-category-3',
+                'path'      => 'menu-category-3',
+                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=3',
+                'parent_id' => '1',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'client_id' => '0',
+            ],
+
+            'file-3' => (object) [
+                'id'        => '103',
+                'alias'     => 'menu-file-3',
+                'path'      => 'menu-category-3/menu-file-3',
+                'link'      => 'index.php?option=com_osdownloads&view=item&id=3',
+                'parent_id' => '102',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'client_id' => '0',
+            ],
+
+            'file-4' => (object) [
+                'id'        => '104',
+                'alias'     => 'menu-file-4',
+                'path'      => 'menu-file-4',
+                'link'      => 'index.php?option=com_osdownloads&view=item&id=4',
+                'parent_id' => '1',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'client_id' => '0',
+            ],
+        ];
+
+        $segments = explode('/', $example['route']);
+
+        $vars = $this->router->parse($segments);
+
+        $I->assertArrayHasKey('task', $vars);
+        $I->assertEquals($example['task'], $vars['task']);
+
+        $I->assertArrayHasKey('id', $vars);
+        $I->assertEquals($example['id'], $vars['id']);
+
+        $I->assertArrayHasKey('tmpl', $vars);
+        $I->assertEquals('component', $vars['tmpl']);
+    }
+
     /*=====  End of DOWNLOAD TASKS  ======*/
 
 
@@ -795,29 +956,6 @@ class RouterCest
     =            TESTS FOR THE PARSER            =
     ============================================*/
 
-    /**
-     * Try to parse route segments for the routedownload and download tasks routes.
-     *
-     * @example {"task": "routedownload", "id": "1", "route": "category-1/category-2/category-3/routedownload/file-1"}
-     * * @example {"task": "routedownload", "id": "2", "route": "category-1/routedownload/file-2"}
-     * @example {"task": "download", "id": "1", "route": "category-1/category-2/category-3/download/file-1"}
-     * @example {"task": "download", "id": "2", "route": "category-1/download/file-2"}
-     */
-    public function tryToParseRouteSegmentsForRoutedownloadAndDownloadTasks(UnitTester $I, Example $example)
-    {
-        $segments = explode('/', $example['route']);
-
-        $vars = $this->router->parse($segments);
-
-        $I->assertArrayHasKey('task', $vars);
-        $I->assertEquals($example['task'], $vars['task']);
-
-        $I->assertArrayHasKey('id', $vars);
-        $I->assertEquals($example['id'], $vars['id']);
-
-        $I->assertArrayHasKey('tmpl', $vars);
-        $I->assertEquals('component', $vars['tmpl']);
-    }
 
     /**
      * Try to parse route segments for the confirmemail task.

@@ -163,24 +163,24 @@ class SEF
     }
 
     /**
-     * Returns the id of a file based on the file's alias.
+     * Return the file object from alias
      *
-     * @param string $alias
+     * @param  string $alias
      *
-     * @return string
+     * @return StdClass
      */
-    public function getFileIdFromAlias($alias)
+    public function getFileFromAlias($alias)
     {
         $db = JFactory::getDbo();
 
         $query = $db->getQuery(true)
-            ->select('id')
+            ->select('*')
             ->from('#__osdownloads_documents')
             ->where('alias = ' . $db->quote($alias));
 
-        $id = $db->setQuery($query)->loadResult();
+        $file = $db->setQuery($query)->loadObject();
 
-        if (empty($id)) {
+        if (empty($file)) {
             JLog::add(
                 JText::sprintf(
                     'COM_OSDOWNLOADS_ERROR_FILE_NOT_FOUND',
@@ -191,7 +191,25 @@ class SEF
             );
         }
 
-        return $id;
+        return $file;
+    }
+
+    /**
+     * Returns the id of a file based on the file's alias.
+     *
+     * @param string $alias
+     *
+     * @return int|null
+     */
+    public function getFileIdFromAlias($alias)
+    {
+        $file = $this->getFileFromAlias($alias);
+
+        if (!empty($file)) {
+            return $file->id;
+        }
+
+        return false;
     }
 
     /**
@@ -321,6 +339,52 @@ class SEF
             ->where('type = ' . $db->quote('component'))
             ->where('published = ' . $db->quote('1'))
             ->where('link = ' . $db->quote(Route::getFileRoute($categoryId)));
+
+        $menu = $db->setQuery($query)->loadObject();
+
+        return $menu;
+    }
+
+    /**
+     * Look for a menu item related to OSDownloads.
+     *
+     * @return array
+     */
+    public function getMenuItemsForComponent()
+    {
+        $db = JFactory::getDbo();
+
+        // Look for the exact menu
+        $query = $db->getQuery(true)
+            ->select('*')
+            ->from('#__menu')
+            ->where('type = ' . $db->quote('component'))
+            ->where('published = ' . $db->quote('1'))
+            ->where('link LIKE ' . $db->quote('%option=com_osdownloads%'));
+
+        $menus = $db->setQuery($query)->loadObjectList();
+
+        return $menus;
+    }
+
+    /**
+     * Look for a menu item based on the path
+     *
+     * @param  string  $path
+     *
+     * @return stdClass|null
+     */
+    public function getMenuItemsFromPath($path)
+    {
+        $db = JFactory::getDbo();
+
+        // Look for the exact menu
+        $query = $db->getQuery(true)
+            ->select('*')
+            ->from('#__menu')
+            ->where('type = ' . $db->quote('component'))
+            ->where('published = ' . $db->quote('1'))
+            ->where('path = ' . $db->quote($path));
 
         $menu = $db->setQuery($query)->loadObject();
 

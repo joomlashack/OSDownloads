@@ -17,6 +17,12 @@ defined('_JEXEC') or die;
  * @deprecated 1.8.0  Use the Alledia\OSDownloads\Free\Helper\Helper class instead.
  */
 
+// Joomla can load this file without call the component, specially while loading
+// the sidebar. So we need to include the autoloader and libraries.
+if (!class_exists('\\Alledia\\OSDownloads\\Free\\Helper\\Helper')) {
+    require_once dirname(__DIR__) . '/include.php';
+}
+
 if (class_exists('\\Alledia\\OSDownloads\\Pro\\Helper\\Helper')) {
     class OSDownloadsHelper extends Alledia\OSDownloads\Pro\Helper\Helper
     {

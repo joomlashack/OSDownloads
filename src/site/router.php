@@ -139,10 +139,11 @@ class OsdownloadsRouter extends RouterBase
         $menuItem = $this->getMenuItem($itemId);
         $view     = null;
 
-        if ('com_osdownloads' === $menuItem->component) {
-            $view = $menuItem->query['view'];
+        if (!empty($menuItem)) {
+            if ('com_osdownloads' === $menuItem->component) {
+                $view = $menuItem->query['view'];
+            }
         }
-
 
         return $view;
     }
@@ -158,8 +159,10 @@ class OsdownloadsRouter extends RouterBase
         $menuItem = $this->getMenuItem($itemId);
         $id       = null;
 
-        if ('com_osdownloads' === $menuItem->component) {
-            $id = $menuItem->query['id'];
+        if (!empty($menuItem)) {
+            if ('com_osdownloads' === $menuItem->component) {
+                $id = $menuItem->query['id'];
+            }
         }
 
         return $id;
@@ -275,6 +278,7 @@ class OsdownloadsRouter extends RouterBase
         if (empty($id) && !empty($itemId)) {
             $id = $this->getMenuItemQueryId($itemId);
         }
+
         /**
 
             TODO:
@@ -472,6 +476,8 @@ class OsdownloadsRouter extends RouterBase
 
                 if (!empty($id)) {
                     $vars['id'] = $id;
+
+                    return $vars;
                 } else {
                     JError::raiseError(404, JText::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'));
                 }
@@ -480,9 +486,7 @@ class OsdownloadsRouter extends RouterBase
 
         /**
          *
-         * Check the first segment, it could be:
-         *
-         *   A) confirmemail task
+         * Check the first segment, it could be the confirmemail task
          *
          */
 
@@ -494,11 +498,63 @@ class OsdownloadsRouter extends RouterBase
             // Check if we have the data segment
             if (!empty(end($segments))) {
                 $vars['data'] = end($segments);
+
+                return $vars;
+            }
+
+            /**
+            
+                TODO:
+                - Throw error
+            
+             */
+        }
+
+        /**
+         *
+         * If no task were found, try to detect the views
+         *
+         */
+        if (!isset($vars['task'])) {
+            // Is a single file route?
+            if (is_object($file)) {
+                // Yes
+                if (isset($vars['id']) && !isset($vars['view'])) {
+                    $vars['view'] = 'item';
+
+                    return $vars;
+                }
+            } else {
+                // No, is a list of files?
+                if ($this->customSegments['files'] === end($segments)) {
+                    $vars['view'] = 'downloads';
+
+                    // Try to detect the category
+                    $id = $this->container->helperSEF->getCategoryFromAlias(end($segments));
+
+                    if (!empty($id)) {
+                        $vars['id'] = $id;
+
+                        return $vars;
+                    }
+                }
+            }
+        }        
+
+        // Check menu items
+        $path = implode('/', $segments);
+        $menu = $this->container->helperSEF->getMenuItemsFromPath($path);
+
+        if (!empty($menu)) {
+            if (!isset($vars['view'])) {
+                $vars['view'] = $this->getMenuItemQueryView($menu->id);
+                $vars['id']   = $this->getMenuItemQueryId($menu->id);
+
+                return $vars;
             }
         }
 
-
-
+        
 
 
         /**

@@ -840,6 +840,9 @@ class RouterCest
 
 
 
+    /*=========================================
+    =            SINGLE ITEM PAGES            =
+    =========================================*/
 
     /**
      * Try to build route segments for the thank you page in the item view.
@@ -849,7 +852,7 @@ class RouterCest
      * @example {"view": "item", "layout": "thankyou", "id": 3, "route": "thankyou/category-1/category-2/category-3/file-3"}
      * @example {"view": "item", "layout": "thankyou", "id": 4, "route": "thankyou/category-4/file-4"}
      */
-    public function tryToBuildRouteSegmentsForViewItemThankYouPageWithoutMenuItem(UnitTester $I, Example $example)
+    public function buildRouteSegmentsForViewItemThankYouPageWithoutMenuItem(UnitTester $I, Example $example)
     {
         $query = [
             'view'   => $example['view'],
@@ -876,7 +879,7 @@ class RouterCest
      * @example {"view": "item", "layout": "thankyou", "id": 3, "route": "menu-file-3/thankyou"}
      * @example {"view": "item", "layout": "thankyou", "id": 4, "route": "menu-file-4/thankyou"}
      */
-    public function tryToBuildRouteSegmentsForViewItemThankYouPageWithMenuItem(UnitTester $I, Example $example)
+    public function buildRouteSegmentsForViewItemThankYouPageWithMenuItem(UnitTester $I, Example $example)
     {
         // Menus
         global $menus;
@@ -943,13 +946,95 @@ class RouterCest
     }
 
     /**
-     * Try to build route segments for a single file
+     * Try to build route segments for a single file without menu items
      *
      * @example {"view": "item", "id": 1, "route": "category-1/file-1"}
      * @example {"view": "item", "id": 2, "route": "category-1/category-2/file-2"}
+     * @example {"view": "item", "id": 3, "route": "category-1/category-2/category-3/file-3"}
+     * @example {"view": "item", "id": 4, "route": "category-4/file-4"}
      */
-    public function tryToBuildRouteSegmentsForASingleFile(UnitTester $I, Example $example)
+    public function buildRouteSegmentsForASingleFileWithoutMenuItem(UnitTester $I, Example $example)
     {
+        $query = [
+            'view'   => $example['view'],
+            'id'     => $example['id'],
+        ];
+
+        $route = implode('/', $this->router->build($query));
+
+        $I->assertEquals($example['route'], $route);
+    }
+
+    /**
+     * Try to build route segments for a single file with menu items
+     *
+     * Menu items tree:
+     *   - menu-category-1
+     *       - menu-category-3
+     *           - menu-file-3
+     *   - menu-file-4
+     *
+     *
+     * @example {"view": "item", "id": 1, "route": "menu-category-1/file-1"}
+     * @example {"view": "item", "id": 2, "route": "menu-category-1/category-2/file-2"}
+     * @example {"view": "item", "id": 3, "route": "menu-category-1/menu-category-3/menu-file-3"}
+     * @example {"view": "item", "id": 4, "route": "menu-file-4"}
+     */
+    public function buildRouteSegmentsForASingleFileWithMenuItem(UnitTester $I, Example $example)
+    {
+        // Menus
+        global $menus;
+
+        $menus = [
+            'category-1' => (object) [
+                'id'        => '101',
+                'alias'     => 'menu-category-1',
+                'path'      => 'menu-category-1',
+                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=1',
+                'parent_id' => '1',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'client_id' => '0',
+            ],
+
+            'category-3' => (object) [
+                'id'        => '103',
+                'alias'     => 'menu-category-3',
+                'path'      => 'menu-category-1/menu-category-3',
+                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=3',
+                'parent_id' => '101',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'client_id' => '0',
+            ],
+
+            'file-3' => (object) [
+                'id'        => '104',
+                'alias'     => 'menu-file-3',
+                'path'      => 'menu-category-1/menu-category-3/menu-file-3',
+                'link'      => 'index.php?option=com_osdownloads&view=item&id=3',
+                'parent_id' => '103',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'client_id' => '0',
+            ],
+
+            'file-4' => (object) [
+                'id'        => '105',
+                'alias'     => 'menu-file-4',
+                'path'      => 'menu-file-4',
+                'link'      => 'index.php?option=com_osdownloads&view=item&id=4',
+                'parent_id' => '1',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'client_id' => '0',
+            ],
+        ];
+
         $query = [
             'view'   => $example['view'],
             'id'     => $example['id'],
@@ -963,11 +1048,78 @@ class RouterCest
     /**
      * Try to build route segments for a single file but only based on the item id.
      *
-     * @example {"Itemid": "101", "id": 1, "route": "category-1/file-1"}
-     * @example {"Itemid": "102", "id": 2, "route": "category-1/category-2/file-2"}
+     * Menu items tree:
+     *   - menu-category-1
+     *       - menu-category-3
+     *           - menu-file-3
+     *   - menu-file-4
+     *
+     * @example {"Itemid": "104", "id": 3, "route": "menu-category-1/menu-category-3/menu-file-3"}
+     * @example {"Itemid": "105", "id": 4, "route": "menu-file-4"}
      */
-    public function tryToBuildRouteSegmentsForASingleFileBasedOnItemId(UnitTester $I, Example $example)
+    public function buildRouteSegmentsForASingleFileBasedOnItemId(UnitTester $I, Example $example)
     {
+        // Menus
+        global $menus;
+
+        $menus = [
+            'category-1' => (object) [
+                'id'        => '101',
+                'alias'     => 'menu-category-1',
+                'path'      => 'menu-category-1',
+                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=1',
+                'parent_id' => '1',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'component' => 'com_osdownloads',
+                'client_id' => '0',
+                'query'     => ['view' => 'item', 'id' => '1'],
+            ],
+
+            'category-3' => (object) [
+                'id'        => '103',
+                'alias'     => 'menu-category-3',
+                'path'      => 'menu-category-1/menu-category-3',
+                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=3',
+                'parent_id' => '101',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'component' => 'com_osdownloads',
+                'client_id' => '0',
+                'query'     => ['view' => 'item', 'id' => '3'],
+            ],
+
+            'file-3' => (object) [
+                'id'        => '104',
+                'alias'     => 'menu-file-3',
+                'path'      => 'menu-category-1/menu-category-3/menu-file-3',
+                'link'      => 'index.php?option=com_osdownloads&view=item&id=3',
+                'parent_id' => '103',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'component' => 'com_osdownloads',
+                'client_id' => '0',
+                'query'     => ['view' => 'item', 'id' => '3'],
+            ],
+
+            'file-4' => (object) [
+                'id'        => '105',
+                'alias'     => 'menu-file-4',
+                'path'      => 'menu-file-4',
+                'link'      => 'index.php?option=com_osdownloads&view=item&id=4',
+                'parent_id' => '1',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'component' => 'com_osdownloads',
+                'client_id' => '0',
+                'query'     => ['view' => 'item', 'id' => '4'],
+            ],
+        ];
+
         $query = [
             'Itemid' => $example['Itemid'],
         ];
@@ -976,6 +1128,124 @@ class RouterCest
 
         $I->assertEquals($example['route'], $route);
     }
+
+    /**
+     * Try to parse route segments for a single file.
+     *
+     * @example {"id": 1, "route": "category-1/file-1"}
+     * @example {"id": 2, "route": "category-1/category-2/file-2"}
+     * @example {"id": 3, "route": "category-1/category-2/category-3/file-3"}
+     * @example {"id": 4, "route": "category-4/file-4"}
+     */
+    public function parseRouteSegmentsForASingleFileWithoutMenuItem(UnitTester $I, Example $example)
+    {
+        $segments = explode('/', $example['route']);
+
+        $vars = $this->router->parse($segments);
+
+        $I->assertArrayHasKey('view', $vars);
+        $I->assertEquals('item', $vars['view']);
+
+        $I->assertArrayHasKey('id', $vars);
+        $I->assertEquals($example['id'], $vars['id']);
+
+        $I->assertArrayNotHasKey('layout', $vars);
+        $I->assertArrayNotHasKey('tmpl', $vars);
+    }
+
+    /**
+     * Try to parse route segments for a single file.
+     *
+     * Menu items tree:
+     *   - menu-category-1
+     *       - menu-category-3
+     *           - menu-file-3
+     *   - menu-file-4
+     *
+     * @example {"id": 1, "route": "menu-category-1/file-1"}
+     * @example {"id": 2, "route": "menu-category-1/category-2/file-2"}
+     * @example {"id": 3, "route": "menu-category-1/menu-category-3/file-3"}
+     * @example {"id": 4, "route": "menu-file-4"}
+     */
+    public function parseRouteSegmentsForASingleFileWithMenuItem(UnitTester $I, Example $example)
+    {
+        // Menus
+        global $menus;
+
+        $menus = [
+            'category-1' => (object) [
+                'id'        => '101',
+                'alias'     => 'menu-category-1',
+                'path'      => 'menu-category-1',
+                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=1',
+                'parent_id' => '1',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'component' => 'com_osdownloads',
+                'client_id' => '0',
+                'query'     => ['view' => 'item', 'id' => '1'],
+            ],
+
+            'category-3' => (object) [
+                'id'        => '103',
+                'alias'     => 'menu-category-3',
+                'path'      => 'menu-category-1/menu-category-3',
+                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=3',
+                'parent_id' => '101',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'component' => 'com_osdownloads',
+                'client_id' => '0',
+                'query'     => ['view' => 'item', 'id' => '3'],
+            ],
+
+            'file-3' => (object) [
+                'id'        => '104',
+                'alias'     => 'menu-file-3',
+                'path'      => 'menu-category-1/menu-category-3/menu-file-3',
+                'link'      => 'index.php?option=com_osdownloads&view=item&id=3',
+                'parent_id' => '103',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'component' => 'com_osdownloads',
+                'client_id' => '0',
+                'query'     => ['view' => 'item', 'id' => '3'],
+            ],
+
+            'file-4' => (object) [
+                'id'        => '105',
+                'alias'     => 'menu-file-4',
+                'path'      => 'menu-file-4',
+                'link'      => 'index.php?option=com_osdownloads&view=item&id=4',
+                'parent_id' => '1',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'component' => 'com_osdownloads',
+                'client_id' => '0',
+                'query'     => ['view' => 'item', 'id' => '4'],
+            ],
+        ];
+
+        $segments = explode('/', $example['route']);
+
+        $vars = $this->router->parse($segments);
+
+        $I->assertArrayHasKey('view', $vars);
+        $I->assertEquals('item', $vars['view']);
+
+        $I->assertArrayHasKey('id', $vars);
+        $I->assertEquals($example['id'], $vars['id']);
+
+        $I->assertArrayNotHasKey('layout', $vars);
+        $I->assertArrayNotHasKey('tmpl', $vars);
+    }
+
+    /*=====  End of Section SINGLE ITEM PAGES  ======*/
+
 
     /**
      * Try to build route segments for a list of files.
@@ -1095,27 +1365,6 @@ class RouterCest
         $I->assertEquals($example['id'], $vars['id']);
     }
 
-    /**
-     * Try to parse route segments for a single file.
-     *
-     * @example {"id": 1, "route": "category-1/category-2/category-3/files/file-1"}
-     * @example {"id": 2, "route": "category-1/files/file-2"}
-     */
-    public function tryToParseRouteSegmentsForASingleFile(UnitTester $I, Example $example)
-    {
-        $segments = explode('/', $example['route']);
-
-        $vars = $this->router->parse($segments);
-
-        $I->assertArrayHasKey('view', $vars);
-        $I->assertEquals('item', $vars['view']);
-
-        $I->assertArrayHasKey('id', $vars);
-        $I->assertEquals($example['id'], $vars['id']);
-
-        $I->assertArrayNotHasKey('layout', $vars);
-        $I->assertArrayNotHasKey('tmpl', $vars);
-    }
 
     /**
      * Try to parse route segments for a list of files.

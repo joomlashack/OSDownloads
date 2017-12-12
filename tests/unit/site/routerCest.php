@@ -281,10 +281,12 @@ class RouterCest
                     return $menus['category-' . $categoryId];
                 }
 
-                $category = $categories[$categoryId];
+                if (isset($categories[$categoryId])) {
+                    $category = $categories[$categoryId];
 
-                if (!empty($category->parent_id)) {
-                    return $this->getMenuItemForCategoryTreeRecursively($category->parent_id);
+                    if (!empty($category->parent_id)) {
+                        return $this->getMenuItemForCategoryTreeRecursively($category->parent_id);
+                    }
                 }
 
                 // Check the root category, since no other category seems to be on a menu
@@ -732,7 +734,7 @@ class RouterCest
                 'client_id' => '0',
             ],
 
-            'category-2' => (object) [
+            'category-3' => (object) [
                 'id'        => '102',
                 'alias'     => 'menu-category-3',
                 'path'      => 'menu-category-3',
@@ -812,11 +814,93 @@ class RouterCest
     /**
      * Try to build route segments for the thank you page in the item view.
      *
-     * @example {"view": "item", "layout": "thankyou", "id": 1, "route": "category-1/file-1/thankyou"}
-     * @example {"view": "item", "layout": "thankyou", "id": 2, "route": "category-1/category-2/file-2/thankyou"}
+     * @example {"view": "item", "layout": "thankyou", "id": 1, "route": "thankyou/category-1/file-1"}
+     * @example {"view": "item", "layout": "thankyou", "id": 2, "route": "thankyou/category-1/category-2/file-2"}
+     * @example {"view": "item", "layout": "thankyou", "id": 3, "route": "thankyou/category-1/category-2/category-3/file-3"}
+     * @example {"view": "item", "layout": "thankyou", "id": 4, "route": "thankyou/category-4/file-4"}
      */
-    public function tryToBuildRouteSegmentsForViewItemThankYouPage(UnitTester $I, Example $example)
+    public function tryToBuildRouteSegmentsForViewItemThankYouPageWithoutMenuItem(UnitTester $I, Example $example)
     {
+        $query = [
+            'view'   => $example['view'],
+            'layout' => $example['layout'],
+            'id'     => $example['id'],
+        ];
+
+        $route = implode('/', $this->router->build($query));
+
+        $I->assertEquals($example['route'], $route);
+    }
+
+    /**
+     * Try to build route segments for the thank you page in the item view.
+     *
+     * Menu items tree:
+     *   - menu-category-1
+     *       - menu-category-3
+     *   - menu-file-3
+     *   - menu-file-4
+     *
+     * @example {"view": "item", "layout": "thankyou", "id": 1, "route": "menu-category-1/thankyou/file-1"}
+     * @example {"view": "item", "layout": "thankyou", "id": 2, "route": "menu-category-1/thankyou/category-2/file-2"}
+     * @example {"view": "item", "layout": "thankyou", "id": 3, "route": "menu-file-3/thankyou"}
+     * @example {"view": "item", "layout": "thankyou", "id": 4, "route": "menu-file-4/thankyou"}
+     */
+    public function tryToBuildRouteSegmentsForViewItemThankYouPageWithMenuItem(UnitTester $I, Example $example)
+    {
+        // Menus
+        global $menus;
+
+        $menus = [
+            'category-1' => (object) [
+                'id'        => '101',
+                'alias'     => 'menu-category-1',
+                'path'      => 'menu-category-1',
+                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=1',
+                'parent_id' => '1',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'client_id' => '0',
+            ],
+
+            'category-3' => (object) [
+                'id'        => '103',
+                'alias'     => 'menu-category-3',
+                'path'      => 'menu-category-1/menu-category-3',
+                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=3',
+                'parent_id' => '101',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'client_id' => '0',
+            ],
+
+            'file-3' => (object) [
+                'id'        => '104',
+                'alias'     => 'menu-file-3',
+                'path'      => 'menu-file-3',
+                'link'      => 'index.php?option=com_osdownloads&view=item&id=3',
+                'parent_id' => '1',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'client_id' => '0',
+            ],
+
+            'file-4' => (object) [
+                'id'        => '105',
+                'alias'     => 'menu-file-4',
+                'path'      => 'menu-file-4',
+                'link'      => 'index.php?option=com_osdownloads&view=item&id=4',
+                'parent_id' => '1',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'client_id' => '0',
+            ],
+        ];
+
         $query = [
             'view'   => $example['view'],
             'layout' => $example['layout'],

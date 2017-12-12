@@ -386,9 +386,9 @@ class SEF
             ->where('published = ' . $db->quote('1'))
             ->where('path = ' . $db->quote($path));
 
-        $menu = $db->setQuery($query)->loadObject();
+        $menus = $db->setQuery($query)->loadObjectList();
 
-        return $menu;
+        return $menus;
     }
 
     /**

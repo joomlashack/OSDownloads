@@ -166,6 +166,77 @@ class OsdownloadsRouter extends RouterBase
     }
 
     /**
+     * Prepend the menu path to the given path, if a menu exists. Returns the
+     * modified array of segments.
+     *
+     * @param  int   $fileId
+     * @param  int   $categoryId
+     * @param  array $segments
+     * @param  array $middlePath
+     * @param  array $endPath
+     *
+     * @return array
+     */
+    protected function buildRoutePrependingMenuPath($fileId, $categoryId, $segments, $middlePath, $endPath)
+    {
+        $skipCategoryAndFileSegments = false;
+        $categorySegmentToSkip       = false;
+        $menu                        = null;
+
+        // Do we have a file?
+        if (!empty($fileId)) {
+            // Is there a menu item for the file?
+            $menu = $this->container->helperSEF->getMenuItemForFile($fileId);
+            if (!empty($menu)) {
+                // Yes, add the segments from the menu
+                $segments = $this->container->helperSEF->appendMenuPathToSegments($segments, $menu);
+                $skipCategoryAndFileSegments = true;
+            }
+        }
+
+        // No menu for the file.
+        if (empty($menu)) {
+            // Is there a menu for any parent category of the file, or given category?
+            $menu = $this->container->helperSEF->getMenuItemForCategoryTreeRecursively($categoryId);
+
+            if (!empty($menu)) {
+                // Yes, add the segments from the menu
+                $segments = $this->container->helperSEF->appendMenuPathToSegments($segments, $menu);
+
+                // Get the segments of the category from the menu to exclude them from the route
+                $menuCatId    = $this->container->helperSEF->getIdFromLink($menu->link);
+                $menuCategory = $this->container->helperSEF->getCategory($menuCatId);
+
+                // Check if is an object, because if it is related to the root menu, it won't have
+                // a category register
+                if (is_object($menuCategory)) {
+                    $categorySegmentToSkip = $menuCategory->path;
+                }
+            }
+        }
+
+        // Middle segments
+        if (!empty($middlePath)) {
+            $segments = array_merge($segments, $middlePath);
+        }
+
+        // Do we need to skip the category and end path because the found menu already defines it?
+        if ($skipCategoryAndFileSegments) {
+            return $segments;
+        }
+
+        // Categories segments
+        $segments = $this->container->helperSEF->appendCategoriesToSegments($segments, $categoryId, $categorySegmentToSkip);
+
+        // End segments
+        if (!empty($endPath)) {
+            $segments = array_merge($segments, $endPath);
+        }
+
+        return $segments;
+    }
+
+    /**
      * Build the route for the com_osdownloads component.
      *
      * @param   array &$query An array of URL arguments
@@ -222,60 +293,25 @@ class OsdownloadsRouter extends RouterBase
             switch ($task) {
                 case 'routedownload':
                 case 'download':
-                    $skipCategoryAndFileSegments = false;
-                    $categorySegmentToSkip       = '';
+                    $categoryId = $this->container->helperSEF->getCategoryIdFromFileId($id);
 
-                    $catId = $this->container->helperSEF->getCategoryIdFromFileId($id);
+                    $middlePath = array();
+                    $endPath    = array();
 
-                    // Is there a menu item for the file?
-                    $menu = $this->container->helperSEF->getMenuItemForFile($id);
-                    if (!empty($menu)) {
-                        // Yes, add the segments from the menu
-                        $segments = $this->container->helperSEF->appendMenuPathToSegments($segments, $menu);
-                        $skipCategoryAndFileSegments = true;
-                    } else {
-                        // No. Is there a menu for any parent category of the file?
-                        $menu = $this->container->helperSEF->getMenuItemForCategoryTreeRecursively($catId);
-
-                        if (!empty($menu)) {
-                            // Yes, add the segments from the menu
-                            $segments     = $this->container->helperSEF->appendMenuPathToSegments($segments, $menu);
-
-                            // Get the segments of the category from the menu to exclude them from the route
-                            $menuCatId    = $this->container->helperSEF->getIdFromLink($menu->link);
-                            $menuCategory = $this->container->helperSEF->getCategory($menuCatId);
-
-                            // Check if is an object, because if it is related to the root menu, it won't have
-                            // a category register
-                            if (is_object($menuCategory)) {
-                                $categorySegmentToSkip = $menuCategory->path;
-                            }
-                        }
-                    }
-
-                    /**
-
-                        TODO:
-                        - REMOVE the segments of categories already covered by the menu item segments
-
-                     */
 
                     // The task/layout segments
-                    $segments[] = $task;
+                    $middlePath[] = $task;
 
-                    if ($layout === 'thankyou') {
-                        $segments[] = 'thankyou';
+                    // Check if the thankyou layout was requested
+                    if ('thankyou' === $layout) {
+                        $middlePath[] = 'thankyou';
                     }
-
-                    if ($skipCategoryAndFileSegments) {
-                        break;
-                    }
-
-                    // Categories segments
-                    $segments = $this->container->helperSEF->appendCategoriesToSegments($segments, $catId, $categorySegmentToSkip);
 
                     // File segment
-                    $segments[] = $this->container->helperSEF->getFileAlias($id);
+                    $endPath[] = $this->container->helperSEF->getFileAlias($id);
+
+                    // Build the complete route
+                    $segments = $this->buildRoutePrependingMenuPath($id, $categoryId, $segments, $middlePath, $endPath);
 
                     break;
 
@@ -326,18 +362,21 @@ class OsdownloadsRouter extends RouterBase
                  *
                  */
                 case 'item':
-                    $catId = $this->container->helperSEF->getCategoryIdFromFileId($id);
-                    if (!empty($catId)) {
-                        $segments = $this->container->helperSEF->appendCategoriesToSegments($segments, $catId);
-                    }
+                    $categoryId = $this->container->helperSEF->getCategoryIdFromFileId($id);
 
-                    // Append the file alias
-                    $segments[] = $this->container->helperSEF->getFileAlias($id);
+                    $middlePath = array();
+                    $endPath    = array();
 
                     // Check if the thankyou layout was requested
                     if ('thankyou' === $layout) {
-                        $segments[] = 'thankyou';
+                        $middlePath[] = 'thankyou';
                     }
+
+                    // Append the file alias
+                    $endPath[] = $this->container->helperSEF->getFileAlias($id);
+
+                    // Build the complete route
+                    $segments = $this->buildRoutePrependingMenuPath($id, $categoryId, $segments, $middlePath, $endPath);
 
                     break;
             }

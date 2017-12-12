@@ -406,8 +406,6 @@ class OsdownloadsRouter extends RouterBase
     {
         $vars = array();
 
-        $availableTasks = array('routedownload', 'download');
-
         /**
          *
          * Check the last segment, it could be:
@@ -420,9 +418,11 @@ class OsdownloadsRouter extends RouterBase
          *
          */
 
-        $lastSegment = end($segments);
+        $availableTasks = array('routedownload', 'download');
+        $lastSegment    = end($segments);
 
-        // File alias?
+        /*----------  File Alias?  ----------*/
+
         $file = $this->container->helperSEF->getFileFromAlias($lastSegment);
 
         if (!empty($file)) {
@@ -478,7 +478,27 @@ class OsdownloadsRouter extends RouterBase
             }
         }
 
-        // Category alias?
+        /**
+         *
+         * Check the first segment, it could be:
+         *
+         *   A) confirmemail task
+         *
+         */
+
+        $firstSegment = reset($segments);
+        if ('confirmemail' === $firstSegment) {
+            $vars['task'] = 'confirmemail';
+            $vars['tmpl'] = 'component';
+
+            // Check if we have the data segment
+            if (!empty(end($segments))) {
+                $vars['data'] = end($segments);
+            }
+        }
+
+
+
 
 
         /**

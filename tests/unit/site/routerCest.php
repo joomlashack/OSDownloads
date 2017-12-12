@@ -676,7 +676,7 @@ class RouterCest
      * @example {"task": "download", "id": "3", "route": "download/category-1/category-2/category-3/file-3"}
      * @example {"task": "download", "id": "4", "route": "download/category-4/file-4"}
      */
-    public function tryToParseRouteSegmentsForRoutedownloadAndDownloadTasksWithoutMenu(UnitTester $I, Example $example)
+    public function parseRouteSegmentsForRoutedownloadAndDownloadTasksWithoutMenu(UnitTester $I, Example $example)
     {
         // Menus
         global $menus;
@@ -716,7 +716,7 @@ class RouterCest
      * @example {"task": "download", "id": "3", "route": "menu-category-3/menu-file-3/download"}
      * @example {"task": "download", "id": "4", "route": "menu-file-4/download"}
      */
-    public function tryToParseRouteSegmentsForRoutedownloadAndDownloadTasksWithMenu(UnitTester $I, Example $example)
+    public function parseRouteSegmentsForRoutedownloadAndDownloadTasksWithMenu(UnitTester $I, Example $example)
     {
         // Menus
         global $menus;
@@ -788,6 +788,9 @@ class RouterCest
     /*=====  End of DOWNLOAD TASKS  ======*/
 
 
+    /*==========================================
+    =            CONFIRM EMAIL TASK            =
+    ==========================================*/
 
     /**
      * Try to build route segments for the confirmemail task.
@@ -795,7 +798,7 @@ class RouterCest
      * @example {"task": "confirmemail", "data": "889ec873b0e085c1724ec0ca560d3cfe", "route": "confirmemail/889ec873b0e085c1724ec0ca560d3cfe"}
      * @example {"task": "confirmemail", "data": "4d43e82c9633e2c57df71042d9976135", "view": "any-view", "route": "confirmemail/4d43e82c9633e2c57df71042d9976135"}
      */
-    public function tryToBuildRouteSegmentsForConfirmemailTask(UnitTester $I, Example $example)
+    public function buildRouteSegmentsForConfirmemailTask(UnitTester $I, Example $example)
     {
         $query = [
             'task' => $example['task'],
@@ -810,6 +813,33 @@ class RouterCest
 
         $I->assertEquals($example['route'], $route);
     }
+
+    /**
+     * Try to parse route segments for the confirmemail task.
+     *
+     * @example {"task": "confirmemail", "data": "889ec873b0e085c1724ec0ca560d3cfe", "route": "confirmemail/889ec873b0e085c1724ec0ca560d3cfe"}
+     * @example {"task": "confirmemail", "data": "4d43e82c9633e2c57df71042d9976135", "route": "confirmemail/4d43e82c9633e2c57df71042d9976135"}
+     */
+    public function parseRouteSegmentsForConfirmEmailTask(UnitTester $I, Example $example)
+    {
+        $segments = explode('/', $example['route']);
+
+        $vars = $this->router->parse($segments);
+
+        $I->assertArrayHasKey('task', $vars);
+        $I->assertEquals($example['task'], $vars['task']);
+
+        $I->assertArrayHasKey('data', $vars);
+        $I->assertEquals($example['data'], $vars['data']);
+
+        $I->assertArrayHasKey('tmpl', $vars);
+        $I->assertEquals('component', $vars['tmpl']);
+    }
+
+    /*=====  End of CONFIRM EMAIL TASK  ======*/
+
+
+
 
     /**
      * Try to build route segments for the thank you page in the item view.
@@ -1039,29 +1069,6 @@ class RouterCest
     /*============================================
     =            TESTS FOR THE PARSER            =
     ============================================*/
-
-
-    /**
-     * Try to parse route segments for the confirmemail task.
-     *
-     * @example {"task": "confirmemail", "data": "889ec873b0e085c1724ec0ca560d3cfe", "route": "confirmemail/889ec873b0e085c1724ec0ca560d3cfe"}
-     * @example {"task": "confirmemail", "data": "4d43e82c9633e2c57df71042d9976135", "route": "confirmemail/4d43e82c9633e2c57df71042d9976135"}
-     */
-    public function tryToParseRouteSegmentsForConfirmEmailTask(UnitTester $I, Example $example)
-    {
-        $segments = explode('/', $example['route']);
-
-        $vars = $this->router->parse($segments);
-
-        $I->assertArrayHasKey('task', $vars);
-        $I->assertEquals($example['task'], $vars['task']);
-
-        $I->assertArrayHasKey('data', $vars);
-        $I->assertEquals($example['data'], $vars['data']);
-
-        $I->assertArrayHasKey('tmpl', $vars);
-        $I->assertEquals('component', $vars['tmpl']);
-    }
 
     /**
      * Try to parse route segments for the thank you page in the item view.

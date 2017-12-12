@@ -18,13 +18,13 @@ defined('_JEXEC') or die;
  */
 
 if (class_exists('\\Alledia\\OSDownloads\\Pro\\Helper\\Helper')) {
-	class OSDownloadsHelper extends Alledia\OSDownloads\Pro\Helper\Helper
-	{
+    class OSDownloadsHelper extends Alledia\OSDownloads\Pro\Helper\Helper
+    {
 
-	}
+    }
 } else {
-	class OSDownloadsHelper extends Helper
-	{
+    class OSDownloadsHelper extends Helper
+    {
 
-	}
+    }
 }

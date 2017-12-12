@@ -19,7 +19,7 @@ defined('_JEXEC') or die;
 
 // Joomla can load this file without call the component, specially while loading
 // the sidebar. So we need to include the autoloader and libraries.
-if (!class_exists('\\Alledia\\OSDownloads\\Free\\Helper\\Helper')) {
+if (!defined('OSDOWNLOADS_LOADED')) {
     require_once dirname(__DIR__) . '/include.php';
 }
 

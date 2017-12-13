@@ -10,6 +10,8 @@ use Alledia\OSDownloads\Free\Factory;
 
 defined('_JEXEC') or die;
 
+use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
+
 // Include the component HTML helpers.
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
@@ -52,7 +54,7 @@ $realname = substr($this->item->file_path, $index + 1);
         <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'general', JText::_('COM_OSDOWNLOADS_FILE', true)); ?>
 
         <div class="row-fluid">
-            <div class="span10">
+            <div class="span9">
                 <?php if ($this->item->file_path):?>
                     <div class="control-group">
                         <div class="control-label">
@@ -92,7 +94,7 @@ $realname = substr($this->item->file_path, $index + 1);
                     </div>
                 </div>
             </div>
-            <div class="span2">
+            <div class="span3">
                 <fieldset class="form-vertical">
                     <?php
                         $fields = $this->form->getFieldset('file-vertical');
@@ -105,6 +107,19 @@ $realname = substr($this->item->file_path, $index + 1);
             </div>
         </div>
         <?php echo JHtml::_('bootstrap.endTab'); ?>
+
+        <?php
+        /*=====================================
+        =          Custom Fields - Pro        =
+        =====================================*/
+
+        $component = FreeComponentSite::getInstance();
+        if ($component->isPro()) :
+            echo $this->loadTemplate('custom_fields');
+        endif;
+
+        /*=====  End of Custom Fields  ======*/
+        ?>
 
         <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'requirements', JText::_('COM_OSDOWNLOADS_REQUIREMENTS_TO_DOWNLOAD', true)); ?>
         <?php

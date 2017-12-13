@@ -24,6 +24,9 @@ if (!$this->isPro) {
 <div class="contentopen osdownloads-container item_<?php echo $this->item->id; ?>">
     <form method="post" id="adminForm" name="adminForm">
         <h2><?php echo($this->item->name); ?></h2>
+
+        <?php echo $this->item->event->afterDisplayTitle; ?>
+
         <?php
         if ($this->params->get("show_category", 0)) :
             ?>
@@ -52,6 +55,9 @@ if (!$this->isPro) {
             <?php
         endif;
         ?>
+
+        <?php echo $this->item->event->beforeDisplayContent; ?>
+
         <div class="reference">
             <?php
             if ($this->item->documentation_link) :
@@ -139,6 +145,8 @@ if (!$this->isPro) {
             <?php
         endif;
         ?>
+
+        <?php echo $this->item->event->afterDisplayContent; ?>
     </form>
 </div>
 

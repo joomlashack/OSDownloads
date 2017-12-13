@@ -9,6 +9,7 @@
 defined('_JEXEC') or die();
 
 use Alledia\Framework\Factory;
+use Joomla\Utilities\ArrayHelper;
 
 jimport('joomla.application.component.modeladmin');
 
@@ -41,6 +42,14 @@ abstract class OSDownloadsModelFileAbstract extends JModelAdmin
             return false;
         }
 
+        if ($loadData)
+        {
+            $data = $this->loadFormData();
+
+            // Load the data into the form after the plugins have operated.
+            $form->bind($data);
+        }
+
         return $form;
     }
 
@@ -58,5 +67,64 @@ abstract class OSDownloadsModelFileAbstract extends JModelAdmin
     public function getTable($type = 'Document', $prefix = 'OSDownloadsTable', $config = array())
     {
         return JTable::getInstance($type, $prefix, $config);
+    }
+
+    /**
+     * Method to get the data that should be injected in the form.
+     *
+     * @return  mixed  The data for the form.
+     *
+     * @since   1.6
+     */
+    protected function loadFormData()
+    {
+        $app = JFactory::getApplication();
+
+        $data = $this->getItem();
+
+        $this->preprocessData('com_osdownloads.file', $data);
+
+        return $data;
+    }
+
+    /**
+     * Method to get a single record.
+     *
+     * @param   integer  $pk  The id of the primary key.
+     *
+     * @return  \JObject|boolean  Object on success, false on failure.
+     *
+     * @since   1.6
+     */
+    public function getItem($pk = null)
+    {
+        $pk = (!empty($pk)) ? $pk : (int) $this->getState()->get($this->getName() . '.id');
+        $table = $this->getTable();
+
+        if ($pk > 0)
+        {
+            // Attempt to load the row.
+            $return = $table->load($pk);
+
+            // Check for a table object error.
+            if ($return === false && $table->getError())
+            {
+                $this->setError($table->getError());
+
+                return false;
+            }
+        }
+
+        // Convert to the \JObject before adding other data.
+        $properties = $table->getProperties(1);
+        $item = ArrayHelper::toObject($properties, '\JObject');
+
+        if (property_exists($item, 'params'))
+        {
+            $registry = new Registry($item->params);
+            $item->params = $registry->toArray();
+        }
+
+        return $item;
     }
 }

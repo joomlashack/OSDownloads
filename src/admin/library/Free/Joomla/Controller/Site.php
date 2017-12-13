@@ -13,7 +13,7 @@ defined('_JEXEC') or die();
 use Alledia\Framework\Factory;
 use Alledia\Framework\Joomla\Controller\Base as BaseController;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
-use Alledia\OSDownloads\Free\Helper;
+use Alledia\OSDownloads\Free\Helper\Helper;
 
 class Site extends BaseController
 {

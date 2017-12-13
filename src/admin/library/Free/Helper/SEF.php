@@ -23,7 +23,7 @@ defined('_JEXEC') or die();
  */
 class SEF
 {
-	/**
+    /**
      * Returns the category id based on the file id.
      *
      * @param int $fileId

@@ -9,6 +9,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.controller');
 
+
 class OSDownloadsController extends JControllerLegacy
 {
     protected $default_view = "files";
@@ -37,7 +38,12 @@ class OSDownloadsController extends JControllerLegacy
 
         if ($view !== 'file') {
             require_once JPATH_COMPONENT.'/helpers/osdownloads.php';
-            OSDownloadsHelper::addSubmenu($app->input->getCmd('view', $view));
+
+            if (class_exists('\\Alledia\\OSDownloads\\Pro\\Helper\\Helper')) {
+                Alledia\OSDownloads\Pro\Helper\Helper::addSubmenu($app->input->getCmd('view', $view));
+            } else {
+                Alledia\OSDownloads\Free\Helper\Helper::addSubmenu($app->input->getCmd('view', $view));
+            }
         }
 
         parent::display();

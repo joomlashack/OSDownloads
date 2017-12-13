@@ -6,87 +6,31 @@
  * @license   GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
  */
 
+use Alledia\OSDownloads\Free\Helper\Helper;
+
 defined('_JEXEC') or die;
 
-use Alledia\OSDownloads\Free\Factory;
+/**
+ * Backward compatibility for the helper. We moved it to improve inheritance between
+ * Free and Pro versions. Some plugins still call this class, including com_files.
+ *
+ * @deprecated 1.8.0  Use the Alledia\OSDownloads\Free\Helper\Helper class instead.
+ */
 
+// Joomla can load this file without call the component, specially while loading
+// the sidebar. So we need to include the autoloader and libraries.
 if (!defined('OSDOWNLOADS_LOADED')) {
-    $path = JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
-    if (is_file($path)) {
-        require_once $path;
-    }
+    require_once dirname(__DIR__) . '/include.php';
 }
 
-class OSDownloadsHelper
-{
-    /**
-     * @param string $vName
-     *
-     * @return void
-     */
-    public static function addSubmenu($vName)
+if (class_exists('\\Alledia\\OSDownloads\\Pro\\Helper\\Helper')) {
+    class OSDownloadsHelper extends Alledia\OSDownloads\Pro\Helper\Helper
     {
-        $container = Factory::getContainer();
 
-        JHtmlSidebar::addEntry(
-            JText::_('COM_OSDOWNLOADS_SUBMENU_FILES'),
-            $container->helperRoute->getAdminFileListRoute(),
-            $vName == 'files'
-        );
-
-        JHtmlSidebar::addEntry(
-            JText::_('COM_OSDOWNLOADS_SUBMENU_CATEGORIES'),
-            $container->helperRoute->getAdminCategoryListRoute(),
-            $vName == 'categories'
-        );
-        if ($vName == 'categories') {
-            JToolBarHelper::title(
-                JText::sprintf(
-                    'COM_CATEGORIES_CATEGORIES_TITLE',
-                    JText::_('COM_OSDOWNLOADS')
-                ),
-                'osdownloads-categories'
-            );
-        }
-
-        JHtmlSidebar::addEntry(
-            JText::_('COM_OSDOWNLOADS_SUBMENU_EMAILS'),
-            $container->helperRoute->getAdminEmailListRoute(),
-            $vName == 'emails'
-        );
-
-        // Load responsive CSS
-        JHtml::stylesheet('media/jui/css/jquery.searchtools.css');
     }
-
-    /**
-     * Get the files the user has access to, filtering or not by the externalRef.
-     *
-     * @param  int    $userId
-     * @param  string $externalRef
-     *
-     * @return array
-     */
-    public static function getAuthorizedFilesForUser($userId, $externalRef = '')
+} else {
+    class OSDownloadsHelper extends Helper
     {
-        // Flush any JAccess cache
-        JAccess::clearStatics();
 
-        $authorizedViewLevels = JAccess::getAuthorisedViewLevels($userId);
-        $authorizedViewLevels = implode(',', $authorizedViewLevels);
-
-        // Get the files the user has access to and external ref has the suffix .pro
-        $db    = JFactory::getDbo();
-        $query = $db->getQuery(true)
-            ->select('*')
-            ->from('#__osdownloads_documents')
-            ->where("access IN ($authorizedViewLevels)");
-
-        if ($externalRef !== '') {
-            $query->where('external_ref LIKE "' . $externalRef . '"');
-        }
-        $db->setQuery($query);
-
-        return $db->loadObjectList();
     }
 }

@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Alledia\OSDownloads\Free\File;
-use Alledia\OSDownloads\Free\Helper;
+use Alledia\OSDownloads\Free\Helper\Helper;
 use Alledia\OSDownloads\Free\Joomla\View\Legacy as LegacyView;
 
 
@@ -131,7 +131,7 @@ class OSDownloadsViewDownload extends LegacyView
      */
     protected function checkMemory()
     {
-        if ($this->isLocal) {
+        if ($this->fileSize) {
             $memoryLimit = ini_get('memory_limit');
             if (preg_match('/(\d+)([a-z])/i', $memoryLimit, $memory)) {
                 $memory = $memory[1] * pow(2, stripos('-KMG', $memory[2]) * 10);

@@ -17,6 +17,9 @@ use Alledia\OSDownloads\Free\Helper\View as HelperView;
 use Joomla\Registry\Registry;
 use JRoute;
 use JText;
+use JPluginHelper;
+use JEventDispatcher;
+use stdClass;
 
 if (!class_exists('JViewLegacy')) {
     jimport('legacy.view.legacy');
@@ -81,7 +84,36 @@ class Item extends Base
         // Load the extension
         $component->loadLibrary();
 
-        // Set template vars
+
+        // Process the content plugins
+        JPluginHelper::importPlugin('content');
+
+        // Make compatible with content plugins
+        $item->text = null;
+
+        $dispatcher = JEventDispatcher::getInstance();
+        $offset     = 0;
+        $dispatcher->trigger('onContentPrepare', array('com_osdownloads.file', &$item, &$item->params, $offset));
+
+        $afterDisplayTitle    = $dispatcher->trigger(
+            'onContentAfterTitle',
+            array('com_osdownloads.file', &$item, &$item->params, $offset)
+        );
+        $beforeDisplayContent = $dispatcher->trigger(
+            'onContentBeforeDisplay',
+            array('com_osdownloads.file', &$item, &$item->params, $offset)
+        );
+        $afterDisplayContent  = $dispatcher->trigger(
+            'onContentAfterDisplay',
+            array('com_osdownloads.file', &$item, &$item->params, $offset)
+        );
+
+        $item->event = (object)array(
+            'afterDisplayTitle'    => trim(implode("\n", $afterDisplayTitle)),
+            'beforeDisplayContent' => trim(implode("\n", $beforeDisplayContent)),
+            'afterDisplayContent'  => trim(implode("\n", $afterDisplayContent))
+        );
+
         $this->item   = $item;
         $this->itemId = $itemId;
         $this->params = $params;

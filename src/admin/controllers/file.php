@@ -120,6 +120,17 @@ class OSDownloadsControllerFile extends JControllerForm
 
         $row->store();
 
+        /*===============================================
+        =            Trigger content plugins            =
+        ===============================================*/
+
+        // In the Pro version this will allow com_files to save the custom fields values.
+        JPluginHelper::importPlugin('content');
+        $dispatcher = JEventDispatcher::getInstance();
+        $dispatcher->trigger('onContentAfterSave', array('com_osdownloads.file', &$row, false, $post));
+
+        /*=====  End of Trigger content plugins  ======*/
+
         switch ($this->getTask()) {
             case "apply":
                 $this->setRedirect(

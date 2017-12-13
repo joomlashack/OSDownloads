@@ -355,8 +355,14 @@ class OsdownloadsRouter extends RouterBase
                  *
                  */
                 case 'downloads':
-                    $segments = $this->container->helperSEF->appendCategoriesToSegments($segments, $id);
-                    $segments[] = $this->customSegments['files'];
+                    $middlePath = array();
+                    $endPath    = array();
+
+                    // Append the file alias
+                    $endPath[] = $this->customSegments['files'];
+
+                    // Build the complete route
+                    $segments = $this->buildRoutePrependingMenuPath(null, $id, $segments, $middlePath, $endPath);
 
                     break;
 
@@ -503,10 +509,10 @@ class OsdownloadsRouter extends RouterBase
             }
 
             /**
-            
+
                 TODO:
                 - Throw error
-            
+
              */
         }
 
@@ -539,7 +545,7 @@ class OsdownloadsRouter extends RouterBase
                     }
                 }
             }
-        }        
+        }
 
         // Check menu items
         $path = implode('/', $segments);
@@ -554,7 +560,7 @@ class OsdownloadsRouter extends RouterBase
             }
         }
 
-        
+
 
 
         /**

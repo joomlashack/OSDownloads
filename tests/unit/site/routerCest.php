@@ -1437,7 +1437,7 @@ class RouterCest
      * @example {"view": "downloads", "id": 2, "segment": "files_custom_segment2", "route": "category-1/category-2/files_custom_segment2"}
      * @example {"view": "downloads", "id": 3, "segment": "files_custom_segment3", "route": "category-1/category-2/category-3/files_custom_segment3"}
      */
-    public function tryToBuildRouteSegmentsForAListOfFilesWithCustomSegment(UnitTester $I, Example $example)
+    public function buildRouteSegmentsForAListOfFilesWithCustomSegmentWithoutMenuItems(UnitTester $I, Example $example)
     {
         $query = [
             'view'   => $example['view'],
@@ -1459,6 +1459,108 @@ class RouterCest
         // Restore the default segment
         $this->router->setCustomSegments(['files' => 'files']);
     }
+
+    /**
+     * Try to build route segments for a list of files with custom segment.
+     *
+     * Menu items tree:
+     *   - menu-category-1
+     *       - menu-category-2
+     *           - menu-category-3
+     *   - menu-category-4
+     *
+     * @example {"view": "downloads", "id": 1, "segment": "files_custom_segment", "route": "menu-category-1/files_custom_segment"}
+     * @example {"view": "downloads", "id": 2, "segment": "files_custom_segment2", "route": "menu-category-1/menu-category-2/files_custom_segment2"}
+     * @example {"view": "downloads", "id": 3, "segment": "files_custom_segment3", "route": "menu-category-1/menu-category-2/menu-category-3/files_custom_segment3"}
+     * @example {"view": "downloads", "id": 4, "segment": "files_custom_segment4", "route": "menu-category-4/files_custom_segment4"}
+     */
+    public function buildRouteSegmentsForAListOfFilesWithCustomSegmentWithMenuItems(UnitTester $I, Example $example)
+    {
+        // Menus
+        global $menus;
+
+        $menus = [
+            'category-1' => (object) [
+                'id'        => '101',
+                'alias'     => 'menu-category-1',
+                'path'      => 'menu-category-1',
+                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=1',
+                'parent_id' => '1',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'component' => 'com_osdownloads',
+                'client_id' => '0',
+                'query'     => ['view' => 'downloads', 'id' => '1'],
+            ],
+
+            'category-2' => (object) [
+                'id'        => '102',
+                'alias'     => 'menu-category-2',
+                'path'      => 'menu-category-1/menu-category-2',
+                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=2',
+                'parent_id' => '101',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'component' => 'com_osdownloads',
+                'client_id' => '0',
+                'query'     => ['view' => 'downloads', 'id' => '2'],
+            ],
+
+            'category-3' => (object) [
+                'id'        => '103',
+                'alias'     => 'menu-category-3',
+                'path'      => 'menu-category-1/menu-category-2/menu-category-3',
+                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=3',
+                'parent_id' => '102',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'component' => 'com_osdownloads',
+                'client_id' => '0',
+                'query'     => ['view' => 'downloads', 'id' => '3'],
+            ],
+
+            'category-4' => (object) [
+                'id'        => '104',
+                'alias'     => 'menu-category-4',
+                'path'      => 'menu-category-4',
+                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=4',
+                'parent_id' => '1',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'component' => 'com_osdownloads',
+                'client_id' => '0',
+                'query'     => ['view' => 'downloads', 'id' => '4'],
+            ],
+        ];
+
+        $query = [
+            'view'   => $example['view'],
+            'id'     => $example['id'],
+        ];
+
+        // Force custom segments
+        $mock = Stub::copy(
+            $this->router,
+            [
+                'customSegments' => ['files' => $example['segment']],
+            ]
+        );
+
+        $route = implode('/', $mock->build($query));
+
+        $I->assertEquals($example['route'], $route);
+
+        // Restore the default segment
+        $this->router->setCustomSegments(['files' => 'files']);
+    }
+
+
+
+
 
     /**
      * Try to build route segments for a list of categories. (Pro version)

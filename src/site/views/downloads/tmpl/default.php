@@ -32,7 +32,7 @@ JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundl
             <div class="category_filter columns-<?php echo $numberOfColumns; ?>">
                 <?php
                 $i = 0;
-                foreach($this->categories as $category):?>
+                foreach ($this->categories as $category) : ?>
                     <?php if (in_array($category->access, $authorizedAccessLevels)) : ?>
                         <div class="column column-<?php echo $i % $numberOfColumns; ?> item<?php echo($i % $numberOfColumns);?> cate_<?php echo($category->id);?>">
                             <h3>
@@ -44,7 +44,7 @@ JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundl
                                 <?php echo($category->description);?>
                             </div>
                         </div>
-                        <?php if ($numberOfColumns && $i % $numberOfColumns == $numberOfColumns - 1):?>
+                        <?php if ($numberOfColumns && $i % $numberOfColumns == $numberOfColumns - 1) : ?>
                             <div class="seperator"></div>
                             <div class="clr"></div>
                         <?php endif;?>
@@ -56,7 +56,7 @@ JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundl
         <?php endif; ?>
 
         <?php if (!empty($this->items)) : ?>
-            <?php foreach($this->items as $file):?>
+            <?php foreach ($this->items as $file) : ?>
                 <?php
                 $requireEmail = $file->require_user_email;
                 $requireAgree = (bool) $file->require_agree;

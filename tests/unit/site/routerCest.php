@@ -946,6 +946,33 @@ class RouterCest
     }
 
     /**
+     * Try to parse route segments for the thank you page in the item view.
+     *
+     * @example {"id": 1, "route": "thankyou/category-1/file-1"}
+     * @example {"id": 2, "route": "thankyou/category-1/category-2/file-2"}
+     * @example {"id": 3, "route": "thankyou/category-1/category-2/category-3/file-3"}
+     * @example {"id": 4, "route": "thankyou/category-4/file-4"}
+     */
+    public function parseRouteSegmentsForViewItemThankYouPage(UnitTester $I, Example $example)
+    {
+        $segments = explode('/', $example['route']);
+
+        $vars = $this->router->parse($segments);
+
+        $I->assertArrayHasKey('view', $vars);
+        $I->assertEquals('item', $vars['view']);
+
+        $I->assertArrayHasKey('layout', $vars);
+        $I->assertEquals('thankyou', $vars['layout']);
+
+        $I->assertArrayHasKey('tmpl', $vars);
+        $I->assertEquals('component', $vars['tmpl']);
+
+        $I->assertArrayHasKey('id', $vars);
+        $I->assertEquals($example['id'], $vars['id']);
+    }
+
+    /**
      * Try to build route segments for a single file without menu items
      *
      * @example {"view": "item", "id": 1, "route": "category-1/file-1"}
@@ -1719,30 +1746,7 @@ class RouterCest
     =            TESTS FOR THE PARSER            =
     ============================================*/
 
-    /**
-     * Try to parse route segments for the thank you page in the item view.
-     *
-     * @example {"id": 1, "route": "category-1/category-2/category-3/files/file-1/thankyou"}
-     * @example {"id": 2, "route": "category-1/files/file-2/thankyou"}
-     */
-    public function tryToParseRouteSegmentsForViewItemThankYouPage(UnitTester $I, Example $example)
-    {
-        $segments = explode('/', $example['route']);
 
-        $vars = $this->router->parse($segments);
-
-        $I->assertArrayHasKey('view', $vars);
-        $I->assertEquals('item', $vars['view']);
-
-        $I->assertArrayHasKey('layout', $vars);
-        $I->assertEquals('thankyou', $vars['layout']);
-
-        $I->assertArrayHasKey('tmpl', $vars);
-        $I->assertEquals('component', $vars['tmpl']);
-
-        $I->assertArrayHasKey('id', $vars);
-        $I->assertEquals($example['id'], $vars['id']);
-    }
 
 
     /**

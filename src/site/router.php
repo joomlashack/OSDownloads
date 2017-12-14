@@ -460,6 +460,7 @@ class OsdownloadsRouter extends RouterBase
             // Do we have the thankyou layout?
             if ('thankyou' === end($segments)) {
                 $vars['layout'] = 'thankyou';
+                $vars['tmpl']   = 'component';
                 array_pop($segments);
             }
 

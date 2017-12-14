@@ -430,7 +430,7 @@ class SEF
 
         if (empty($menu)) {
             // No menu found. Try the parent category.
-            $category = $this->container->helperSEF->getCategory($categoryId);
+            $category = $this->getCategory($categoryId);
 
             if (!empty($category)) {
                 return $this->getMenuItemForCategoryTreeRecursively((int) $category->parent_id);

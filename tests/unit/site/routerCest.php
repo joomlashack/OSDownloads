@@ -2122,7 +2122,7 @@ class RouterCest
      * @example {"route": "category-1/category-2_invalid"}
      * @example {"route": "category-1/category-2/invalid1"}
      */
-    public function tryToGetError404ForListOfCategoriesWithInvalidCategory(UnitTester $I, Example $example)
+    public function getError404ForListOfCategoriesWithInvalidCategory(UnitTester $I, Example $example)
     {
         $I->expectException(
             new Exception('COM_OSDOWNLOADS_ERROR_NOT_FOUND'),
@@ -2143,7 +2143,7 @@ class RouterCest
      * @example {"route": "category-1/category-2_invalid/category-3"}
      * @example {"route": "category-2/category-3"}
      */
-    public function tryToGetError404ForListOfCategoriesWithValidCategoryButInvalidPath(UnitTester $I, Example $example)
+    public function getError404ForListOfCategoriesWithValidCategoryButInvalidPath(UnitTester $I, Example $example)
     {
         $I->expectException(
             new Exception('COM_OSDOWNLOADS_ERROR_NOT_FOUND'),
@@ -2164,7 +2164,7 @@ class RouterCest
      * @example {"route": "category-1/category_invalid/items"}
      * @example {"route": "category-1/category-2/category_invalid/items"}
      */
-    public function tryToGetError404ForListOfFilesWithInvalidCategoryAlias(UnitTester $I, Example $example)
+    public function getError404ForListOfFilesWithInvalidCategoryAlias(UnitTester $I, Example $example)
     {
         $I->expectException(
             new Exception('COM_OSDOWNLOADS_ERROR_NOT_FOUND'),
@@ -2185,7 +2185,7 @@ class RouterCest
      * @example {"route": "category_invalid/category-2/items"}
      * @example {"route": "category-1/category-2_invalid/category-3/items"}
      */
-    public function tryToGetError404ForListOfFilesWithCategoryButInvalidPath(UnitTester $I, Example $example)
+    public function getError404ForListOfFilesWithCategoryButInvalidPath(UnitTester $I, Example $example)
     {
         $I->expectException(
             new Exception('COM_OSDOWNLOADS_ERROR_NOT_FOUND'),
@@ -2206,7 +2206,7 @@ class RouterCest
      * @example {"route": "category-1/category-2/files/file_invalid"}
      * @example {"route": "category-1/category-2/category-3/files/file_invalid"}
      */
-    public function tryToGetError404ForSingleFileWithInvalidAlias(UnitTester $I, Example $example)
+    public function getError404ForSingleFileWithInvalidAlias(UnitTester $I, Example $example)
     {
         $I->expectException(
             new Exception('COM_OSDOWNLOADS_ERROR_NOT_FOUND'),
@@ -2228,7 +2228,7 @@ class RouterCest
      * @example {"route": "category-1/category-2_invalid/files/file-1"}
      * @example {"route": "category-1/category-2/category-3_invalid/files/file-1"}
      */
-    public function tryToGetError404ForSingleFileWithInvalidPath(UnitTester $I, Example $example)
+    public function getError404ForSingleFileWithInvalidPath(UnitTester $I, Example $example)
     {
         $I->expectException(
             new Exception('COM_OSDOWNLOADS_ERROR_NOT_FOUND'),
@@ -2248,7 +2248,7 @@ class RouterCest
      * @example {"route": "download/category-1/file_invalid"}
      * @example {"route": "download/category-1/category-2/category-3/file_invalid"}
      */
-    public function tryToGetError404ForDownloadingInvalidFile(UnitTester $I, Example $example)
+    public function getError404ForDownloadingInvalidFile(UnitTester $I, Example $example)
     {
         $I->expectException(
             new Exception('COM_OSDOWNLOADS_ERROR_NOT_FOUND'),
@@ -2270,7 +2270,7 @@ class RouterCest
      * @example {"route": "category-1/category-2/download/file-1"}
      * @example {"route": "category-1/category-2/category-3_invalid/download/file-1"}
      */
-    public function tryToGetError404ForDownloadingWithValidFileButInvalidPath(UnitTester $I, Example $example)
+    public function getError404ForDownloadingWithValidFileButInvalidPath(UnitTester $I, Example $example)
     {
         $I->expectException(
             new Exception('COM_OSDOWNLOADS_ERROR_NOT_FOUND'),
@@ -2289,7 +2289,7 @@ class RouterCest
      * @example {"route": "routedownload/file_invalid"}
      * @example {"route": "category-1/category-2/category-3/routedownload/file_invalid"}
      */
-    public function tryToGetError404ForRoutingDownloadWithInvalidFile(UnitTester $I, Example $example)
+    public function getError404ForRoutingDownloadWithInvalidFile(UnitTester $I, Example $example)
     {
         $I->expectException(
             new Exception('COM_OSDOWNLOADS_ERROR_NOT_FOUND'),
@@ -2311,7 +2311,7 @@ class RouterCest
      * @example {"route": "category-1/category-2/routedownload/file-1"}
      * @example {"route": "category-1/category-2/category-3_invalid/routedownload/file-1"}
      */
-    public function tryToGetError404ForRoutingDownloadWithValidFileButInvalidPath(UnitTester $I, Example $example)
+    public function getError404ForRoutingDownloadWithValidFileButInvalidPath(UnitTester $I, Example $example)
     {
         $I->expectException(
             new Exception('COM_OSDOWNLOADS_ERROR_NOT_FOUND'),

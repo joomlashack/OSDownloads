@@ -5,7 +5,7 @@ use Alledia\OSDownloads\Free\Helper\Route as HelperRoute;
 use Codeception\Example;
 
 class RouteCest
-{   
+{
     protected $helper;
 
     public function _before(UnitTester $I)
@@ -19,7 +19,7 @@ class RouteCest
 
     /**
      * Try to get the file download route. It should return the URL with the
-     * given id, but sanitized. 
+     * given id, but sanitized.
      *
      * @example {"id": 12}
      * @example {"id": -12}
@@ -52,9 +52,9 @@ class RouteCest
      * @example {"id": "-12", "itemid": "-13"}
      * @example {"id": "12\"; SHOW DATABASES;", "itemid": "13\"; DROP TABLE #_tests;"}
      */
-    public function tryToGetFileRouteWithItemId(UnitTester $I, Example $example)
+    public function tryTogetFileListRouteWithItemId(UnitTester $I, Example $example)
     {
-        $route = $this->helper->getFileRoute($example['id'], $example['itemid']);
+        $route = $this->helper->getFileListRoute($example['id'], $example['itemid']);
 
         $I->assertEquals(
             'index.php?option=com_osdownloads&view=downloads&id=12&Itemid=13',
@@ -72,9 +72,9 @@ class RouteCest
      * @example {"id": "-12"}
      * @example {"id": "12\"; SHOW DATABASES;"}
      */
-    public function tryToGetFileRouteWithoutItemId(UnitTester $I, Example $example)
+    public function tryTogetFileListRouteWithoutItemId(UnitTester $I, Example $example)
     {
-        $route = $this->helper->getFileRoute($example['id']);
+        $route = $this->helper->getFileListRoute($example['id']);
 
         $I->assertEquals(
             'index.php?option=com_osdownloads&view=downloads&id=12',
@@ -85,11 +85,11 @@ class RouteCest
     ########################################################
     #### File List URL
     ########################################################
-    
+
     /**
      * Try to get the file list route.
      */
-    public function tryToGetFileListRoute(UnitTester $I)
+    public function tryTogetFileListRoute(UnitTester $I)
     {
         $route = $this->helper->getFileListRoute();
 
@@ -209,7 +209,7 @@ class RouteCest
     ########################################################
     #### Admin File List URL
     ########################################################
-    
+
     /**
      * Try to get the file list route.
      */
@@ -226,7 +226,7 @@ class RouteCest
     ########################################################
     #### Admin Category List URL
     ########################################################
-    
+
     /**
      * Try to get the category list route.
      */
@@ -243,7 +243,7 @@ class RouteCest
     ########################################################
     #### Admin Email List URL
     ########################################################
-    
+
     /**
      * Try to get the email list route.
      */
@@ -260,7 +260,7 @@ class RouteCest
     ########################################################
     #### Admin Main View URL
     ########################################################
-    
+
     /**
      * Try to get the main view route.
      */

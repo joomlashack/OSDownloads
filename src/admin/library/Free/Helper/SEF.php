@@ -338,7 +338,7 @@ class SEF
             ->from('#__menu')
             ->where('type = ' . $db->quote('component'))
             ->where('published = ' . $db->quote('1'))
-            ->where('link = ' . $db->quote(Route::getFileRoute($categoryId)));
+            ->where('link = ' . $db->quote(Route::getFileListRoute($categoryId)));
 
         $menu = $db->setQuery($query)->loadObject();
 

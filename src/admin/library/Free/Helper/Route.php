@@ -33,19 +33,23 @@ class Route
     }
 
     /**
-     * Get the file route
+     * Get the file list route
      *
-     * @param   integer $id     The id of the file
+     * @param   integer $id     The id of the category
      * @param   integer $itemId The menu item id
      *
      * @return  string  The file route
      */
-    public function getFileRoute($id, $itemId = 0)
+    public function getFileListRoute($id = null, $itemId = 0)
     {
-        $id = abs((int)$id);
 
         // Create the link
-        $link = 'index.php?option=com_osdownloads&view=downloads&id=' . $id;
+        $link = 'index.php?option=com_osdownloads&view=downloads';
+
+        if (!is_null($id)) {
+            $id = abs((int)$id);
+            $link .= '&id=' . $id;
+        }
 
         // Should we add the item id?
         if (!empty($itemId)) {
@@ -53,22 +57,6 @@ class Route
 
             $link .= '&Itemid=' . $itemId;
         }
-
-        return $link;
-    }
-
-    /**
-     * Get the file list route.
-     *
-     * @param   integer $id     The id of the file
-     * @param   integer $itemId The menu item id
-     *
-     * @return  string  The file list route
-     */
-    public function getFileListRoute()
-    {
-        // Create the link
-        $link = 'index.php?option=com_osdownloads&view=downloads';
 
         return $link;
     }

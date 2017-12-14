@@ -26,7 +26,7 @@ JHtml::_('jquery.framework');
 JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundle.min.js');
 
 ?>
-<form action="<?php echo(JRoute::_($container->helperRoute->getFileRoute($id, $itemId)));?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo(JRoute::_($container->helperRoute->getFileListRoute($id, $itemId)));?>" method="post" name="adminForm" id="adminForm">
     <div class="contentopen osdownloads-container">
         <?php if ($this->showCategoryFilter && count($this->categories) > 1) : ?>
             <div class="category_filter columns-<?php echo $numberOfColumns; ?>">
@@ -36,7 +36,7 @@ JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundl
                     <?php if (in_array($category->access, $authorizedAccessLevels)) : ?>
                         <div class="column column-<?php echo $i % $numberOfColumns; ?> item<?php echo($i % $numberOfColumns);?> cate_<?php echo($category->id);?>">
                             <h3>
-                                <a href="<?php echo(JRoute::_($container->helperRoute->getFileRoute($category->id, $itemId)));?>">
+                                <a href="<?php echo(JRoute::_($container->helperRoute->getFileListRoute($category->id, $itemId)));?>">
                                     <?php echo($category->title);?>
                                 </a>
                             </h3>

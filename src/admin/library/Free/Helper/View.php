@@ -41,7 +41,7 @@ class View
         for ($i = $countPaths; $i >= 0; $i--) {
             $link = $component->isPro() ?
                 JRoute::_($container->helperRoute->getCategoriesRoute($paths[$i]->id, $itemID)) :
-                JRoute::_($container->helperRoute->getFileRoute($paths[$i]->id, $itemID));
+                JRoute::_($container->helperRoute->getFileListRoute($paths[$i]->id, $itemID));
 
             $pathway->addItem($paths[$i]->title, $link);
         }

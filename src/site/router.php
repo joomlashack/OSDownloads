@@ -469,6 +469,8 @@ class OsdownloadsRouter extends RouterBase
                 if (in_array(end($segments), $availableTasks)) {
                     $vars['task'] = array_pop($segments);
                     $vars['tmpl'] = 'component';
+
+                    return $vars;
                 }
             }
         }

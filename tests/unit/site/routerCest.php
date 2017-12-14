@@ -1679,6 +1679,156 @@ class RouterCest
         $this->router->setCustomSegments(['files' => 'files']);
     }
 
+    /**
+     * Try to parse route segments for a list of files.
+     *
+     * @example {"id": 0, "route": "files"}
+     * @example {"id": 1, "route": "category-1/files"}
+     * @example {"id": 2, "route": "category-1/category-2/files"}
+     * @example {"id": 3, "route": "category-1/category-2/category-3/files"}
+     * @example {"id": 4, "route": "category-4/files"}
+     */
+    public function parseRouteSegmentsForAListOfFilesWithoutMenuItems(UnitTester $I, Example $example)
+    {
+        $segments = explode('/', $example['route']);
+
+        $vars = $this->router->parse($segments);
+
+        $I->assertArrayHasKey('view', $vars);
+        $I->assertEquals('downloads', $vars['view']);
+
+        $I->assertArrayHasKey('id', $vars);
+        $I->assertEquals($example['id'], $vars['id']);
+
+        $I->assertArrayNotHasKey('layout', $vars);
+        $I->assertArrayNotHasKey('tmpl', $vars);
+    }
+
+
+    /**
+     * Try to parse route segments for a list of files.
+     *
+     * Menu items tree:
+     *   - menu-category-1
+     *       - menu-category-2
+     *   - menu-category-4
+     *
+     * @example {"id": 0, "route": "files"}
+     * @example {"id": 1, "route": "menu-category-1/files"}
+     * @example {"id": 2, "route": "menu-category-1/menu-category-2/files"}
+     * @example {"id": 3, "route": "menu-category-1/menu-category-2/category-3/files"}
+     * @example {"id": 4, "route": "menu-category-4/files"}
+     */
+    public function parseRouteSegmentsForAListOfFilesWithMenuItems(UnitTester $I, Example $example)
+    {
+
+        // Menus
+        global $menus;
+
+        $menus = [
+            'category-1' => (object) [
+                'id'        => '101',
+                'alias'     => 'menu-category-1',
+                'path'      => 'menu-category-1',
+                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=1',
+                'parent_id' => '1',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'component' => 'com_osdownloads',
+                'client_id' => '0',
+                'query'     => ['view' => 'downloads', 'id' => '1'],
+            ],
+
+            'category-2' => (object) [
+                'id'        => '102',
+                'alias'     => 'menu-category-2',
+                'path'      => 'menu-category-1/menu-category-2',
+                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=2',
+                'parent_id' => '101',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'component' => 'com_osdownloads',
+                'client_id' => '0',
+                'query'     => ['view' => 'downloads', 'id' => '2'],
+            ],
+
+            'category-3' => (object) [
+                'id'        => '103',
+                'alias'     => 'menu-category-3',
+                'path'      => 'menu-category-1/menu-category-2/menu-category-3',
+                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=3',
+                'parent_id' => '102',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'component' => 'com_osdownloads',
+                'client_id' => '0',
+                'query'     => ['view' => 'downloads', 'id' => '3'],
+            ],
+
+            'category-4' => (object) [
+                'id'        => '104',
+                'alias'     => 'menu-category-4',
+                'path'      => 'menu-category-4',
+                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=4',
+                'parent_id' => '1',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'component' => 'com_osdownloads',
+                'client_id' => '0',
+                'query'     => ['view' => 'downloads', 'id' => '4'],
+            ],
+        ];
+
+        $segments = explode('/', $example['route']);
+
+        $vars = $this->router->parse($segments);
+
+        $I->assertArrayHasKey('view', $vars);
+        $I->assertEquals('downloads', $vars['view']);
+
+        $I->assertArrayHasKey('id', $vars);
+        $I->assertEquals($example['id'], $vars['id']);
+
+        $I->assertArrayNotHasKey('layout', $vars);
+        $I->assertArrayNotHasKey('tmpl', $vars);
+    }
+
+    /**
+     * Try to parse route segments for a list of files with custom segment
+     *
+     * @example {"id": 0, "segment": "files_custom_segment", "route": "files_custom_segment"}
+     * @example {"id": 1, "segment": "files_custom_segment2", "route": "category-1/files_custom_segment2"}
+     * @example {"id": 2, "segment": "files_custom_segment2", "route": "category-1/category-2/files_custom_segment2"}
+     * @example {"id": 3, "segment": "files_custom_segment3", "route": "category-1/category-2/category-3/files_custom_segment3"}
+     */
+    public function parseRouteSegmentsForAListOfFilesWithCustomSegment(UnitTester $I, Example $example)
+    {
+        $segments = explode('/', $example['route']);
+
+        // Force custom segments
+        $mock = Stub::copy(
+            $this->router,
+            [
+                'customSegments' => ['files' => $example['segment']],
+            ]
+        );
+
+        $vars = $mock->parse($segments);
+
+        $I->assertArrayHasKey('view', $vars);
+        $I->assertEquals('downloads', $vars['view']);
+
+        $I->assertArrayHasKey('id', $vars);
+        $I->assertEquals($example['id'], $vars['id']);
+
+        $I->assertArrayNotHasKey('layout', $vars);
+        $I->assertArrayNotHasKey('tmpl', $vars);
+    }
+
     /*=====  End of LIST OF FILES  ======*/
 
 
@@ -1955,75 +2105,7 @@ class RouterCest
         $I->assertArrayNotHasKey('tmpl', $vars);
     }
 
-
-    /*=====  End of TESTS FOR THE BUILDER  ======*/
-
-
-    /*============================================
-    =            TESTS FOR THE PARSER            =
-    ============================================*/
-
-
-
-
-    /**
-     * Try to parse route segments for a list of files.
-     *
-     * @example {"id": 0, "route": "files"}
-     * @example {"id": 1, "route": "category-1/files"}
-     * @example {"id": 2, "route": "category-1/category-2/files"}
-     * @example {"id": 3, "route": "category-1/category-2/category-3/files"}
-     */
-    public function tryToParseRouteSegmentsForAListOfFiles(UnitTester $I, Example $example)
-    {
-        $segments = explode('/', $example['route']);
-
-        $vars = $this->router->parse($segments);
-
-        $I->assertArrayHasKey('view', $vars);
-        $I->assertEquals('downloads', $vars['view']);
-
-        $I->assertArrayHasKey('id', $vars);
-        $I->assertEquals($example['id'], $vars['id']);
-
-        $I->assertArrayNotHasKey('layout', $vars);
-        $I->assertArrayNotHasKey('tmpl', $vars);
-    }
-
-    /**
-     * Try to parse route segments for a list of files with custom segment
-     *
-     * @example {"id": 0, "segment": "files_custom_segment", "route": "files_custom_segment"}
-     * @example {"id": 1, "segment": "files_custom_segment2", "route": "category-1/files_custom_segment2"}
-     * @example {"id": 2, "segment": "files_custom_segment2", "route": "category-1/category-2/files_custom_segment2"}
-     * @example {"id": 3, "segment": "files_custom_segment3", "route": "category-1/category-2/category-3/files_custom_segment3"}
-     */
-    public function tryToParseRouteSegmentsForAListOfFilesWithCustomSegment(UnitTester $I, Example $example)
-    {
-        $segments = explode('/', $example['route']);
-
-        // Force custom segments
-        $mock = Stub::copy(
-            $this->router,
-            [
-                'customSegments' => ['files' => $example['segment']],
-            ]
-        );
-
-        $vars = $mock->parse($segments);
-
-        $I->assertArrayHasKey('view', $vars);
-        $I->assertEquals('downloads', $vars['view']);
-
-        $I->assertArrayHasKey('id', $vars);
-        $I->assertEquals($example['id'], $vars['id']);
-
-        $I->assertArrayNotHasKey('layout', $vars);
-        $I->assertArrayNotHasKey('tmpl', $vars);
-    }
-
-
-
+    /*=====  End of CATEGORIES LIST  ======*/
 
 
 

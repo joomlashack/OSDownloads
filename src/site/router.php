@@ -541,11 +541,19 @@ class OsdownloadsRouter extends RouterBase
                     // Yes
                     $vars['view'] = 'downloads';
 
+                    array_pop($segments);
+
                     // Try to detect the category
                     $category = $this->container->helperSEF->getCategoryFromAlias(end($segments));
 
                     if (!empty($category)) {
                         $vars['id'] = $category->id;
+
+                        return $vars;
+                    }
+
+                    if (empty($segments)) {
+                        $vars['id'] = '0';
 
                         return $vars;
                     }
@@ -555,7 +563,7 @@ class OsdownloadsRouter extends RouterBase
 
                     if (!empty($category)) {
                         $vars['view'] = 'categories';
-                        $vars['id']    = $category->id;
+                        $vars['id']   = $category->id;
 
                         return $vars;
                     }
@@ -578,8 +586,13 @@ class OsdownloadsRouter extends RouterBase
         if (!empty($menu)) {
             if (!isset($vars['view'])) {
                 $vars['view'] = $this->getMenuItemQueryView($menu->id);
-                $vars['id']   = $this->getMenuItemQueryId($menu->id);
+            }
 
+            if (!isset($vars['id'])) {
+                $vars['id']   = $this->getMenuItemQueryId($menu->id);
+            }
+
+            if (isset($vars['view']) && isset($vars['id'])) {
                 return $vars;
             }
         }

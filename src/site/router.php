@@ -607,14 +607,7 @@ class OsdownloadsRouter extends RouterBase
             return $vars;
         }
 
-        /**
-
-            TODO:
-            - No valid route found? Throw an error
-
-         */
-
-
-        return $vars;
+        // No valid route was found? Show an error message
+        JError::raiseError(404, JText::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'));
     }
 }

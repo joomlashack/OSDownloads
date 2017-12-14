@@ -1731,42 +1731,42 @@ class RouterCest
                 'id'        => '101',
                 'alias'     => 'menu-category-1',
                 'path'      => 'menu-category-1',
-                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=1',
+                'link'      => 'index.php?option=com_osdownloads&view=categories&id=1',
                 'parent_id' => '1',
                 'published' => '1',
                 'access'    => '1',
                 'type'      => 'component',
                 'component' => 'com_osdownloads',
                 'client_id' => '0',
-                'query'     => ['view' => 'downloads', 'id' => '1'],
+                'query'     => ['view' => 'categories', 'id' => '1'],
             ],
 
             'category-2' => (object) [
                 'id'        => '102',
                 'alias'     => 'menu-category-2',
                 'path'      => 'menu-category-1/menu-category-2',
-                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=2',
+                'link'      => 'index.php?option=com_osdownloads&view=categories&id=2',
                 'parent_id' => '101',
                 'published' => '1',
                 'access'    => '1',
                 'type'      => 'component',
                 'component' => 'com_osdownloads',
                 'client_id' => '0',
-                'query'     => ['view' => 'downloads', 'id' => '2'],
+                'query'     => ['view' => 'categories', 'id' => '2'],
             ],
 
             'category-3' => (object) [
                 'id'        => '103',
                 'alias'     => 'menu-category-3',
                 'path'      => 'menu-category-1/menu-category-2/menu-category-3',
-                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=3',
+                'link'      => 'index.php?option=com_osdownloads&view=categories&id=3',
                 'parent_id' => '102',
                 'published' => '1',
                 'access'    => '1',
                 'type'      => 'component',
                 'component' => 'com_osdownloads',
                 'client_id' => '0',
-                'query'     => ['view' => 'downloads', 'id' => '3'],
+                'query'     => ['view' => 'categories', 'id' => '3'],
             ],
 
             '3rdparty-1' => (object) [
@@ -1787,14 +1787,14 @@ class RouterCest
                 'id'        => '105',
                 'alias'     => 'menu-category-4',
                 'path'      => 'menu-3rdparty-1/menu-category-4',
-                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=4',
+                'link'      => 'index.php?option=com_osdownloads&view=categories&id=4',
                 'parent_id' => '1',
                 'published' => '1',
                 'access'    => '1',
                 'type'      => 'component',
                 'component' => 'com_osdownloads',
                 'client_id' => '0',
-                'query'     => ['view' => 'downloads', 'id' => '4'],
+                'query'     => ['view' => 'categories', 'id' => '4'],
             ],
         ];
 
@@ -1832,6 +1832,129 @@ class RouterCest
         $I->assertArrayNotHasKey('layout', $vars);
         $I->assertArrayNotHasKey('tmpl', $vars);
     }
+
+    /**
+     * Try to parse route segments for a list of categories. (Pro version)
+     *
+     * Menu items tree:
+     *   - menu-category-0
+     *   - menu-category-1
+     *       - menu-category-2
+     *           - menu-category-3
+     *   - menu-3rdparty-1
+     *       - menu-category-4
+     *
+     * @example {"view": "categories", "id": 0, "route": "menu-category-0"}
+     * @example {"view": "categories", "id": 1, "route": "menu-category-1"}
+     * @example {"view": "categories", "id": 2, "route": "menu-category-1/menu-category-2"}
+     * @example {"view": "categories", "id": 3, "route": "menu-category-1/menu-category-2/menu-category-3"}
+     * @example {"view": "categories", "id": 4, "route": "menu-3rdparty-1/menu-category-4"}
+     */
+    public function parseRouteSegmentsForAListOfCategoriesWithMenuItems(UnitTester $I, Example $example)
+    {
+        // Menus
+        global $menus;
+
+        $menus = [
+            'category-0' => (object) [
+                'id'        => '100',
+                'alias'     => 'menu-category-0',
+                'path'      => 'menu-category-0',
+                'link'      => 'index.php?option=com_osdownloads&view=categories&id=0',
+                'parent_id' => '1',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'component' => 'com_osdownloads',
+                'client_id' => '0',
+                'query'     => ['view' => 'categories', 'id' => '0'],
+            ],
+
+            'category-1' => (object) [
+                'id'        => '101',
+                'alias'     => 'menu-category-1',
+                'path'      => 'menu-category-1',
+                'link'      => 'index.php?option=com_osdownloads&view=categories&id=1',
+                'parent_id' => '1',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'component' => 'com_osdownloads',
+                'client_id' => '0',
+                'query'     => ['view' => 'categories', 'id' => '1'],
+            ],
+
+            'category-2' => (object) [
+                'id'        => '102',
+                'alias'     => 'menu-category-2',
+                'path'      => 'menu-category-1/menu-category-2',
+                'link'      => 'index.php?option=com_osdownloads&view=categories&id=2',
+                'parent_id' => '101',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'component' => 'com_osdownloads',
+                'client_id' => '0',
+                'query'     => ['view' => 'categories', 'id' => '2'],
+            ],
+
+            'category-3' => (object) [
+                'id'        => '103',
+                'alias'     => 'menu-category-3',
+                'path'      => 'menu-category-1/menu-category-2/menu-category-3',
+                'link'      => 'index.php?option=com_osdownloads&view=categories&id=3',
+                'parent_id' => '102',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'component' => 'com_osdownloads',
+                'client_id' => '0',
+                'query'     => ['view' => 'categories', 'id' => '3'],
+            ],
+
+            '3rdparty-1' => (object) [
+                'id'        => '104',
+                'alias'     => 'menu-3rdparty-1',
+                'path'      => 'menu-3rdparty-1',
+                'link'      => 'index.php?option=com_otherextension&view=home&id=1',
+                'parent_id' => '1',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'component' => 'com_otherextension',
+                'client_id' => '0',
+                'query'     => ['view' => 'home', 'id' => '1'],
+            ],
+
+            'category-4' => (object) [
+                'id'        => '105',
+                'alias'     => 'menu-category-4',
+                'path'      => 'menu-3rdparty-1/menu-category-4',
+                'link'      => 'index.php?option=com_osdownloads&view=categories&id=4',
+                'parent_id' => '1',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'component' => 'com_osdownloads',
+                'client_id' => '0',
+                'query'     => ['view' => 'categories', 'id' => '4'],
+            ],
+        ];
+
+        $segments = explode('/', $example['route']);
+
+        $vars = $this->router->parse($segments);
+
+        $I->assertArrayHasKey('view', $vars);
+        $I->assertEquals('categories', $vars['view']);
+
+        $I->assertArrayHasKey('id', $vars);
+        $I->assertEquals($example['id'], $vars['id']);
+
+        $I->assertArrayNotHasKey('layout', $vars);
+        $I->assertArrayNotHasKey('tmpl', $vars);
+    }
+
 
     /*=====  End of TESTS FOR THE BUILDER  ======*/
 

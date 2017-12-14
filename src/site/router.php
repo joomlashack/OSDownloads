@@ -563,6 +563,14 @@ class OsdownloadsRouter extends RouterBase
             }
         }
 
+        // Check if the thank you page is related to a single file menu item
+        if ('thankyou' === end($segments)) {
+            $vars['layout'] = 'thankyou';
+            $vars['tmpl']   = 'component';
+
+            array_pop($segments);
+        }
+
         // Check menu items
         $path = implode('/', $segments);
         $menu = $this->container->helperSEF->getMenuItemsFromPath($path);

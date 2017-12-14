@@ -953,8 +953,102 @@ class RouterCest
      * @example {"id": 3, "route": "thankyou/category-1/category-2/category-3/file-3"}
      * @example {"id": 4, "route": "thankyou/category-4/file-4"}
      */
-    public function parseRouteSegmentsForViewItemThankYouPage(UnitTester $I, Example $example)
+    public function parseRouteSegmentsForViewItemThankYouPageWithoutMenuItems(UnitTester $I, Example $example)
     {
+        $segments = explode('/', $example['route']);
+
+        $vars = $this->router->parse($segments);
+
+        $I->assertArrayHasKey('view', $vars);
+        $I->assertEquals('item', $vars['view']);
+
+        $I->assertArrayHasKey('layout', $vars);
+        $I->assertEquals('thankyou', $vars['layout']);
+
+        $I->assertArrayHasKey('tmpl', $vars);
+        $I->assertEquals('component', $vars['tmpl']);
+
+        $I->assertArrayHasKey('id', $vars);
+        $I->assertEquals($example['id'], $vars['id']);
+    }
+
+    /**
+     * Try to parse route segments for the thank you page in the item view.
+     *
+     * Menu items tree:
+     *   - menu-category-1
+     *       - menu-category-3
+     *   - menu-file-3
+     *   - menu-file-4
+     *
+     * @example {"id": 1, "route": "menu-category-1/thankyou/file-1"}
+     * @example {"id": 2, "route": "menu-category-1/thankyou/category-2/file-2"}
+     * @example {"id": 3, "route": "menu-file-3/thankyou"}
+     * @example {"id": 4, "route": "menu-file-4/thankyou"}
+     */
+    public function parseRouteSegmentsForViewItemThankYouPageWithMenuItems(UnitTester $I, Example $example)
+    {
+        // Menus
+        global $menus;
+
+        $menus = [
+            'category-1' => (object) [
+                'id'        => '101',
+                'alias'     => 'menu-category-1',
+                'path'      => 'menu-category-1',
+                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=1',
+                'parent_id' => '1',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'client_id' => '0',
+                'component' => 'com_osdownloads',
+                'query'     => ['view' => 'downloads', 'id' => '1'],
+            ],
+
+            'category-3' => (object) [
+                'id'        => '103',
+                'alias'     => 'menu-category-3',
+                'path'      => 'menu-category-1/menu-category-3',
+                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=3',
+                'parent_id' => '101',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'client_id' => '0',
+                'component' => 'com_osdownloads',
+                'query'     => ['view' => 'downloads', 'id' => '3'],
+            ],
+
+            'file-3' => (object) [
+                'id'        => '104',
+                'alias'     => 'menu-file-3',
+                'path'      => 'menu-file-3',
+                'link'      => 'index.php?option=com_osdownloads&view=item&id=3',
+                'parent_id' => '1',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'client_id' => '0',
+                'component' => 'com_osdownloads',
+                'query'     => ['view' => 'item', 'id' => '3'],
+            ],
+
+            'file-4' => (object) [
+                'id'        => '105',
+                'alias'     => 'menu-file-4',
+                'path'      => 'menu-file-4',
+                'link'      => 'index.php?option=com_osdownloads&view=item&id=4',
+                'parent_id' => '1',
+                'published' => '1',
+                'access'    => '1',
+                'type'      => 'component',
+                'client_id' => '0',
+                'component' => 'com_osdownloads',
+                'query'     => ['view' => 'item', 'id' => '4'],
+            ],
+        ];
+
         $segments = explode('/', $example['route']);
 
         $vars = $this->router->parse($segments);

@@ -47,7 +47,7 @@ class Route
         $link = 'index.php?option=com_osdownloads&view=downloads';
 
         if (!is_null($id)) {
-            $id = abs((int)$id);
+            $id = (int) $id;
             $link .= '&id=' . $id;
         }
 

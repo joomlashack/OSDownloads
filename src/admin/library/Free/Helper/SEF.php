@@ -328,7 +328,7 @@ class SEF
      *
      * @return stdClass|false
      */
-    public function getMenuItemForCategory($categoryId)
+    public function getMenuItemForListOfFiles($categoryId)
     {
         $db = JFactory::getDbo();
 
@@ -426,7 +426,7 @@ class SEF
     public function getMenuItemForCategoryTreeRecursively($categoryId)
     {
         // Is there a menu for the given category?
-        $menu = $this->getMenuItemForCategory($categoryId);
+        $menu = $this->getMenuItemForListOfFiles($categoryId);
 
         if (empty($menu)) {
             // No menu found. Try the parent category.
@@ -434,6 +434,11 @@ class SEF
 
             if (!empty($category)) {
                 return $this->getMenuItemForCategoryTreeRecursively((int) $category->parent_id);
+            }
+
+            // Check the root category, since no other category seems to be on a menu
+            if ($categoryId > 0) {
+                return $this->getMenuItemForCategoryTreeRecursively(0);
             }
         }
 

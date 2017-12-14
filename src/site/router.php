@@ -161,7 +161,7 @@ class OsdownloadsRouter extends RouterBase
 
         if (!empty($menuItem)) {
             if ('com_osdownloads' === $menuItem->component) {
-                $id = $menuItem->query['id'];
+                $id = (int) $menuItem->query['id'];
             }
         }
 
@@ -191,7 +191,7 @@ class OsdownloadsRouter extends RouterBase
             // Is there a menu item for the file?
             $menu = $this->container->helperSEF->getMenuItemForFile($fileId);
             if (!empty($menu)) {
-                // Yes, add the segments from the menu
+                // Yes, add the segments from the menu - disable since Joomla adds that by itself
                 // $segments = $this->container->helperSEF->appendMenuPathToSegments($segments, $menu);
                 $skipCategoryAndFileSegments = true;
             }
@@ -203,7 +203,7 @@ class OsdownloadsRouter extends RouterBase
             $menu = $this->container->helperSEF->getMenuItemForCategoryTreeRecursively($categoryId);
 
             if (!empty($menu)) {
-                // Yes, add the segments from the menu
+                // Yes, add the segments from the menu - disable since Joomla adds that by itself
                 // $segments = $this->container->helperSEF->appendMenuPathToSegments($segments, $menu);
 
                 // Get the segments of the category from the menu to exclude them from the route
@@ -362,11 +362,16 @@ class OsdownloadsRouter extends RouterBase
                     $middlePath = array();
                     $endPath    = array();
 
-                    // Append the file alias
-                    $endPath[] = $this->customSegments['files'];
+                    // Check if the category is not directly related to the menu item, to skip additional segments
+                    $menu = $this->container->helperSEF->getMenuItemForListOfFiles($id);
 
-                    // Build the complete route
-                    $segments = $this->buildRoutePrependingMenuPath(null, $id, $segments, $middlePath, $endPath);
+                    if ($itemId !== $menu->id) {
+                        // Append the file alias
+                        $endPath[] = $this->customSegments['files'];
+
+                        // Build the complete route
+                        $segments = $this->buildRoutePrependingMenuPath(null, $id, $segments, $middlePath, $endPath);
+                    }
 
                     break;
 

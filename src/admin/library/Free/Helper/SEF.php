@@ -346,6 +346,30 @@ class SEF
     }
 
     /**
+     * Look for a menu item related to the given category id.
+     *
+     * @param  int $fileId
+     *
+     * @return stdClass|false
+     */
+    public function getMenuItemForFile($fileId)
+    {
+        $db = JFactory::getDbo();
+
+        // Look for the exact menu
+        $query = $db->getQuery(true)
+            ->select('*')
+            ->from('#__menu')
+            ->where('type = ' . $db->quote('component'))
+            ->where('published = ' . $db->quote('1'))
+            ->where('link = ' . $db->quote(Route::getViewItemRoute($fileId)));
+
+        $menu = $db->setQuery($query)->loadObject();
+
+        return $menu;
+    }
+
+    /**
      * Look for a menu item related to OSDownloads.
      *
      * @return array

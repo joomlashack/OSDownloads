@@ -192,7 +192,7 @@ class OsdownloadsRouter extends RouterBase
             $menu = $this->container->helperSEF->getMenuItemForFile($fileId);
             if (!empty($menu)) {
                 // Yes, add the segments from the menu
-                $segments = $this->container->helperSEF->appendMenuPathToSegments($segments, $menu);
+                // $segments = $this->container->helperSEF->appendMenuPathToSegments($segments, $menu);
                 $skipCategoryAndFileSegments = true;
             }
         }
@@ -204,7 +204,7 @@ class OsdownloadsRouter extends RouterBase
 
             if (!empty($menu)) {
                 // Yes, add the segments from the menu
-                $segments = $this->container->helperSEF->appendMenuPathToSegments($segments, $menu);
+                // $segments = $this->container->helperSEF->appendMenuPathToSegments($segments, $menu);
 
                 // Get the segments of the category from the menu to exclude them from the route
                 $menuCatId    = $this->container->helperSEF->getIdFromLink($menu->link);

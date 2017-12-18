@@ -427,14 +427,14 @@ class OsdownloadsRouter extends RouterBase
 
         $availableTasks = array('routedownload', 'download');
         $lastSegment    = end($segments);
+        array_pop($segments);
 
         /*----------  File Alias?  ----------*/
 
-        $file = $this->container->helperSEF->getFileFromAlias($lastSegment);
+        $file = $this->container->helperSEF->getFileFromAlias($lastSegment, implode('/', $segments));
 
         if (!empty($file)) {
             // We found a file
-            array_pop($segments);
 
             // Remove category path, if there
             $category = $this->container->helperSEF->getCategory($file->cate_id);

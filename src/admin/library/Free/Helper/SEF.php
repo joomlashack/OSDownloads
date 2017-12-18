@@ -189,10 +189,11 @@ class SEF
      * Return the file object from alias
      *
      * @param  string $alias
+     * @param  string $path
      *
-     * @return StdClass
+     * @return object|false
      */
-    public function getFileFromAlias($alias)
+    public function getFileFromAlias($alias, $path = null)
     {
         $db = JFactory::getDbo();
 
@@ -201,9 +202,9 @@ class SEF
             ->from('#__osdownloads_documents')
             ->where('alias = ' . $db->quote($alias));
 
-        $file = $db->setQuery($query)->loadObject();
+        $files = $db->setQuery($query)->loadObjectList();
 
-        if (empty($file)) {
+        if (empty($files)) {
             JLog::add(
                 JText::sprintf(
                     'COM_OSDOWNLOADS_ERROR_FILE_NOT_FOUND',
@@ -212,9 +213,26 @@ class SEF
                 ),
                 JLog::WARNING
             );
+
+            return false;
         }
 
-        return $file;
+        // Do we have only one file?
+        if (count($files) === 1 || empty($path)) {
+            return $files[0];
+        }
+
+        // We have other files. We need to check the path of each file
+        foreach ($files as $file) {
+            // Get the file category
+            $category = $this->getCategory($file->cate_id);
+
+            if (!empty($category) && $category->path === $path) {
+                return $file;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -222,7 +240,7 @@ class SEF
      *
      * @param string $alias
      *
-     * @return int|null
+     * @return int|false
      */
     public function getFileIdFromAlias($alias)
     {

@@ -62,6 +62,35 @@ class Route
     }
 
     /**
+     * Get the category list route
+     *
+     * @param   integer $id     The id of the category
+     * @param   integer $itemId The menu item id
+     *
+     * @return  string  The file route
+     */
+    public function getCategoryListRoute($id = null, $itemId = 0)
+    {
+
+        // Create the link
+        $link = 'index.php?option=com_osdownloads&view=categories';
+
+        if (!is_null($id)) {
+            $id = (int) $id;
+            $link .= '&id=' . $id;
+        }
+
+        // Should we add the item id?
+        if (!empty($itemId)) {
+            $itemId = abs((int)$itemId);
+
+            $link .= '&Itemid=' . $itemId;
+        }
+
+        return $link;
+    }
+
+    /**
      * Get the view item route
      *
      * @param   integer $id     The id of the file

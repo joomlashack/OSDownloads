@@ -22,9 +22,7 @@ class RouteCest
      * given id, but sanitized.
      *
      * @example {"id": 12}
-     * @example {"id": -12}
      * @example {"id": "12"}
-     * @example {"id": "-12"}
      * @example {"id": "12\"; SHOW DATABASES;"}
      *
      */
@@ -47,9 +45,7 @@ class RouteCest
      * It should return the URL with the given id.
      *
      * @example {"id": 12, "itemid": 13}
-     * @example {"id": -12, "itemid": -13}
      * @example {"id": "12", "itemid": "13"}
-     * @example {"id": "-12", "itemid": "-13"}
      * @example {"id": "12\"; SHOW DATABASES;", "itemid": "13\"; DROP TABLE #_tests;"}
      */
     public function tryTogetFileListRouteWithItemId(UnitTester $I, Example $example)
@@ -67,9 +63,7 @@ class RouteCest
      * It should return the URL with the given id.
      *
      * @example {"id": 12}
-     * @example {"id": -12}
      * @example {"id": "12"}
-     * @example {"id": "-12"}
      * @example {"id": "12\"; SHOW DATABASES;"}
      */
     public function tryTogetFileListRouteWithoutItemId(UnitTester $I, Example $example)
@@ -107,9 +101,7 @@ class RouteCest
      * Try to get the view item route with item id.
      *
      * @example {"id": 12, "itemid": 13}
-     * @example {"id": -12, "itemid": -13}
      * @example {"id": "12", "itemid": "13"}
-     * @example {"id": "-12", "itemid": "-13"}
      * @example {"id": "12\"; SHOW DATABASES;", "itemid": "13\"; DROP TABLE #_tests;"}
      */
     public function tryToGetViewItemRouteWithItemId(UnitTester $I, Example $example)
@@ -126,9 +118,7 @@ class RouteCest
      * Try to get the view item route without item id.
      *
      * @example {"id": 12}
-     * @example {"id": -12}
      * @example {"id": "12"}
-     * @example {"id": "-12"}
      * @example {"id": "12\"; SHOW DATABASES;"}
      */
     public function tryToGetViewItemRouteWithoutItemId(UnitTester $I, Example $example)
@@ -149,9 +139,7 @@ class RouteCest
      * Try to get the file download content route with item id.
      *
      * @example {"id": 12, "itemid": 13}
-     * @example {"id": -12, "itemid": -13}
      * @example {"id": "12", "itemid": "13"}
-     * @example {"id": "-12", "itemid": "-13"}
      * @example {"id": "12\"; SHOW DATABASES;", "itemid": "13\"; DROP TABLE #_tests;"}
      */
     public function tryToGetFileDownloadContentRouteWithItemID(UnitTester $I, Example $example)
@@ -168,9 +156,7 @@ class RouteCest
      * Try to get the file download content route without item id.
      *
      * @example {"id": 12}
-     * @example {"id": -12}
      * @example {"id": "12"}
-     * @example {"id": "-12"}
      * @example {"id": "12\"; SHOW DATABASES;"}
      */
     public function tryToGetFileDownloadContentRouteWithoutItemID(UnitTester $I, Example $example)
@@ -191,9 +177,7 @@ class RouteCest
      * Try to get the admin file form route.
      *
      * @example {"id": 12}
-     * @example {"id": -12}
      * @example {"id": "12"}
-     * @example {"id": "-12"}
      * @example {"id": "12\"; SHOW DATABASES;"}
      */
     public function tryToGetAdminFileFormRoute(UnitTester $I, Example $example)

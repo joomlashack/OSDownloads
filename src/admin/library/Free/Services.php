@@ -8,8 +8,9 @@
 
 namespace Alledia\OSDownloads\Free;
 
-use Pimple\Container AS Pimple;
+use Pimple\Container as Pimple;
 use Pimple\ServiceProviderInterface;
+use JFactory;
 
 defined('_JEXEC') or die();
 
@@ -33,16 +34,24 @@ class Services implements ServiceProviderInterface
     public function register(Pimple $pimple)
     {
         // Services
+        $pimple['app'] = function (Container $c) {
+            return JFactory::getApplication();
+        };
+
+        $pimple['db'] = function (Container $c) {
+            return JFactory::getDbo();
+        };
+
         $pimple['helperRoute'] = function (Container $c) {
-            return new Helper\Route;
+            return new Helper\Route();
         };
 
         $pimple['helperSEF'] = function (Container $c) {
-            return new Helper\SEF;
+            return new Helper\SEF();
         };
 
         $pimple['helperView'] = function (Container $c) {
-            return new Helper\View;
+            return new Helper\View();
         };
     }
 }

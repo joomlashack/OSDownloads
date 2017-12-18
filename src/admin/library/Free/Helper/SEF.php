@@ -9,6 +9,7 @@
 namespace Alledia\OSDownloads\Free\Helper;
 
 use Alledia\Framework\Factory;
+use Alledia\OSDownloads\Free\Factory as OSDFactory;
 use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 use JFactory;
@@ -23,6 +24,28 @@ defined('_JEXEC') or die();
  */
 class SEF
 {
+    /**
+     * @var object[]
+     */
+    protected static $menuItemsById = null;
+
+    /**
+     * @var object[]
+     */
+    protected static $menuItemsByView = null;
+
+    /**
+     * @var object
+     */
+    protected $container;
+
+    public function __construct()
+    {
+        $this->container = OSDFactory::getContainer();
+
+        $this->getMenuItems();
+    }
+
     /**
      * Returns the category id based on the file id.
      *
@@ -322,6 +345,80 @@ class SEF
     }
 
     /**
+     * Returns the last item of the array not considering empty items.
+     * Somes rotes, with trailing slash can produce an empty segment item,
+     * specially when using SEF Advance. The array is modified, having the
+     * last items removed.
+     *
+     * @param  array  $array
+     *
+     * @return mix
+     */
+    public function getLastNoEmptyArrayItem(array &$array)
+    {
+        if (!empty($array)) {
+            $lastItem = array_pop($array);
+
+            if (empty($lastItem)) {
+                $lastItem = $this->getLastNoEmptyArrayItem($array);
+            }
+        }
+
+        return $lastItem;
+    }
+
+    /**
+     * Get the list of menu items
+     */
+    protected function getMenuItems()
+    {
+        // Get all relevant menu items.
+        $app   = JFactory::getApplication();
+        $menu  = $app->getMenu();
+        $menuItems = $menu->getItems('component', 'com_osdownloads');
+
+        static::$menuItemsByView = array();
+        static::$menuItemsById   = array();
+
+        foreach ($menuItems as $item) {
+            static::$menuItemsById[$item->id] = $item;
+
+            if (!empty($item->query['view'])) {
+                $view = $item->query['view'];
+
+                switch ($view) {
+                    case 'item':
+                        $itemId = empty($item->query['id']) ? 0 : $item->query['id'];
+                        if (empty(static::$menuItemsByView[$view])) {
+                            static::$menuItemsByView[$view] = array();
+                        }
+                        static::$menuItemsByView[$view][$itemId] = $item;
+                        break;
+
+                    case 'downloads':
+                        $categoryId = empty($item->query['id']) ? 0 : $item->query['id'];
+                        if (empty(static::$menuItemsByView[$view])) {
+                            static::$menuItemsByView[$view] = array();
+                        }
+                        static::$menuItemsByView[$view][$categoryId] = $item;
+                        break;
+
+                    case 'categories':
+                        $categoryId = empty($item->query['id']) ? 0 : $item->query['id'];
+                        if (empty(static::$menuItemsByView[$view])) {
+                            static::$menuItemsByView[$view] = array();
+                        }
+                        static::$menuItemsByView[$view][$categoryId] = $item;
+                        break;
+
+                    default:
+                        static::$menuItemsByView[$view] = $item;
+                }
+            }
+        }
+    }
+
+     /**
      * Look for a menu item related to the given category id.
      *
      * @param  int $categoryId
@@ -330,19 +427,17 @@ class SEF
      */
     public function getMenuItemForListOfFiles($categoryId)
     {
-        $db = JFactory::getDbo();
+        $menus = $this->getMenuItems();
 
-        // Look for the exact menu
-        $query = $db->getQuery(true)
-            ->select('*')
-            ->from('#__menu')
-            ->where('type = ' . $db->quote('component'))
-            ->where('published = ' . $db->quote('1'))
-            ->where('link = ' . $db->quote(Route::getFileListRoute($categoryId)));
+        if (!empty($menus) && !empty($menus['downloads'])) {
+            foreach ($menus['downloads'] as $menu) {
+                if ($menu->link === $this->container->helperRoute->getFileListRoute($categoryId)) {
+                    return $menu;
+                }
+            }
+        }
 
-        $menu = $db->setQuery($query)->loadObject();
-
-        return $menu;
+        return false;
     }
 
     /**
@@ -354,19 +449,15 @@ class SEF
      */
     public function getMenuItemForFile($fileId)
     {
-        $db = JFactory::getDbo();
+        if (!empty(static::$menuItemsById)) {
+            foreach (static::$menuItemsById as $menu) {
+                if ($menu->link === $this->container->helperRoute->getViewItemRoute($fileId)) {
+                    return $menu;
+                }
+            }
+        }
 
-        // Look for the exact menu
-        $query = $db->getQuery(true)
-            ->select('*')
-            ->from('#__menu')
-            ->where('type = ' . $db->quote('component'))
-            ->where('published = ' . $db->quote('1'))
-            ->where('link = ' . $db->quote(Route::getViewItemRoute($fileId)));
-
-        $menu = $db->setQuery($query)->loadObject();
-
-        return $menu;
+        return false;
     }
 
     /**
@@ -376,19 +467,7 @@ class SEF
      */
     public function getMenuItemsForComponent()
     {
-        $db = JFactory::getDbo();
-
-        // Look for the exact menu
-        $query = $db->getQuery(true)
-            ->select('*')
-            ->from('#__menu')
-            ->where('type = ' . $db->quote('component'))
-            ->where('published = ' . $db->quote('1'))
-            ->where('link LIKE ' . $db->quote('%option=com_osdownloads%'));
-
-        $menus = $db->setQuery($query)->loadObjectList();
-
-        return $menus;
+        return static::$menuItemsById;
     }
 
     /**
@@ -400,19 +479,15 @@ class SEF
      */
     public function getMenuItemsFromPath($path)
     {
-        $db = JFactory::getDbo();
+        if (!empty(static::$menuItemsById)) {
+            foreach (static::$menuItemsById as $menu) {
+                if ($menu->path === $path) {
+                    return $menu;
+                }
+            }
+        }
 
-        // Look for the exact menu
-        $query = $db->getQuery(true)
-            ->select('*')
-            ->from('#__menu')
-            ->where('type = ' . $db->quote('component'))
-            ->where('published = ' . $db->quote('1'))
-            ->where('path = ' . $db->quote($path));
-
-        $menus = $db->setQuery($query)->loadObjectList();
-
-        return $menus;
+        return false;
     }
 
     /**
@@ -446,25 +521,69 @@ class SEF
     }
 
     /**
-     * Returns the last item of the array not considering empty items.
-     * Somes rotes, with trailing slash can produce an empty segment item,
-     * specially when using SEF Advance. The array is modified, having the
-     * last items removed.
+     * Get a menu item related to the component, by id.
      *
-     * @param  array  $array
+     * @param  int $id
      *
-     * @return mix
+     * @return object|bool
      */
-    public function getLastNoEmptyArrayItem(array &$array)
+    public function getMenuItemById($id)
     {
-        if (!empty($array)) {
-            $lastItem = array_pop($array);
-
-            if (empty($lastItem)) {
-                $lastItem = $this->getLastNoEmptyArrayItem($array);
-            }
+        if (!empty(static::$menuItemsById) && isset(static::$menuItemsById[$id])) {
+            return static::$menuItemsById[$id];
         }
 
-        return $lastItem;
+        return false;
+    }
+
+    /**
+     * Get a menu item related to the component, by view.
+     *
+     * @param  string $view
+     *
+     * @return object|bool
+     */
+    public function getMenuItemByView($view)
+    {
+        if (!empty(static::$menuItemsByView) && isset(static::$menuItemsByView[$view])) {
+            return static::$menuItemsByView[$view];
+        }
+
+        return false;
+    }
+
+     /**
+     * Get the id set for the menu item, based on the item id.
+     *
+     * @param  int $itemId
+     * @return string
+     */
+    public function getMenuItemQueryId($itemId)
+    {
+        $menuItem = $this->getMenuItemById($itemId);
+
+        if (!empty($menuItem)) {
+            return (int) $menuItem->query['id'];
+        }
+
+        return false;
+    }
+
+    /**
+     * Get the view set for the menu item, based on the item id.
+     *
+     * @param  int $itemId
+     * @return string
+     */
+    public function getMenuItemQueryView($itemId)
+    {
+        $menuItem = $this->getMenuItemById($itemId);
+        $view     = null;
+
+        if (!empty($menuItem)) {
+            $view = $menuItem->query['view'];
+        }
+
+        return $view;
     }
 }

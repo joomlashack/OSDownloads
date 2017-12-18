@@ -28,7 +28,7 @@ JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundl
 ?>
 <form action="<?php echo(JRoute::_($container->helperRoute->getFileListRoute($id, $itemId)));?>" method="post" name="adminForm" id="adminForm">
     <div class="contentopen osdownloads-container">
-        <?php if ($this->showCategoryFilter && count($this->categories) > 1) : ?>
+        <?php if ($this->showCategoryFilter && !empty($this->categories)) : ?>
             <div class="category_filter columns-<?php echo $numberOfColumns; ?>">
                 <?php
                 $i = 0;

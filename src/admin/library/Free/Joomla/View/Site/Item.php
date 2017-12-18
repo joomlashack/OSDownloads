@@ -114,11 +114,13 @@ class Item extends Base
             'afterDisplayContent'  => trim(implode("\n", $afterDisplayContent))
         );
 
-        $this->item   = $item;
-        $this->itemId = $itemId;
-        $this->params = $params;
-        $this->isPro  = $component->isPro();
-        $this->model  = $model;
+        $this->item      = $item;
+        $this->itemId    = $itemId;
+        $this->params    = $params;
+        $this->isPro     = $component->isPro();
+        $this->model     = $model;
+        $this->category  = $container->helperSEF->getCategory($item->cate_id);
+
         /**
          * Temporary backward compatibility for user's template overrides.
          *

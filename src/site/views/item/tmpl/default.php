@@ -28,24 +28,13 @@ if (!$this->isPro) {
         <?php echo $this->item->event->afterDisplayTitle; ?>
 
         <?php
-        if ($this->params->get("show_category", 0)) :
+        if ($this->params->get("show_category", 0) && is_object($this->category)) :
             ?>
             <div class="cate_info">
                 Category:
-                <?php
-                for ($i = count($this->paths) - 1; $i >= 0; $i--) :
-                    ?>
-                    <a href="<?php echo(JRoute::_($container->helperRoute->getFileListRoute($this->paths[$i]->id))); ?>">
-                        <?php echo($this->paths[$i]->title); ?>
+                    <a href="<?php echo JRoute::_($container->helperRoute->getFileListRoute($this->category->id)); ?>">
+                        <?php echo $this->category->title; ?>
                     </a>
-                    <?php
-                    if ($i) :
-                        ?>
-                        <span class="divider">::</span>
-                        <?php
-                    endif;
-                endfor;
-                ?>
             </div>
             <?php
         endif;

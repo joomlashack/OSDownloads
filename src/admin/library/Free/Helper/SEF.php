@@ -570,7 +570,7 @@ class SEF
         return false;
     }
 
-     /**
+    /**
      * Get the id set for the menu item, based on the item id.
      *
      * @param  int $itemId
@@ -580,7 +580,7 @@ class SEF
     {
         $menuItem = $this->getMenuItemById($itemId);
 
-        if (!empty($menuItem)) {
+        if (!empty($menuItem) && array_key_exists('id', $menuItem->query)) {
             return (int) $menuItem->query['id'];
         }
 

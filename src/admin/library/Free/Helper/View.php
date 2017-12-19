@@ -38,10 +38,24 @@ class View
         $countPaths = count($paths) - 1;
         $component  = FreeComponentSite::getInstance();
 
-        for ($i = $countPaths; $i >= 0; $i--) {
-            $link = JRoute::_($container->helperRoute->getFileListRoute($paths[$i]->id, $itemID));
+        $pathwayList = $pathway->getPathway();
 
-            $pathway->addItem($paths[$i]->title, $link);
+        for ($i = $countPaths; $i >= 0; $i--) {
+            $link   = $container->helperRoute->getFileListRoute($paths[$i]->id, $itemID);
+            $route  = JRoute::_($link);
+            $exists = false;
+
+            // Check if the current category is already in the pathway, to ignore
+            foreach ($pathwayList as $item) {
+                if ($item->link === $link) {
+                    $exists = true;
+                    break;
+                }
+            }
+
+            if (!$exists) {
+                $pathway->addItem($paths[$i]->title, $route);
+            }
         }
     }
 
@@ -52,6 +66,15 @@ class View
      */
     public function buildFileBreadcrumbs($file)
     {
+        $container = OSDFactory::getContainer();
+
+        // Check if the current file has a menu item
+        $menu = $container->app->getMenu()->getActive();
+        if ('item' === $menu->query['view'] && $menu->query['id'] === $file->id) {
+            // Yes, so do nothing
+            return;
+        }
+
         $this->buildCategoryBreadcrumbs($file->cate_id);
 
         $app       = JFactory::getApplication();
@@ -60,8 +83,15 @@ class View
         $pathway = $app->getPathway();
         $itemID  = $app->input->getInt('Itemid');
 
-        $link = JRoute::_($container->helperRoute->getViewItemRoute($file->id, $itemID));
-        $pathway->addItem($file->name, $link);
+        $pathwayList = $pathway->getPathway();
+
+        $link   = $container->helperRoute->getViewItemRoute($file->id, $itemID);
+        $route  = JRoute::_($link);
+        $exists = false;
+
+        if (!$exists) {
+            $pathway->addItem($file->name, $link);
+        }
     }
 
     /**

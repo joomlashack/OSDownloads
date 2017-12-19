@@ -39,12 +39,29 @@ class View
         $component  = FreeComponentSite::getInstance();
 
         for ($i = $countPaths; $i >= 0; $i--) {
-            $link = $component->isPro() ?
-                JRoute::_($container->helperRoute->getCategoryListRoute($paths[$i]->id, $itemID)) :
-                JRoute::_($container->helperRoute->getFileListRoute($paths[$i]->id, $itemID));
+            $link = JRoute::_($container->helperRoute->getFileListRoute($paths[$i]->id, $itemID));
 
             $pathway->addItem($paths[$i]->title, $link);
         }
+    }
+
+    /**
+     * Build a list of file breadcrumbs.
+     *
+     * @param  object  $file
+     */
+    public function buildFileBreadcrumbs($file)
+    {
+        $this->buildCategoryBreadcrumbs($file->cate_id);
+
+        $app       = JFactory::getApplication();
+        $container = OSDFactory::getContainer();
+
+        $pathway = $app->getPathway();
+        $itemID  = $app->input->getInt('Itemid');
+
+        $link = JRoute::_($container->helperRoute->getViewItemRoute($file->id, $itemID));
+        $pathway->addItem($file->name, $link);
     }
 
     /**

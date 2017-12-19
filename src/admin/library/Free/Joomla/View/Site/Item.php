@@ -79,7 +79,7 @@ class Item extends Base
         }
 
         // Breadcrumbs
-        $container->helperView->buildCategoryBreadcrumbs($item->cate_id);
+        $container->helperView->buildFileBreadcrumbs($item);
 
         // Load the extension
         $component->loadLibrary();

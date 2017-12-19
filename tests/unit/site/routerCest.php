@@ -305,6 +305,57 @@ class RouterCest
 
                 return $vars['id'];
             }
+
+            public function getMenuItemByQuery($query)
+            {
+                global $menus;
+
+                if (!empty($menus)) {
+                    foreach ($menus as $menuItem) {
+                        if (array_intersect($query, $menuItem->query) == $query) {
+                            return $menuItem;
+                        }
+                    }
+                }
+
+                return false;
+            }
+
+            public function getMenuItemById($id)
+            {
+                global $menus;
+
+                if (isset($menus[$id])) {
+                    return $menus[$id];
+                }
+
+                return false;
+            }
+        };
+
+        $container->app = new class
+        {
+            public function getMenu()
+            {
+                $menu = new class
+                {
+                    public function getActive()
+                    {
+                        global $menus;
+                        global $activeItemId;
+
+                        foreach ($menus as $menu) {
+                            if ($menu->id == $activeItemId) {
+                                return $menu;
+                            }
+                        }
+
+                        return false;
+                    }
+                };
+
+                return $menu;
+            }
         };
 
         /**
@@ -462,27 +513,27 @@ class RouterCest
      *   - menu-category-1
      *       - menu-category-2
      *
-     * @example {"task": "routedownload", "id": "1", "route": "menu-category-1/routedownload/file-1", "layout": "any-layout"}
-     * @example {"task": "routedownload", "id": "1", "route": "menu-category-1/routedownload/file-1"}
-     * @example {"task": "routedownload", "id": "2", "route": "menu-category-1/menu-category-2/routedownload/file-2"}
-     * @example {"task": "routedownload", "id": "3", "route": "menu-category-1/menu-category-2/routedownload/category-3/file-3"}
-     * @example {"task": "routedownload", "id": "4", "route": "menu-category-root/routedownload/category-4/file-4"}
+     * @example {"task": "routedownload", "id": "1", "route": "routedownload/file-1", "layout": "any-layout"}
+     * @example {"task": "routedownload", "id": "1", "route": "routedownload/file-1"}
+     * @example {"task": "routedownload", "id": "2", "route": "routedownload/file-2"}
+     * @example {"task": "routedownload", "id": "3", "route": "routedownload/category-3/file-3"}
+     * @example {"task": "routedownload", "id": "4", "route": "routedownload/category-4/file-4"}
      *
-     * @example {"task": "routedownload", "id": "1", "route": "menu-category-1/routedownload/thankyou/file-1", "layout": "thankyou"}
-     * @example {"task": "routedownload", "id": "2", "route": "menu-category-1/menu-category-2/routedownload/thankyou/file-2", "layout": "thankyou"}
-     * @example {"task": "routedownload", "id": "3", "route": "menu-category-1/menu-category-2/routedownload/thankyou/category-3/file-3", "layout": "thankyou"}
-     * @example {"task": "routedownload", "id": "4", "route": "menu-category-root/routedownload/thankyou/category-4/file-4", "layout": "thankyou"}
+     * @example {"task": "routedownload", "id": "1", "route": "routedownload/thankyou/file-1", "layout": "thankyou"}
+     * @example {"task": "routedownload", "id": "2", "route": "routedownload/thankyou/file-2", "layout": "thankyou"}
+     * @example {"task": "routedownload", "id": "3", "route": "routedownload/thankyou/category-3/file-3", "layout": "thankyou"}
+     * @example {"task": "routedownload", "id": "4", "route": "routedownload/thankyou/category-4/file-4", "layout": "thankyou"}
      *
-     * @example {"task": "download", "id": "1", "route": "menu-category-1/download/file-1", "layout": "any-layout"}
-     * @example {"task": "download", "id": "1", "route": "menu-category-1/download/file-1"}
-     * @example {"task": "download", "id": "2", "route": "menu-category-1/menu-category-2/download/file-2"}
-     * @example {"task": "download", "id": "3", "route": "menu-category-1/menu-category-2/download/category-3/file-3"}
-     * @example {"task": "download", "id": "4", "route": "menu-category-root/download/category-4/file-4"}
+     * @example {"task": "download", "id": "1", "route": "download/file-1", "layout": "any-layout"}
+     * @example {"task": "download", "id": "1", "route": "download/file-1"}
+     * @example {"task": "download", "id": "2", "route": "download/file-2"}
+     * @example {"task": "download", "id": "3", "route": "download/category-3/file-3"}
+     * @example {"task": "download", "id": "4", "route": "download/category-4/file-4"}
      *
-     * @example {"task": "download", "id": "1", "route": "menu-category-1/download/thankyou/file-1", "layout": "thankyou"}
-     * @example {"task": "download", "id": "2", "route": "menu-category-1/menu-category-2/download/thankyou/file-2", "layout": "thankyou"}
-     * @example {"task": "download", "id": "3", "route": "menu-category-1/menu-category-2/download/thankyou/category-3/file-3", "layout": "thankyou"}
-     * @example {"task": "download", "id": "4", "route": "menu-category-root/download/thankyou/category-4/file-4", "layout": "thankyou"}
+     * @example {"task": "download", "id": "1", "route": "download/thankyou/file-1", "layout": "thankyou"}
+     * @example {"task": "download", "id": "2", "route": "download/thankyou/file-2", "layout": "thankyou"}
+     * @example {"task": "download", "id": "3", "route": "download/thankyou/category-3/file-3", "layout": "thankyou"}
+     * @example {"task": "download", "id": "4", "route": "download/thankyou/category-4/file-4", "layout": "thankyou"}
      */
     public function buildRouteForDownloadTasksWithMenuItemForCategory(UnitTester $I, Example $example)
     {
@@ -552,23 +603,23 @@ class RouterCest
      *   - menu-other-extension-1
      *       - menu-file-3
      *
-     * @example {"task": "routedownload", "id": "1", "route": "menu-category-1/menu-file-1/routedownload", "layout": "any-layout"}
-     * @example {"task": "routedownload", "id": "1", "route": "menu-category-1/menu-file-1/routedownload"}
-     * @example {"task": "routedownload", "id": "2", "route": "menu-file-2/routedownload"}
-     * @example {"task": "routedownload", "id": "3", "route": "menu-file-3/routedownload"}
+     * @example {"task": "routedownload", "id": "1", "route": "routedownload", "layout": "any-layout"}
+     * @example {"task": "routedownload", "id": "1", "route": "routedownload"}
+     * @example {"task": "routedownload", "id": "2", "route": "routedownload"}
+     * @example {"task": "routedownload", "id": "3", "route": "routedownload"}
      *
-     * @example {"task": "routedownload", "id": "1", "route": "menu-category-1/menu-file-1/routedownload/thankyou", "layout": "thankyou"}
-     * @example {"task": "routedownload", "id": "2", "route": "menu-file-2/routedownload/thankyou", "layout": "thankyou"}
-     * @example {"task": "routedownload", "id": "3", "route": "menu-file-3/routedownload/thankyou", "layout": "thankyou"}
+     * @example {"task": "routedownload", "id": "1", "route": "routedownload/thankyou", "layout": "thankyou"}
+     * @example {"task": "routedownload", "id": "2", "route": "routedownload/thankyou", "layout": "thankyou"}
+     * @example {"task": "routedownload", "id": "3", "route": "routedownload/thankyou", "layout": "thankyou"}
      *
-     * @example {"task": "download", "id": "1", "route": "menu-category-1/menu-file-1/download", "layout": "any-layout"}
-     * @example {"task": "download", "id": "1", "route": "menu-category-1/menu-file-1/download"}
-     * @example {"task": "download", "id": "2", "route": "menu-file-2/download"}
-     * @example {"task": "download", "id": "3", "route": "menu-file-3/download"}
+     * @example {"task": "download", "id": "1", "route": "download", "layout": "any-layout"}
+     * @example {"task": "download", "id": "1", "route": "download"}
+     * @example {"task": "download", "id": "2", "route": "download"}
+     * @example {"task": "download", "id": "3", "route": "download"}
      *
-     * @example {"task": "download", "id": "1", "route": "menu-category-1/menu-file-1/download/thankyou", "layout": "thankyou"}
-     * @example {"task": "download", "id": "2", "route": "menu-file-2/download/thankyou", "layout": "thankyou"}
-     * @example {"task": "download", "id": "3", "route": "menu-file-3/download/thankyou", "layout": "thankyou"}
+     * @example {"task": "download", "id": "1", "route": "download/thankyou", "layout": "thankyou"}
+     * @example {"task": "download", "id": "2", "route": "download/thankyou", "layout": "thankyou"}
+     * @example {"task": "download", "id": "3", "route": "download/thankyou", "layout": "thankyou"}
      */
     public function buildRouteForDownloadTasksWithMenuItemForTheFile(UnitTester $I, Example $example)
     {
@@ -706,20 +757,23 @@ class RouterCest
      *     - menu-file-3
      * - menu-file-4
      *
-     * @example {"task": "routedownload", "id": "1", "route": "menu-category-1/routedownload/file-1"}
-     * @example {"task": "routedownload", "id": "2", "route": "menu-category-1/routedownload/category-2/file-2"}
-     * @example {"task": "routedownload", "id": "3", "route": "menu-category-3/menu-file-3/routedownload"}
-     * @example {"task": "routedownload", "id": "4", "route": "menu-file-4/routedownload"}
+     * @example {"task": "routedownload", "id": "1", "activeItemId": 101, "route": "routedownload/file-1"}
+     * @example {"task": "routedownload", "id": "2", "activeItemId": 101, "route": "routedownload/category-2/file-2"}
+     * @example {"task": "routedownload", "id": "3", "activeItemId": 103, "route": "routedownload"}
+     * @example {"task": "routedownload", "id": "4", "activeItemId": 104, "route": "routedownload"}
      *
-     * @example {"task": "download", "id": "1", "route": "menu-category-1/download/file-1"}
-     * @example {"task": "download", "id": "2", "route": "menu-category-1/download/category-2/file-2"}
-     * @example {"task": "download", "id": "3", "route": "menu-category-3/menu-file-3/download"}
-     * @example {"task": "download", "id": "4", "route": "menu-file-4/download"}
+     * @example {"task": "download", "id": "1", "activeItemId": 101, "route": "download/file-1"}
+     * @example {"task": "download", "id": "2", "activeItemId": 101, "route": "download/category-2/file-2"}
+     * @example {"task": "download", "id": "3", "activeItemId": 103, "route": "download"}
+     * @example {"task": "download", "id": "4", "activeItemId": 104, "route": "download"}
      */
     public function parseRouteSegmentsForRoutedownloadAndDownloadTasksWithMenu(UnitTester $I, Example $example)
     {
         // Menus
         global $menus;
+        global $activeItemId;
+
+        $activeItemId = $example['activeItemId'];
 
         $menus = [
             'category-1' => (object) [
@@ -732,6 +786,7 @@ class RouterCest
                 'access'    => '1',
                 'type'      => 'component',
                 'client_id' => '0',
+                'query'     => ['view' => 'downloads', 'id' => 1],
             ],
 
             'category-3' => (object) [
@@ -744,6 +799,7 @@ class RouterCest
                 'access'    => '1',
                 'type'      => 'component',
                 'client_id' => '0',
+                'query'     => ['view' => 'downloads', 'id' => 3],
             ],
 
             'file-3' => (object) [
@@ -756,6 +812,7 @@ class RouterCest
                 'access'    => '1',
                 'type'      => 'component',
                 'client_id' => '0',
+                'query'     => ['view' => 'item', 'id' => 3],
             ],
 
             'file-4' => (object) [
@@ -768,6 +825,7 @@ class RouterCest
                 'access'    => '1',
                 'type'      => 'component',
                 'client_id' => '0',
+                'query'     => ['view' => 'item', 'id' => 4],
             ],
         ];
 
@@ -845,228 +903,6 @@ class RouterCest
     =========================================*/
 
     /**
-     * Try to build route segments for the thank you page in the item view.
-     *
-     * @example {"view": "item", "layout": "thankyou", "id": 1, "route": "thankyou/category-1/file-1"}
-     * @example {"view": "item", "layout": "thankyou", "id": 2, "route": "thankyou/category-1/category-2/file-2"}
-     * @example {"view": "item", "layout": "thankyou", "id": 3, "route": "thankyou/category-1/category-2/category-3/file-3"}
-     * @example {"view": "item", "layout": "thankyou", "id": 4, "route": "thankyou/category-4/file-4"}
-     */
-    public function buildRouteSegmentsForViewItemThankYouPageWithoutMenuItem(UnitTester $I, Example $example)
-    {
-        $query = [
-            'view'   => $example['view'],
-            'layout' => $example['layout'],
-            'id'     => $example['id'],
-        ];
-
-        $route = implode('/', $this->router->build($query));
-
-        $I->assertEquals($example['route'], $route);
-    }
-
-    /**
-     * Try to build route segments for the thank you page in the item view.
-     *
-     * Menu items tree:
-     *   - menu-category-1
-     *       - menu-category-3
-     *   - menu-file-3
-     *   - menu-file-4
-     *
-     * @example {"view": "item", "layout": "thankyou", "id": 1, "route": "menu-category-1/thankyou/file-1"}
-     * @example {"view": "item", "layout": "thankyou", "id": 2, "route": "menu-category-1/thankyou/category-2/file-2"}
-     * @example {"view": "item", "layout": "thankyou", "id": 3, "route": "menu-file-3/thankyou"}
-     * @example {"view": "item", "layout": "thankyou", "id": 4, "route": "menu-file-4/thankyou"}
-     */
-    public function buildRouteSegmentsForViewItemThankYouPageWithMenuItem(UnitTester $I, Example $example)
-    {
-        // Menus
-        global $menus;
-
-        $menus = [
-            'category-1' => (object) [
-                'id'        => '101',
-                'alias'     => 'menu-category-1',
-                'path'      => 'menu-category-1',
-                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=1',
-                'parent_id' => '1',
-                'published' => '1',
-                'access'    => '1',
-                'type'      => 'component',
-                'client_id' => '0',
-            ],
-
-            'category-3' => (object) [
-                'id'        => '103',
-                'alias'     => 'menu-category-3',
-                'path'      => 'menu-category-1/menu-category-3',
-                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=3',
-                'parent_id' => '101',
-                'published' => '1',
-                'access'    => '1',
-                'type'      => 'component',
-                'client_id' => '0',
-            ],
-
-            'file-3' => (object) [
-                'id'        => '104',
-                'alias'     => 'menu-file-3',
-                'path'      => 'menu-file-3',
-                'link'      => 'index.php?option=com_osdownloads&view=item&id=3',
-                'parent_id' => '1',
-                'published' => '1',
-                'access'    => '1',
-                'type'      => 'component',
-                'client_id' => '0',
-            ],
-
-            'file-4' => (object) [
-                'id'        => '105',
-                'alias'     => 'menu-file-4',
-                'path'      => 'menu-file-4',
-                'link'      => 'index.php?option=com_osdownloads&view=item&id=4',
-                'parent_id' => '1',
-                'published' => '1',
-                'access'    => '1',
-                'type'      => 'component',
-                'client_id' => '0',
-            ],
-        ];
-
-        $query = [
-            'view'   => $example['view'],
-            'layout' => $example['layout'],
-            'id'     => $example['id'],
-        ];
-
-        $route = implode('/', $this->router->build($query));
-
-        $I->assertEquals($example['route'], $route);
-    }
-
-    /**
-     * Try to parse route segments for the thank you page in the item view.
-     *
-     * @example {"id": 1, "route": "thankyou/category-1/file-1"}
-     * @example {"id": 2, "route": "thankyou/category-1/category-2/file-2"}
-     * @example {"id": 3, "route": "thankyou/category-1/category-2/category-3/file-3"}
-     * @example {"id": 4, "route": "thankyou/category-4/file-4"}
-     */
-    public function parseRouteSegmentsForViewItemThankYouPageWithoutMenuItems(UnitTester $I, Example $example)
-    {
-        $segments = explode('/', $example['route']);
-
-        $vars = $this->router->parse($segments);
-
-        $I->assertArrayHasKey('view', $vars);
-        $I->assertEquals('item', $vars['view']);
-
-        $I->assertArrayHasKey('layout', $vars);
-        $I->assertEquals('thankyou', $vars['layout']);
-
-        $I->assertArrayHasKey('tmpl', $vars);
-        $I->assertEquals('component', $vars['tmpl']);
-
-        $I->assertArrayHasKey('id', $vars);
-        $I->assertEquals($example['id'], $vars['id']);
-    }
-
-    /**
-     * Try to parse route segments for the thank you page in the item view.
-     *
-     * Menu items tree:
-     *   - menu-category-1
-     *       - menu-category-3
-     *   - menu-file-3
-     *   - menu-file-4
-     *
-     * @example {"id": 1, "route": "menu-category-1/thankyou/file-1"}
-     * @example {"id": 2, "route": "menu-category-1/thankyou/category-2/file-2"}
-     * @example {"id": 3, "route": "menu-file-3/thankyou"}
-     * @example {"id": 4, "route": "menu-file-4/thankyou"}
-     */
-    public function parseRouteSegmentsForViewItemThankYouPageWithMenuItems(UnitTester $I, Example $example)
-    {
-        // Menus
-        global $menus;
-
-        $menus = [
-            'category-1' => (object) [
-                'id'        => '101',
-                'alias'     => 'menu-category-1',
-                'path'      => 'menu-category-1',
-                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=1',
-                'parent_id' => '1',
-                'published' => '1',
-                'access'    => '1',
-                'type'      => 'component',
-                'client_id' => '0',
-                'component' => 'com_osdownloads',
-                'query'     => ['view' => 'downloads', 'id' => '1'],
-            ],
-
-            'category-3' => (object) [
-                'id'        => '103',
-                'alias'     => 'menu-category-3',
-                'path'      => 'menu-category-1/menu-category-3',
-                'link'      => 'index.php?option=com_osdownloads&view=downloads&id=3',
-                'parent_id' => '101',
-                'published' => '1',
-                'access'    => '1',
-                'type'      => 'component',
-                'client_id' => '0',
-                'component' => 'com_osdownloads',
-                'query'     => ['view' => 'downloads', 'id' => '3'],
-            ],
-
-            'file-3' => (object) [
-                'id'        => '104',
-                'alias'     => 'menu-file-3',
-                'path'      => 'menu-file-3',
-                'link'      => 'index.php?option=com_osdownloads&view=item&id=3',
-                'parent_id' => '1',
-                'published' => '1',
-                'access'    => '1',
-                'type'      => 'component',
-                'client_id' => '0',
-                'component' => 'com_osdownloads',
-                'query'     => ['view' => 'item', 'id' => '3'],
-            ],
-
-            'file-4' => (object) [
-                'id'        => '105',
-                'alias'     => 'menu-file-4',
-                'path'      => 'menu-file-4',
-                'link'      => 'index.php?option=com_osdownloads&view=item&id=4',
-                'parent_id' => '1',
-                'published' => '1',
-                'access'    => '1',
-                'type'      => 'component',
-                'client_id' => '0',
-                'component' => 'com_osdownloads',
-                'query'     => ['view' => 'item', 'id' => '4'],
-            ],
-        ];
-
-        $segments = explode('/', $example['route']);
-
-        $vars = $this->router->parse($segments);
-
-        $I->assertArrayHasKey('view', $vars);
-        $I->assertEquals('item', $vars['view']);
-
-        $I->assertArrayHasKey('layout', $vars);
-        $I->assertEquals('thankyou', $vars['layout']);
-
-        $I->assertArrayHasKey('tmpl', $vars);
-        $I->assertEquals('component', $vars['tmpl']);
-
-        $I->assertArrayHasKey('id', $vars);
-        $I->assertEquals($example['id'], $vars['id']);
-    }
-
-    /**
      * Try to build route segments for a single file without menu items
      *
      * @example {"view": "item", "id": 1, "route": "category-1/file-1"}
@@ -1096,15 +932,18 @@ class RouterCest
      *   - menu-file-4
      *
      *
-     * @example {"view": "item", "id": 1, "route": "menu-category-1/file-1"}
-     * @example {"view": "item", "id": 2, "route": "menu-category-1/category-2/file-2"}
-     * @example {"view": "item", "id": 3, "route": "menu-category-1/menu-category-3/menu-file-3"}
-     * @example {"view": "item", "id": 4, "route": "menu-file-4"}
+     * @example {"view": "item", "id": 1, "activeItemId": 101, "route": "file-1"}
+     * @example {"view": "item", "id": 2, "activeItemId": 101, "route": "category-2/file-2"}
+     * @example {"view": "item", "id": 3, "activeItemId": 103, "route": ""}
+     * @example {"view": "item", "id": 4, "activeItemId": 104, "route": ""}
      */
     public function buildRouteSegmentsForASingleFileWithMenuItem(UnitTester $I, Example $example)
     {
         // Menus
         global $menus;
+        global $activeItemId;
+
+        $activeItemId = $example['activeItemId'];
 
         $menus = [
             'category-1' => (object) [
@@ -1117,6 +956,7 @@ class RouterCest
                 'access'    => '1',
                 'type'      => 'component',
                 'client_id' => '0',
+                'query'     => ['view' => 'downloads', 'id' => 1],
             ],
 
             'category-3' => (object) [
@@ -1129,6 +969,7 @@ class RouterCest
                 'access'    => '1',
                 'type'      => 'component',
                 'client_id' => '0',
+                'query'     => ['view' => 'downloads', 'id' => 3],
             ],
 
             'file-3' => (object) [
@@ -1141,6 +982,7 @@ class RouterCest
                 'access'    => '1',
                 'type'      => 'component',
                 'client_id' => '0',
+                'query'     => ['view' => 'item', 'id' => 3],
             ],
 
             'file-4' => (object) [
@@ -1153,6 +995,7 @@ class RouterCest
                 'access'    => '1',
                 'type'      => 'component',
                 'client_id' => '0',
+                'query'     => ['view' => 'item', 'id' => 4],
             ],
         ];
 
@@ -1175,8 +1018,8 @@ class RouterCest
      *           - menu-file-3
      *   - menu-file-4
      *
-     * @example {"Itemid": "104", "id": 3, "route": "menu-category-1/menu-category-3/menu-file-3"}
-     * @example {"Itemid": "105", "id": 4, "route": "menu-file-4"}
+     * @example {"Itemid": "104", "id": 3, "route": ""}
+     * @example {"Itemid": "105", "id": 4, "route": ""}
      */
     public function buildRouteSegmentsForASingleFileBasedOnItemId(UnitTester $I, Example $example)
     {
@@ -1283,15 +1126,18 @@ class RouterCest
      *           - menu-file-3
      *   - menu-file-4
      *
-     * @example {"id": 1, "route": "menu-category-1/file-1"}
-     * @example {"id": 2, "route": "menu-category-1/category-2/file-2"}
-     * @example {"id": 3, "route": "menu-category-1/menu-category-3/file-3"}
-     * @example {"id": 4, "route": "menu-file-4"}
+     * @example {"id": 1, "activeItemId": 101, "route": "file-1"}
+     * @example {"id": 2, "activeItemId": 101, "route": "file-2"}
+     * @example {"id": 3, "activeItemId": 104, "route": ""}
+     * @example {"id": 4, "activeItemId": 105, "route": ""}
      */
     public function parseRouteSegmentsForASingleFileWithMenuItem(UnitTester $I, Example $example)
     {
         // Menus
         global $menus;
+        global $activeItemId;
+
+        $activeItemId = $example['activeItemId'];
 
         $menus = [
             'category-1' => (object) [

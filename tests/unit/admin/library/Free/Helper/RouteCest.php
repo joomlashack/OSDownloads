@@ -26,7 +26,7 @@ class RouteCest
      * @example {"id": "12\"; SHOW DATABASES;"}
      *
      */
-    public function tryToGetFileDownloadRoute(UnitTester $I, Example $example)
+    public function getFileDownloadRoute(UnitTester $I, Example $example)
     {
         $route = $this->helper->getFileDownloadRoute($example['id']);
 
@@ -48,7 +48,7 @@ class RouteCest
      * @example {"id": "12", "itemid": "13"}
      * @example {"id": "12\"; SHOW DATABASES;", "itemid": "13\"; DROP TABLE #_tests;"}
      */
-    public function tryTogetFileListRouteWithItemId(UnitTester $I, Example $example)
+    public function getFileListRouteWithItemId(UnitTester $I, Example $example)
     {
         $route = $this->helper->getFileListRoute($example['id'], $example['itemid']);
 
@@ -66,7 +66,7 @@ class RouteCest
      * @example {"id": "12"}
      * @example {"id": "12\"; SHOW DATABASES;"}
      */
-    public function tryTogetFileListRouteWithoutItemId(UnitTester $I, Example $example)
+    public function getFileListRouteWithoutItemId(UnitTester $I, Example $example)
     {
         $route = $this->helper->getFileListRoute($example['id']);
 
@@ -83,7 +83,7 @@ class RouteCest
     /**
      * Try to get the file list route.
      */
-    public function tryTogetFileListRoute(UnitTester $I)
+    public function getFileListRoute(UnitTester $I)
     {
         $route = $this->helper->getFileListRoute();
 
@@ -104,7 +104,7 @@ class RouteCest
      * @example {"id": "12", "itemid": "13"}
      * @example {"id": "12\"; SHOW DATABASES;", "itemid": "13\"; DROP TABLE #_tests;"}
      */
-    public function tryToGetViewItemRouteWithItemId(UnitTester $I, Example $example)
+    public function getViewItemRouteWithItemId(UnitTester $I, Example $example)
     {
         $route = $this->helper->getViewItemRoute($example['id'], $example['itemid']);
 
@@ -121,7 +121,7 @@ class RouteCest
      * @example {"id": "12"}
      * @example {"id": "12\"; SHOW DATABASES;"}
      */
-    public function tryToGetViewItemRouteWithoutItemId(UnitTester $I, Example $example)
+    public function getViewItemRouteWithoutItemId(UnitTester $I, Example $example)
     {
         $route = $this->helper->getViewItemRoute($example['id']);
 
@@ -142,7 +142,7 @@ class RouteCest
      * @example {"id": "12", "itemid": "13"}
      * @example {"id": "12\"; SHOW DATABASES;", "itemid": "13\"; DROP TABLE #_tests;"}
      */
-    public function tryToGetFileDownloadContentRouteWithItemID(UnitTester $I, Example $example)
+    public function getFileDownloadContentRouteWithItemID(UnitTester $I, Example $example)
     {
         $route = $this->helper->getFileDownloadContentRoute($example['id'], $example['itemid']);
 
@@ -159,7 +159,7 @@ class RouteCest
      * @example {"id": "12"}
      * @example {"id": "12\"; SHOW DATABASES;"}
      */
-    public function tryToGetFileDownloadContentRouteWithoutItemID(UnitTester $I, Example $example)
+    public function getFileDownloadContentRouteWithoutItemID(UnitTester $I, Example $example)
     {
         $route = $this->helper->getFileDownloadContentRoute($example['id']);
 
@@ -180,7 +180,7 @@ class RouteCest
      * @example {"id": "12"}
      * @example {"id": "12\"; SHOW DATABASES;"}
      */
-    public function tryToGetAdminFileFormRoute(UnitTester $I, Example $example)
+    public function getAdminFileFormRoute(UnitTester $I, Example $example)
     {
         $route = $this->helper->getAdminFileFormRoute($example['id']);
 
@@ -197,7 +197,7 @@ class RouteCest
     /**
      * Try to get the file list route.
      */
-    public function tryToGetAdminFileListRoute(UnitTester $I)
+    public function getAdminFileListRoute(UnitTester $I)
     {
         $route = $this->helper->getAdminFileListRoute();
 
@@ -214,7 +214,7 @@ class RouteCest
     /**
      * Try to get the category list route.
      */
-    public function tryToGetAdminCategoryListRoute(UnitTester $I)
+    public function getAdminCategoryListRoute(UnitTester $I)
     {
         $route = $this->helper->getAdminCategoryListRoute();
 
@@ -231,7 +231,7 @@ class RouteCest
     /**
      * Try to get the email list route.
      */
-    public function tryToGetAdminEmailListRoute(UnitTester $I)
+    public function getAdminEmailListRoute(UnitTester $I)
     {
         $route = $this->helper->getAdminEmailListRoute();
 
@@ -248,7 +248,7 @@ class RouteCest
     /**
      * Try to get the main view route.
      */
-    public function tryToGetAdminMainViewRoute(UnitTester $I)
+    public function getAdminMainViewRoute(UnitTester $I)
     {
         $route = $this->helper->getAdminMainViewRoute();
 

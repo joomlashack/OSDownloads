@@ -212,8 +212,8 @@ class SEF
             return false;
         }
 
-        // Do we have only one file?
-        if (count($files) === 1 || empty($path)) {
+        // Do we have only one file and no path to check?
+        if (empty($path) && count($files) === 1) {
             return $files[0];
         }
 

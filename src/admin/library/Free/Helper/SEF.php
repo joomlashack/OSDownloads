@@ -30,11 +30,6 @@ class SEF
     protected static $menuItemsById = null;
 
     /**
-     * @var object[]
-     */
-    protected static $menuItemsByView = null;
-
-    /**
      * @var object
      */
     protected $container;
@@ -407,45 +402,13 @@ class SEF
         $menu  = $app->getMenu();
         $menuItems = $menu->getItems('component', 'com_osdownloads');
 
-        static::$menuItemsByView = array();
-        static::$menuItemsById   = array();
+        static::$menuItemsById = array();
 
         foreach ($menuItems as $item) {
             static::$menuItemsById[$item->id] = $item;
-
-            if (!empty($item->query['view'])) {
-                $view = $item->query['view'];
-
-                switch ($view) {
-                    case 'item':
-                        $itemId = empty($item->query['id']) ? 0 : $item->query['id'];
-                        if (empty(static::$menuItemsByView[$view])) {
-                            static::$menuItemsByView[$view] = array();
-                        }
-                        static::$menuItemsByView[$view][$itemId] = $item;
-                        break;
-
-                    case 'downloads':
-                        $categoryId = empty($item->query['id']) ? 0 : $item->query['id'];
-                        if (empty(static::$menuItemsByView[$view])) {
-                            static::$menuItemsByView[$view] = array();
-                        }
-                        static::$menuItemsByView[$view][$categoryId] = $item;
-                        break;
-
-                    case 'categories':
-                        $categoryId = empty($item->query['id']) ? 0 : $item->query['id'];
-                        if (empty(static::$menuItemsByView[$view])) {
-                            static::$menuItemsByView[$view] = array();
-                        }
-                        static::$menuItemsByView[$view][$categoryId] = $item;
-                        break;
-
-                    default:
-                        static::$menuItemsByView[$view] = $item;
-                }
-            }
         }
+
+        return static::$menuItemsById;
     }
 
      /**
@@ -567,53 +530,24 @@ class SEF
     }
 
     /**
-     * Get a menu item related to the component, by view.
+     * Get a menu item related to the component, filtering by the query.
+     * You don't need to give the full query, but all given query vars should
+     * match.
      *
-     * @param  string $view
+     * @param  array $query
      *
      * @return object|bool
      */
-    public function getMenuItemByView($view)
+    public function getMenuItemByQuery($query)
     {
-        if (!empty(static::$menuItemsByView) && isset(static::$menuItemsByView[$view])) {
-            return static::$menuItemsByView[$view];
+        if (!empty(static::$menuItemsById)) {
+            foreach (static::$menuItemsById as $menuItem) {
+                if (array_intersect($query, $menuItem->query) == $query) {
+                    return $menuItem;
+                }
+            }
         }
 
         return false;
-    }
-
-    /**
-     * Get the id set for the menu item, based on the item id.
-     *
-     * @param  int $itemId
-     * @return string
-     */
-    public function getMenuItemQueryId($itemId)
-    {
-        $menuItem = $this->getMenuItemById($itemId);
-
-        if (!empty($menuItem) && array_key_exists('id', $menuItem->query)) {
-            return (int) $menuItem->query['id'];
-        }
-
-        return false;
-    }
-
-    /**
-     * Get the view set for the menu item, based on the item id.
-     *
-     * @param  int $itemId
-     * @return string
-     */
-    public function getMenuItemQueryView($itemId)
-    {
-        $menuItem = $this->getMenuItemById($itemId);
-        $view     = null;
-
-        if (!empty($menuItem)) {
-            $view = $menuItem->query['view'];
-        }
-
-        return $view;
     }
 }

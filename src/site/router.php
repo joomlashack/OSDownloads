@@ -255,30 +255,46 @@ class OsdownloadsRouter extends RouterBase
         // Try to get the view. If no view is provided but we have Itemid,
         // find out the view.
         if (empty($view) && !empty($itemId)) {
-            $view = $this->container->helperSEF->getMenuItemQueryView($itemId);
+            $menu = $this->container->helperSEF->getMenuItemById($itemId);
+            if (!empty($menu)) {
+                $view = $menu->query['view'];
+            }
         }
 
         if (empty($id) && !empty($itemId)) {
-            $id = $this->container->helperSEF->getMenuItemQueryId($itemId);
+            $menu = $this->container->helperSEF->getMenuItemById($itemId);
+            if (!empty($menu)) {
+                $id = $menu->query['id'];
+            }
         }
 
         if (!empty($view)) {
             // Check if we have a menu item. If so, we adjust the item ID.
-            $menu = $this->container->helperSEF->getMenuItemByView($view);
+            $menu = $this->container->helperSEF->getMenuItemByQuery(
+                array(
+                    'view' => $view,
+                    'id'   => $id
+                )
+            );
 
             if (!empty($menu)) {
                 if (is_object($menu)) {
-                    $query['Itemid'] = $menu->id;
+                    if ($menu->query['id'] == $id) {
+                        $query['Itemid'] = $menu->id;
 
-                    if (empty($task)) {
-                        return $segments;
+                        if (empty($task)) {
+                            return $segments;
+                        }
                     }
                 } elseif (is_array($menu) && isset($menu[$id])) {
-                    $query['Itemid'] = $menu[$id]->id;
+                    if ($menu[$id]->query['id'] == $id) {
+                        $query['Itemid'] = $menu[$id]->id;
 
-                    if (empty($task)) {
-                        return $segments;
+                        if (empty($task)) {
+                            return $segments;
+                        }
                     }
+
                 }
             }
         }

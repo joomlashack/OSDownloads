@@ -532,14 +532,13 @@ class OsdownloadsRouter extends RouterBase
                 }
             } else {
                 // No, is it a list of files?
-                if ($this->customSegments['files'] === end($segments)) {
+                if ($this->customSegments['files'] === $lastSegment) {
                     // Yes
                     $vars['view'] = 'downloads';
 
-                    array_pop($segments);
 
                     // Try to detect the category
-                    $category = $this->container->helperSEF->getCategoryFromAlias(end($segments));
+                    $category = $this->container->helperSEF->getCategoryFromAlias(end($segments), implode('/', $segments));
 
                     if (!empty($category)) {
                         $vars['id'] = $category->id;
@@ -554,7 +553,7 @@ class OsdownloadsRouter extends RouterBase
                     }
                 } else {
                     // No, is it a list of categories?
-                    $category = $this->container->helperSEF->getCategoryFromAlias(end($segments));
+                    $category = $this->container->helperSEF->getCategoryFromAlias(end($segments), implode('/', $segments));
 
                     if (!empty($category)) {
                         $vars['view'] = 'categories';

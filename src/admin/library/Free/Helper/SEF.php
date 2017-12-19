@@ -222,7 +222,7 @@ class SEF
             return $files[0];
         }
 
-        // We have other files. We need to check the path of each file
+        // We have more files. We need to check the path of each file
         foreach ($files as $file) {
             // Get the file category
             $category = $this->getCategory($file->cate_id);
@@ -289,10 +289,11 @@ class SEF
      * Returns the category as object based on the alias.
      *
      * @param string $alias
+     * @param string $path
      *
      * @return stdClass
      */
-    public function getCategoryFromAlias($alias)
+    public function getCategoryFromAlias($alias, $path = null)
     {
         $db = JFactory::getDBO();
 
@@ -306,9 +307,9 @@ class SEF
                 )
             );
 
-        $category = $db->setQuery($query)->loadObject();
+        $categories = $db->setQuery($query)->loadObjectList();
 
-        if (!is_object($category)) {
+        if (empty($categories)) {
             JLog::add(
                 JText::sprintf(
                     'COM_OSDOWNLOADS_ERROR_CATEGORY_NOT_FOUND',
@@ -319,7 +320,18 @@ class SEF
             );
         }
 
-        return $category;
+        // Do we have only one file?
+        if (count($categories) === 1 || empty($path)) {
+            return $categories[0];
+        }
+
+        // We have more files. We need to check the path of each file
+        foreach ($categories as $category) {
+            if ($category->path === $path) {
+                return $category;
+            }
+        }
+        return false;
     }
 
     /**

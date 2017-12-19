@@ -251,6 +251,7 @@ class OsdownloadsRouter extends RouterBase
         unset($query['tmpl']);
         unset($query['data']);
 
+
         // Try to get the view. If no view is provided but we have Itemid,
         // find out the view.
         if (empty($view) && !empty($itemId)) {
@@ -269,11 +270,15 @@ class OsdownloadsRouter extends RouterBase
                 if (is_object($menu)) {
                     $query['Itemid'] = $menu->id;
 
-                    return $segments;
+                    if (empty($task)) {
+                        return $segments;
+                    }
                 } elseif (is_array($menu) && isset($menu[$id])) {
                     $query['Itemid'] = $menu[$id]->id;
 
-                    return $segments;
+                    if (empty($task)) {
+                        return $segments;
+                    }
                 }
             }
         }
@@ -395,13 +400,7 @@ class OsdownloadsRouter extends RouterBase
     }
 
     /**
-     * Parse routes detecting query args. We try to detect using the following parts:
-     *
-     *   - menu path
-     *   - task
-     *   - layout
-     *   - category path
-     *   - file alias
+     * Parse routes detecting query args.
      *
      * @param array $segments
      *
@@ -415,191 +414,152 @@ class OsdownloadsRouter extends RouterBase
 
         /**
          *
-         * Check the last segment, it could be:
-         *
-         *   A) file alias
-         *   B) category alias
-         *   C) 'files' or custom segment for list of files
-         *   D) thank you layout
-         *   E) task
+         * Check the first segment, it could be a task
          *
          */
-
-        $availableTasks = array('routedownload', 'download');
-        $lastSegment    = end($segments);
-        array_pop($segments);
-
-        /*----------  File Alias?  ----------*/
-
-        $file = $this->container->helperSEF->getFileFromAlias($lastSegment, implode('/', $segments));
-
-        if (!empty($file)) {
-            // We found a file
-
-            // Remove category path, if there
-            $category = $this->container->helperSEF->getCategory($file->cate_id);
-            $categoryPath = explode('/', $category->path);
-
-            while (!empty($segments)) {
-                if (in_array(end($segments), $categoryPath)) {
-                    array_pop($segments);
-                } else {
-                    break;
-                }
-            }
-
-            $vars['id'] = $file->id;
-
-            // Do we have the thankyou layout?
-            if ('thankyou' === end($segments)) {
-                $vars['layout'] = 'thankyou';
-                $vars['tmpl']   = 'component';
-                array_pop($segments);
-            }
-
-            // Do we have a task segment?
-            if (!empty($segments)) {
-                if (in_array(end($segments), $availableTasks)) {
-                    $vars['task'] = array_pop($segments);
-                    $vars['tmpl'] = 'component';
-
-                    return $vars;
-                }
-            }
-        }
-
-        // Task as the last segment, based on menu item?
-        if (!empty($segments) && in_array(end($segments), $availableTasks)) {
-            $vars['task'] = array_pop($segments);
-            $vars['tmpl'] = 'component';
-
-            // Look for the id found in the menu item
-            $path = implode('/', $segments);
-            $menu = $this->container->helperSEF->getMenuItemsFromPath($path);
-
-            if (!empty($menu)) {
-                $id = $this->container->helperSEF->getIdFromLink($menu->link);
-
-                if (!empty($id)) {
-                    $vars['id'] = $id;
-
-                    return $vars;
-                } else {
-                    JError::raiseError(404, JText::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'));
-                }
-            }
-        }
-
-        /**
-         *
-         * Check the first segment, it could be the confirmemail task
-         *
-         */
-
         $firstSegment = reset($segments);
-        if ('confirmemail' === $firstSegment) {
-            $vars['task'] = 'confirmemail';
-            $vars['tmpl'] = 'component';
+        $lastSegment  = end($segments);
+        $tmpSegments  = $segments;
 
-            // Check if we have the data segment
-            if (!empty(end($segments))) {
-                $vars['data'] = end($segments);
+        switch ($firstSegment) {
+            case 'confirmemail':
+                $vars['task'] = $firstSegment;
+                $vars['tmpl'] = 'component';
+
+                // Check if we have the data segment
+                if (empty($lastSegment) || $firstSegment === $lastSegment) {
+                    JError::raiseError(400, JText::_('COM_OSDOWNLOADS_ERROR_EXPECTED_DATA_SEGMENT'));
+                }
+
+                $vars['data'] = $lastSegment;
 
                 return $vars;
-            }
+                break;
 
-            /**
+            case 'routedownload':
+            case 'download':
+                $vars['task'] = $firstSegment;
+                $vars['tmpl'] = 'component';
 
-                TODO:
-                - Throw error
+                array_shift($tmpSegments);
 
-             */
+                // Check if we have the thankyou segment
+                if ('thankyou' === reset($tmpSegments)) {
+                    $vars['layout'] = 'thankyou';
+                    array_shift($tmpSegments);
+                }
+
+                // If you we don't have any other segments, look for the ID on the menu item
+                if (empty($tmpSegments)) {
+                    $menuItem = $this->container->app->getMenu()->getActive();
+
+                    if (!empty($menuItem)) {
+                        $vars['id'] = $menuItem->query['id'];
+
+                        return $vars;
+                    }
+                }
+
+                // Look for the file ID parsing the remaining path
+                if (!empty($tmpSegments)) {
+                    array_pop($tmpSegments);
+
+                    $path = implode('/', $tmpSegments);
+                    $file = $this->container->helperSEF->getFileFromAlias($lastSegment, $path);
+
+                    if (!is_object($file)) {
+                        JError::raiseError(404, JText::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'));
+                    }
+
+                    $vars['id'] = $file->id;
+
+                    return $vars;
+                }
+
+                break;
         }
 
         /**
          *
-         * If no task were found, try to detect the views
+         * Check the last segment. Is it a list of files?
          *
          */
-        if (!isset($vars['task'])) {
-            // Is a single file route?
-            if (is_object($file)) {
-                // Yes
-                if (isset($vars['id']) && !isset($vars['view'])) {
-                    $vars['view'] = 'item';
-
-                    return $vars;
-                }
-            } else {
-                // No, is it a list of files?
-                if ($this->customSegments['files'] === $lastSegment) {
-                    // Yes
-                    $vars['view'] = 'downloads';
-
-
-                    // Try to detect the category
-                    $category = $this->container->helperSEF->getCategoryFromAlias(end($segments), implode('/', $segments));
-
-                    if (!empty($category)) {
-                        $vars['id'] = $category->id;
-
-                        return $vars;
-                    }
-
-                    if (empty($segments)) {
-                        $vars['id'] = '0';
-
-                        return $vars;
-                    }
-                } else {
-                    // No, is it a list of categories?
-                    $category = $this->container->helperSEF->getCategoryFromAlias($lastSegment, implode('/', $segments));
-
-                    if (!empty($category)) {
-                        $vars['view'] = 'categories';
-                        $vars['id']   = $category->id;
-
-                        return $vars;
-                    }
-                }
-            }
-        }
-
-        // Check if the thank you page is related to a single file menu item
-        if ('thankyou' === end($segments)) {
-            $vars['layout'] = 'thankyou';
-            $vars['tmpl']   = 'component';
+        if ($this->customSegments['files'] === $lastSegment) {
+            // Yes
+            $vars['view'] = 'downloads';
 
             array_pop($segments);
-        }
 
-        // Check menu items
-        $path = implode('/', $segments);
-        $menu = $this->container->helperSEF->getMenuItemsFromPath($path);
+            // Try to detect the category
+            $category = $this->container->helperSEF->getCategoryFromAlias(
+                end($segments),
+                implode('/', $segments)
+            );
 
-        if (!empty($menu)) {
-            if (!isset($vars['view'])) {
-                $vars['view'] = $this->container->helperSEF->getMenuItemQueryView($menu->id);
+            if (!empty($category)) {
+                $vars['id'] = $category->id;
             }
 
-            if (!isset($vars['id'])) {
-                $vars['id']   = $this->container->helperSEF->getMenuItemQueryId($menu->id);
+            if (empty($segments)) {
+                $vars['id'] = '0';
             }
-
-            if (isset($vars['view']) && isset($vars['id'])) {
-                return $vars;
-            }
-        }
-
-        // Is a list of categories related to the Root?
-        if (empty($segments) || (is_array($segments) && empty($segments[0]))) {
-            $vars['view'] = 'categories';
-            $vars['id']   = '0';
 
             return $vars;
         }
 
-        // No valid route was found? Show an error message
+        /**
+         *
+         * Check the last segment. Is it a single file? Does it has a correct path?
+         *
+         */
+        $tmpSegments = $segments;
+        array_pop($tmpSegments);
+
+        // Check if we have the thank you layout, set as the first segment
+        if ('thankyou' === $firstSegment) {
+            $vars['layout'] = 'thankyou';
+            $vars['tmpl']   = 'component';
+
+            array_shift($segments);
+        }
+
+        $path = implode('/', $tmpSegments);
+
+        $file = $this->container->helperSEF->getFileFromAlias($lastSegment, $path);
+
+        if (!empty($file)) {
+            /*
+             * Cool, we found a file
+             */
+            $vars['view'] = 'item';
+            $vars['id']   = $file->id;
+
+            return $vars;
+        }
+
+        /**
+         *
+         * Check the last segment. Is it a category list? Does it has a correct path?
+         *
+         */
+        $tmpSegments = $segments;
+
+        $path = implode('/', $tmpSegments);
+
+        $category = $this->container->helperSEF->getCategoryFromAlias($lastSegment, $path);
+
+        if (is_object($category)) {
+            $vars['view'] = 'categories';
+            $vars['id']   = $category->id;
+
+            return $vars;
+        }
+
+        /**
+         *
+         * Nope, no valid route found.
+         *
+         */
         JError::raiseError(404, JText::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'));
     }
 }

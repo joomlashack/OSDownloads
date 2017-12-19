@@ -379,11 +379,6 @@ class OsdownloadsRouter extends RouterBase
                     $middlePath = array();
                     $endPath    = array();
 
-                    // Check if the thankyou layout was requested
-                    if ('thankyou' === $layout) {
-                        $middlePath[] = 'thankyou';
-                    }
-
                     // Append the file alias
                     $endPath[] = $this->container->helperSEF->getFileAlias($id);
 
@@ -515,16 +510,7 @@ class OsdownloadsRouter extends RouterBase
         $tmpSegments = $segments;
         array_pop($tmpSegments);
 
-        // Check if we have the thank you layout, set as the first segment
-        if ('thankyou' === $firstSegment) {
-            $vars['layout'] = 'thankyou';
-            $vars['tmpl']   = 'component';
-
-            array_shift($segments);
-        }
-
         $path = implode('/', $tmpSegments);
-
         $file = $this->container->helperSEF->getFileFromAlias($lastSegment, $path);
 
         if (!empty($file)) {

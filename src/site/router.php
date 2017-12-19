@@ -553,7 +553,7 @@ class OsdownloadsRouter extends RouterBase
                     }
                 } else {
                     // No, is it a list of categories?
-                    $category = $this->container->helperSEF->getCategoryFromAlias(end($segments), implode('/', $segments));
+                    $category = $this->container->helperSEF->getCategoryFromAlias($lastSegment, implode('/', $segments));
 
                     if (!empty($category)) {
                         $vars['view'] = 'categories';

@@ -306,4 +306,21 @@ class RouteCest
             $route
         );
     }
+
+    ########################################################
+    #### Admin Main Save Ordering Route
+    ########################################################
+
+    /**
+     * Try to get the main view route.
+     */
+    public function getAdminSaveOrderingRoute(UnitTester $I)
+    {
+        $route = $this->helper->getAdminSaveOrderingRoute();
+
+        $I->assertEquals(
+            'index.php?option=com_osdownloads&task=files.saveOrderAjax&tmpl=component',
+            $route
+        );
+    }
 }

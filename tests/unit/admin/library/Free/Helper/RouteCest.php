@@ -37,7 +37,7 @@ class RouteCest
     }
 
     ########################################################
-    #### File URL
+    #### File List URL
     ########################################################
 
     /**
@@ -76,10 +76,6 @@ class RouteCest
         );
     }
 
-    ########################################################
-    #### File List URL
-    ########################################################
-
     /**
      * Try to get the file list route.
      */
@@ -89,6 +85,59 @@ class RouteCest
 
         $I->assertEquals(
             'index.php?option=com_osdownloads&view=downloads',
+            $route
+        );
+    }
+
+    ########################################################
+    #### Category List URL
+    ########################################################
+
+    /**
+     * Try to get the category route providing a valid integer as the id.
+     * It should return the URL with the given id.
+     *
+     * @example {"id": 12, "itemid": 13}
+     * @example {"id": "12", "itemid": "13"}
+     * @example {"id": "12\"; SHOW DATABASES;", "itemid": "13\"; DROP TABLE #_tests;"}
+     */
+    public function getCategoryListRouteWithItemId(UnitTester $I, Example $example)
+    {
+        $route = $this->helper->getCategoryListRoute($example['id'], $example['itemid']);
+
+        $I->assertEquals(
+            'index.php?option=com_osdownloads&view=categories&id=12&Itemid=13',
+            $route
+        );
+    }
+
+    /**
+     * Try to get the category route providing a valid integer as the id.
+     * It should return the URL with the given id.
+     *
+     * @example {"id": 12}
+     * @example {"id": "12"}
+     * @example {"id": "12\"; SHOW DATABASES;"}
+     */
+    public function getCategoryListRouteWithoutItemId(UnitTester $I, Example $example)
+    {
+        $route = $this->helper->getCategoryListRoute($example['id']);
+
+        $I->assertEquals(
+            'index.php?option=com_osdownloads&view=categories&id=12',
+            $route
+        );
+    }
+
+    /**
+     * Try to get the file list route.
+     */
+    public function getCategoryListRoute(UnitTester $I)
+    {
+        $route = $this->helper->getCategoryListRoute();
+
+        $I->assertEquals(
+            'index.php?option=com_osdownloads&view=categories',
             $route
         );
     }

@@ -21,7 +21,6 @@
         <filename>controller.php</filename>
         <filename>osdownloads.php</filename>
         <filename>router.php</filename>
-        <filename>sef_ext.php</filename>
     </files>
 
     <media destination="com_osdownloads" folder="media">
@@ -151,6 +150,7 @@
             <file>language/fr-FR/fr-FR.com_osdownloads.sys.ini</file>
             <file>media/com_osdownloads/css/frontend.min.css</file>
             <file>media/com_osdownloads/js/jquery.osdownloads.min.js</file>
+            <file>components/com_osdownloads/sef_ext.php</file>
         </obsolete>
     </alledia>
 </extension>

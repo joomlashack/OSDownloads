@@ -478,6 +478,32 @@ class OsdownloadsRouter extends RouterBase
                     $path = implode('/', $tmpSegments);
                     $file = $this->container->helperSEF->getFileFromAlias($lastSegment, $path);
 
+                    if (empty($file)) {
+                        // Try to detect menu to complete the path
+                        $menu = $this->container->app->getMenu()->getActive();
+
+                        if ('com_osdownloads' === $menu->query['option']) {
+                            if (in_array($menu->query['view'], array('downloads', 'categories'))) {
+                                // Complete the path using the path from the menu
+                                $category = $this->container->helperSEF->getCategory($menu->query['id']);
+                                $tmpPath = $category->path;
+
+                                if (!empty($tmpSegments)) {
+                                    $tmpPath .= '/' . implode($tmpSegments);
+                                }
+
+                                // Try to get the file with the new path
+                                $file = $this->container->helperSEF->getFileFromAlias($lastSegment, $tmpPath);
+
+                                if (!empty($file)) {
+                                    // We found a file
+                                    $vars['id'] = $file->id;
+                                }
+                            }
+                        }
+
+                    }
+
                     if (!is_object($file)) {
                         JError::raiseError(404, JText::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'));
                     }
@@ -525,14 +551,14 @@ class OsdownloadsRouter extends RouterBase
                             $tmpPath .= '/' . implode($segments);
                         }
 
-                        // Try to get the file with the new path
+                        // Try to get the category with the new path
                         $category = $this->container->helperSEF->getCategoryFromAlias(
                             end($segments),
                             $tmpPath
                         );
 
                         if (!empty($category)) {
-                            // We found a file
+                            // We found a category
                             $vars['id'] = $category->id;
                         }
                     }

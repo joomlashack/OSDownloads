@@ -81,7 +81,7 @@ class SEF
      * @param int    $categoryId
      * @param string $categorySegmentToSkip
      */
-    public function buildCategoriesPath(&$categories, $categoryId, $categorySegmentToSkip = null)
+    public function buildCategoriesPath($categories, $categoryId, $categorySegmentToSkip = null)
     {
         if (empty($categoryId)) {
             return;
@@ -94,13 +94,15 @@ class SEF
             $categoriesToSkip = explode('/', $categorySegmentToSkip);
         }
 
-        if (!empty($category) && $category->alias !== 'root' && ! in_array($category->alias, $categoriesToSkip)) {
+        if (is_object($category) && $category->alias !== 'root' && ! in_array($category->alias, $categoriesToSkip)) {
             $categories[] = $category->alias;
         }
 
-        if (!empty($category) && $category->parent_id) {
-            $this->buildCategoriesPath($categories, $category->parent_id);
+        if (is_object($category) && $category->parent_id) {
+            $categories = $this->buildCategoriesPath($categories, $category->parent_id, $categorySegmentToSkip);
         }
+
+        return $categories;
     }
 
     /**
@@ -116,9 +118,7 @@ class SEF
     public function appendCategoriesToSegments($segments, $categoryId, $categorySegmentToSkip = null)
     {
         // Append the categories before the alias of the file
-        $categories = array();
-
-        $this->buildCategoriesPath($categories, $categoryId, $categorySegmentToSkip);
+        $categories = $this->buildCategoriesPath(array(), $categoryId, $categorySegmentToSkip);
 
         for ($i = count($categories) - 1; $i >= 0; $i--) {
             $segments[] = $categories[$i];
@@ -281,14 +281,13 @@ class SEF
     }
 
     /**
-     * Returns the category as object based on the alias.
+     * Returns the list of categories based on the alias.
      *
      * @param string $alias
-     * @param string $path
      *
-     * @return stdClass
+     * @return object[]
      */
-    public function getCategoryFromAlias($alias, $path = null)
+    public function getCategoriesFromAlias($alias)
     {
         $db = JFactory::getDBO();
 
@@ -302,7 +301,20 @@ class SEF
                 )
             );
 
-        $categories = $db->setQuery($query)->loadObjectList();
+        return $db->setQuery($query)->loadObjectList();
+    }
+
+    /**
+     * Returns the category as object based on the alias.
+     *
+     * @param string $alias
+     * @param string $path
+     *
+     * @return stdClass
+     */
+    public function getCategoryFromAlias($alias, $path = null)
+    {
+        $categories = $this->getCategoriesFromAlias($alias);
 
         if (empty($categories)) {
             JLog::add(
@@ -420,11 +432,11 @@ class SEF
      */
     public function getMenuItemForListOfFiles($categoryId)
     {
-        $menus = $this->getMenuItems();
+        if (!empty(static::$menuItemsById)) {
+            foreach (static::$menuItemsById as $menu) {
+                $link = $this->container->helperRoute->getFileListRoute($categoryId);
 
-        if (!empty($menus) && !empty($menus['downloads'])) {
-            foreach ($menus['downloads'] as $menu) {
-                if ($menu->link === $this->container->helperRoute->getFileListRoute($categoryId)) {
+                if ('downloads' === $menu->query['view'] && $menu->link === $link) {
                     return $menu;
                 }
             }

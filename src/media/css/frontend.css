@@ -118,42 +118,44 @@ a.modosdownloadsDownloadButton:active {
 =            COLUMNS            =
 ===============================*/
 
-.osdownloads-container .category_filter.columns-2 div.column,
-.osdownloads-container .category_filter.columns-3 div.column,
-.osdownloads-container .category_filter.columns-4 div.column,
-.osdownloads-container .category_filter.columns-5 div.column,
-.osdownloads-container .category_filter.columns-6 div.column,
-.osdownloads-container .category_filter.columns-7 div.column,
-.osdownloads-container .category_filter.columns-8 div.column {
+.osdownloads-container .columns-2 div.column,
+.osdownloads-container .columns-3 div.column,
+.osdownloads-container .columns-4 div.column,
+.osdownloads-container .columns-5 div.column,
+.osdownloads-container .columns-6 div.column,
+.osdownloads-container .columns-7 div.column,
+.osdownloads-container .columns-8 div.column {
     display: block;
     float: left;
+    padding-right: 10px;
+    box-sizing: border-box;
 }
 
-.osdownloads-container .category_filter.columns-2 div.column {
+.osdownloads-container .columns-2 div.column {
     width: 50%;
 }
 
-.osdownloads-container .category_filter.columns-3 div.column {
+.osdownloads-container .columns-3 div.column {
     width: 33.3333%;
 }
 
-.osdownloads-container .category_filter.columns-4 div.column {
+.osdownloads-container .columns-4 div.column {
     width: 25%;
 }
 
-.osdownloads-container .category_filter.columns-5 div.column {
+.osdownloads-container .columns-5 div.column {
     width: 20%;
 }
 
-.osdownloads-container .category_filter.columns-6 div.column {
+.osdownloads-container .columns-6 div.column {
     width: 16.6666666667%;
 }
 
-.osdownloads-container .category_filter.columns-7 div.column {
+.osdownloads-container .columns-7 div.column {
     width: 14.2857142857%;
 }
 
-.osdownloads-container .category_filter.columns-8 div.column {
+.osdownloads-container .columns-8 div.column {
     width: 12.5%;
 }
 

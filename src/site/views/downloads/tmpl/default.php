@@ -56,69 +56,82 @@ JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundl
         <?php endif; ?>
 
         <?php if (!empty($this->items)) : ?>
-            <?php foreach ($this->items as $file) : ?>
-                <?php
-                $requireEmail = $file->require_user_email;
-                $requireAgree = (bool) $file->require_agree;
-                $requireShare = (bool) @$file->require_share;
+            <div class="items columns-<?php echo $numberOfColumns; ?>">
+                <?php foreach ($this->items as $file) : ?>
+                    <div class="column column-<?php echo $i % $numberOfColumns; ?> item<?php echo($i % $numberOfColumns);?> file_<?php echo($file->id);?>">
+                        <?php
+                        $requireEmail = $file->require_user_email;
+                        $requireAgree = (bool) $file->require_agree;
+                        $requireShare = (bool) @$file->require_share;
 
-                if (!$showModal) {
-                    $showModal = $requireEmail || $requireAgree || $requireShare;
-                }
+                        if (!$showModal) {
+                            $showModal = $requireEmail || $requireAgree || $requireShare;
+                        }
 
-                ?>
-                <?php if (in_array($file->access, $authorizedAccessLevels)) : ?>
-                    <div class="item_<?php echo $file->id;?>">
-                        <h3><a href="<?php echo JRoute::_($container->helperRoute->getViewItemRoute($file->id, $itemId));?>"><?php echo($file->name);?></a></h3>
-                        <div class="item_content"><?php echo($file->brief);?></div>
+                        ?>
+                        <?php if (in_array($file->access, $authorizedAccessLevels)) : ?>
+                            <div class="item_<?php echo $file->id;?>">
+                                <h3><a href="<?php echo JRoute::_($container->helperRoute->getViewItemRoute($file->id, $itemId));?>"><?php echo($file->name);?></a></h3>
+                                <div class="item_content"><?php echo($file->brief);?></div>
 
-                        <?php if ($this->params->get('show_download_button', 0)) : ?>
-                            <div class="osdownloadsactions">
-                                <div class="btn_download">
-                                    <?php
-                                    $fileURL = JRoute::_($container->helperRoute->getViewItemRoute($file->id, $itemId));
-                                    $link    = JRoute::_($container->helperRoute->getFileDownloadContentRoute($file->id, $itemId));
-                                    ?>
-                                    <a
-                                        href="<?php echo $link; ?>"
-                                        class="osdownloadsDownloadButton"
-                                        style="background:<?php echo $file->download_color;?>"
-                                        data-direct-page="<?php echo $file->direct_page; ?>"
-                                        data-require-email="<?php echo $requireEmail; ?>"
-                                        data-require-agree="<?php echo $requireAgree ? 1 : 0; ?>"
-                                        data-require-share="<?php echo $requireShare ? 1 : 0; ?>"
-                                        data-id="<?php echo $file->id; ?>"
-                                        data-url="<?php echo $fileURL; ?>"
-                                        data-lang="<?php echo $lang->getTag(); ?>"
-                                        data-name="<?php echo $file->name; ?>"
-                                        data-agreement-article="<?php echo $file->agreementLink; ?>"
-                                        <?php if ($this->isPro) : ?>
-                                            data-hashtags="<?php echo str_replace('#', '', @$file->twitter_hashtags); ?>"
-                                            data-via="<?php echo str_replace('@', '', @$file->twitter_via); ?>"
-                                        <?php endif; ?>
-                                        >
-                                        <span>
-                                            <?php echo $this->params->get('link_label', JText::_('COM_OSDOWNLOADS_DOWNLOAD')); ?>
-                                        </span>
-                                    </a>
-                                </div>
+                                <?php if ($this->params->get('show_download_button', 0)) : ?>
+                                    <div class="osdownloadsactions">
+                                        <div class="btn_download">
+                                            <?php
+                                            $fileURL = JRoute::_($container->helperRoute->getViewItemRoute($file->id, $itemId));
+                                            $link    = JRoute::_($container->helperRoute->getFileDownloadContentRoute($file->id, $itemId));
+                                            ?>
+                                            <a
+                                                href="<?php echo $link; ?>"
+                                                class="osdownloadsDownloadButton"
+                                                style="background:<?php echo $file->download_color;?>"
+                                                data-direct-page="<?php echo $file->direct_page; ?>"
+                                                data-require-email="<?php echo $requireEmail; ?>"
+                                                data-require-agree="<?php echo $requireAgree ? 1 : 0; ?>"
+                                                data-require-share="<?php echo $requireShare ? 1 : 0; ?>"
+                                                data-id="<?php echo $file->id; ?>"
+                                                data-url="<?php echo $fileURL; ?>"
+                                                data-lang="<?php echo $lang->getTag(); ?>"
+                                                data-name="<?php echo $file->name; ?>"
+                                                data-agreement-article="<?php echo $file->agreementLink; ?>"
+                                                <?php if ($this->isPro) : ?>
+                                                    data-hashtags="<?php echo str_replace('#', '', @$file->twitter_hashtags); ?>"
+                                                    data-via="<?php echo str_replace('@', '', @$file->twitter_via); ?>"
+                                                <?php endif; ?>
+                                                >
+                                                <span>
+                                                    <?php echo $this->params->get('link_label', JText::_('COM_OSDOWNLOADS_DOWNLOAD')); ?>
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+
+                                <?php if ($this->params->get('show_readmore_button', 1)) : ?>
+                                    <div class="osdownloads-readmore-wrapper readmore_wrapper">
+                                        <div class="osdownloads-readmore readmore">
+                                            <a href="<?php echo JRoute::_($container->helperRoute->getViewItemRoute($file->id, $itemId));?>">
+                                                <?php echo(JText::_("COM_OSDOWNLOADS_READ_MORE"));?>
+                                            </a>
+                                        </div>
+                                        <div class="clr"></div>
+                                    </div>
+                                <?php endif; ?>
+
+                                <?php if ($numberOfColumns == 1) : ?>
+                                    <div class="seperator"></div>
+                                <?php endif; ?>
+
                             </div>
                         <?php endif; ?>
-
-                        <?php if ($this->params->get('show_readmore_button', 1)) : ?>
-                            <div class="osdownloads-readmore-wrapper readmore_wrapper">
-                                <div class="osdownloads-readmore readmore">
-                                    <a href="<?php echo JRoute::_($container->helperRoute->getViewItemRoute($file->id, $itemId));?>">
-                                        <?php echo(JText::_("COM_OSDOWNLOADS_READ_MORE"));?>
-                                    </a>
-                                </div>
-                                <div class="clr"></div>
-                            </div>
-                        <?php endif; ?>
-                        <div class="seperator"></div>
                     </div>
-                <?php endif; ?>
-            <?php endforeach;?>
+
+                    <?php if ($numberOfColumns && $i % $numberOfColumns == $numberOfColumns - 1) : ?>
+                        <div class="seperator"></div>
+                        <div class="clr"></div>
+                    <?php endif;?>
+                <?php endforeach;?>
+            </div>
         <?php else : ?>
             <div class="osd-alert">
                 <?php echo JText::_('COM_OSDOWNLOADS_NO_DOWNLOADS'); ?>

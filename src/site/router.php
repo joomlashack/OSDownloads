@@ -584,6 +584,26 @@ class OsdownloadsRouter extends RouterBase
         $path = implode('/', $tmpSegments);
         $file = $this->container->helperSEF->getFileFromAlias($lastSegment, $path);
 
+        if (empty($file)) {
+            // If no file was found, we try to complete the path based on the menu
+            $menu = $this->container->app->getMenu()->getActive();
+
+            if ('com_osdownloads' === $menu->query['option']) {
+                if (in_array($menu->query['view'], array('downloads', 'categories'))) {
+                    // Complete the path using the path from the menu
+                    $category = $this->container->helperSEF->getCategory($menu->query['id']);
+                    $tmpPath = $category->path;
+
+                    if (!empty($tmpSegments)) {
+                        $tmpPath .= '/' . implode($tmpSegments);
+                    }
+
+                    // Try to get the file with the new path
+                    $file = $this->container->helperSEF->getFileFromAlias($lastSegment, $tmpPath);
+                }
+            }
+        }
+
         if (!empty($file)) {
             /*
              * Cool, we found a file

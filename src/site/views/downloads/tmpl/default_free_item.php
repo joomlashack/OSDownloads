@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted access');
 
 <div class="item_<?php echo $this->file->id; ?>">
     <h3>
-        <a href="<?php echo JRoute::_($container->helperRoute->getViewItemRoute($this->file->id, $this->itemId)); ?>">
+        <a href="<?php echo JRoute::_($this->container->helperRoute->getViewItemRoute($this->file->id, $this->itemId)); ?>">
             <?php echo $this->file->name; ?>
         </a>
     </h3>
@@ -21,8 +21,8 @@ defined('_JEXEC') or die('Restricted access');
         <div class="osdownloadsactions">
             <div class="btn_download">
                 <?php
-                $fileURL = JRoute::_($container->helperRoute->getViewItemRoute($this->file->id, $this->itemId));
-                $link    = JRoute::_($container->helperRoute->getFileDownloadContentRoute($this->file->id, $this->itemId));
+                $fileURL = JRoute::_($this->container->helperRoute->getViewItemRoute($this->file->id, $this->itemId));
+                $link    = JRoute::_($this->container->helperRoute->getFileDownloadContentRoute($this->file->id, $this->itemId));
                 ?>
                 <a
                     href="<?php echo $link; ?>"
@@ -53,7 +53,7 @@ defined('_JEXEC') or die('Restricted access');
     <?php if ($this->params->get('show_readmore_button', 1)) : ?>
         <div class="osdownloads-readmore-wrapper readmore_wrapper">
             <div class="osdownloads-readmore readmore">
-                <a href="<?php echo JRoute::_($container->helperRoute->getViewItemRoute($this->file->id, $this->itemId)); ?>">
+                <a href="<?php echo JRoute::_($this->container->helperRoute->getViewItemRoute($this->file->id, $this->itemId)); ?>">
                     <?php echo JText::_("COM_OSDOWNLOADS_READ_MORE"); ?>
                 </a>
             </div>

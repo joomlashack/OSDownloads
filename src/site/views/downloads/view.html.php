@@ -64,6 +64,7 @@ class OSDownloadsViewDownloads extends View\Site\Base
         $extension->loadLibrary();
 
         $id = $app->input->getInt('id', 1);
+
         // If empty, we assume id = 1 to hit the Root category
         if (empty($id)) {
             $id = 1;
@@ -73,7 +74,17 @@ class OSDownloadsViewDownloads extends View\Site\Base
         $query = $model->getItemQuery();
 
         $query->select('cat.access as cat_access');
-        $query->where('cate_id = ' . $db->quote($id));
+
+        $where = array(
+            sprintf('cate_id = %s', $db->quote($id))
+        );
+
+        if ($includeChildFiles) {
+            $where[] = sprintf('cat.parent_id = %s', $db->quote($id));
+        }
+
+
+        $query->where(sprintf('(%s)', join(' OR ', $where)));
 
         /*----------  Pagination  ----------*/
 
@@ -142,6 +153,7 @@ class OSDownloadsViewDownloads extends View\Site\Base
         $this->items              = $items;
         $this->pagination         = $pagination;
         $this->isPro              = $extension->isPro();
+
         /**
          * Temporary backward compatibility for user's template overrides.
          *

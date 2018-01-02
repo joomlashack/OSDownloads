@@ -2,12 +2,12 @@
 <extension version="3.7" type="component" method="upgrade">
     <name>com_osdownloads</name>
     <author>Joomlashack</author>
-    <creationDate>December 21 2017</creationDate>
+    <creationDate>January 02 2018</creationDate>
     <copyright>Copyright (C) 2016 Open Source Training, LLC</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>help@joomlashack.com</authorEmail>
     <authorUrl>https://www.joomlashack.com</authorUrl>
-    <version>1.8.0b3</version>
+    <version>1.8.0</version>
     <variant>FREE</variant>
     <description>COM_OSDOWNLOADS_DESCRIPTION</description>
 

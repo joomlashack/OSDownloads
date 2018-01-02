@@ -5,132 +5,87 @@
  * @copyright 2016-2017 Open Source Training, LLC. All rights reserved
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 use Alledia\Framework\Helper as AllediaHelper;
 use Alledia\OSDownloads\Free\Factory;
+use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 
-$app                    = JFactory::getApplication();
-$lang                   = JFactory::getLanguage();
-$doc                    = JFactory::getDocument();
-$container              = Factory::getContainer();
-$numberOfColumns        = (int)$this->params->get("number_of_column", 1);
-$user                   = JFactory::getUser();
-$authorizedAccessLevels = $user->getAuthorisedViewLevels();
-$itemId                 = $app->input->getInt('Itemid');
-$id                     = $app->input->getInt('id');
-
-$showModal = false;
+$this->app                    = Factory::getApplication();
+$this->lang                   = Factory::getLanguage();
+$this->container              = Factory::getContainer();
+$this->params                 = $this->app->getParams();
+$this->numberOfColumns        = (int)$this->params->get("number_of_column", 1);
+$this->authorizedAccessLevels = Factory::getUser()->getAuthorisedViewLevels();
+$this->itemId                 = $this->app->input->getInt('Itemid');
+$this->id                     = $this->app->input->getInt('id');
+$this->showModal              = false;
+$this->isPro                  = FreeComponentSite::getInstance()->isPro();
 
 JHtml::_('jquery.framework');
 JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundle.min.js');
 
 ?>
-<form action="<?php echo(JRoute::_($container->helperRoute->getFileListRoute($id, $itemId)));?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_($this->container->helperRoute->getFileListRoute($this->id, $this->itemId)); ?>" method="post" name="adminForm" id="adminForm">
     <div class="contentopen osdownloads-container">
         <?php if ($this->showCategoryFilter && !empty($this->categories)) : ?>
-            <div class="category_filter columns-<?php echo $numberOfColumns; ?>">
+            <div class="category_filter columns-<?php echo $this->numberOfColumns; ?>">
                 <?php
                 $i = 0;
                 foreach ($this->categories as $category) : ?>
-                    <?php if (in_array($category->access, $authorizedAccessLevels)) : ?>
-                        <div class="column column-<?php echo $i % $numberOfColumns; ?> item<?php echo($i % $numberOfColumns);?> cate_<?php echo($category->id);?>">
+                    <?php if (in_array($category->access, $this->authorizedAccessLevels)) : ?>
+                        <?php $column = $i % $this->numberOfColumns; ?>
+
+                        <div class="column column-<?php echo $column; ?> item<?php echo $column; ?> cate_<?php echo $category->id; ?>">
                             <h3>
-                                <a href="<?php echo(JRoute::_($container->helperRoute->getFileListRoute($category->id, $itemId)));?>">
-                                    <?php echo($category->title);?>
+                                <a href="<?php echo JRoute::_($this->container->helperRoute->getFileListRoute($category->id, $this->itemId)); ?>">
+                                    <?php echo $category->title; ?>
                                 </a>
                             </h3>
                             <div class="item_content">
-                                <?php echo($category->description);?>
+                                <?php echo $category->description; ?>
                             </div>
                         </div>
-                        <?php if ($numberOfColumns && $i % $numberOfColumns == $numberOfColumns - 1) : ?>
+                        <?php if ($this->numberOfColumns && $i % $this->numberOfColumns == $this->numberOfColumns - 1) : ?>
                             <div class="seperator"></div>
                             <div class="clr"></div>
-                        <?php endif;?>
-                        <?php $i++;?>
+                        <?php endif; ?>
+                        <?php $i++; ?>
                     <?php endif; ?>
-                <?php endforeach;?>
+                <?php endforeach; ?>
                 <div class="clr"></div>
             </div>
         <?php endif; ?>
 
         <?php if (!empty($this->items)) : ?>
-            <div class="items columns-<?php echo $numberOfColumns; ?>">
+            <div class="items columns-<?php echo $this->numberOfColumns; ?>">
                 <?php foreach ($this->items as $file) : ?>
-                    <div class="column column-<?php echo $i % $numberOfColumns; ?> item<?php echo($i % $numberOfColumns);?> file_<?php echo($file->id);?>">
-                        <?php
-                        $requireEmail = $file->require_user_email;
-                        $requireAgree = (bool) $file->require_agree;
-                        $requireShare = (bool) @$file->require_share;
+                    <?php
+                    $column = $i % $this->numberOfColumns;
+                    $this->file = $file;
+                    ?>
 
-                        if (!$showModal) {
-                            $showModal = $requireEmail || $requireAgree || $requireShare;
+                    <div class="column column-<?php echo $column; ?> item<?php echo $column; ?> file_<?php echo $this->file->id; ?>">
+                        <?php
+                        $this->requireEmail = $this->file->require_user_email;
+                        $this->requireAgree = (bool) $this->file->require_agree;
+                        $this->requireShare = (bool) @$this->file->require_share;
+
+                        if (!$this->showModal) {
+                            $this->showModal = $this->requireEmail || $this->requireAgree || $this->requireShare;
                         }
 
+                        if (in_array($this->file->access, $this->authorizedAccessLevels)) :
+                            echo $this->loadTemplate(($this->isPro ? 'pro' : 'free') . '_item');
+                        endif;
                         ?>
-                        <?php if (in_array($file->access, $authorizedAccessLevels)) : ?>
-                            <div class="item_<?php echo $file->id;?>">
-                                <h3><a href="<?php echo JRoute::_($container->helperRoute->getViewItemRoute($file->id, $itemId));?>"><?php echo($file->name);?></a></h3>
-                                <div class="item_content"><?php echo($file->brief);?></div>
-
-                                <?php if ($this->params->get('show_download_button', 0)) : ?>
-                                    <div class="osdownloadsactions">
-                                        <div class="btn_download">
-                                            <?php
-                                            $fileURL = JRoute::_($container->helperRoute->getViewItemRoute($file->id, $itemId));
-                                            $link    = JRoute::_($container->helperRoute->getFileDownloadContentRoute($file->id, $itemId));
-                                            ?>
-                                            <a
-                                                href="<?php echo $link; ?>"
-                                                class="osdownloadsDownloadButton"
-                                                style="background:<?php echo $file->download_color;?>"
-                                                data-direct-page="<?php echo $file->direct_page; ?>"
-                                                data-require-email="<?php echo $requireEmail; ?>"
-                                                data-require-agree="<?php echo $requireAgree ? 1 : 0; ?>"
-                                                data-require-share="<?php echo $requireShare ? 1 : 0; ?>"
-                                                data-id="<?php echo $file->id; ?>"
-                                                data-url="<?php echo $fileURL; ?>"
-                                                data-lang="<?php echo $lang->getTag(); ?>"
-                                                data-name="<?php echo $file->name; ?>"
-                                                data-agreement-article="<?php echo $file->agreementLink; ?>"
-                                                <?php if ($this->isPro) : ?>
-                                                    data-hashtags="<?php echo str_replace('#', '', @$file->twitter_hashtags); ?>"
-                                                    data-via="<?php echo str_replace('@', '', @$file->twitter_via); ?>"
-                                                <?php endif; ?>
-                                                >
-                                                <span>
-                                                    <?php echo $this->params->get('link_label', JText::_('COM_OSDOWNLOADS_DOWNLOAD')); ?>
-                                                </span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                <?php endif; ?>
-
-                                <?php if ($this->params->get('show_readmore_button', 1)) : ?>
-                                    <div class="osdownloads-readmore-wrapper readmore_wrapper">
-                                        <div class="osdownloads-readmore readmore">
-                                            <a href="<?php echo JRoute::_($container->helperRoute->getViewItemRoute($file->id, $itemId));?>">
-                                                <?php echo(JText::_("COM_OSDOWNLOADS_READ_MORE"));?>
-                                            </a>
-                                        </div>
-                                        <div class="clr"></div>
-                                    </div>
-                                <?php endif; ?>
-
-                                <?php if ($numberOfColumns == 1) : ?>
-                                    <div class="seperator"></div>
-                                <?php endif; ?>
-
-                            </div>
-                        <?php endif; ?>
                     </div>
 
-                    <?php if ($numberOfColumns && $i % $numberOfColumns == $numberOfColumns - 1) : ?>
+                    <?php if ($this->numberOfColumns && $i % $this->numberOfColumns == $this->numberOfColumns - 1) : ?>
                         <div class="seperator"></div>
                         <div class="clr"></div>
-                    <?php endif;?>
-                <?php endforeach;?>
+                    <?php endif; ?>
+                <?php endforeach; ?>
             </div>
         <?php else : ?>
             <div class="osd-alert">
@@ -164,7 +119,7 @@ JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundl
             <label for="osdownloadsRequireAgree">
                 <input type="checkbox" name="require_agree" id="osdownloadsRequireAgree" value="1" />
                 <span>
-                    * <?php echo(JText::_("COM_OSDOWNLOADS_DOWNLOAD_TERM"));?>
+                    * <?php echo JText::_("COM_OSDOWNLOADS_DOWNLOAD_TERM"); ?>
                 </span>
             </label>
 
@@ -212,4 +167,4 @@ JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundl
     })(jQuery);
     </script>
 
-<?php endif;?>
+<?php endif; ?>

@@ -60,6 +60,7 @@
         <files folder="admin">
             <folder>controllers</folder>
             <folder>helpers</folder>
+            <folder>form</folder>
             <folder>language</folder>
             <folder>library</folder>
             <folder>models</folder>

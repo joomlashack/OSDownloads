@@ -320,15 +320,14 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
     {
         require JPATH_SITE . '/administrator/components/com_osdownloads/include.php';
 
-        $db        = JFactory::getDbo();
-        $container = Factory::getContainer();
+        $db = JFactory::getDbo();
 
         $query = $db->getQuery(true)
             ->select('link')
             ->select('params')
             ->select('id')
             ->from('#__menu')
-            ->where('link = ' . $db->quote($container->helperRoute->getFileListRoute()));
+            ->where('link = ' . $db->quote('index.php?option=com_osdownloads&view=downloads'));
         $db->setQuery($query);
         $menus = $db->loadObjectList();
 

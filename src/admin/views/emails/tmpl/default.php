@@ -85,7 +85,7 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                 <th class="hidden-phone"><input type="checkbox" onclick="Joomla.checkAll(this)" title="check All"
                                                 value=""
                                                 name="checkall-toggle"/></th>
-                <th class="has-context span6"><?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_NAME', 'email.email',
+                <th class="has-context span6"><?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_EMAIL', 'email.email',
                         @$this->lists['order_Dir'], @$this->lists['order']); ?> </th>
                 <?php if ($this->isPro) : ?>
                     <?php echo $this->loadTemplate('pro_headers'); ?>

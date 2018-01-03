@@ -157,7 +157,7 @@ JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundl
     (function ($) {
 
         $(function osdownloadsDomReady() {
-            $('.osdownloads-container .osdownloadsDownloadButton').osdownloads({
+            $('.osdownloads-container .osdownloadsDownloadButton, .osdownloads-container .osdownloadsDownloadTitle').osdownloads({
                 animation: '<?php echo $this->params->get("popup_animation", "fade"); ?>',
                 elementsPrefix: 'osdownloads',
                 popupElementId: 'osdownloadsRequirementsPopup'

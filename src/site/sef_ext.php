@@ -448,6 +448,12 @@ class sef_osdownloads {
                 $vars['id'] = '0';
             }
 
+            // Detect Itemid
+            $menuItem = $this->container->helperSEF->getMenuItemByQuery($vars);
+            if (is_object($menuItem)) {
+                $vars['Itemid'] = $menuItem->id;
+            }
+
             return $this->getQuery($vars);
         }
 
@@ -489,6 +495,12 @@ class sef_osdownloads {
             $vars['view'] = 'item';
             $vars['id']   = $file->id;
 
+            // Detect Itemid
+            $menuItem = $this->container->helperSEF->getMenuItemByQuery($vars);
+            if (is_object($menuItem)) {
+                $vars['Itemid'] = $menuItem->id;
+            }
+
             return $this->getQuery($vars);
         }
 
@@ -506,6 +518,12 @@ class sef_osdownloads {
         if (is_object($category)) {
             $vars['view'] = 'categories';
             $vars['id']   = $category->id;
+
+            // Detect Itemid
+            $menuItem = $this->container->helperSEF->getMenuItemByQuery($vars);
+            if (is_object($menuItem)) {
+                $vars['Itemid'] = $menuItem->id;
+            }
 
             return $this->getQuery($vars);
         }

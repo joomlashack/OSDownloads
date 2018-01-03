@@ -70,9 +70,12 @@ class View
 
         // Check if the current file has a menu item
         $menu = $container->app->getMenu()->getActive();
-        if ('item' === $menu->query['view'] && $menu->query['id'] === $file->id) {
-            // Yes, so do nothing
-            return;
+
+        if (is_object($menu)) {
+            if ('item' === $menu->query['view'] && $menu->query['id'] === $file->id) {
+                // Yes, so do nothing
+                return;
+            }
         }
 
         $this->buildCategoryBreadcrumbs($file->cate_id);

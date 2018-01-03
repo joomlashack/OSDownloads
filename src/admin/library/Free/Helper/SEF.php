@@ -328,7 +328,7 @@ class SEF
         }
 
         // Do we have only one file?
-        if (count($categories) === 1 || empty($path)) {
+        if (count($categories) === 1 || (empty($path) && !empty($categories))) {
             return $categories[0];
         }
 

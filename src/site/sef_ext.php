@@ -419,29 +419,30 @@ class sef_osdownloads {
                 // Try to detect menu to complete the path
                 $menu = $this->container->app->getMenu()->getActive();
 
-                if ('com_osdownloads' === $menu->query['option']) {
-                    if (in_array($menu->query['view'], array('downloads', 'categories'))) {
-                        // Complete the path using the path from the menu
-                        $category = $this->container->helperSEF->getCategory($menu->query['id']);
-                        $tmpPath = $category->path;
+                if (is_object($menu)) {
+                    if ('com_osdownloads' === $menu->query['option']) {
+                        if (in_array($menu->query['view'], array('downloads', 'categories'))) {
+                            // Complete the path using the path from the menu
+                            $category = $this->container->helperSEF->getCategory($menu->query['id']);
+                            $tmpPath = $category->path;
 
-                        if (!empty($segments)) {
-                            $tmpPath .= '/' . implode($segments);
-                        }
+                            if (!empty($segments)) {
+                                $tmpPath .= '/' . implode($segments);
+                            }
 
-                        // Try to get the category with the new path
-                        $category = $this->container->helperSEF->getCategoryFromAlias(
-                            end($segments),
-                            $tmpPath
-                        );
+                            // Try to get the category with the new path
+                            $category = $this->container->helperSEF->getCategoryFromAlias(
+                                end($segments),
+                                $tmpPath
+                            );
 
-                        if (!empty($category)) {
-                            // We found a category
-                            $vars['id'] = $category->id;
+                            if (!empty($category)) {
+                                // We found a category
+                                $vars['id'] = $category->id;
+                            }
                         }
                     }
                 }
-
             }
 
             if (empty($segments)) {

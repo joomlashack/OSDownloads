@@ -59,7 +59,6 @@
 
         <files folder="admin">
             <folder>controllers</folder>
-            <folder>form</folder>
             <folder>helpers</folder>
             <folder>language</folder>
             <folder>library</folder>

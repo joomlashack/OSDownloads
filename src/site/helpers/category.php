@@ -25,8 +25,8 @@ class OsdownloadsCategories extends JCategories
 	 */
 	public function __construct($options = array())
 	{
-		$options['table'] = '#__osdownloads_documents';
-		$options['extension'] = 'com_osdownloads';
+		$options['table']      = '#__osdownloads_documents';
+		$options['extension']  = 'com_osdownloads';
 		$options['statefield'] = 'published';
 
 		parent::__construct($options);

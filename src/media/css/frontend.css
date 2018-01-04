@@ -308,3 +308,16 @@ Example markup
 #osdownloadsRequirementsPopup .fb-like-box iframe {
     width: 450px !important;
 }
+
+
+/* DOWNLOAD CUSTOM FIELDS */
+.osdownloads-container .tab-pane {
+    display: block !important;
+}
+
+.osdownloads-container .nav-tabs {
+    font-size: 15px;
+    font-weight: bold;
+    padding: 8px 0;
+}
+

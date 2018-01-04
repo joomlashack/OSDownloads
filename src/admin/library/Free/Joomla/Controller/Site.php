@@ -15,6 +15,7 @@ use Alledia\Framework\Joomla\Controller\Base as BaseController;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Alledia\OSDownloads\Free\Helper\Helper;
 
+
 class Site extends BaseController
 {
     public function display($cachable = false, $urlparams = false)
@@ -38,7 +39,7 @@ class Site extends BaseController
         $params           = $app->getParams('com_osdownloads');
         $mailchimpConnect = $params->get("connect_mailchimp", 0);
 
-        $email = trim($app->input->getString('email'));
+        $email = trim($app->input->getString('require_email'));
 
         // Must verify the e-mail before download?
         if ($item->require_user_email == 1 || ($item->require_user_email == 2 && $email != '')) {
@@ -79,7 +80,7 @@ class Site extends BaseController
         if ($item->require_agree == 1) {
             $app = \JFactory::getApplication();
 
-            $agree = $app->input->getInt('agree');
+            $agree = $app->input->getInt('require_agree');
 
             if ($agree != 1) {
                 $app->input->set('layout', 'error_invalid_data');

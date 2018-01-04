@@ -90,10 +90,10 @@
 
                 var showPopup = function (selector) {
                     $(selector).reveal({
-                         animation: options.animation,
-                         animationspeed: 200,
-                         closeonbackgroundclick: true,
-                         dismissmodalclass: 'close-reveal-modal',
+                        animation: options.animation,
+                        animationspeed: 200,
+                        closeonbackgroundclick: true,
+                        dismissmodalclass: 'close-reveal-modal',
                     });
                 };
 
@@ -118,14 +118,8 @@
                 var download = function () {
                     var url = $this.attr('href');
 
-                    if ($fieldEmail.length > 0) {
-                        url = addQueryVarToUri(url, 'email', encodeURIComponent($fieldEmail.val().trim()));
-                    }
-
-                    if ($fieldAgree.length > 0) {
-                        value = ($fieldAgree.is(':checked') ? 1 : 0);
-                        url = addQueryVarToUri(url, 'agree', value);
-                    }
+                    $form = $('#' + $this.data('form-id'))
+                        .attr('target', 'osdownloads-tmp-iframe-' + $this.data('form-id'));
 
                     // Create the popup element
                     $container = $('<div>')
@@ -133,7 +127,7 @@
                         .addClass('reveal-modal')
                         .addClass('osdownloads-modal');
 
-                    $iframe = $('<iframe>').attr('src', url);
+                    $iframe = $('<iframe>').attr('name', 'osdownloads-tmp-iframe-' + $this.data('form-id'));
                     $iframe.iframeAutoHeight({
                         heightOffset: 10
                     });
@@ -143,13 +137,15 @@
                     $close.appendTo($container);
                     $container.appendTo($('body'));
 
+                    // Submit the form
+                    $form.submit();
+
+                    // Close the requirements popup
                     $container.on('reveal:close', function() {
                         setTimeout(function timeoutRemoveIframePopup() {
                             $container.remove();
                         }, 500);
                     });
-
-                    // Close the requirements popup
                     $popup.trigger('reveal:close');
 
                     setTimeout(function timeoutShowPopup() {

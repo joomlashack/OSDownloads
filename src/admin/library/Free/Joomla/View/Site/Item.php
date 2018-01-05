@@ -31,12 +31,12 @@ class Item extends Base
     /**
      * @var object
      */
-    protected $item = null;
+    public $item = null;
 
     /**
      * @var int
      */
-    protected $itemId = null;
+    public $itemId = null;
 
     /**
      * @var object[]
@@ -46,12 +46,12 @@ class Item extends Base
     /**
      * @var Registry
      */
-    protected $params = null;
+    public $params = null;
 
     /**
      * @var bool
      */
-    protected $isPro = null;
+    public $isPro = null;
 
     /**
      * @var \OSDownloadsModelItem

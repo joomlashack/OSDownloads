@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Alledia Extension Builder" default="">
+
+    <!-- List of returned files after merging, separated by comma -->
+    <property name="merge-destinations" value="media/js/jquery.osdownloads.bundle.js" />
+
+    <!-- List of files to merge -->
+    <property name="merge-media/js/jquery.osdownloads.bundle.js" value="media/js/jquery.browser.js,media/js/jquery.iframe-auto-height.js,media/js/jquery.reveal.js,media/js/jquery.osdownloads.js" />
+
+    <!-- List of js files to minify -->
+    <property name="minify-js" value="media/js/jquery.osdownloads.bundle.js" />
+
     <if>
         <available file="./build.properties" type="file" />
         <then>

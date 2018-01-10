@@ -133,6 +133,15 @@
 
         </relatedExtensions>
 
+        <minify suffix=".min">
+            <scripts destination="media/js/jquery.osdownloads.bundle.js">
+                <script>media/js/jquery.browser.js</script>
+                <script>media/js/jquery.iframe-auto-height.js</script>
+                <script>media/js/jquery.reveal.js</script>
+                <script>media/js/jquery.osdownloads.js</script>
+            </scripts>
+        </minify>
+
         <obsolete>
             <file>administrator/components/com_osdownloads/views/file/tmpl/default.j2.php</file>
             <file>administrator/components/com_osdownloads/views/files/tmpl/default.j2.php</file>

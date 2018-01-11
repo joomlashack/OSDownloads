@@ -62,20 +62,20 @@ JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundl
                 <?php foreach ($this->items as $file) : ?>
                     <?php
                     $column = $i % $this->numberOfColumns;
-                    $this->file = $file;
+                    $this->item = $file;
                     ?>
 
-                    <div class="column column-<?php echo $column; ?> item<?php echo $column; ?> file_<?php echo $this->file->id; ?>">
+                    <div class="column column-<?php echo $column; ?> item<?php echo $column; ?> file_<?php echo $this->item->id; ?>">
                         <?php
-                        $this->requireEmail = $this->file->require_user_email;
-                        $this->requireAgree = (bool) $this->file->require_agree;
-                        $this->requireShare = (bool) @$this->file->require_share;
+                        $this->requireEmail = $this->item->require_user_email;
+                        $this->requireAgree = (bool) $this->item->require_agree;
+                        $this->requireShare = (bool) @$this->item->require_share;
 
                         if (!$this->showModal) {
                             $this->showModal = $this->requireEmail || $this->requireAgree || $this->requireShare;
                         }
 
-                        if (in_array($this->file->access, $this->authorizedAccessLevels)) :
+                        if (in_array($this->item->access, $this->authorizedAccessLevels)) :
                             echo $this->loadTemplate(($this->isPro ? 'pro' : 'free') . '_item');
                         endif;
                         ?>
@@ -99,72 +99,3 @@ JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundl
     </div>
 
 </form>
-
-<?php if ($this->params->get('show_download_button', 1)) : ?>
-    <div id="osdownloadsRequirementsPopup" class="reveal-modal osdownloads-modal <?php echo AllediaHelper::getJoomlaVersionCssClass(); ?>">
-        <h2 class="title"><?php echo JText::_('COM_OSDOWNLOADS_BEFORE_DOWNLOAD'); ?></h2>
-
-        <div id="osdownloadsEmailGroup" class="osdownloadsemail" style="display: none;">
-
-            <label for="osdownloadsRequireEmail">
-                <input type="email" aria-required="true" required name="require_email" id="osdownloadsRequireEmail" placeholder="<?php echo JText::_("COM_OSDOWNLOADS_ENTER_EMAIL_ADDRESS"); ?>" />
-            </label>
-
-            <div class="error" style="display: none;" id="osdownloadsErrorInvalidEmail">
-                <?php echo JText::_("COM_OSDOWNLOADS_INVALID_EMAIL"); ?>
-            </div>
-        </div>
-
-        <div id="osdownloadsAgreeGroup" class="osdownloadsagree" style="display: none;">
-            <label for="osdownloadsRequireAgree">
-                <input type="checkbox" name="require_agree" id="osdownloadsRequireAgree" value="1" />
-                <span>
-                    * <?php echo JText::_("COM_OSDOWNLOADS_DOWNLOAD_TERM"); ?>
-                </span>
-            </label>
-
-            <div class="error" style="display: none;" id="osdownloadsErrorAgreeTerms">
-                <?php echo JText::_("COM_OSDOWNLOADS_YOU_HAVE_AGREE_TERMS_TO_DOWNLOAD_THIS"); ?>
-            </div>
-        </div>
-
-        <?php if ($this->isPro) : ?>
-            <div id="osdownloadsShareGroup" class="osdownloadsshare" style="display: none;">
-                <!-- Facebook -->
-                <div id="fb-root"></div>
-
-                <p id="osdownloadsRequiredShareMessage" style="display: none;">
-                    <?php echo JText::_('COM_OSDOWNLOADS_YOU_MUST_TWEET_SHARE_FACEBOOK'); ?>
-                </p>
-
-                <div class="error" style="display: none;" id="osdownloadsErrorShare">
-                    <?php echo JText::_("COM_OSDOWNLOADS_SHARE_TO_DOWNLOAD_THIS"); ?>
-                </div>
-            </div>
-
-        <?php endif; ?>
-
-        <a href="#"  id="osdownloadsDownloadContinue" class="osdownloads-readmore readmore">
-            <span>
-                <?php echo JText::_("COM_OSDOWNLOADS_CONTINUE"); ?>
-            </span>
-        </a>
-
-        <a class="close-reveal-modal">&#215;</a>
-    </div>
-
-    <script>
-    (function ($) {
-
-        $(function osdownloadsDomReady() {
-            $('.osdownloads-container .osdownloadsDownloadButton, .osdownloads-container .osdownloadsDownloadTitle').osdownloads({
-                animation: '<?php echo $this->params->get("popup_animation", "fade"); ?>',
-                elementsPrefix: 'osdownloads',
-                popupElementId: 'osdownloadsRequirementsPopup'
-            });
-        });
-
-    })(jQuery);
-    </script>
-
-<?php endif; ?>

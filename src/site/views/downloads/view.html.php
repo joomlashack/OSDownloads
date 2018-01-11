@@ -44,12 +44,12 @@ class OSDownloadsViewDownloads extends View\Site\Base
     /**
      * @var \Joomla\Registry\Registry
      */
-    protected $params = null;
+    public $params = null;
 
     /**
      * @var bool
      */
-    protected $isPro = null;
+    public $isPro = null;
 
     public function display($tpl = null)
     {

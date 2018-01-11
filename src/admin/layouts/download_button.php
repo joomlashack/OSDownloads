@@ -121,6 +121,14 @@ $container = Factory::getContainer();
 
         <a class="close-reveal-modal">&#215;</a>
     </div>
+<?php else: ?>
+    <form
+        action="<?php echo JRoute::_($container->helperRoute->getFileDownloadContentRoute($displayData->item->id, $displayData->itemId)); ?>"
+        id="osdownloadsDownloadFieldsForm<?php echo $displayData->item->id; ?>"
+        name="osdownloadsDownloadFieldsForm<?php echo $displayData->item->id; ?>"
+        method="post" >
+
+    </form>
 <?php endif; ?>
 
 <script>

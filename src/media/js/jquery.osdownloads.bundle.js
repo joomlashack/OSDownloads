@@ -495,7 +495,12 @@
                     });
 
                     // Force to show the first tab of custom fields, if exists
-                    $('.osdownloads-custom-fields-container ul.nav li').first().find('a').trigger('click');
+                    window.setTimeout(
+                        function () {
+                            $('.osdownloads-custom-fields-container ul.nav li').first().find('a').trigger('click');
+                        },
+                        300
+                    );
                 };
 
                 var goToDirectPage = function () {

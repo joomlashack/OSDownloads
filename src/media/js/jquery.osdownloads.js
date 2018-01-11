@@ -95,6 +95,9 @@
                         closeonbackgroundclick: true,
                         dismissmodalclass: 'close-reveal-modal',
                     });
+
+                    // Force to show the first tab of custom fields, if exists
+                    $('.osdownloads-custom-fields-container ul.nav li').first().find('a').trigger('click');
                 };
 
                 var goToDirectPage = function () {

@@ -26,76 +26,74 @@ JHtml::_('jquery.framework');
 JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundle.min.js');
 
 ?>
-<form action="<?php echo JRoute::_($this->container->helperRoute->getFileListRoute($this->id, $this->itemId)); ?>" method="post" name="adminForm" id="adminForm">
-    <div class="contentopen osdownloads-container">
-        <?php if ($this->showCategoryFilter && !empty($this->categories)) : ?>
-            <div class="category_filter columns-<?php echo $this->numberOfColumns; ?>">
-                <?php
-                $i = 0;
-                foreach ($this->categories as $category) : ?>
-                    <?php if (in_array($category->access, $this->authorizedAccessLevels)) : ?>
-                        <?php $column = $i % $this->numberOfColumns; ?>
 
-                        <div class="column column-<?php echo $column; ?> item<?php echo $column; ?> cate_<?php echo $category->id; ?>">
-                            <h3>
-                                <a href="<?php echo JRoute::_($this->container->helperRoute->getFileListRoute($category->id, $this->itemId)); ?>">
-                                    <?php echo $category->title; ?>
-                                </a>
-                            </h3>
-                            <div class="item_content">
-                                <?php echo $category->description; ?>
-                            </div>
+<div class="contentopen osdownloads-container">
+    <?php if ($this->showCategoryFilter && !empty($this->categories)) : ?>
+        <div class="category_filter columns-<?php echo $this->numberOfColumns; ?>">
+            <?php
+            $i = 0;
+            foreach ($this->categories as $category) : ?>
+                <?php if (in_array($category->access, $this->authorizedAccessLevels)) : ?>
+                    <?php $column = $i % $this->numberOfColumns; ?>
+
+                    <div class="column column-<?php echo $column; ?> item<?php echo $column; ?> cate_<?php echo $category->id; ?>">
+                        <h3>
+                            <a href="<?php echo JRoute::_($this->container->helperRoute->getFileListRoute($category->id, $this->itemId)); ?>">
+                                <?php echo $category->title; ?>
+                            </a>
+                        </h3>
+                        <div class="item_content">
+                            <?php echo $category->description; ?>
                         </div>
-                        <?php if ($this->numberOfColumns && $i % $this->numberOfColumns == $this->numberOfColumns - 1) : ?>
-                            <div class="seperator"></div>
-                            <div class="clr"></div>
-                        <?php endif; ?>
-                        <?php $i++; ?>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-                <div class="clr"></div>
-            </div>
-        <?php endif; ?>
-
-        <?php if (!empty($this->items)) : ?>
-            <div class="items columns-<?php echo $this->numberOfColumns; ?>">
-                <?php foreach ($this->items as $file) : ?>
-                    <?php
-                    $column = $i % $this->numberOfColumns;
-                    $this->item = $file;
-                    ?>
-
-                    <div class="column column-<?php echo $column; ?> item<?php echo $column; ?> file_<?php echo $this->item->id; ?>">
-                        <?php
-                        $this->requireEmail = $this->item->require_user_email;
-                        $this->requireAgree = (bool) $this->item->require_agree;
-                        $this->requireShare = (bool) @$this->item->require_share;
-
-                        if (!$this->showModal) {
-                            $this->showModal = $this->requireEmail || $this->requireAgree || $this->requireShare;
-                        }
-
-                        if (in_array($this->item->access, $this->authorizedAccessLevels)) :
-                            echo $this->loadTemplate(($this->isPro ? 'pro' : 'free') . '_item');
-                        endif;
-                        ?>
                     </div>
-
                     <?php if ($this->numberOfColumns && $i % $this->numberOfColumns == $this->numberOfColumns - 1) : ?>
                         <div class="seperator"></div>
                         <div class="clr"></div>
                     <?php endif; ?>
-                <?php endforeach; ?>
-            </div>
-        <?php else : ?>
-            <div class="osd-alert">
-                <?php echo JText::_('COM_OSDOWNLOADS_NO_DOWNLOADS'); ?>
-            </div>
-        <?php endif; ?>
+                    <?php $i++; ?>
+                <?php endif; ?>
+            <?php endforeach; ?>
+            <div class="clr"></div>
+        </div>
+    <?php endif; ?>
 
-        <div class="clr"></div>
-        <div class="osdownloads-pages-counter"><?php echo $this->pagination->getPagesCounter(); ?></div>
-        <div class="osdownloads-pagination"><?php echo $this->pagination->getPagesLinks(); ?></div>
-    </div>
+    <?php if (!empty($this->items)) : ?>
+        <div class="items columns-<?php echo $this->numberOfColumns; ?>">
+            <?php foreach ($this->items as $file) : ?>
+                <?php
+                $column = $i % $this->numberOfColumns;
+                $this->item = $file;
+                ?>
 
-</form>
+                <div class="column column-<?php echo $column; ?> item<?php echo $column; ?> file_<?php echo $this->item->id; ?>">
+                    <?php
+                    $this->requireEmail = $this->item->require_user_email;
+                    $this->requireAgree = (bool) $this->item->require_agree;
+                    $this->requireShare = (bool) @$this->item->require_share;
+
+                    if (!$this->showModal) {
+                        $this->showModal = $this->requireEmail || $this->requireAgree || $this->requireShare;
+                    }
+
+                    if (in_array($this->item->access, $this->authorizedAccessLevels)) :
+                        echo $this->loadTemplate(($this->isPro ? 'pro' : 'free') . '_item');
+                    endif;
+                    ?>
+                </div>
+
+                <?php if ($this->numberOfColumns && $i % $this->numberOfColumns == $this->numberOfColumns - 1) : ?>
+                    <div class="seperator"></div>
+                    <div class="clr"></div>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </div>
+    <?php else : ?>
+        <div class="osd-alert">
+            <?php echo JText::_('COM_OSDOWNLOADS_NO_DOWNLOADS'); ?>
+        </div>
+    <?php endif; ?>
+
+    <div class="clr"></div>
+    <div class="osdownloads-pages-counter"><?php echo $this->pagination->getPagesCounter(); ?></div>
+    <div class="osdownloads-pagination"><?php echo $this->pagination->getPagesLinks(); ?></div>
+</div>

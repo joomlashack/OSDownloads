@@ -23,6 +23,14 @@
 
 defined('_JEXEC') or die();
 
-class OsdownloadsModelEmails extends JModelList
-{
+if (class_exists('Alledia\\OSDownloads\\Pro\\Joomla\\Model\\Emails')) {
+    class OsdownloadsModelEmails extends Alledia\OSDownloads\Pro\Joomla\Model\Emails
+    {
+
+    }
+} else {
+    class OsdownloadsModelEmails extends Alledia\OSDownloads\Free\Joomla\Model\Emails
+    {
+
+    }
 }

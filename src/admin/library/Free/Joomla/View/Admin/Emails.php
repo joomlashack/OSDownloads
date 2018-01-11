@@ -102,6 +102,8 @@ class Emails extends LegacyView
             ->leftJoin("#__osdownloads_documents doc ON (email.document_id = doc.id)")
             ->leftJoin("#__categories cat ON (cat.id = doc.cate_id)");
 
+        $this->buildQuery($query);
+
         if ($this->flt->search) {
             $query->where("email.email LIKE '%{$this->flt->search}%' OR doc.name LIKE '%{$this->flt->search}%'");
         }
@@ -147,5 +149,10 @@ class Emails extends LegacyView
         JToolBarHelper::deleteList('Are you sure?', 'emails.delete');
         JToolBarHelper::divider();
         JToolBarHelper::preferences('com_osdownloads', '450');
+    }
+
+    protected function buildQuery(&$query)
+    {
+
     }
 }

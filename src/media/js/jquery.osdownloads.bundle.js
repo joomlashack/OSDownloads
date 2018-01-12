@@ -550,36 +550,39 @@
                     $form = $('#' + $this.data('form-id'))
                         .attr('target', 'osdownloads-tmp-iframe-' + $this.data('form-id'));
 
-                    // Create the popup element
-                    $container = $('<div>')
-                        .attr('id', options.elementsPrefix + 'PopupIframe')
-                        .addClass('reveal-modal')
-                        .addClass('osdownloads-modal');
+                    // Validate the form for custom fields before submitting
+                    if (document.formvalidator.isValid($form[0])) {
+                        // Create the popup element
+                        $container = $('<div>')
+                            .attr('id', options.elementsPrefix + 'PopupIframe')
+                            .addClass('reveal-modal')
+                            .addClass('osdownloads-modal');
 
-                    $iframe = $('<iframe>').attr('name', 'osdownloads-tmp-iframe-' + $this.data('form-id'));
-                    $iframe.iframeAutoHeight({
-                        heightOffset: 10
-                    });
-                    $close = $('<a class="close-reveal-modal">&#215;</a>');
+                        $iframe = $('<iframe>').attr('name', 'osdownloads-tmp-iframe-' + $this.data('form-id'));
+                        $iframe.iframeAutoHeight({
+                            heightOffset: 10
+                        });
+                        $close = $('<a class="close-reveal-modal">&#215;</a>');
 
-                    $iframe.appendTo($container);
-                    $close.appendTo($container);
-                    $container.appendTo($('body'));
+                        $iframe.appendTo($container);
+                        $close.appendTo($container);
+                        $container.appendTo($('body'));
 
-                    // Submit the form
-                    $form.submit();
+                        // Submit the form
+                        $form.submit();
 
-                    // Close the requirements popup
-                    $container.on('reveal:close', function() {
-                        setTimeout(function timeoutRemoveIframePopup() {
-                            $container.remove();
+                        // Close the requirements popup
+                        $container.on('reveal:close', function() {
+                            setTimeout(function timeoutRemoveIframePopup() {
+                                $container.remove();
+                            }, 500);
+                        });
+                        $popup.trigger('reveal:close');
+
+                        setTimeout(function timeoutShowPopup() {
+                            showPopup('#' + options.elementsPrefix + 'PopupIframe');
                         }, 500);
-                    });
-                    $popup.trigger('reveal:close');
-
-                    setTimeout(function timeoutShowPopup() {
-                        showPopup('#' + options.elementsPrefix + 'PopupIframe');
-                    }, 500);
+                    }
                 };
 
                 $this.on('click', function downloadBtnOnClick(event) {
@@ -737,4 +740,5 @@
         }
     };
 })(jQuery);
+
 

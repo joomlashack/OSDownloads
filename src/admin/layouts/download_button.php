@@ -10,11 +10,12 @@ defined('_JEXEC') or die('Restricted access');
 use Alledia\Framework\Helper as AllediaHelper;
 use Alledia\OSDownloads\Free\Factory;
 
-$lang      = JFactory::getLanguage();
-$container = Factory::getContainer();
+JHtml::_('behavior.formvalidator');
 
-$app = JFactory::getApplication('site');
-$componentParams = $app->getParams('com_osdownloads');
+$lang       = JFactory::getLanguage();
+$container  = Factory::getContainer();
+$app        = JFactory::getApplication('site');
+$compParams = $app->getParams('com_osdownloads');
 ?>
 <a
     href="<?php echo JRoute::_($container->helperRoute->getFileDownloadContentRoute($displayData->item->id, $displayData->itemId)); ?>"
@@ -46,10 +47,10 @@ $componentParams = $app->getParams('com_osdownloads');
         id="osdownloadsDownloadFields<?php echo $displayData->item->id; ?>"
         class="reveal-modal osdownloads-modal <?php echo AllediaHelper::getJoomlaVersionCssClass(); ?>">
 
-        <h2 class="title"><?php echo JText::_($componentParams->get('download_form_title', 'COM_OSDOWNLOADS_BEFORE_DOWNLOAD')); ?></h2>
+        <h2 class="title"><?php echo JText::_($compParams->get('download_form_title', 'COM_OSDOWNLOADS_BEFORE_DOWNLOAD')); ?></h2>
 
         <?php
-        $header = $componentParams->get('download_form_header');
+        $header = $compParams->get('download_form_header');
         if (!empty($header)) {
             echo $header;
         }
@@ -59,6 +60,7 @@ $componentParams = $app->getParams('com_osdownloads');
             action="<?php echo JRoute::_($container->helperRoute->getFileDownloadContentRoute($displayData->item->id, $displayData->itemId)); ?>"
             id="osdownloadsDownloadFieldsForm<?php echo $displayData->item->id; ?>"
             name="osdownloadsDownloadFieldsForm<?php echo $displayData->item->id; ?>"
+            class="form-validate"
             method="post" >
 
             <div id="osdownloadsEmailGroup" class="osdownloadsemail" style="display: none;">
@@ -125,12 +127,12 @@ $componentParams = $app->getParams('com_osdownloads');
 
         <a href="#" id="osdownloadsDownloadContinue" class="osdownloads-readmore readmore">
             <span>
-                <?php echo JText::_($componentParams->get('download_form_button_label', 'COM_OSDOWNLOADS_CONTINUE')); ?>
+                <?php echo JText::_($compParams->get('download_form_button_label', 'COM_OSDOWNLOADS_CONTINUE')); ?>
             </span>
         </a>
 
         <?php
-        $footer = $componentParams->get('download_form_footer');
+        $footer = $compParams->get('download_form_footer');
         if (!empty($footer)) {
             echo $footer;
         }
@@ -155,7 +157,7 @@ $componentParams = $app->getParams('com_osdownloads');
                 animation     : '<?php echo $displayData->params->get("popup_animation", "fade"); ?>',
                 elementsPrefix: 'osdownloads',
                 popupElementId: 'osdownloadsDownloadFields<?php echo $displayData->item->id; ?>',
-                fieldsLayout: '<?php echo $componentParams->get('download_form_fields_layout', 'block'); ?>',
+                fieldsLayout: '<?php echo $compParams->get('download_form_fields_layout', 'block'); ?>',
             });
         });
     })(jQuery);

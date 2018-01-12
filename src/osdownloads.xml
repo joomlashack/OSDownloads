@@ -15,6 +15,7 @@
 
     <files folder="site">
         <folder>language</folder>
+        <folder>layouts</folder>
         <folder>models</folder>
         <folder>tables</folder>
         <folder>views</folder>

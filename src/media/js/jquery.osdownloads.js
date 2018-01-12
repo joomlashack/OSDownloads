@@ -9,10 +9,33 @@
         var defaults = {
             animation: 'fade',
             elementsPrefix: 'osdownloads',
-            popupElementId: 'osdownloadsRequirementsPopup'
+            popupElementId: 'osdownloadsRequirementsPopup',
+            fieldsLayout: 'block',
         };
 
         var options = $.extend({}, defaults, options);
+
+        // Apply the correct layout for fields
+        if ('block' === options.fieldsLayout) {
+            $tabs = $('.osdownloads-custom-fields-container ul.nav li a');
+
+            if ($tabs.length > 0) {
+                $.each($tabs, function(index, elem) {
+                    var $elem = $(elem),
+                        $panel = $($elem.attr('href'));
+
+                    $title = $('<h3>')
+                        .addClass('osdownloads-fieldset-title')
+                        .text($elem.text());
+
+
+                    $panel.before($title);
+                    $panel.addClass('active');
+                });
+            }
+
+            $('.osdownloads-custom-fields-container ul.nav').remove();
+        }
 
         if (this.length) {
             return this.each(function osdownloadsEachElement() {

@@ -12,6 +12,9 @@ use Alledia\OSDownloads\Free\Factory;
 
 $lang      = JFactory::getLanguage();
 $container = Factory::getContainer();
+
+$app = JFactory::getApplication('site');
+$componentParams = $app->getParams('com_osdownloads');
 ?>
 <a
     href="<?php echo JRoute::_($container->helperRoute->getFileDownloadContentRoute($displayData->item->id, $displayData->itemId)); ?>"
@@ -43,7 +46,14 @@ $container = Factory::getContainer();
         id="osdownloadsDownloadFields<?php echo $displayData->item->id; ?>"
         class="reveal-modal osdownloads-modal <?php echo AllediaHelper::getJoomlaVersionCssClass(); ?>">
 
-        <h2 class="title"><?php echo JText::_('COM_OSDOWNLOADS_BEFORE_DOWNLOAD'); ?></h2>
+        <h2 class="title"><?php echo JText::_($componentParams->get('download_form_title', 'COM_OSDOWNLOADS_BEFORE_DOWNLOAD')); ?></h2>
+
+        <?php
+        $header = $componentParams->get('download_form_header');
+        if (!empty($header)) {
+            echo $header;
+        }
+        ?>
 
         <form
             action="<?php echo JRoute::_($container->helperRoute->getFileDownloadContentRoute($displayData->item->id, $displayData->itemId)); ?>"
@@ -115,9 +125,16 @@ $container = Factory::getContainer();
 
         <a href="#" id="osdownloadsDownloadContinue" class="osdownloads-readmore readmore">
             <span>
-                <?php echo JText::_("COM_OSDOWNLOADS_CONTINUE"); ?>
+                <?php echo JText::_($componentParams->get('download_form_button_label', 'COM_OSDOWNLOADS_CONTINUE')); ?>
             </span>
         </a>
+
+        <?php
+        $footer = $componentParams->get('download_form_footer');
+        if (!empty($footer)) {
+            echo $footer;
+        }
+        ?>
 
         <a class="close-reveal-modal">&#215;</a>
     </div>
@@ -137,7 +154,8 @@ $container = Factory::getContainer();
             $('#osdownloadsDownloadButton<?php echo $displayData->item->id; ?>').osdownloads({
                 animation     : '<?php echo $displayData->params->get("popup_animation", "fade"); ?>',
                 elementsPrefix: 'osdownloads',
-                popupElementId: 'osdownloadsDownloadFields<?php echo $displayData->item->id; ?>'
+                popupElementId: 'osdownloadsDownloadFields<?php echo $displayData->item->id; ?>',
+                fieldsLayout: '<?php echo $componentParams->get('download_form_fields_layout', 'block'); ?>',
             });
         });
     })(jQuery);

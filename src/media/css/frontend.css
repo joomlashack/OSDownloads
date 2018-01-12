@@ -324,3 +324,7 @@ Example markup
 #osdownloadsAgreeGroup {
     margin-top: 30px;
 }
+
+.osdownloads-fieldset-title {
+    font-size: 14px;
+}

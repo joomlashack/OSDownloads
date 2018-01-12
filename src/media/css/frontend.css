@@ -328,3 +328,7 @@ Example markup
 .osdownloads-fieldset-title {
     font-size: 14px;
 }
+
+.osdownloads-title-download a {
+    float: none;
+}

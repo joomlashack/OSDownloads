@@ -16,10 +16,11 @@ $lang       = JFactory::getLanguage();
 $container  = Factory::getContainer();
 $app        = JFactory::getApplication('site');
 $compParams = $app->getParams('com_osdownloads');
+$elementsId = 'osdownloads_download_button_' . $displayData->item->id . '_' . rand(1, 99999999);
 ?>
 <a
     href="<?php echo JRoute::_($container->helperRoute->getFileDownloadContentRoute($displayData->item->id, $displayData->itemId)); ?>"
-    id="osdownloadsDownloadButton<?php echo $displayData->item->id; ?>"
+    id="<?php echo $elementsId . '_link'; ?>"
     style="background:<?php echo($displayData->item->download_color); ?>;"
     class="osdownloads-readmore readmore"
     data-direct-page="<?php echo $displayData->item->direct_page; ?>"
@@ -30,7 +31,7 @@ $compParams = $app->getParams('com_osdownloads');
     data-lang="<?php echo $lang->getTag(); ?>"
     data-name="<?php echo $displayData->item->name; ?>"
     data-agreement-article="<?php echo $displayData->item->agreementLink; ?>"
-    data-form-id="osdownloadsDownloadFieldsForm<?php echo $displayData->item->id; ?>"
+    data-form-id="<?php echo $elementsId . '_form'; ?>"
     <?php if ($displayData->isPro && (bool)@$displayData->item->require_share) : ?>
         data-hashtags="<?php echo str_replace('#', '', @$displayData->item->twitter_hashtags); ?>"
         data-via="<?php echo str_replace('@', '', @$displayData->item->twitter_via); ?>"
@@ -44,7 +45,7 @@ $compParams = $app->getParams('com_osdownloads');
 
 <?php if ($displayData->item->require_user_email || $displayData->item->require_agree || $displayData->item->require_share) : ?>
     <div
-        id="osdownloadsDownloadFields<?php echo $displayData->item->id; ?>"
+        id="<?php echo $elementsId . '_popup'; ?>"
         class="reveal-modal osdownloads-modal <?php echo AllediaHelper::getJoomlaVersionCssClass(); ?>">
 
         <h2 class="title"><?php echo JText::_($compParams->get('download_form_title', 'COM_OSDOWNLOADS_BEFORE_DOWNLOAD')); ?></h2>
@@ -58,8 +59,8 @@ $compParams = $app->getParams('com_osdownloads');
 
         <form
             action="<?php echo JRoute::_($container->helperRoute->getFileDownloadContentRoute($displayData->item->id, $displayData->itemId)); ?>"
-            id="osdownloadsDownloadFieldsForm<?php echo $displayData->item->id; ?>"
-            name="osdownloadsDownloadFieldsForm<?php echo $displayData->item->id; ?>"
+            id="<?php echo $elementsId . '_form'; ?>"
+            name="<?php echo $elementsId . '_form'; ?>"
             class="form-validate"
             method="post" >
 
@@ -143,8 +144,8 @@ $compParams = $app->getParams('com_osdownloads');
 <?php else: ?>
     <form
         action="<?php echo JRoute::_($container->helperRoute->getFileDownloadContentRoute($displayData->item->id, $displayData->itemId)); ?>"
-        id="osdownloadsDownloadFieldsForm<?php echo $displayData->item->id; ?>"
-        name="osdownloadsDownloadFieldsForm<?php echo $displayData->item->id; ?>"
+        id="<?php echo $elementsId . '_form'; ?>"
+        name="<?php echo $elementsId . '_form'; ?>"
         method="post" >
 
     </form>
@@ -153,10 +154,10 @@ $compParams = $app->getParams('com_osdownloads');
 <script>
     (function($) {
         $(function osdownloadsDomReady() {
-            $('#osdownloadsDownloadButton<?php echo $displayData->item->id; ?>').osdownloads({
+            $('#<?php echo $elementsId . '_link'; ?>').osdownloads({
                 animation     : '<?php echo $displayData->params->get("popup_animation", "fade"); ?>',
                 elementsPrefix: 'osdownloads',
-                popupElementId: 'osdownloadsDownloadFields<?php echo $displayData->item->id; ?>',
+                popupElementId: '<?php echo $elementsId . '_popup'; ?>',
                 fieldsLayout: '<?php echo $compParams->get('download_form_fields_layout', 'block'); ?>',
             });
         });

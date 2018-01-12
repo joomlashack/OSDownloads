@@ -121,7 +121,7 @@ $compParams = $app->getParams('com_osdownloads');
 
         <?php
         if ($displayData->isPro) :
-            echo $displayData->loadTemplate('pro_social_download');
+            echo JLayoutHelper::render('social_download', $displayData);
         endif;
         ?>
 

@@ -80,31 +80,33 @@ $elementsId = 'osdownloads_download_button_' . $displayData->item->id . '_' . ra
                 </div>
             </div>
 
-            <div class="osdownloads-custom-fields-container">
-                <?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => false)); ?>
+            <?php if ($displayData->item->require_user_email) : ?>
+                <div class="osdownloads-custom-fields-container">
+                    <?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => false)); ?>
 
-                <?php
+                    <?php
 
-                    $displayData->form = new JForm('com_osdownloads.download');
+                        $displayData->form = new JForm('com_osdownloads.download');
 
-                    $dispatcher = JEventDispatcher::getInstance();
-                    $dispatcher->trigger(
-                        'onContentPrepareForm',
-                        array(
-                            $displayData->form,
+                        $dispatcher = JEventDispatcher::getInstance();
+                        $dispatcher->trigger(
+                            'onContentPrepareForm',
                             array(
-                                'catid' => $displayData->item->cate_id,
+                                $displayData->form,
+                                array(
+                                    'catid' => $displayData->item->cate_id,
+                                )
                             )
-                        )
-                    );
+                        );
 
-                    if (JComponentHelper::isEnabled('com_fields')) :
-                        echo JLayoutHelper::render('joomla.edit.params', $displayData);
-                    endif;
-                ?>
+                        if (JComponentHelper::isEnabled('com_fields')) :
+                            echo JLayoutHelper::render('joomla.edit.params', $displayData);
+                        endif;
+                    ?>
 
-                <?php echo JHtml::_('bootstrap.endTabSet'); ?>
-            </div>
+                    <?php echo JHtml::_('bootstrap.endTabSet'); ?>
+                </div>
+            <?php endif; ?>
 
             <div id="osdownloadsAgreeGroup" class="osdownloadsagree" style="display: none;">
                 <label for="osdownloadsRequireAgree">

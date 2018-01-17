@@ -147,13 +147,18 @@ $buttonClasses = isset($displayData->buttonClasses) ? $displayData->buttonClasse
         <a class="close-reveal-modal">&#215;</a>
     </div>
 <?php else: ?>
-    <form
-        action="<?php echo JRoute::_($container->helperRoute->getFileDownloadContentRoute($displayData->item->id, $displayData->itemId)); ?>"
-        id="<?php echo $elementsId . '_form'; ?>"
-        name="<?php echo $elementsId . '_form'; ?>"
-        method="post" >
+    <div
+        id="<?php echo $elementsId . '_popup'; ?>"
+        class="reveal-modal osdownloads-modal <?php echo AllediaHelper::getJoomlaVersionCssClass(); ?>"
+        data-prefix="<?php echo $elementsId; ?>">
 
-    </form>
+        <form
+            action="<?php echo JRoute::_($container->helperRoute->getFileDownloadContentRoute($displayData->item->id, $displayData->itemId)); ?>"
+            id="<?php echo $elementsId . '_form'; ?>"
+            name="<?php echo $elementsId . '_form'; ?>"
+            method="post" >
+        </form>
+    </div>
 <?php endif; ?>
 
 <script>

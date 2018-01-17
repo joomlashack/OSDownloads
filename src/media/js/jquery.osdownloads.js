@@ -1,9 +1,11 @@
-(function osdownloadsClosure($) {
+/**
+ * @package   OSDownloads
+ * @contact   www.joomlashack.com, help@joomlashack.com
+ * @copyright 2016-2017 Open Source Training, LLC. All rights reserved
+ * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
+ */
 
-    $(function osdownloadsDomReady() {
-        // Move the popup containers to the body
-        $('.osdownloads-modal').appendTo($('body'));
-    });
+(function osdownloadsClosure($) {
 
     $.fn.osdownloads = function osdownloads(options) {
         var defaults = {
@@ -15,33 +17,11 @@
 
         var options = $.extend({}, defaults, options);
 
-        // Apply the correct layout for fields
-        if ('block' === options.fieldsLayout) {
-            $tabs = $('.osdownloads-custom-fields-container ul.nav li a');
-
-            if ($tabs.length > 0) {
-                $.each($tabs, function(index, elem) {
-                    var $elem = $(elem),
-                        $panel = $($elem.attr('href'));
-
-                    $title = $('<h3>')
-                        .addClass('osdownloads-fieldset-title')
-                        .text($elem.text());
-
-
-                    $panel.before($title);
-                    $panel.addClass('active');
-                });
-            }
-
-            $('.osdownloads-custom-fields-container ul.nav').remove();
-        }
-
         if (this.length) {
             return this.each(function osdownloadsEachElement() {
                 var $this                 = $(this),
-                    $btnContinue          = $('#' + options.elementsPrefix + 'DownloadContinue'),
                     $popup                = $('#' + options.popupElementId),
+                    $btnContinue          = $('#' + options.elementsPrefix + 'DownloadContinue'),
                     $errorAgreeTerms      = $('#' + options.elementsPrefix + 'ErrorAgreeTerms'),
                     $errorInvalidEmail    = $('#' + options.elementsPrefix + 'ErrorInvalidEmail'),
                     $errorShare           = $('#' + options.elementsPrefix + 'ErrorShare'),
@@ -56,7 +36,55 @@
                     requireEmail          = $this.data('require-email'),
                     requireAgree          = $this.data('require-agree') == 1,
                     requireShare          = $this.data('require-share') == 1,
-                    socialShared          = false;
+                    prefix                = $this.data('prefix'),
+                    socialShared          = false,
+                    $form                 = $popup.find('form');
+
+                // Move the popup containers to the body
+                $popup.appendTo($('body'));
+
+                /*
+                  Fix the click event on tabs, for supporting multiple popup boxes on the same page.
+                  Without this fix, if 2 files have the same fieldset (represented by tabs), the
+                  click event only work on the first popup, since the id of the elements will be
+                  duplicated.
+                 */
+                // Find tabs and respective content containers, to update the ID for a unique value
+                $tabs = $popup.find('.osdownloads-custom-fields-container ul.nav li a');
+
+                if ($tabs.length > 0) {
+                    $.each($tabs, function(index, elem) {
+                        var $tab          = $(elem),
+                            panelSelector = $tab.attr('href');
+                            $panel        = $popup.find(panelSelector),
+                            uniqueId      = $form.attr('id') + '-' + $panel.attr('id');
+
+                        $tab.attr('href', '#' + uniqueId);
+                        $panel.attr('id', uniqueId);
+                    });
+                }
+
+                // Apply the correct layout for fields
+                if ('block' === options.fieldsLayout) {
+                    $tabs = $popup.find('.osdownloads-custom-fields-container ul.nav li a');
+
+                    if ($tabs.length > 0) {
+                        $.each($tabs, function(index, elem) {
+                            var $elem = $(elem),
+                                $panel = $($elem.attr('href'));
+
+                            $title = $('<h3>')
+                                .addClass('osdownloads-fieldset-title')
+                                .text($elem.text());
+
+
+                            $panel.before($title);
+                            $panel.addClass('active');
+                        });
+                    }
+
+                    $popup.find('.osdownloads-custom-fields-container ul.nav').remove();
+                }
 
                 var isValidForm = function () {
                     var emailRegex = /^([A-Za-z0-9_\-\.\+])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,25})$/,
@@ -108,7 +136,16 @@
                         return false;
                     }
 
-                    return true;
+                    // Validate the form for custom fields before submitting
+
+                    if ($form.length > 0) {
+                        $form.attr('target', 'osdownloads-tmp-iframe-' + $this.data('form-id'));
+
+                        return document.formvalidator.isValid($form[0]);
+                    } else {
+                        return true;
+                    }
+
                 };
 
                 var showPopup = function (selector) {
@@ -122,69 +159,47 @@
                     // Force to show the first tab of custom fields, if exists
                     window.setTimeout(
                         function () {
-                            $('.osdownloads-custom-fields-container ul.nav li').first().find('a').trigger('click');
+                            $popup.find('.osdownloads-custom-fields-container ul.nav li').first().find('a').trigger('click');
                         },
                         300
                     );
                 };
 
-                var goToDirectPage = function () {
-                    if (directPage) {
-                        window.location = directPage;
-                    }
-                };
-
-                var addQueryVarToUri = function(url, variable, value) {
-                    if (url.indexOf('?') > -1) {
-                        url += '&';
-                    } else {
-                        url += '?';
-                    }
-
-                    url += variable + '=' + value;
-
-                    return url;
-                };
-
                 var download = function () {
                     var url = $this.attr('href');
 
-                    $form = $('#' + $this.data('form-id'))
-                        .attr('target', 'osdownloads-tmp-iframe-' + $this.data('form-id'));
+                    $form.attr('target', 'osdownloads-tmp-iframe-' + $this.data('form-id'));
 
-                    // Validate the form for custom fields before submitting
-                    if (document.formvalidator.isValid($form[0])) {
-                        // Create the popup element
-                        $container = $('<div>')
-                            .attr('id', options.elementsPrefix + 'PopupIframe')
-                            .addClass('reveal-modal')
-                            .addClass('osdownloads-modal');
+                    // Create the popup element
+                    $container = $('<div>')
+                        .attr('id', options.elementsPrefix + 'PopupIframe')
+                        .addClass('reveal-modal')
+                        .addClass('osdownloads-modal');
 
-                        $iframe = $('<iframe>').attr('name', 'osdownloads-tmp-iframe-' + $this.data('form-id'));
-                        $iframe.iframeAutoHeight({
-                            heightOffset: 10
-                        });
-                        $close = $('<a class="close-reveal-modal">&#215;</a>');
+                    $iframe = $('<iframe>').attr('name', 'osdownloads-tmp-iframe-' + $this.data('form-id'));
+                    $iframe.iframeAutoHeight({
+                        heightOffset: 10
+                    });
+                    $close = $('<a class="close-reveal-modal">&#215;</a>');
 
-                        $iframe.appendTo($container);
-                        $close.appendTo($container);
-                        $container.appendTo($('body'));
+                    $iframe.appendTo($container);
+                    $close.appendTo($container);
+                    $container.appendTo($('body'));
 
-                        // Submit the form
-                        $form.submit();
+                    // Submit the form
+                    $form.submit();
 
-                        // Close the requirements popup
-                        $container.on('reveal:close', function() {
-                            setTimeout(function timeoutRemoveIframePopup() {
-                                $container.remove();
-                            }, 500);
-                        });
-                        $popup.trigger('reveal:close');
-
-                        setTimeout(function timeoutShowPopup() {
-                            showPopup('#' + options.elementsPrefix + 'PopupIframe');
+                    // Close the requirements popup
+                    $container.on('reveal:close', function() {
+                        setTimeout(function timeoutRemoveIframePopup() {
+                            $container.remove();
                         }, 500);
-                    }
+                    });
+                    $popup.trigger('reveal:close');
+
+                    setTimeout(function timeoutShowPopup() {
+                        showPopup('#' + options.elementsPrefix + 'PopupIframe');
+                    }, 500);
                 };
 
                 $this.on('click', function downloadBtnOnClick(event) {
@@ -342,4 +357,3 @@
         }
     };
 })(jQuery);
-

@@ -14,9 +14,20 @@ use Alledia\Framework\Joomla\Extension\AbstractFlexibleModule;
 use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use JRoute;
+use JFactory;
+use JForm;
+use JLoader;
+use ContentHelperRoute;
+use SplPriorityQueue;
+use Exception;
+use JEventDispatcher;
+use Joomla\Utilities\ArrayHelper;
 
 class File extends AbstractFlexibleModule
 {
+    public $hiddenFieldsets = array('general', 'info', 'detail', 'jmetadata', 'item_associations', 'file', 'file-vertical', 'requirements', 'options', 'advanced', 'mailchimp', 'basic');
+
+
     public function init()
     {
         // Load the OSDownloads extension
@@ -49,16 +60,54 @@ class File extends AbstractFlexibleModule
         $rows = $db->loadObjectList();
 
         if (!empty($rows)) {
-            \JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
+            JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
 
             foreach ($rows as &$row) {
                 $row->agreementLink = '';
                 if ($row->agreement_article_id > 0) {
-                    $row->agreementLink = JRoute::_(\ContentHelperRoute::getArticleRoute($row->agreement_article_id));
+                    $row->agreementLink = JRoute::_(ContentHelperRoute::getArticleRoute($row->agreement_article_id));
                 }
             }
         }
 
         return $rows;
+    }
+
+    /**
+     * Method to get the row form.
+     *
+     * @param   array   $data     Data for the form.
+     * @param   boolean $loadData True if the form is to load its own data (default case), false if not.
+     *
+     * @return  mixed    A JForm object on success, false on failure
+     *
+     * @since   1.6
+     */
+    public function getForm($data = array(), $loadData = true)
+    {
+        // Get the form.
+        $form = new JForm('com_osdownloads.download');
+
+        $dispatcher = JEventDispatcher::getInstance();
+        $dispatcher->trigger(
+            'onContentPrepareForm',
+            array(
+                $form,
+                array(
+                    'catid' => @$data->cate_id,
+                )
+            )
+        );
+
+        return $form;
+    }
+
+    public function get($attribute) {
+
+        if (isset($this->$attribute)) {
+            return $this->$attribute;
+        }
+
+        return null;
     }
 }

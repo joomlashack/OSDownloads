@@ -17,7 +17,7 @@ $doc       = JFactory::getDocument();
 $lang      = JFactory::getLanguage();
 $container = Factory::getContainer();
 
-$itemId = (int) $app->input->getInt('Itemid');
+$this->itemId = (int) $app->input->getInt('Itemid');
 
 $moduleTag = $this->params->get('module_tag', 'div');
 $headerTag = $this->params->get('header_tag', 'h3');
@@ -27,8 +27,6 @@ $requireEmail = false;
 $requireAgree = false;
 $requireShare = false;
 $showModal    = false;
-
-// Load language from component
 
 
 // Module body
@@ -58,33 +56,16 @@ if ($linkTo === 'download') {
                 <p><?php echo $file->description_1; ?></p>
                 <p>
                     <?php if ($linkTo === 'download') : ?>
-                        <?php
-                        $fileURL = JRoute::_($container->helperRoute->getViewItemRoute($file->id, $itemId));
-                        ?>
-                        <a
-                            href="<?php echo JRoute::_($container->helperRoute->getFileDownloadContentRoute($file->id, $itemId)); ?>"
-                            class="modosdownloadsDownloadButton"
-                            style="background:<?php echo $file->download_color; ?>;"
-                            data-direct-page="<?php echo $file->direct_page; ?>"
-                            data-require-email="<?php echo $requireEmail; ?>"
-                            data-require-agree="<?php echo $requireAgree ? 1 : 0; ?>"
-                            data-require-share="<?php echo $requireShare ? 1 : 0; ?>"
-                            data-id="<?php echo $file->id; ?>"
-                            data-url="<?php echo $fileURL; ?>"
-                            data-lang="<?php echo $lang->getTag(); ?>"
-                            data-name="<?php echo $file->name; ?>"
-                            data-agreement-article="<?php echo $file->agreementLink; ?>"
-                            <?php if ($this->isPro()) : ?>
-                                data-hashtags="<?php echo str_replace('#', '', @$file->twitter_hashtags); ?>"
-                                data-via="<?php echo str_replace('@', '', @$file->twitter_via); ?>"
-                            <?php endif; ?>
-                            >
-                            <span>
-                                <?php echo $this->params->get('link_label', JText::_('MOD_OSDOWNLOADSFILES_DOWNLOAD')); ?>
-                            </span>
-                        </a>
+                        <div class="osdownloadsaction">
+                            <div class="btn_download">
+                                <?php
+                                    $this->item = $file;
+                                    echo JLayoutHelper::render('download_button', $this, JPATH_SITE . '/components/com_osdownloads/layouts');
+                                ?>
+                            </div>
+                        </div>
                     <?php else: ?>
-                        <a class="modosdownloadsDownloadButton osdownloads-readmore readmore" href="<?php echo JRoute::_($container->helperRoute->getViewItemRoute($file->id, $itemId)); ?>" data-direct-page="<?php echo $file->direct_page; ?>">
+                        <a class="modosdownloadsDownloadButton osdownloads-readmore readmore" href="<?php echo JRoute::_($container->helperRoute->getViewItemRoute($file->id, $this->itemId)); ?>" data-direct-page="<?php echo $file->direct_page; ?>">
                             <?php echo $this->params->get('link_label', JText::_('MOD_OSDOWNLOADSFILES_READ_MORE')); ?>
                         </a>
                         <br clear="all" />
@@ -94,70 +75,3 @@ if ($linkTo === 'download') {
         <?php endforeach; ?>
     </ul>
 </<?php echo $moduleTag; ?>>
-
-<?php if ($linkTo === 'download') : ?>
-    <?php if ($showModal) : ?>
-        <div id="modosdownloads<?php echo $this->id; ?>RequirementsPopup" class="reveal-modal osdownloads-modal <?php echo AllediaHelper::getJoomlaVersionCssClass(); ?>">
-            <h2 class="title"><?php echo JText::_('COM_OSDOWNLOADS_BEFORE_DOWNLOAD'); ?></h2>
-
-            <div id="modosdownloads<?php echo $this->id; ?>EmailGroup" class="osdownloadsemail" style="display: none;">
-
-                <label for="modosdownloads<?php echo $this->id; ?>RequireEmail">
-                    <input type="email" aria-required="true" required name="require_email" id="modosdownloads<?php echo $this->id; ?>RequireEmail" placeholder="<?php echo JText::_("COM_OSDOWNLOADS_ENTER_EMAIL_ADDRESS"); ?>" />
-                </label>
-
-                <div class="error" style="display: none;" id="modosdownloads<?php echo $this->id; ?>ErrorInvalidEmail">
-                    <?php echo JText::_("COM_OSDOWNLOADS_INVALID_EMAIL"); ?>
-                </div>
-            </div>
-
-            <div id="modosdownloads<?php echo $this->id; ?>AgreeGroup" class="osdownloadsagree" style="display: none;">
-                <label for="modosdownloads<?php echo $this->id; ?>RequireAgree">
-                    <input type="checkbox" name="require_agree" id="modosdownloads<?php echo $this->id; ?>RequireAgree" value="1" />
-                    <span>
-                        * <?php echo(JText::_("COM_OSDOWNLOADS_DOWNLOAD_TERM"));?>
-                    </span>
-                </label>
-
-                <div class="error" style="display: none;" id="modosdownloads<?php echo $this->id; ?>ErrorAgreeTerms">
-                    <?php echo JText::_("COM_OSDOWNLOADS_YOU_HAVE_AGREE_TERMS_TO_DOWNLOAD_THIS"); ?>
-                </div>
-            </div>
-
-            <div id="modosdownloads<?php echo $this->id; ?>ShareGroup" class="osdownloadsshare" style="display: none;">
-                <!-- Facebook -->
-                <div id="fb-root"></div>
-
-                <p id="modosdownloads<?php echo $this->id; ?>RequiredShareMessage" style="display: none;">
-                    <?php echo JText::_('COM_OSDOWNLOADS_YOU_MUST_TWEET_SHARE_FACEBOOK'); ?>
-                </p>
-
-                <div class="error" style="display: none;" id="modosdownloads<?php echo $this->id; ?>ErrorShare">
-                    <?php echo JText::_("COM_OSDOWNLOADS_SHARE_TO_DOWNLOAD_THIS"); ?>
-                </div>
-            </div>
-
-            <a href="#"  id="modosdownloads<?php echo $this->id; ?>DownloadContinue" class="osdownloads-readmore readmore">
-                <span>
-                    <?php echo JText::_("COM_OSDOWNLOADS_CONTINUE"); ?>
-                </span>
-            </a>
-
-            <a class="close-reveal-modal">&#215;</a>
-        </div>
-    <?php endif;?>
-
-    <script>
-        (function ($) {
-
-            $(function modosdownloadsDomReady() {
-                $('#mod_osdownloads_<?php echo $this->id; ?> .modosdownloadsDownloadButton').osdownloads({
-                    animation: '<?php echo $this->popupAnimation; ?>',
-                    elementsPrefix: 'modosdownloads<?php echo $this->id; ?>',
-                    popupElementId: 'modosdownloads<?php echo $this->id; ?>RequirementsPopup'
-                });
-            });
-
-        })(jQuery);
-    </script>
-<?php endif;

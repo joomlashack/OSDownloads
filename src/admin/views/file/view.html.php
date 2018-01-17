@@ -106,6 +106,6 @@ class OSDownloadsViewFile extends OSDownloadsViewAbstract
             JToolbarHelper::save2copy('file.save2copy');
         }
 
-        JToolbarHelper::cancel('file.cancel', 'JTOOLBAR_CLOSE');
+        JToolbarHelper::cancel('cancel', 'JTOOLBAR_CANCEL');
     }
 }

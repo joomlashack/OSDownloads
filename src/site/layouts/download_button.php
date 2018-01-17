@@ -13,17 +13,18 @@ use Alledia\OSDownloads\Free\Factory;
 JHtml::_('behavior.formvalidator');
 global $a;
 
-$lang       = JFactory::getLanguage();
-$container  = Factory::getContainer();
-$app        = JFactory::getApplication('site');
-$compParams = $app->getParams('com_osdownloads');
-$elementsId = md5('osdownloads_download_button_' . $displayData->item->id . '_' . rand(1, 99999999));
+$lang          = JFactory::getLanguage();
+$container     = Factory::getContainer();
+$app           = JFactory::getApplication('site');
+$compParams    = $app->getParams('com_osdownloads');
+$elementsId    = md5('osdownloads_download_button_' . $displayData->item->id . '_' . rand(1, 99999999));
+$buttonClasses = isset($displayData->buttonClasses) ? $displayData->buttonClasses : '';
 ?>
 <a
     href="<?php echo JRoute::_($container->helperRoute->getFileDownloadContentRoute($displayData->item->id, $displayData->itemId)); ?>"
     id="<?php echo $elementsId . '_link'; ?>"
     style="background:<?php echo($displayData->item->download_color); ?>;"
-    class="osdownloads-readmore readmore"
+    class="osdownloads-readmore readmore <?php echo $buttonClasses; ?>"
     data-direct-page="<?php echo $displayData->item->direct_page; ?>"
     data-require-email="<?php echo $displayData->item->require_user_email; ?>"
     data-require-agree="<?php echo $displayData->item->require_agree; ?>"
@@ -83,7 +84,7 @@ $elementsId = md5('osdownloads_download_button_' . $displayData->item->id . '_' 
             </div>
             <?php if ($displayData->item->require_user_email) : ?>
                 <div class="osdownloads-custom-fields-container">
-                    <?php $displayData->tab_name = 'osdownloadsTab' . $displayData->item->id; ?>
+                    <?php $displayData->tab_name = $elementsId . '-tab-' . $displayData->item->id; ?>
                     <?php echo JHtml::_('bootstrap.startTabSet', $displayData->tab_name, array('active' => false)); ?>
 
                     <?php

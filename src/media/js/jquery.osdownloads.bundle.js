@@ -535,9 +535,8 @@
                     }
 
                     // Validate the form for custom fields before submitting
-
                     if ($form.length > 0) {
-                        $form.attr('target', 'osdownloads-tmp-iframe-' + $this.data('form-id'));
+                        $form.attr('target', 'osdownloads-tmp-iframe-' + $form.attr('id'));
 
                         return document.formvalidator.isValid($form[0]);
                     } else {
@@ -565,8 +564,7 @@
 
                 var download = function () {
                     var url = $this.attr('href');
-
-                    $form.attr('target', 'osdownloads-tmp-iframe-' + $this.data('form-id'));
+                    $form.attr('target', 'osdownloads-tmp-iframe-' + $form.attr('id'));
 
                     // Create the popup element
                     $container = $('<div>')
@@ -574,7 +572,7 @@
                         .addClass('reveal-modal')
                         .addClass('osdownloads-modal');
 
-                    $iframe = $('<iframe>').attr('name', 'osdownloads-tmp-iframe-' + $this.data('form-id'));
+                    $iframe = $('<iframe>').attr('name', 'osdownloads-tmp-iframe-' + $form.attr('id'));
                     $iframe.iframeAutoHeight({
                         heightOffset: 10
                     });

@@ -30,6 +30,8 @@ class OSDownloadsViewFile extends OSDownloadsViewAbstract
 
         $this->form = $this->get('Form');
 
+        $this->canDo = JHelperContent::getActions('com_osdownloads');
+
         JTable::addIncludePath(JPATH_COMPONENT . '/tables');
 
         $item = JTable::getInstance("document", "OSDownloadsTable");
@@ -66,8 +68,8 @@ class OSDownloadsViewFile extends OSDownloadsViewAbstract
             }
         }
 
-        $this->assignRef("item", $item);
-        $this->assignRef("extension", $extension);
+        $this->item      = $item;
+        $this->extension = $extension;
 
         $this->addToolbar();
 
@@ -76,9 +78,34 @@ class OSDownloadsViewFile extends OSDownloadsViewAbstract
 
     protected function addToolbar()
     {
-        JToolbarHelper::title(JText::_('COM_OSDOWNLOADS') . ': ' . JText::_('COM_OSDOWNLOADS_FILE'));
-        JToolbarHelper::save('file.save', 'JTOOLBAR_SAVE');
-        JToolbarHelper::apply('file.apply', 'JTOOLBAR_APPLY');
-        JToolbarHelper::cancel('cancel', 'JTOOLBAR_CANCEL');
+        JFactory::getApplication()->input->set('hidemainmenu', true);
+
+        $user       = JFactory::getUser();
+        $isNew      = ($this->item->id == 0);
+        $canDo      = $this->canDo;
+
+        JToolbarHelper::title(JText::_('COM_OSDOWNLOADS') . ': ' .
+            ($isNew ? JText::_('COM_OSDOWNLOADS_FILE_NEW') : JText::_('COM_OSDOWNLOADS_FILE_EDIT')),
+            'file-2 osdownloads-files'
+        );
+
+        if ($canDo->get('core.edit') || $canDo->get('core.create'))
+        {
+            JToolbarHelper::apply('file.apply', 'JTOOLBAR_APPLY');
+            JToolbarHelper::save('file.save', 'JTOOLBAR_SAVE');
+        }
+
+        if ($canDo->get('core.create'))
+        {
+            JToolbarHelper::save2new('file.save2new');
+        }
+
+        // If an existing item, can save to a copy.
+        if (!$isNew && $canDo->get('core.create'))
+        {
+            JToolbarHelper::save2copy('file.save2copy');
+        }
+
+        JToolbarHelper::cancel('file.cancel', 'JTOOLBAR_CLOSE');
     }
 }

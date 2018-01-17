@@ -26,6 +26,8 @@ class OSDownloadsControllerFile extends JControllerForm
 
         $this->registerTask('apply', 'save');
         $this->registerTask('unpublish', 'publish');
+        $this->registerTask('save2new', 'save');
+        $this->registerTask('save2copy', 'save');
 
         // Load the extension
         $this->extension = Factory::getExtension('OSDownloads', 'component');
@@ -36,6 +38,8 @@ class OSDownloadsControllerFile extends JControllerForm
     {
         $app       = JFactory::getApplication();
         $container = OSDFactory::getContainer();
+
+        $task = $this->getTask();
 
         JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
         JTable::addIncludePath(JPATH_COMPONENT.'/tables');
@@ -118,6 +122,14 @@ class OSDownloadsControllerFile extends JControllerForm
             }
         }
 
+        // The save2copy task needs to be handled slightly differently.
+        if ($task === 'save2copy')
+        {
+            // Reset the ID, the multilingual associations and then treat the request as for Apply.
+            $row->id = 0;
+            $task = 'apply';
+        }
+
         $row->store();
 
         /*===============================================
@@ -135,6 +147,18 @@ class OSDownloadsControllerFile extends JControllerForm
             case "apply":
                 $this->setRedirect(
                     $container->helperRoute->getAdminFileFormRoute($row->id),
+                    JText::_("COM_OSDOWNLOADS_DOCUMENT_IS_SAVED")
+                );
+                break;
+
+            case 'save2new':
+                // Clear the record id and data from the session.
+                $this->releaseEditId($context, $recordId);
+                $app->setUserState($context . '.data', null);
+
+                // Redirect back to the edit screen.
+                $this->setRedirect(
+                    $container->helperRoute->getAdminFileFormRoute(0),
                     JText::_("COM_OSDOWNLOADS_DOCUMENT_IS_SAVED")
                 );
                 break;

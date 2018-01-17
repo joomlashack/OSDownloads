@@ -19,7 +19,7 @@ class OSDownloadsViewFiles extends OSDownloadsViewAbstract
      * @var string
      */
     protected $sidebar = null;
-    
+
     public function __construct()
     {
         $model = JModelLegacy::getInstance('OSDownloadsModelItems');
@@ -86,7 +86,8 @@ class OSDownloadsViewFiles extends OSDownloadsViewAbstract
 
     protected function addToolbar()
     {
-        JToolBarHelper::title(JText::_('COM_OSDOWNLOADS') . ': ' . JText::_('COM_OSDOWNLOADS_FILES'));
+        JToolBarHelper::title(JText::_('COM_OSDOWNLOADS') . ': ' . JText::_('COM_OSDOWNLOADS_FILES'), 'file-2 osdownloads-files');
+
         JToolBarHelper::custom('file', 'new.png', 'new_f2.png', 'JTOOLBAR_NEW', false);
         JToolBarHelper::custom('file', 'edit.png', 'edit_f2.png', 'JTOOLBAR_EDIT', true);
         JToolBarHelper::custom('file.delete', 'delete.png', 'delete_f2.png', 'JTOOLBAR_DELETE', true);

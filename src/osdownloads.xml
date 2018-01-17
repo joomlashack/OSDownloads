@@ -105,7 +105,7 @@
         <namespace>OSDownloads</namespace>
         <license>free</license>
         <targetplatform>3.7</targetplatform>
-        <phpminimum>7.0</phpminimum>
+        <phpminimum>5.6</phpminimum>
 
         <include>AllediaFreeDefaultFiles</include>
 

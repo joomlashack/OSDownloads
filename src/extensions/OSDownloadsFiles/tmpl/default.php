@@ -9,6 +9,7 @@ defined('_JEXEC') or die;
 
 use Alledia\Framework\Helper as AllediaHelper;
 use Alledia\OSDownloads\Free\Factory;
+use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 
 jimport('joomla.application.component.helper');
 
@@ -30,11 +31,14 @@ $showModal    = false;
 
 
 // Module body
-JHtml::_('stylesheet', 'com_osdownloads/frontend.css', array('relative' => true));
+$component = FreeComponentSite::getInstance();
+$options   = array('version' => $component->getMediaVersion(), 'relative' => true);
+
+JHtml::_('stylesheet', 'com_osdownloads/frontend.css', $options, array());
 
 if ($linkTo === 'download') {
     JHtml::_('jquery.framework');
-    JHtml::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', array('relative' => true));
+    JHtml::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', $options, array());
 }
 ?>
 

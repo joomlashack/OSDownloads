@@ -9,12 +9,16 @@ defined('_JEXEC') or die('Restricted access');
 
 use Alledia\Framework\Helper as AllediaHelper;
 use Alledia\OSDownloads\Free\Factory;
+use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 
 $lang      = JFactory::getLanguage();
 $container = Factory::getContainer();
+$component = FreeComponentSite::getInstance();
 
 JHtml::_('jquery.framework');
-JHtml::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', array('relative' => true));
+
+$options = array('version' => $component->getMediaVersion(), 'relative' => true);
+JHtml::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', $options, array());
 
 if (!$this->isPro) {
     $this->item->require_share = false;

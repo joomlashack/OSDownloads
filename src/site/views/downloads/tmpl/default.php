@@ -20,10 +20,15 @@ $this->authorizedAccessLevels = Factory::getUser()->getAuthorisedViewLevels();
 $this->itemId                 = $this->app->input->getInt('Itemid');
 $this->id                     = $this->app->input->getInt('id');
 $this->showModal              = false;
-$this->isPro                  = FreeComponentSite::getInstance()->isPro();
+$this->component              = FreeComponentSite::getInstance();
+$this->isPro                  = $component->isPro();
+$this->version                = $component->getMediaVersion();
 
 JHtml::_('jquery.framework');
-JHtml::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', array('relative' => true));
+
+$options = array('version' => $this->version, 'relative' => true);
+
+JHtml::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', $options, array());
 
 ?>
 

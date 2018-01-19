@@ -406,30 +406,28 @@
 (function osdownloadsClosure($) {
 
     $.fn.osdownloads = function osdownloads(options) {
-        var defaults = {
-            animation: 'fade',
-            elementsPrefix: 'osdownloads',
-            popupElementId: 'osdownloadsRequirementsPopup',
-            fieldsLayout: 'block',
-        };
-
-        var options = $.extend({}, defaults, options);
-
         if (this.length) {
             return this.each(function osdownloadsEachElement() {
+
+                if ($(this).data('osdownloads-loaded') == 1) {
+                    return;
+                }
+
                 var $this                 = $(this),
-                    $popup                = $('#' + options.popupElementId),
-                    $btnContinue          = $('#' + options.elementsPrefix + 'DownloadContinue'),
-                    $errorAgreeTerms      = $('#' + options.elementsPrefix + 'ErrorAgreeTerms'),
-                    $errorInvalidEmail    = $('#' + options.elementsPrefix + 'ErrorInvalidEmail'),
-                    $errorShare           = $('#' + options.elementsPrefix + 'ErrorShare'),
-                    $fieldAgree           = $('#' + options.elementsPrefix + 'RequireAgree'),
-                    $fieldEmail           = $('#' + options.elementsPrefix + 'RequireEmail'),
-                    $groupEmail           = $('#' + options.elementsPrefix + 'EmailGroup'),
-                    $groupAgree           = $('#' + options.elementsPrefix + 'AgreeGroup'),
-                    $groupShare           = $('#' + options.elementsPrefix + 'ShareGroup'),
-                    $requiredEmailMessage = $('#' + options.elementsPrefix + 'RequiredEmailMessage'),
-                    $requiredShareMessage = $('#' + options.elementsPrefix + 'RequiredShareMessage'),
+                    prefix                = $this.data('prefix'),
+                    animation             = $this.data('animation'),
+                    fieldsLayout          = $this.data('fields-layout'),
+                    popupElementId        = prefix + '_popup',
+                    $popup                = $('#' + popupElementId),
+                    $btnContinue          = $popup.find('.osdownloads-continue-button'),
+                    $errorAgreeTerms      = $popup.find('.osdownloads-error-agree'),
+                    $errorInvalidEmail    = $popup.find('.osdownloads-error-email'),
+                    $errorShare           = $popup.find('.osdownloads-error-share'),
+                    $fieldAgree           = $popup.find('.osdownloads-field-agree'),
+                    $fieldEmail           = $popup.find('.osdownloads-field-email'),
+                    $groupEmail           = $popup.find('.osdownloads-email-group'),
+                    $groupAgree           = $popup.find('.osdownloads-group-agree'),
+                    $groupShare           = $popup.find('.osdownloads-group-share'),
                     directPage            = $this.data('direct-page'),
                     requireEmail          = $this.data('require-email'),
                     requireAgree          = $this.data('require-agree') == 1,
@@ -463,7 +461,7 @@
                 }
 
                 // Apply the correct layout for fields
-                if ('block' === options.fieldsLayout) {
+                if ('block' === fieldsLayout) {
                     $tabs = $popup.find('.osdownloads-custom-fields-container ul.nav li a');
 
                     if ($tabs.length > 0) {
@@ -547,7 +545,7 @@
 
                 var showPopup = function (selector) {
                     $(selector).reveal({
-                        animation: options.animation,
+                        animation: animation,
                         animationspeed: 200,
                         closeonbackgroundclick: true,
                         dismissmodalclass: 'close-reveal-modal',
@@ -568,7 +566,7 @@
 
                     // Create the popup element
                     $container = $('<div>')
-                        .attr('id', options.elementsPrefix + 'PopupIframe')
+                        .attr('id', prefix + 'PopupIframe')
                         .addClass('reveal-modal')
                         .addClass('osdownloads-modal');
 
@@ -594,7 +592,7 @@
                     $popup.trigger('reveal:close');
 
                     setTimeout(function timeoutShowPopup() {
-                        showPopup('#' + options.elementsPrefix + 'PopupIframe');
+                        showPopup('#' + prefix + 'PopupIframe');
                     }, 500);
                 };
 
@@ -606,12 +604,6 @@
 
                     if (requireEmail || requireAgree || requireShare) {
                         if (requireEmail != 0) {
-                            if (requireEmail == 1) {
-                                $requiredEmailMessage.show();
-                            } else {
-                                $requiredEmailMessage.hide();
-                            }
-
                             $groupEmail.show();
                         } else {
                             $groupEmail.hide();
@@ -628,8 +620,6 @@
                         if (requireShare) {
                             $groupShare.show();
                             socialShared = false;
-
-                            $requiredShareMessage.show();
 
                             // Create the tweet button
                             var $btn = $('<a>')
@@ -667,7 +657,7 @@
 
                         $btnContinue.attr('href', $this.attr('href'));
 
-                        showPopup('#' + options.popupElementId);
+                        showPopup('#' + popupElementId);
 
                         $popup.on(
                             'reveal:close',
@@ -678,7 +668,6 @@
                                 $('.osdownloads-modal .error').hide();
                                 $groupShare.children('.twitter-share-button').remove();
                                 $groupShare.children('.fb-like').remove();
-                                $requiredShareMessage.hide();
                             }
                         );
 
@@ -748,9 +737,11 @@
                         fjs.parentNode.insertBefore(js, fjs);
                     }
                 }
-                $this.data('configured', 1);
+
+                $this.data('osdownloads-loaded', 1);
             });
         }
     };
 })(jQuery);
+
 

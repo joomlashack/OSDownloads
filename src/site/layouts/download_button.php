@@ -11,20 +11,19 @@ use Alledia\Framework\Helper as AllediaHelper;
 use Alledia\OSDownloads\Free\Factory;
 
 JHtml::_('behavior.formvalidator');
-global $a;
 
 $lang          = JFactory::getLanguage();
 $container     = Factory::getContainer();
 $app           = JFactory::getApplication('site');
 $compParams    = $app->getParams('com_osdownloads');
-$elementsId    = md5('osdownloads_download_button_' . $displayData->item->id . '_' . rand(1, 99999999));
+$elementsId    = md5('osdownloads_download_button_' . $displayData->item->id . '_' . uniqid());
 $buttonClasses = isset($displayData->buttonClasses) ? $displayData->buttonClasses : '';
 ?>
 <a
     href="<?php echo JRoute::_($container->helperRoute->getFileDownloadContentRoute($displayData->item->id, $displayData->itemId)); ?>"
     id="<?php echo $elementsId . '_link'; ?>"
     style="background:<?php echo($displayData->item->download_color); ?>;"
-    class="osdownloads-readmore readmore <?php echo $buttonClasses; ?>"
+    class="osdownloads-download-button osdownloads-readmore readmore <?php echo $buttonClasses; ?>"
     data-direct-page="<?php echo $displayData->item->direct_page; ?>"
     data-require-email="<?php echo $displayData->item->require_user_email; ?>"
     data-require-agree="<?php echo $displayData->item->require_agree; ?>"
@@ -34,6 +33,8 @@ $buttonClasses = isset($displayData->buttonClasses) ? $displayData->buttonClasse
     data-name="<?php echo $displayData->item->name; ?>"
     data-agreement-article="<?php echo $displayData->item->agreementLink; ?>"
     data-prefix="<?php echo $elementsId; ?>"
+    data-animation="<?php echo $displayData->params->get("popup_animation", "fade"); ?>"
+    data-fields-layout="<?php echo $compParams->get('download_form_fields_layout', 'block'); ?>"
     <?php if ($displayData->isPro && (bool)@$displayData->item->require_share) : ?>
         data-hashtags="<?php echo str_replace('#', '', @$displayData->item->twitter_hashtags); ?>"
         data-via="<?php echo str_replace('@', '', @$displayData->item->twitter_via); ?>"
@@ -45,11 +46,12 @@ $buttonClasses = isset($displayData->buttonClasses) ? $displayData->buttonClasse
     </span>
 </a>
 
-<?php if ($displayData->item->require_user_email || $displayData->item->require_agree || $displayData->item->require_share) : ?>
-    <div
-        id="<?php echo $elementsId . '_popup'; ?>"
-        class="reveal-modal osdownloads-modal <?php echo AllediaHelper::getJoomlaVersionCssClass(); ?>"
-        data-prefix="<?php echo $elementsId; ?>">
+<div
+    id="<?php echo $elementsId . '_popup'; ?>"
+    class="reveal-modal osdownloads-modal <?php echo AllediaHelper::getJoomlaVersionCssClass(); ?>"
+    data-prefix="<?php echo $elementsId; ?>">
+
+    <?php if ($displayData->item->require_user_email || $displayData->item->require_agree || $displayData->item->require_share) : ?>
 
         <h2 class="title"><?php echo JText::_($compParams->get('download_form_title', 'COM_OSDOWNLOADS_BEFORE_DOWNLOAD')); ?></h2>
 
@@ -67,7 +69,7 @@ $buttonClasses = isset($displayData->buttonClasses) ? $displayData->buttonClasse
             class="form-validate"
             method="post" >
 
-            <div id="<?php echo $elementsId . 'EmailGroup'; ?>" class="osdownloadsemail" style="display: none;">
+            <div id="<?php echo $elementsId . 'EmailGroup'; ?>" class="osdownloadsemail osdownloads-email-group" style="display: none;">
 
                 <label for="<?php echo $elementsId; ?>RequireEmail">
                     <input
@@ -75,10 +77,11 @@ $buttonClasses = isset($displayData->buttonClasses) ? $displayData->buttonClasse
                         aria-required="true"
                         required name="require_email"
                         id="<?php echo $elementsId; ?>RequireEmail"
+                        class="osdownloads-field-email"
                         placeholder="<?php echo JText::_("COM_OSDOWNLOADS_ENTER_EMAIL_ADDRESS"); ?>"/>
                 </label>
 
-                <div class="error" style="display: none;" id="<?php echo $elementsId; ?>ErrorInvalidEmail">
+                <div class="error osdownloads-error-email" style="display: none;" id="<?php echo $elementsId; ?>ErrorInvalidEmail">
                     <?php echo JText::_("COM_OSDOWNLOADS_INVALID_EMAIL"); ?>
                 </div>
             </div>
@@ -111,15 +114,15 @@ $buttonClasses = isset($displayData->buttonClasses) ? $displayData->buttonClasse
                 </div>
             <?php endif; ?>
 
-            <div id="<?php echo $elementsId; ?>AgreeGroup" class="osdownloadsagree" style="display: none;">
+            <div id="<?php echo $elementsId; ?>AgreeGroup" class="osdownloadsagree osdownloads-group-agree" style="display: none;">
                 <label for="<?php echo $elementsId; ?>RequireAgree">
-                    <input type="checkbox" name="require_agree" id="<?php echo $elementsId; ?>RequireAgree" value="1"/>
+                    <input type="checkbox" name="require_agree" id="<?php echo $elementsId; ?>RequireAgree" value="1" class="osdownloads-field-agree" />
                     <span>
                         * <?php echo(JText::_("COM_OSDOWNLOADS_DOWNLOAD_TERM")); ?>
                     </span>
                 </label>
 
-                <div class="error" style="display: none;" id="<?php echo $elementsId; ?>ErrorAgreeTerms">
+                <div class="error osdownloads-error-agree" style="display: none;" id="<?php echo $elementsId; ?>ErrorAgreeTerms">
                     <?php echo JText::_("COM_OSDOWNLOADS_YOU_HAVE_AGREE_TERMS_TO_DOWNLOAD_THIS"); ?>
                 </div>
             </div>
@@ -131,7 +134,7 @@ $buttonClasses = isset($displayData->buttonClasses) ? $displayData->buttonClasse
         endif;
         ?>
 
-        <a href="#" id="<?php echo $elementsId; ?>DownloadContinue" class="osdownloads-readmore readmore">
+        <a href="#" id="<?php echo $elementsId; ?>DownloadContinue" class="osdownloads-readmore readmore osdownloads-continue-button">
             <span>
                 <?php echo JText::_($compParams->get('download_form_button_label', 'COM_OSDOWNLOADS_CONTINUE')); ?>
             </span>
@@ -145,31 +148,18 @@ $buttonClasses = isset($displayData->buttonClasses) ? $displayData->buttonClasse
         ?>
 
         <a class="close-reveal-modal">&#215;</a>
-    </div>
-<?php else: ?>
-    <div
-        id="<?php echo $elementsId . '_popup'; ?>"
-        class="reveal-modal osdownloads-modal <?php echo AllediaHelper::getJoomlaVersionCssClass(); ?>"
-        data-prefix="<?php echo $elementsId; ?>">
-
+    <?php else: ?>
         <form
             action="<?php echo JRoute::_($container->helperRoute->getFileDownloadContentRoute($displayData->item->id, $displayData->itemId)); ?>"
             id="<?php echo $elementsId . '_form'; ?>"
             name="<?php echo $elementsId . '_form'; ?>"
             method="post" >
         </form>
-    </div>
-<?php endif; ?>
+    <?php endif; ?>
+</div>
 
 <script>
-    (function($) {
-        $(function osdownloadsDomReady() {
-            $('#<?php echo $elementsId . '_link'; ?>').osdownloads({
-                animation     : '<?php echo $displayData->params->get("popup_animation", "fade"); ?>',
-                elementsPrefix: '<?php echo $elementsId; ?>',
-                popupElementId: '<?php echo $elementsId . '_popup'; ?>',
-                fieldsLayout: '<?php echo $compParams->get('download_form_fields_layout', 'block'); ?>',
-            });
-        });
-    })(jQuery);
+    jQuery(function osdownloadsDomReady($) {
+        $('.osdownloads-download-button').osdownloads();
+    });
 </script>

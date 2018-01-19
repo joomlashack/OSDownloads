@@ -21,8 +21,8 @@ $this->itemId                 = $this->app->input->getInt('Itemid');
 $this->id                     = $this->app->input->getInt('id');
 $this->showModal              = false;
 $this->component              = FreeComponentSite::getInstance();
-$this->isPro                  = $component->isPro();
-$this->version                = $component->getMediaVersion();
+$this->isPro                  = $this->component->isPro();
+$this->version                = $this->component->getMediaVersion();
 
 JHtml::_('jquery.framework');
 

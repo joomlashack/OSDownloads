@@ -30,11 +30,11 @@ $showModal    = false;
 
 
 // Module body
-JHtml::stylesheet(JUri::root() . '/media/com_osdownloads/css/frontend.css');
+JHtml::_('stylesheet', 'com_osdownloads/frontend.css', array('relative' => true));
 
 if ($linkTo === 'download') {
     JHtml::_('jquery.framework');
-    JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundle.min.js');
+    JHtml::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', array('relative' => true));
 }
 ?>
 

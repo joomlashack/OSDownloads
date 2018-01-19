@@ -23,7 +23,7 @@ $this->showModal              = false;
 $this->isPro                  = FreeComponentSite::getInstance()->isPro();
 
 JHtml::_('jquery.framework');
-JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundle.min.js');
+JHtml::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', array('relative' => true));
 
 ?>
 

@@ -14,7 +14,7 @@ $lang      = JFactory::getLanguage();
 $container = Factory::getContainer();
 
 JHtml::_('jquery.framework');
-JHtml::script(JUri::root() . '/media/com_osdownloads/js/jquery.osdownloads.bundle.min.js');
+JHtml::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', array('relative' => true));
 
 if (!$this->isPro) {
     $this->item->require_share = false;

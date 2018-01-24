@@ -283,6 +283,7 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
             $row->bind($data);
             if ($row->check()) {
                 $row->store();
+                $row->rebuildPath();
                 $this->setMessage(JText::_('COM_OSDOWNLOADS_INSTALL_GENERAL_CATEGORY_CREATED'));
             } else {
                 $this->setMessage(JText::_('COM_OSDOWNLOADS_INSTALL_GENERAL_CATEGORY_WARNING'), 'notice');
@@ -304,6 +305,26 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
                     )
                 );
             $db->setQuery($query)->execute();
+
+            // Rebuild paths where needed
+            $query = $db->getQuery(true)
+                ->select('id')
+                ->from('#__categories')
+                ->where(
+                    array(
+                        $db->quoteName('extension') . '=' . $db->quote('com_osdownloads'),
+                        $db->quoteName('path') . '=' . $db->quote('')
+                    )
+                );
+
+            if ($ids = $db->setQuery($query)->loadColumn()) {
+                /** @var JTableCategory $category */
+                $category = JTable::getInstance('Category');
+
+                foreach ($ids as $id) {
+                    $category->rebuildPath($id);
+                }
+            }
         }
     }
 

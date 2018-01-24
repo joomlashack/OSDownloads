@@ -253,7 +253,7 @@ class SEF
      *
      * @param int $id
      *
-     * @return stdClass
+     * @return object
      */
     public function getCategory($id)
     {

@@ -63,7 +63,7 @@ class OsdownloadsRouter extends RouterBase
 
     /**
      * The DI container
-     * @var object
+     * @var \Alledia\OSDownloads\Free\Container
      */
     protected $container;
 

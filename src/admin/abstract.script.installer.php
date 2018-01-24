@@ -338,12 +338,16 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
             ->set('require_email = 2')
             ->where('show_email = 1')
             ->where('require_email = 0');
-        $db->setQuery($query);
-        $db->execute();
+        $db->setQuery($query)->execute();
 
         // Drop the show_email column
-        $db->setQuery('ALTER TABLE `#__osdownloads_documents` DROP COLUMN `show_email`');
-        $db->execute();
+        $db->setQuery(
+            sprintf(
+                'ALTER TABLE %s DROP COLUMN %s',
+                $db->quoteName('#__osdownloads_documents'),
+                $db->quoteName('show_email')
+            )
+        )->execute();
     }
 
     /**

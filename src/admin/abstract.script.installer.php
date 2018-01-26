@@ -16,7 +16,6 @@ if (file_exists($includePath)) {
 }
 
 use Alledia\Installer\AbstractScript;
-use Alledia\OSDownloads\Free\Factory;
 
 class AbstractOSDownloadsInstallerScript extends AbstractScript
 {
@@ -104,17 +103,26 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
             $newUploadRelativePath = str_replace(JPATH_SITE . DIRECTORY_SEPARATOR, '', $newUploadPath);
             if (empty($files)) {
                 JFolder::delete($oldUploadPath);
-                $this->setMessage(JText::sprintf('COM_OSDOWNLOADS_INSTALL_REMOVED_FOLDER', $oldUploadRelativePath,
-                    $newUploadRelativePath));
+                $this->setMessage(
+                    JText::sprintf(
+                        'COM_OSDOWNLOADS_INSTALL_REMOVED_FOLDER',
+                        $oldUploadRelativePath,
+                        $newUploadRelativePath
+                    )
+                );
+
             } else {
-                $this->setMessage(JText::sprintf('COM_OSDOWNLOADS_INSTALL_COULD_NOT_REMOVE_FOLDER',
-                    $oldUploadRelativePath));
+                $this->setMessage(
+                    JText::sprintf('COM_OSDOWNLOADS_INSTALL_COULD_NOT_REMOVE_FOLDER', $oldUploadRelativePath)
+                );
             }
         }
     }
 
     /**
      * Check and fix various legacy database versions
+     *
+     * @return void
      */
     protected function legacyDatabaseUpdates()
     {
@@ -250,6 +258,9 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
         )->execute();
     }
 
+    /**
+     * @return void
+     */
     protected function checkAndCreateDefaultCategory()
     {
         $db = JFactory::getDBO();
@@ -328,6 +339,9 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
         }
     }
 
+    /**
+     * @return void
+     */
     protected function removeDeprecatedFieldShowEmail()
     {
         $db = JFactory::getDBO();
@@ -352,6 +366,8 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
 
     /**
      * Fix old values for the ordering param in menus, adding the table prefix.
+     *
+     * @return void
      */
     protected function fixOrderingParamForMenus()
     {
@@ -399,11 +415,12 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
      * is found, warn the user. We call legacy data, the param category_id with
      * multiple values, in the downloads view. Represented issues for SEF
      * URLs, so we refactored allowing only one category.
+     *
+     * @return void
      */
     protected function fixDownloadsViewParams()
     {
-        $db  = JFactory::getDbo();
-        $app = JFactory::getApplication();
+        $db = JFactory::getDbo();
 
         // Look for menu items for Category view
         $query    = $db->getQuery(true)
@@ -438,13 +455,18 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
                         ->set('params = ' . $db->quote(json_encode($params)));
                     $db->setQuery($query)->execute();
 
-                    $app->enqueueMessage(
-                        sprintf(
-                            JText::_('Only one category is allowed for the OSDOwnloads Category Files view. The params for menu item %s were upgraded.'),
-                            $menu->id
-                        ),
-                        'warning'
-                    );
+                    try {
+                        JFactory::getApplication()->enqueueMessage(
+                            sprintf(
+                                JText::_('Only one category is allowed for the OSDOwnloads Category Files view. The params for menu item %s were upgraded.'),
+                                $menu->id
+                            ),
+                            'warning'
+                        );
+
+                    } catch (Exception $e) {
+                        // Fail silently
+                    }
                 }
             }
         }
@@ -452,11 +474,12 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
 
     /**
      * Detect legacy settings and fix the item view params
+     *
+     * @return void
      */
     protected function fixItemViewParams()
     {
-        $db  = JFactory::getDbo();
-        $app = JFactory::getApplication();
+        $db = JFactory::getDbo();
 
         // Look for menu items for Item view
         $query    = $db->getQuery(true)

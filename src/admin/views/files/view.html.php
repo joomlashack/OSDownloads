@@ -5,10 +5,8 @@
  * @copyright 2016-2017 Open Source Training, LLC. All rights reserved
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
 
-jimport('joomla.application.component.view');
+defined('_JEXEC') or die();
 
 require_once __DIR__ . '/../view.html.php';
 require_once __DIR__ . '/../../models/items.php';
@@ -20,14 +18,22 @@ class OSDownloadsViewFiles extends OSDownloadsViewAbstract
      */
     protected $sidebar = null;
 
-    public function __construct()
+    public function __construct($config = array())
     {
+        parent::__construct($config);
+
         $model = JModelLegacy::getInstance('OSDownloadsModelItems');
         $this->setModel($model, true);
 
         $this->addTemplatePath(__DIR__ . '/tmpl');
     }
 
+    /**
+     * @param string $tpl
+     *
+     * @return void
+     * @throws Exception
+     */
     public function display($tpl = null)
     {
         $app   = JFactory::getApplication();
@@ -41,10 +47,20 @@ class OSDownloadsViewFiles extends OSDownloadsViewAbstract
         $db->setQuery($query, $pagination->limitstart, $pagination->limit);
         $items = $db->loadObjectList();
 
-        $filterOrder    = $app->getUserStateFromRequest("com_osdownloads.document.filter_order", 'filter_order', 'doc.id', '');
-        $filterOrderDir = $app->getUserStateFromRequest("com_osdownloads.document.filter_order_Dir", 'filter_order_Dir', 'asc', 'word');
+        $filterOrder    = $app->getUserStateFromRequest(
+            'com_osdownloads.document.filter_order',
+            'filter_order',
+            'doc.id',
+            ''
+        );
+        $filterOrderDir = $app->getUserStateFromRequest(
+            'com_osdownloads.document.filter_order_Dir',
+            'filter_order_Dir',
+            'asc',
+            'word'
+        );
 
-        $lists = array();
+        $lists              = array();
         $lists['order_Dir'] = $filterOrderDir;
         $lists['order']     = $filterOrder;
 
@@ -72,11 +88,11 @@ class OSDownloadsViewFiles extends OSDownloadsViewAbstract
             }
         }
 
-        $this->lists         = $lists;
-        $this->items         = $items;
-        $this->filter        = $filter;
-        $this->pagination    = $pagination;
-        $this->extension     = $extension;
+        $this->lists      = $lists;
+        $this->items      = $items;
+        $this->filter     = $filter;
+        $this->pagination = $pagination;
+        $this->extension  = $extension;
 
         $this->addToolbar();
         $this->sidebar = JHtmlSidebar::render();
@@ -86,7 +102,10 @@ class OSDownloadsViewFiles extends OSDownloadsViewAbstract
 
     protected function addToolbar()
     {
-        JToolBarHelper::title(JText::_('COM_OSDOWNLOADS') . ': ' . JText::_('COM_OSDOWNLOADS_FILES'), 'file-2 osdownloads-files');
+        JToolBarHelper::title(
+            JText::_('COM_OSDOWNLOADS') . ': ' . JText::_('COM_OSDOWNLOADS_FILES'),
+            'file-2 osdownloads-files'
+        );
 
         JToolBarHelper::custom('file', 'new.png', 'new_f2.png', 'JTOOLBAR_NEW', false);
         JToolBarHelper::custom('file', 'edit.png', 'edit_f2.png', 'JTOOLBAR_EDIT', true);
@@ -108,12 +127,12 @@ class OSDownloadsViewFiles extends OSDownloadsViewAbstract
     protected function getSortFields()
     {
         return array(
-            'doc.ordering' => JText::_('JGRID_HEADING_ORDERING'),
-            'doc.published' => JText::_('COM_OSDOWNLOADS_PUBLISHED'),
-            'doc.name' => JText::_('COM_OSDOWNLOADS_NAME'),
-            'doc.access' => JText::_('COM_OSDOWNLOADS_ACCESS'),
+            'doc.ordering'   => JText::_('JGRID_HEADING_ORDERING'),
+            'doc.published'  => JText::_('COM_OSDOWNLOADS_PUBLISHED'),
+            'doc.name'       => JText::_('COM_OSDOWNLOADS_NAME'),
+            'doc.access'     => JText::_('COM_OSDOWNLOADS_ACCESS'),
             'doc.downloaded' => JText::_('COM_OSDOWNLOADS_DOWNLOADED'),
-            'doc.id' => JText::_('COM_OSDOWNLOADS_ID')
+            'doc.id'         => JText::_('COM_OSDOWNLOADS_ID')
         );
     }
 }

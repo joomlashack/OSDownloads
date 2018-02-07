@@ -28,6 +28,7 @@ class Item extends BaseModel
      * @param  int $documentId
      *
      * @return object
+     * @throws \Exception
      */
     public function getItem($documentId)
     {
@@ -56,6 +57,7 @@ class Item extends BaseModel
      * @param  int $documentId
      *
      * @return \JDatabaseQuery
+     * @throws \Exception
      */
     public function getItemQuery($documentId = null)
     {
@@ -65,10 +67,18 @@ class Item extends BaseModel
         $groups    = $user->getAuthorisedViewLevels();
         $component = FreeComponentSite::getInstance();
 
-        $filterOrder    = $app->getUserStateFromRequest("com_osdownloads.files.filter_order", 'filter_order',
-            'doc.ordering', '');
-        $filterOrderDir = $app->getUserStateFromRequest("com_osdownloads.files.filter_order_Dir", 'filter_order_Dir',
-            'asc', 'word');
+        $filterOrder    = $app->getUserStateFromRequest(
+            'com_osdownloads.files.filter_order',
+            'filter_order',
+            'doc.ordering',
+            ''
+        );
+        $filterOrderDir = $app->getUserStateFromRequest(
+            'com_osdownloads.files.filter_order_Dir',
+            'filter_order_Dir',
+            'asc',
+            'word'
+        );
 
         $query = $db->getQuery(true)
             ->select('doc.*')
@@ -102,6 +112,11 @@ class Item extends BaseModel
         return $query;
     }
 
+    /**
+     * @param $itemId
+     *
+     * @return void
+     */
     public function incrementDownloadCount($itemId)
     {
         $db = Factory::getDbo();

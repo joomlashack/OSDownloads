@@ -25,7 +25,20 @@ use Joomla\Utilities\ArrayHelper;
 
 class File extends AbstractFlexibleModule
 {
-    public $hiddenFieldsets = array('general', 'info', 'detail', 'jmetadata', 'item_associations', 'file', 'file-vertical', 'requirements', 'options', 'advanced', 'mailchimp', 'basic');
+    public $hiddenFieldsets = array(
+        'general',
+        'info',
+        'detail',
+        'jmetadata',
+        'item_associations',
+        'file',
+        'file-vertical',
+        'requirements',
+        'options',
+        'advanced',
+        'mailchimp',
+        'basic'
+    );
 
 
     public function init()
@@ -102,8 +115,8 @@ class File extends AbstractFlexibleModule
         return $form;
     }
 
-    public function get($attribute) {
-
+    public function get($attribute)
+    {
         if (isset($this->$attribute)) {
             return $this->$attribute;
         }

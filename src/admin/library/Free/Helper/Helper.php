@@ -20,6 +20,11 @@ defined('_JEXEC') or die();
 class Helper
 {
     /**
+     * @var \JEventDispatcher
+     */
+    protected static $dispatcher = null;
+
+    /**
      * @param string $vName
      *
      * @return void
@@ -128,5 +133,57 @@ class Helper
         $db->setQuery($query);
 
         return $db->loadObjectList();
+    }
+
+    /**
+     * Standard item model amendments
+     *
+     * @param object $item
+     *
+     * @return void
+     */
+    public static function prepareItem(&$item)
+    {
+        if (static::$dispatcher === null) {
+            \JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
+            static::$dispatcher = \JEventDispatcher::getInstance();
+        }
+
+        if ((bool)$item->require_agree && (int)$item->agreement_article_id) {
+            $item->agreementLink = \JRoute::_(\ContentHelperRoute::getArticleRoute($item->agreement_article_id));
+
+        } else {
+            $item->agreementLink = '';
+        }
+
+        \JPluginHelper::importPlugin('content');
+
+        // Make compatible with content plugins
+        $item->text = null;
+        $offset     = 0;
+
+        static::$dispatcher->trigger(
+            'onContentPrepare',
+            array('com_osdownloads.file', &$item, &$item->params, $offset)
+        );
+
+        $prepareEvent = array(
+            'afterDisplayTitle'    => static::$dispatcher->trigger(
+                'onContentAfterTitle',
+                array('com_osdownloads.file', &$item, &$item->params, $offset)
+            ),
+            'beforeDisplayContent' => static::$dispatcher->trigger(
+                'onContentBeforeDisplay',
+                array('com_osdownloads.file', &$item, &$item->params, $offset)
+            ),
+            'afterDisplayContent'  => static::$dispatcher->trigger(
+                'onContentAfterDisplay',
+                array('com_osdownloads.file', &$item, &$item->params, $offset)
+            )
+        );
+        foreach ($prepareEvent as &$results) {
+            $results = trim(join("\n", $results));
+        }
+        $item->event = (object)$prepareEvent;
     }
 }

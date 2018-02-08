@@ -19,6 +19,7 @@ use JEventDispatcher;
 use JPluginHelper;
 use JFactory;
 
+\JLoader::register('OSDownloadsHelper', JPATH_ADMINISTRATOR . '/components/com_osdownloads/helpers/osdownloads.php');
 
 class Item extends BaseModel
 {
@@ -37,15 +38,8 @@ class Item extends BaseModel
 
         $db->setQuery($query);
 
-        $item = $db->loadObject();
-
-        if (!empty($item)) {
-            $item->agreementLink = '';
-            if ((bool)$item->require_agree && (int)$item->agreement_article_id) {
-                \JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
-
-                $item->agreementLink = JRoute::_(\ContentHelperRoute::getArticleRoute($item->agreement_article_id));
-            }
+        if ($item = $db->loadObject()) {
+            \OSDownloadsHelper::prepareItem($item);
         }
 
         return $item;

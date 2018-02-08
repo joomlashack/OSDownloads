@@ -23,6 +23,8 @@ use Exception;
 use JEventDispatcher;
 use Joomla\Utilities\ArrayHelper;
 
+\JLoader::register('OSDownloadsHelper', JPATH_ADMINISTRATOR . '/components/com_osdownloads/helpers/osdownloads.php');
+
 class File extends AbstractFlexibleModule
 {
     public $hiddenFieldsets = array(
@@ -75,11 +77,8 @@ class File extends AbstractFlexibleModule
         if (!empty($rows)) {
             JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
 
-            foreach ($rows as &$row) {
-                $row->agreementLink = '';
-                if ($row->agreement_article_id > 0) {
-                    $row->agreementLink = JRoute::_(ContentHelperRoute::getArticleRoute($row->agreement_article_id));
-                }
+            foreach ($rows as $row) {
+                \OSDownloadsHelper::prepareItem($row);
             }
         }
 

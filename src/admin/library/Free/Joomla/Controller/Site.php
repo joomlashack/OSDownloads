@@ -31,6 +31,7 @@ class Site extends BaseController
      * @param object $item
      *
      * @return bool
+     * @throws \Exception
      */
     protected function processEmailRequirement($item)
     {
@@ -74,6 +75,7 @@ class Site extends BaseController
      * @param object $item
      *
      * @return bool
+     * @throws \Exception
      */
     protected function processRequirements($item)
     {

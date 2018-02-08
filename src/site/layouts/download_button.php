@@ -55,16 +55,17 @@ $actionUrl     = JRoute::_(
 <div id="<?php echo $elementsId . '_popup'; ?>"
      class="reveal-modal osdownloads-modal <?php echo AllediaHelper::getJoomlaVersionCssClass(); ?>"
      data-prefix="<?php echo $elementsId; ?>">
-
     <?php
     if ($displayData->item->require_user_email
         || $displayData->item->require_agree
         || $displayData->item->require_share
     ) :
         ?>
-        <h2 class="title"><?php
+        <h2 class="title">
+            <?php
             echo JText::_($compParams->get('download_form_title', 'COM_OSDOWNLOADS_BEFORE_DOWNLOAD'));
-            ?></h2>
+            ?>
+        </h2>
 
         <?php
         $header = $compParams->get('download_form_header');

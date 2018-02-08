@@ -112,7 +112,7 @@ if (!$this->isPro) {
     </div>
 
     <?php
-    if ($this->item->description_3):
+    if ($this->item->description_3) :
         ?>
         <div><?php echo($this->item->description_3); ?></div>
         <?php

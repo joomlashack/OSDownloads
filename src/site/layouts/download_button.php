@@ -99,7 +99,7 @@ $actionUrl     = JRoute::_(
                 </div>
             </div>
             <?php
-            if ($displayData->item->require_user_email) :
+            if ($displayData->item->require_user_email && JComponentHelper::isEnabled('com_fields')) :
                 ?>
                 <div class="osdownloads-custom-fields-container">
                     <?php $displayData->tab_name = $elementsId . '-tab-' . $displayData->item->id; ?>
@@ -120,9 +120,7 @@ $actionUrl     = JRoute::_(
                         )
                     );
 
-                    if (JComponentHelper::isEnabled('com_fields')) :
-                        echo JLayoutHelper::render('joomla.edit.params', $displayData);
-                    endif;
+                    echo JLayoutHelper::render('joomla.edit.params', $displayData);
 
                     echo JHtml::_('bootstrap.endTabSet');
                     ?>

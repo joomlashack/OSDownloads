@@ -160,25 +160,24 @@ class Helper
 
         // Make compatible with content plugins
         $item->text = null;
-        $offset     = 0;
 
         static::$dispatcher->trigger(
             'onContentPrepare',
-            array('com_osdownloads.file', &$item, &$item->params, $offset)
+            array('com_osdownloads.file', &$item, &$item->params, null)
         );
 
         $prepareEvent = array(
             'afterDisplayTitle'    => static::$dispatcher->trigger(
                 'onContentAfterTitle',
-                array('com_osdownloads.file', &$item, &$item->params, $offset)
+                array('com_osdownloads.file', &$item, &$item->params, null)
             ),
             'beforeDisplayContent' => static::$dispatcher->trigger(
                 'onContentBeforeDisplay',
-                array('com_osdownloads.file', &$item, &$item->params, $offset)
+                array('com_osdownloads.file', &$item, &$item->params, null)
             ),
             'afterDisplayContent'  => static::$dispatcher->trigger(
                 'onContentAfterDisplay',
-                array('com_osdownloads.file', &$item, &$item->params, $offset)
+                array('com_osdownloads.file', &$item, &$item->params, null)
             )
         );
         foreach ($prepareEvent as &$results) {

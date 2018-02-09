@@ -40,28 +40,25 @@
                 link="option=com_osdownloads&amp;view=files"
                 view="files"
                 img="class:component"
-                alt="OSDownloads/Files"
-                >COM_OSDOWNLOADS_FILES</menu>
+                alt="OSDownloads/Files">COM_OSDOWNLOADS_FILES</menu>
 
             <menu
                 link="option=com_categories&amp;extension=com_osdownloads"
                 view="categories"
                 img="class:component"
-                alt="OSDownloads/Categories"
-                >COM_OSDOWNLOADS_CATEGORIES</menu>
+                alt="OSDownloads/Categories">COM_OSDOWNLOADS_CATEGORIES_LABEL</menu>
 
             <menu
                 link="option=com_osdownloads&amp;view=emails"
                 view="emails"
                 img="class:component"
-                alt="OSDownloads/Emails"
-                >COM_OSDOWNLOADS_EMAILS</menu>
+                alt="OSDownloads/Emails">COM_OSDOWNLOADS_EMAILS</menu>
         </submenu>
 
         <files folder="admin">
             <folder>controllers</folder>
-            <folder>helpers</folder>
             <folder>form</folder>
+            <folder>helpers</folder>
             <folder>language</folder>
             <folder>library</folder>
             <folder>models</folder>

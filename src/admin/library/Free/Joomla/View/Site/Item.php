@@ -53,6 +53,12 @@ class Item extends Base
      */
     protected $model = null;
 
+    /**
+     * @param string $tpl
+     *
+     * @return void
+     * @throws \Exception
+     */
     public function display($tpl = null)
     {
         $app       = Factory::getApplication();

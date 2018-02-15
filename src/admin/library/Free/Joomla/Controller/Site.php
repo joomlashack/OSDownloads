@@ -106,6 +106,7 @@ class Site extends BaseController
         $component = FreeComponentSite::getInstance();
         $id        = $app->input->getInt('id');
 
+        /** @var \OSDownloadsModelItem $model */
         $model = $component->getModel('Item');
         $item  = $model->getItem($id);
 
@@ -122,6 +123,10 @@ class Site extends BaseController
         $this->display();
     }
 
+    /**
+     * @return void
+     * @throws \Exception
+     */
     public function download()
     {
         $app = \JFactory::getApplication();

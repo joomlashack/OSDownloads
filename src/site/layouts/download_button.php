@@ -102,14 +102,13 @@ $actionUrl     = JRoute::_(
             if ($displayData->item->require_user_email && JComponentHelper::isEnabled('com_fields')) :
                 ?>
                 <div class="osdownloads-custom-fields-container">
-                    <?php $displayData->tab_name = $elementsId . '-tab-' . $displayData->item->id; ?>
-                    <?php echo JHtml::_('bootstrap.startTabSet', $displayData->tab_name, array('active' => false)); ?>
-
                     <?php
+                    $displayData->tab_name = $elementsId . '-tab-' . $displayData->item->id;
+                    echo JHtml::_('bootstrap.startTabSet', $displayData->tab_name, array('active' => false));
+
                     $displayData->form = new JForm('com_osdownloads.download');
 
                     $dispatcher = JEventDispatcher::getInstance();
-                    // We need to send the catid so the fields can be filtered by category
                     $dispatcher->trigger(
                         'onContentPrepareForm',
                         array(

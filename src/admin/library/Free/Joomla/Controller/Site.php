@@ -111,7 +111,7 @@ class Site extends BaseController
         $item  = $model->getItem($id);
 
         if (empty($item)) {
-            throw new \Exception(\JText::_('COM_OSDOWNLOADS_THIS_DOWNLOAD_ISNT_AVAILABLE'), 404);
+            throw new \Exception(\JText::_('COM_OSDOWNLOADS_ERROR_DOWNLOAD_NOT_AVAILABLE'), 404);
         }
 
         if ($this->processRequirements($item)) {

@@ -47,6 +47,12 @@ class OSDownloadsViewDownload extends LegacyView
      */
     protected $isLocal = true;
 
+    /**
+     * @param string $tpl
+     *
+     * @return void
+     * @throws Exception
+     */
     public function display($tpl = null)
     {
         $app = JFactory::getApplication();
@@ -57,8 +63,7 @@ class OSDownloadsViewDownload extends LegacyView
         $item      = $model->getItem($id);
 
         if (empty($item)) {
-            $this->setLayout('error_not_available');
-            parent::display();
+            $this->displayError(JText::_('COM_OSDOWNLOADS_ERROR_DOWNLOAD_DENIED'));
             return;
         }
 
@@ -85,8 +90,16 @@ class OSDownloadsViewDownload extends LegacyView
                 $fileFullPath = $item->file_url;
 
                 $this->headers = File::getHeaders($fileFullPath);
+                if (!empty($this->headers['http_code']) && $this->headers['http_code'] >= 400) {
+                    $this->displayError(
+                        JText::sprintf('COM_OSDOWNLOADS_ERROR_DOWNLOAD_SERVER_ERROR', $this->headers['http_code'])
+                    );
+                    return;
+                }
+
                 if (!empty($this->headers['Content-Length'])) {
                     $this->fileSize = $this->headers['Content-Length'];
+
                 }
 
                 // Adjust for redirects
@@ -102,8 +115,7 @@ class OSDownloadsViewDownload extends LegacyView
         }
 
         if (empty($fileFullPath)) {
-            $this->setLayout('error_not_available');
-            parent::display();
+            $this->displayError(JText::_('COM_OSDOWNLOADS_ERROR_DOWNLOAD_NOT_AVAILABLE'));
             return;
         }
 
@@ -117,7 +129,14 @@ class OSDownloadsViewDownload extends LegacyView
             return;
         }
 
-        $this->setLayout('error_too_big');
+        $this->displayError(JText::_('COM_OSDOWNLOADS_ERROR_DOWNLOAD_TOO_BIG'));
+    }
+
+    protected function displayError($message)
+    {
+        JFactory::getApplication()->enqueueMessage($message, 'error');
+
+        $this->setLayout('error');
         parent::display();
     }
 

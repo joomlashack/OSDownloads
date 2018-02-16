@@ -118,11 +118,6 @@
                 updateversion="true">OSDownloadsFiles</extension>
 
             <extension
-                type="module"
-                uninstall="true"
-                element="osdownloadsfiles">OSDownloadsFiles</extension>
-
-            <extension
                 type="plugin"
                 group="system"
                 element="ossystem"
@@ -145,10 +140,22 @@
             <file>administrator/components/com_osdownloads/views/files/tmpl/default.j2.php</file>
             <file>administrator/language/en-GB/en-GB.com_osdownloads.ini</file>
             <file>administrator/language/en-GB/en-GB.com_osdownloads.sys.ini</file>
+            <file>administrator/language/en-GB/en-GB.plg_editors-xtd_osdownseditorxtdfile.ini</file>
+            <file>administrator/language/en-GB/en-GB.plg_editors-xtd_osdownseditorxtdfile.sys.ini</file>
+            <file>administrator/language/en-GB/en-GB.plg_system_osdownloadssystem.ini</file>
+            <file>administrator/language/en-GB/en-GB.plg_system_osdownloadssystem.sys.ini</file>
             <file>administrator/language/fa-IR/fa-IR.com_osdownloads.ini</file>
             <file>administrator/language/fa-IR/fa-IR.com_osdownloads.sys.ini</file>
+            <file>administrator/language/fa-IR/fa-IR.plg_editors-xtd_osdownseditorxtdfile.ini</file>
+            <file>administrator/language/fa-IR/fa-IR.plg_editors-xtd_osdownseditorxtdfile.sys.ini</file>
+            <file>administrator/language/fa-IR/fa-IR.plg_system_osdownloadssystem.ini</file>
+            <file>administrator/language/fa-IR/fa-IR.plg_system_osdownloadssystem.sys.ini</file>
             <file>administrator/language/fr-FR/fr-FR.com_osdownloads.ini</file>
             <file>administrator/language/fr-FR/fr-FR.com_osdownloads.sys.ini</file>
+            <file>administrator/language/fr-FR/fr-FR.plg_editors-xtd_osdownseditorxtdfile.ini</file>
+            <file>administrator/language/fr-FR/fr-FR.plg_editors-xtd_osdownseditorxtdfile.sys.ini</file>
+            <file>administrator/language/fr-FR/fr-FR.plg_system_osdownloadssystem.ini</file>
+            <file>administrator/language/fr-FR/fr-FR.plg_system_osdownloadssystem.sys.ini</file>
             <file>administrator/manifests/packages/pkg_osdownloads.xml</file>
             <file>components/com_osdownloads/views/download/tmpl/error_not_available.php</file>
             <file>components/com_osdownloads/views/download/tmpl/error_too_big.php</file>

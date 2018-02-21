@@ -24,6 +24,12 @@ $actionUrl     = JRoute::_(
 
 JHtml::_('behavior.formvalidator');
 
+JFactory::getDocument()->addScriptDeclaration("
+jQuery(function osdownloadsDomReady($) {
+        $('#{$elementsId}_link').osdownloads();
+    });
+");
+
 $attribs = array(
     'href'                   => $actionUrl,
     'id'                     => $elementsId . '_link',
@@ -186,8 +192,3 @@ endif;
     endif;
     ?>
 </div>
-<script>
-    jQuery(function osdownloadsDomReady($) {
-        $('.osdownloads-download-button').osdownloads();
-    });
-</script>

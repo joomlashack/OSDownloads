@@ -5,13 +5,12 @@
  * @copyright 2016-2017 Open Source Training, LLC. All rights reserved
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
-defined('_JEXEC') or die('Restricted access');
 
 use Alledia\Framework\Helper as AllediaHelper;
 use Alledia\OSDownloads\Free\Factory;
 use Joomla\Utilities\ArrayHelper;
 
-JHtml::_('behavior.formvalidator');
+defined('_JEXEC') or die();
 
 $lang          = JFactory::getLanguage();
 $container     = Factory::getContainer();
@@ -22,6 +21,8 @@ $buttonClasses = isset($displayData->buttonClasses) ? $displayData->buttonClasse
 $actionUrl     = JRoute::_(
     $container->helperRoute->getFileDownloadContentRoute($displayData->item->id, $displayData->itemId)
 );
+
+JHtml::_('behavior.formvalidator');
 
 $attribs = array(
     'href'                   => $actionUrl,

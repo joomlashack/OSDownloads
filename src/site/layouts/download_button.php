@@ -9,6 +9,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Alledia\Framework\Helper as AllediaHelper;
 use Alledia\OSDownloads\Free\Factory;
+use Joomla\Utilities\ArrayHelper;
 
 JHtml::_('behavior.formvalidator');
 
@@ -21,34 +22,38 @@ $buttonClasses = isset($displayData->buttonClasses) ? $displayData->buttonClasse
 $actionUrl     = JRoute::_(
     $container->helperRoute->getFileDownloadContentRoute($displayData->item->id, $displayData->itemId)
 );
+
+$attribs = array(
+    'href'                   => $actionUrl,
+    'id'                     => $elementsId . '_link',
+    'style'                  => 'background:' . $displayData->item->download_color,
+    'class'                  => 'osdownloads-download-button osdownloads-readmore readmore ' . $buttonClasses,
+    'data-direct-page'       => $displayData->item->direct_page,
+    'data-require-email'     => $displayData->item->require_user_email,
+    'data-require-agree'     => $displayData->item->require_agree,
+    'data-require-share'     => $displayData->item->require_share,
+    'data-url'               => JURI::current(),
+    'data-lang'              => $lang->getTag(),
+    'data-name'              => $displayData->item->name,
+    'data-agreement-article' => $displayData->item->agreementLink,
+    'data-prefix'            => $elementsId,
+    'data-animation'         => $displayData->params->get("popup_animation", "fade"),
+    'data-fields-layout'     => $compParams->get('download_form_fields_layout', 'block')
+);
+
+if ($displayData->isPro && (bool)@$displayData->item->require_share) :
+    $attribs['data-hashtags'] = str_replace('#', '', @$displayData->item->twitter_hashtags);
+    $attribs['data-via']      = str_replace('@', '', @$displayData->item->twitter_via);
+    $attribs['data-text']     = str_replace('{name}', $displayData->item->name, @$displayData->item->twitter_text);
+endif;
 ?>
-<a href="<?php echo $actionUrl; ?>"
-   id="<?php echo $elementsId . '_link'; ?>"
-   style="background:<?php echo($displayData->item->download_color); ?>;"
-   class="osdownloads-download-button osdownloads-readmore readmore <?php echo $buttonClasses; ?>"
-   data-direct-page="<?php echo $displayData->item->direct_page; ?>"
-   data-require-email="<?php echo $displayData->item->require_user_email; ?>"
-   data-require-agree="<?php echo $displayData->item->require_agree; ?>"
-   data-require-share="<?php echo $displayData->item->require_share; ?>"
-   data-url="<?php echo JURI::current(); ?>"
-   data-lang="<?php echo $lang->getTag(); ?>"
-   data-name="<?php echo $displayData->item->name; ?>"
-   data-agreement-article="<?php echo $displayData->item->agreementLink; ?>"
-   data-prefix="<?php echo $elementsId; ?>"
-   data-animation="<?php echo $displayData->params->get("popup_animation", "fade"); ?>"
-   data-fields-layout="<?php echo $compParams->get('download_form_fields_layout', 'block'); ?>"
-    <?php
-    if ($displayData->isPro && (bool)@$displayData->item->require_share) :
-        ?>
-        data-hashtags="<?php echo str_replace('#', '', @$displayData->item->twitter_hashtags); ?>"
-        data-via="<?php echo str_replace('@', '', @$displayData->item->twitter_via); ?>"
-        data-text="<?php echo str_replace('{name}', $displayData->item->name, @$displayData->item->twitter_text); ?>"
-    <?php
-    endif;
-    ?>
->
+<a <?php echo ArrayHelper::toString($attribs); ?>>
     <span>
-        <?php echo $displayData->item->download_text ? $displayData->item->download_text : JText::_("COM_OSDOWNLOADS_DOWNLOAD"); ?>
+        <?php
+        echo $displayData->item->download_text
+            ? $displayData->item->download_text
+            : JText::_("COM_OSDOWNLOADS_DOWNLOAD");
+        ?>
     </span>
 </a>
 

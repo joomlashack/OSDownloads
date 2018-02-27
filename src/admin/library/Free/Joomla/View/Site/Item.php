@@ -13,6 +13,7 @@ defined('_JEXEC') or die();
 use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Alledia\OSDownloads\Free\Factory as OSDFactory;
+use JHtml;
 use Joomla\Registry\Registry;
 use JText;
 
@@ -91,6 +92,12 @@ class Item extends Base
         $this->isPro     = $component->isPro();
         $this->model     = $model;
         $this->category  = $container->helperSEF->getCategory($item->cate_id);
+
+        // Process content plugins
+        $this->item->brief         = JHtml::_('content.prepare', $this->item->brief);
+        $this->item->description_1 = JHtml::_('content.prepare', $this->item->description_1);
+        $this->item->description_2 = JHtml::_('content.prepare', $this->item->description_2);
+        $this->item->description_3 = JHtml::_('content.prepare', $this->item->description_3);
 
         /**
          * Temporary backward compatibility for user's template overrides.

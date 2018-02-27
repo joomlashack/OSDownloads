@@ -112,6 +112,11 @@ class OSDownloadsViewDownloads extends View\Site\Base
             if ((bool)$item->require_agree) {
                 $item->agreementLink = JRoute::_(ContentHelperRoute::getArticleRoute($item->agreement_article_id));
             }
+
+            $item->brief         = JHtml::_('content.prepare', $item->brief);
+            $item->description_1 = JHtml::_('content.prepare', $item->description_1);
+            $item->description_2 = JHtml::_('content.prepare', $item->description_2);
+            $item->description_3 = JHtml::_('content.prepare', $item->description_3);
         }
 
         $user   = JFactory::getUser();
@@ -160,7 +165,7 @@ class OSDownloadsViewDownloads extends View\Site\Base
          * @var array
          * @deprecated  1.9.9  Use JPathway and the breadcrumb module instead to display the breadcrumbs
          */
-        $this->paths  = array();
+        $this->paths = array();
 
         parent::display($tpl);
     }

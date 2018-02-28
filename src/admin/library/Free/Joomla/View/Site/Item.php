@@ -14,7 +14,6 @@ use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Alledia\OSDownloads\Free\Factory as OSDFactory;
 use Exception;
-use JForm;
 use JHtml;
 use Joomla\Registry\Registry;
 use JText;

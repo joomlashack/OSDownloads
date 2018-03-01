@@ -304,11 +304,11 @@ Example markup
 
 
 /* DOWNLOAD CUSTOM FIELDS */
-.osdownloads-container .tab-pane {
+.osdownloads-custom-fields-container .tab-pane {
     display: block !important;
 }
 
-.osdownloads-container .nav-tabs {
+.osdownloads-custom-fields-container .nav-tabs {
     font-size: 15px;
     font-weight: bold;
     padding: 8px 0;

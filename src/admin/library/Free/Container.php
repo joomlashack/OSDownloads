@@ -9,6 +9,7 @@
 namespace Alledia\OSDownloads\Free;
 
 use Alledia\OSDownloads\Free\Helper\Route;
+use Alledia\OSDownloads\Free\Helper\SEF;
 
 defined('_JEXEC') or die();
 
@@ -18,8 +19,10 @@ defined('_JEXEC') or die();
  * @package OSDownloads
  *
  * @property Route helperRoute
+ * @property SEF   helperSEF
  *
  * @method Route  getHelperRoute()
+ * @method SEF    helperSEF()
  */
 class Container extends \Pimple\Container
 {
@@ -51,7 +54,7 @@ class Container extends \Pimple\Container
      *
      * @param string $name
      *
-     * @return mix
+     * @return mixed
      */
     public function __get($name)
     {

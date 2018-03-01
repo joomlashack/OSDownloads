@@ -96,7 +96,6 @@ a.modosdownloadsDownloadButton:active {
 }
 
 /* module */
-.osdownloads-container ul,
 .mod_osdownloadsfiles ul {
     margin: 0;
     list-style: none;
@@ -106,12 +105,6 @@ a.modosdownloadsDownloadButton:active {
     padding: 5px 0;
     margin: 0;
     border-bottom: 1px dotted #999999;
-}
-
-.osdownloads-container .category_filter li {
-    display: inline-block;
-    font-size: 20px;
-    padding-right: 5px;
 }
 
 /*===============================
@@ -311,11 +304,11 @@ Example markup
 
 
 /* DOWNLOAD CUSTOM FIELDS */
-.osdownloads-container .tab-pane {
+.osdownloads-custom-fields-container .tab-pane {
     display: block !important;
 }
 
-.osdownloads-container .nav-tabs {
+.osdownloads-custom-fields-container .nav-tabs {
     font-size: 15px;
     font-weight: bold;
     padding: 8px 0;

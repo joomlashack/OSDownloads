@@ -23,9 +23,24 @@ use Exception;
 use JEventDispatcher;
 use Joomla\Utilities\ArrayHelper;
 
+\JLoader::register('OSDownloadsHelper', JPATH_ADMINISTRATOR . '/components/com_osdownloads/helpers/osdownloads.php');
+
 class File extends AbstractFlexibleModule
 {
-    public $hiddenFieldsets = array('general', 'info', 'detail', 'jmetadata', 'item_associations', 'file', 'file-vertical', 'requirements', 'options', 'advanced', 'mailchimp', 'basic');
+    public $hiddenFieldsets = array(
+        'general',
+        'info',
+        'detail',
+        'jmetadata',
+        'item_associations',
+        'file',
+        'file-vertical',
+        'requirements',
+        'options',
+        'advanced',
+        'mailchimp',
+        'basic'
+    );
 
 
     public function init()
@@ -62,11 +77,8 @@ class File extends AbstractFlexibleModule
         if (!empty($rows)) {
             JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
 
-            foreach ($rows as &$row) {
-                $row->agreementLink = '';
-                if ($row->agreement_article_id > 0) {
-                    $row->agreementLink = JRoute::_(ContentHelperRoute::getArticleRoute($row->agreement_article_id));
-                }
+            foreach ($rows as $row) {
+                \OSDownloadsHelper::prepareItem($row);
             }
         }
 
@@ -102,8 +114,8 @@ class File extends AbstractFlexibleModule
         return $form;
     }
 
-    public function get($attribute) {
-
+    public function get($attribute)
+    {
         if (isset($this->$attribute)) {
             return $this->$attribute;
         }

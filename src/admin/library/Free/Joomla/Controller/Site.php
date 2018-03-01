@@ -31,6 +31,7 @@ class Site extends BaseController
      * @param object $item
      *
      * @return bool
+     * @throws \Exception
      */
     protected function processEmailRequirement($item)
     {
@@ -74,6 +75,7 @@ class Site extends BaseController
      * @param object $item
      *
      * @return bool
+     * @throws \Exception
      */
     protected function processRequirements($item)
     {
@@ -104,11 +106,12 @@ class Site extends BaseController
         $component = FreeComponentSite::getInstance();
         $id        = $app->input->getInt('id');
 
+        /** @var \OSDownloadsModelItem $model */
         $model = $component->getModel('Item');
         $item  = $model->getItem($id);
 
         if (empty($item)) {
-            throw new \Exception(\JText::_('COM_OSDOWNLOADS_THIS_DOWNLOAD_ISNT_AVAILABLE'), 404);
+            throw new \Exception(\JText::_('COM_OSDOWNLOADS_ERROR_DOWNLOAD_NOT_AVAILABLE'), 404);
         }
 
         if ($this->processRequirements($item)) {
@@ -120,6 +123,10 @@ class Site extends BaseController
         $this->display();
     }
 
+    /**
+     * @return void
+     * @throws \Exception
+     */
     public function download()
     {
         $app = \JFactory::getApplication();

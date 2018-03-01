@@ -9,12 +9,19 @@
 namespace Alledia\OSDownloads\Free\Joomla\View\Site;
 
 use Alledia\OSDownloads\Free\Joomla\View\Legacy;
+use Exception;
 
 defined('_JEXEC') or die();
 
 
 class Base extends Legacy
 {
+    /**
+     * @param string $tpl
+     *
+     * @return void
+     * @throws Exception
+     */
     public function display($tpl = null)
     {
         $this->prepareDocument();
@@ -26,6 +33,7 @@ class Base extends Legacy
      * Method to prepares the document
      *
      * @return  void
+     * @throws Exception
      */
     protected function prepareDocument()
     {

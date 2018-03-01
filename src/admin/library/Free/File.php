@@ -124,6 +124,9 @@ class File
                         foreach ($headers as $property => $value) {
                             if (!is_int($property)) {
                                 static::$headers[$key][$property] = is_array($value) ? array_pop($value) : $value;
+
+                            } elseif (preg_match('#HTTP/[0-9\.]+\s+(\d+)#', $value, $code)) {
+                                static::$headers[$key]['http_code'] = (int)$code[1];
                             }
                         }
                     }

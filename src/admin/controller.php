@@ -7,9 +7,6 @@
  */
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controller');
-
-
 class OSDownloadsController extends JControllerLegacy
 {
     protected $default_view = "files";
@@ -22,6 +19,13 @@ class OSDownloadsController extends JControllerLegacy
         $this->registerTask('file', 'display');
     }
 
+    /**
+     * @param bool  $cachable
+     * @param array $urlparams
+     *
+     * @return JControllerLegacy
+     * @throws Exception
+     */
     public function display($cachable = false, $urlparams = array())
     {
         $app = JFactory::getApplication();
@@ -46,6 +50,6 @@ class OSDownloadsController extends JControllerLegacy
             }
         }
 
-        parent::display();
+        return parent::display();
     }
 }

@@ -20,6 +20,11 @@ defined('_JEXEC') or die();
 class Helper
 {
     /**
+     * @var \JEventDispatcher
+     */
+    protected static $dispatcher = null;
+
+    /**
      * @param string $vName
      *
      * @return void
@@ -96,7 +101,7 @@ class Helper
         }
 
         // If the file exists, it is a local path
-        return  \JFile::exists(realpath(JPATH_SITE . '/' . ltrim($path, '/')));
+        return \JFile::exists(realpath(JPATH_SITE . '/' . ltrim($path, '/')));
     }
 
     /**
@@ -128,5 +133,56 @@ class Helper
         $db->setQuery($query);
 
         return $db->loadObjectList();
+    }
+
+    /**
+     * Standard item model amendments
+     *
+     * @param object $item
+     *
+     * @return void
+     */
+    public static function prepareItem(&$item)
+    {
+        if (static::$dispatcher === null) {
+            \JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
+            static::$dispatcher = \JEventDispatcher::getInstance();
+        }
+
+        if ((bool)$item->require_agree && (int)$item->agreement_article_id) {
+            $item->agreementLink = \JRoute::_(\ContentHelperRoute::getArticleRoute($item->agreement_article_id));
+
+        } else {
+            $item->agreementLink = '';
+        }
+
+        \JPluginHelper::importPlugin('content');
+
+        // Make compatible with content plugins
+        $item->text = null;
+
+        static::$dispatcher->trigger(
+            'onContentPrepare',
+            array('com_osdownloads.file', &$item, &$item->params, null)
+        );
+
+        $prepareEvent = array(
+            'afterDisplayTitle'    => static::$dispatcher->trigger(
+                'onContentAfterTitle',
+                array('com_osdownloads.file', &$item, &$item->params, null)
+            ),
+            'beforeDisplayContent' => static::$dispatcher->trigger(
+                'onContentBeforeDisplay',
+                array('com_osdownloads.file', &$item, &$item->params, null)
+            ),
+            'afterDisplayContent'  => static::$dispatcher->trigger(
+                'onContentAfterDisplay',
+                array('com_osdownloads.file', &$item, &$item->params, null)
+            )
+        );
+        foreach ($prepareEvent as &$results) {
+            $results = trim(join("\n", $results));
+        }
+        $item->event = (object)$prepareEvent;
     }
 }

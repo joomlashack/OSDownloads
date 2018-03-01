@@ -13,13 +13,11 @@ defined('_JEXEC') or die();
 use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Alledia\OSDownloads\Free\Factory as OSDFactory;
-use Alledia\OSDownloads\Free\Helper\View as HelperView;
+use Exception;
+use JHtml;
 use Joomla\Registry\Registry;
-use JRoute;
 use JText;
-use JPluginHelper;
-use JEventDispatcher;
-use stdClass;
+use OSDownloadsModelItem;
 
 if (!class_exists('JViewLegacy')) {
     jimport('legacy.view.legacy');
@@ -54,72 +52,53 @@ class Item extends Base
     public $isPro = null;
 
     /**
-     * @var \OSDownloadsModelItem
+     * @var OSDownloadsModelItem
      */
     protected $model = null;
 
+    /**
+     * @var object
+     */
+    protected $category = null;
+
+    /**
+     * @param string $tpl
+     *
+     * @return void
+     * @throws Exception
+     */
     public function display($tpl = null)
     {
         $app       = Factory::getApplication();
         $component = FreeComponentSite::getInstance();
         $container = OSDFactory::getContainer();
-        $model     = $component->getModel('Item');
-        $params    = $app->getParams();
-        $id        = (int) $app->input->getInt('id');
-        $itemId    = (int) $app->input->getInt('Itemid');
 
-        if (empty($id)) {
-            $id = (int) $params->get("document_id");
-        }
+        $this->model  = $component->getModel('Item');
+        $this->params = $app->getParams();
+        $this->itemId = (int)$app->input->getInt('Itemid');
 
-        $item = $model->getItem($id);
+        $id = (int)$app->input->getInt('id') ?: (int)$this->params->get('document_id');
 
-        if (empty($item)) {
-            throw new \Exception(JText::_('COM_OSDOWNLOADS_THIS_DOWNLOAD_ISNT_AVAILABLE'), 404);
+        $this->item = $this->model->getItem($id);
+
+        if (empty($this->item)) {
+            throw new Exception(JText::_('COM_OSDOWNLOADS_ERROR_DOWNLOAD_NOT_AVAILABLE'), 404);
         }
 
         // Breadcrumbs
-        $container->helperView->buildFileBreadcrumbs($item);
+        $container->helperView->buildFileBreadcrumbs($this->item);
 
         // Load the extension
         $component->loadLibrary();
 
+        $this->isPro    = $component->isPro();
+        $this->category = $container->helperSEF->getCategory($this->item->cate_id);
 
-        // Process the content plugins
-        JPluginHelper::importPlugin('content');
-
-        // Make compatible with content plugins
-        $item->text = null;
-
-        $dispatcher = JEventDispatcher::getInstance();
-        $offset     = 0;
-        $dispatcher->trigger('onContentPrepare', array('com_osdownloads.file', &$item, &$item->params, $offset));
-
-        $afterDisplayTitle    = $dispatcher->trigger(
-            'onContentAfterTitle',
-            array('com_osdownloads.file', &$item, &$item->params, $offset)
-        );
-        $beforeDisplayContent = $dispatcher->trigger(
-            'onContentBeforeDisplay',
-            array('com_osdownloads.file', &$item, &$item->params, $offset)
-        );
-        $afterDisplayContent  = $dispatcher->trigger(
-            'onContentAfterDisplay',
-            array('com_osdownloads.file', &$item, &$item->params, $offset)
-        );
-
-        $item->event = (object)array(
-            'afterDisplayTitle'    => trim(implode("\n", $afterDisplayTitle)),
-            'beforeDisplayContent' => trim(implode("\n", $beforeDisplayContent)),
-            'afterDisplayContent'  => trim(implode("\n", $afterDisplayContent))
-        );
-
-        $this->item      = $item;
-        $this->itemId    = $itemId;
-        $this->params    = $params;
-        $this->isPro     = $component->isPro();
-        $this->model     = $model;
-        $this->category  = $container->helperSEF->getCategory($item->cate_id);
+        // Process content plugins
+        $this->item->brief         = JHtml::_('content.prepare', $this->item->brief);
+        $this->item->description_1 = JHtml::_('content.prepare', $this->item->description_1);
+        $this->item->description_2 = JHtml::_('content.prepare', $this->item->description_2);
+        $this->item->description_3 = JHtml::_('content.prepare', $this->item->description_3);
 
         /**
          * Temporary backward compatibility for user's template overrides.
@@ -127,7 +106,7 @@ class Item extends Base
          * @var array
          * @deprecated  1.9.9  Use JPathway and the breadcrumb module instead to display the breadcrumbs
          */
-        $this->paths  = array();
+        $this->paths = array();
 
         parent::display($tpl);
     }

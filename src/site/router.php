@@ -6,7 +6,6 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
-use Alledia\Framework\Factory;
 use Joomla\Utilities\ArrayHelper;
 use Alledia\OSDownloads\Free\Factory as OSDFactory;
 use Joomla\CMS\Component\Router\RouterBase;
@@ -19,6 +18,11 @@ if (!defined('OSDOWNLOADS_LOADED')) {
     require_once JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
 }
 
+/**
+ * @param array $query
+ *
+ * @return array
+ */
 function OsdownloadsBuildRoute(&$query)
 {
     $router   = new OsdownloadsRouter();
@@ -27,6 +31,12 @@ function OsdownloadsBuildRoute(&$query)
     return $segments;
 }
 
+/**
+ * @param array $segments
+ *
+ * @return array
+ * @throws Exception
+ */
 function OsdownloadsParseRoute($segments)
 {
     $router = new OsdownloadsRouter();
@@ -133,18 +143,21 @@ class OsdownloadsRouter extends RouterBase
      *
      * @param  stdClass $category
      * @param  array    $segments
+     *
+     * @return void
+     * @throws Exception
      */
     protected function checkCategoryAndPath($category, $segments)
     {
         // Check if the category was foud
         if (empty($category)) {
-            JError::raiseError(404, JText::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'));
+            throw new Exception(JText::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'), 404);
         }
 
         // Check if the path is correct
         $path = implode('/', $segments);
         if ($path !== $category->path) {
-            JError::raiseError(404, JText::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'));
+            throw new Exception(JText::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'), 404);
         }
     }
 
@@ -349,13 +362,7 @@ class OsdownloadsRouter extends RouterBase
         // If there is no recognized tasks, try to get the view
         if (!empty($view)) {
             switch ($view) {
-                /**
-
-                    TODO:
-                    - Filter this for the Pro version only
-
-                 */
-
+                // @TODO: Filter this for the Pro version only
                 /**
                  *
                  * List of categories
@@ -371,9 +378,7 @@ class OsdownloadsRouter extends RouterBase
                     break;
 
                 /**
-                 *
                  * List of files
-                 *
                  */
                 case 'downloads':
                     $middlePath = array();
@@ -388,9 +393,7 @@ class OsdownloadsRouter extends RouterBase
                     break;
 
                 /**
-                 *
                  * A single file
-                 *
                  */
                 case 'item':
                     $categoryId = $this->container->helperSEF->getCategoryIdFromFileId($id);
@@ -421,6 +424,7 @@ class OsdownloadsRouter extends RouterBase
      * @see  https://goo.gl/X8U2wh  Examples of routes
      *
      * @return array
+     * @throws Exception
      */
     public function parse(&$segments)
     {
@@ -442,7 +446,7 @@ class OsdownloadsRouter extends RouterBase
 
                 // Check if we have the data segment
                 if (empty($lastSegment) || $firstSegment === $lastSegment) {
-                    JError::raiseError(400, JText::_('COM_OSDOWNLOADS_ERROR_EXPECTED_DATA_SEGMENT'));
+                    throw new Exception(JText::_('COM_OSDOWNLOADS_ERROR_EXPECTED_DATA_SEGMENT'), 400);
                 }
 
                 $vars['data'] = $lastSegment;
@@ -508,7 +512,7 @@ class OsdownloadsRouter extends RouterBase
                     }
 
                     if (!is_object($file)) {
-                        JError::raiseError(404, JText::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'));
+                        throw new Exception(JText::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'), 404);
                     }
 
                     $vars['id'] = $file->id;
@@ -519,10 +523,8 @@ class OsdownloadsRouter extends RouterBase
                 break;
         }
 
-        /**
-         *
+        /*
          * Check the last segment. Is it a list of files?
-         *
          */
         if ($this->customSegments['files'] === $lastSegment) {
             // Yes
@@ -577,9 +579,7 @@ class OsdownloadsRouter extends RouterBase
         }
 
         /**
-         *
          * Check the last segment. Is it a single file? Does it has a correct path?
-         *
          */
         $tmpSegments = $segments;
         array_pop($tmpSegments);
@@ -618,9 +618,7 @@ class OsdownloadsRouter extends RouterBase
         }
 
         /**
-         *
          * Check the last segment. Is it a category list? Does it has a correct path?
-         *
          */
         $tmpSegments = $segments;
 
@@ -636,10 +634,8 @@ class OsdownloadsRouter extends RouterBase
         }
 
         /**
-         *
          * Nope, no valid route found.
-         *
          */
-        JError::raiseError(404, JText::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'));
+        throw new Exception(JText::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'), 404);
     }
 }

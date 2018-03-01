@@ -9,7 +9,6 @@
 use Alledia\Framework\Factory;
 use Joomla\Utilities\ArrayHelper;
 use Alledia\OSDownloads\Free\Factory as OSDFactory;
-use Joomla\CMS\Component\Router\RouterBase;
 
 defined('_JEXEC') or die();
 
@@ -38,7 +37,7 @@ function OsdownloadsParseRoute($segments)
 /**
  * Routing class from com_osdownloads
  */
-class OsdownloadsRouter extends RouterBase
+class OsdownloadsRouter extends JComponentRouterBase
 {
     /**
      * An array with custom segments:

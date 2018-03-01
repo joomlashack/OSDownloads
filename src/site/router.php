@@ -95,14 +95,6 @@ class OsdownloadsRouter extends RouterBase
             array('com_osdownloads.router')
         );
 
-        $this->setContainer();
-    }
-
-    /**
-     * Set the container to the class
-     */
-    public function setContainer()
-    {
         $this->container = OSDFactory::getContainer();
     }
 

@@ -73,6 +73,7 @@ class OsdownloadsRouter extends RouterBase
 
     /**
      * The DI container
+     *
      * @var \Alledia\OSDownloads\Free\Container
      */
     protected $container;
@@ -177,8 +178,6 @@ class OsdownloadsRouter extends RouterBase
             // Is there a menu item for the file?
             $menu = $this->container->helperSEF->getMenuItemForFile($fileId);
             if (!empty($menu)) {
-                // Yes, add the segments from the menu - disable since Joomla adds that by itself
-                // $segments = $this->container->helperSEF->appendMenuPathToSegments($segments, $menu);
                 $skipCategoryAndFileSegments = true;
 
                 $query['Itemid'] = $menu->id;
@@ -192,9 +191,6 @@ class OsdownloadsRouter extends RouterBase
 
             if (!empty($menu)) {
                 $query['Itemid'] = $menu->id;
-                // Yes, add the segments from the menu - disable since Joomla adds that by itself
-                // $segments = $this->container->helperSEF->appendMenuPathToSegments($segments, $menu);
-
                 // Get the segments of the category from the menu to exclude them from the route
                 $menuCatId    = $this->container->helperSEF->getIdFromLink($menu->link);
                 $menuCategory = $this->container->helperSEF->getCategory($menuCatId);
@@ -218,7 +214,11 @@ class OsdownloadsRouter extends RouterBase
         }
 
         // Categories segments
-        $segments = $this->container->helperSEF->appendCategoriesToSegments($segments, $categoryId, $categorySegmentToSkip);
+        $segments = $this->container->helperSEF->appendCategoriesToSegments(
+            $segments,
+            $categoryId,
+            $categorySegmentToSkip
+        );
 
         // End segments
         if (!empty($endPath)) {
@@ -336,7 +336,14 @@ class OsdownloadsRouter extends RouterBase
                     $endPath[] = $this->container->helperSEF->getFileAlias($id);
 
                     // Build the complete route
-                    $segments = $this->buildRoutePrependingMenuPath($id, $categoryId, $segments, $middlePath, $endPath, $query);
+                    $segments = $this->buildRoutePrependingMenuPath(
+                        $id,
+                        $categoryId,
+                        $segments,
+                        $middlePath,
+                        $endPath,
+                        $query
+                    );
 
 
                     break;
@@ -365,7 +372,14 @@ class OsdownloadsRouter extends RouterBase
                     $endPath    = array();
 
                     // Build the complete route
-                    $segments = $this->buildRoutePrependingMenuPath(null, $id, $segments, $middlePath, $endPath, $query);
+                    $segments = $this->buildRoutePrependingMenuPath(
+                        null,
+                        $id,
+                        $segments,
+                        $middlePath,
+                        $endPath,
+                        $query
+                    );
 
                     break;
 
@@ -380,7 +394,14 @@ class OsdownloadsRouter extends RouterBase
                     $endPath[] = $this->customSegments['files'];
 
                     // Build the complete route
-                    $segments = $this->buildRoutePrependingMenuPath(null, $id, $segments, $middlePath, $endPath, $query);
+                    $segments = $this->buildRoutePrependingMenuPath(
+                        null,
+                        $id,
+                        $segments,
+                        $middlePath,
+                        $endPath,
+                        $query
+                    );
 
                     break;
 
@@ -397,7 +418,14 @@ class OsdownloadsRouter extends RouterBase
                     $endPath[] = $this->container->helperSEF->getFileAlias($id);
 
                     // Build the complete route
-                    $segments = $this->buildRoutePrependingMenuPath($id, $categoryId, $segments, $middlePath, $endPath, $query);
+                    $segments = $this->buildRoutePrependingMenuPath(
+                        $id,
+                        $categoryId,
+                        $segments,
+                        $middlePath,
+                        $endPath,
+                        $query
+                    );
 
                     break;
             }
@@ -485,7 +513,7 @@ class OsdownloadsRouter extends RouterBase
                             if (in_array($menu->query['view'], array('downloads', 'categories'))) {
                                 // Complete the path using the path from the menu
                                 $category = $this->container->helperSEF->getCategory($menu->query['id']);
-                                $tmpPath = $category->path;
+                                $tmpPath  = $category->path;
 
                                 if (!empty($tmpSegments)) {
                                     $tmpPath .= '/' . implode($tmpSegments);
@@ -542,7 +570,7 @@ class OsdownloadsRouter extends RouterBase
                     if (in_array($menu->query['view'], array('downloads', 'categories'))) {
                         // Complete the path using the path from the menu
                         $category = $this->container->helperSEF->getCategory($menu->query['id']);
-                        $tmpPath = $category->path;
+                        $tmpPath  = $category->path;
 
                         if (!empty($segments)) {
                             $tmpPath .= '/' . implode($segments);
@@ -587,7 +615,7 @@ class OsdownloadsRouter extends RouterBase
                 if (in_array($menu->query['view'], array('downloads', 'categories'))) {
                     // Complete the path using the path from the menu
                     $category = $this->container->helperSEF->getCategory($menu->query['id']);
-                    $tmpPath = $category->path;
+                    $tmpPath  = $category->path;
 
                     if (!empty($tmpSegments)) {
                         $tmpPath .= '/' . implode($tmpSegments);

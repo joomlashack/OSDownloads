@@ -86,7 +86,6 @@ class OsdownloadsRouter extends RouterBase
         );
 
         $this->setContainer();
-        $this->setCustomSegments();
     }
 
     /**
@@ -121,6 +120,10 @@ class OsdownloadsRouter extends RouterBase
      */
     public function getCustomSegments()
     {
+        if (!isset($this->customSegments)) {
+            $this->setCustomSegments();
+        }
+
         return $this->customSegments;
     }
 

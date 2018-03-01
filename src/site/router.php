@@ -103,7 +103,7 @@ class OsdownloadsRouter extends RouterBase
      */
     public function setCustomSegments($segments = array())
     {
-        $params = JFactory::getApplication()->getParams('com_osdownloads');
+        $params = JComponentHelper::getParams('com_osdownloads');
 
         // Default values
         $default = array(

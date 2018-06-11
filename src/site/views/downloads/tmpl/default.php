@@ -69,7 +69,6 @@ JHtml::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', $options,
                     <?php
                     if ($this->numberOfColumns && $column == $this->numberOfColumns - 1) :
                         ?>
-                        <div class="seperator"></div>
                         <div class="clr"></div>
                     <?php
                     endif;
@@ -112,7 +111,6 @@ JHtml::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', $options,
                 <?php
                 if ($this->numberOfColumns && $column == $this->numberOfColumns - 1) :
                     ?>
-                    <div class="seperator"></div>
                     <div class="clr"></div>
                 <?php
                 endif;

@@ -302,6 +302,10 @@ Example markup
     width: 450px !important;
 }
 
+#osdownloadsShareGroup .fb_iframe_widget > span {
+    vertical-align: baseline !important;
+    margin-left: 5px;
+}
 
 /* DOWNLOAD CUSTOM FIELDS */
 .osdownloads-custom-fields-container .tab-pane {

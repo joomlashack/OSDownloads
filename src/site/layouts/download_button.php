@@ -33,7 +33,7 @@ jQuery(function osdownloadsDomReady($) {
 $attribs = array(
     'href'                   => $actionUrl,
     'id'                     => $elementsId . '_link',
-    'style'                  => 'background:' . $displayData->item->download_color,
+    'style'                  => (!empty($displayData->item->download_color)) ? 'background:' . $displayData->item->download_color : '',
     'class'                  => 'osdownloads-download-button osdownloads-readmore readmore ' . $buttonClasses,
     'data-direct-page'       => $displayData->item->direct_page,
     'data-require-email'     => $displayData->item->require_user_email,

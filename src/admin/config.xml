@@ -48,8 +48,8 @@
         <field type="customfooter"
                name="customfooter"
                media="com_osdownloads"
-               showgoproad="1"
-               jedurl="http://extensions.joomla.org/extensions/extension/directory-a-documentation/downloads/osdownloads"/>
+               showgoproad="https://www.joomlashack.com/joomla-extensions/osdownloads/"
+               jedurl="https://extensions.joomla.org/extension/osdownloads/"/>
     </fieldset>
 
     <fieldset name="mailchimp"

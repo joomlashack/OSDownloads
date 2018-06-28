@@ -14,6 +14,7 @@ use Alledia\Framework\Factory;
 use Alledia\Framework\Joomla\Controller\Base as BaseController;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Alledia\OSDownloads\Free\Helper\Helper;
+use Alledia\OSDownloads\Free\Joomla\Model\Email;
 
 
 class Site extends BaseController
@@ -35,10 +36,9 @@ class Site extends BaseController
      */
     protected function processEmailRequirement($item)
     {
-        $app              = Factory::getApplication();
-        $component        = FreeComponentSite::getInstance();
-        $params           = $app->getParams('com_osdownloads');
-        $mailchimpConnect = $params->get("connect_mailchimp", 0);
+        /** @var \JApplicationSite $app */
+        $app       = Factory::getApplication();
+        $component = FreeComponentSite::getInstance();
 
         $email = trim($app->input->getString('require_email'));
 
@@ -50,16 +50,9 @@ class Site extends BaseController
                 return false;
             }
 
-            // Store the e-mail
+            /** @var \OSDownloadsModelEmail $modelEmail */
             $modelEmail = $component->getModel('Email');
-            $emailRow   = $modelEmail->insert($email, $item->id);
-
-            // Send to Mail Chimp without validation
-            if ($mailchimpConnect) {
-                $emailRow->addToMailchimpList();
-            }
-
-            if (!$emailRow) {
+            if (!$modelEmail->insert($email, $item->id)) {
                 $app->input->set('layout', 'error_invalid_email');
 
                 return false;

@@ -23,15 +23,18 @@
 
 namespace Alledia\OSDownloads\Free\MailingList;
 
+use Alledia\OSDownloads\Free\Factory;
+use Alledia\OSDownloads\Free\Joomla\Table\Email as EmailTableFree;
+use Exception;
 use JObservableInterface;
 use JObserverInterface;
 
 defined('_JEXEC') or die();
 
-class MailChimp implements \JObserverInterface
+class MailChimp implements JObserverInterface
 {
     /**
-     * @var \JTable
+     * @var EmailTableFree
      */
     protected $table = null;
 
@@ -58,25 +61,40 @@ class MailChimp implements \JObserverInterface
         return $observer;
     }
 
+    /**
+     * @param $result
+     *
+     * @throws Exception
+     */
     public function onAfterStore($result)
     {
-        \JFactory::getApplication()->enqueueMessage(__METHOD__ . '<br/>RESULT:' . print_r($result));
+        $this->addToList();
     }
 
-    public function addToMailchimpList()
+    /**
+     * @return void
+     * @throws Exception
+     */
+    protected function addToList()
     {
+        /** @var \JApplicationSite $app */
         $app    = Factory::getApplication();
         $params = $app->getParams('com_osdownloads');
-        $apiKey = $params->get("mailinglist.mailchimp.api", 0);
-        $listId = $params->get("mailinglist.mailchimp.list_id", 0);
 
-        if (!empty($this->email)) {
+        $enabled = $params->get('mailinglist.mailchimp.enable');
+        $apiKey  = $params->get("mailinglist.mailchimp.api", 0);
+        $listId  = $params->get("mailinglist.mailchimp.list_id", 0);
+        $email   = empty($this->table->email) ? null : $this->table->email;
+
+        if ($email && $enabled && $apiKey && $listId) {
             $mc = new \Mailchimp\Mailchimp($apiKey);
 
             // Check if the email already exists
             try {
-                $result = $mc->get("lists/{$listId}/members/" . md5(strtolower($this->email)));
+                $result = $mc->get("lists/{$listId}/members/" . md5(strtolower($email)));
+                $app->enqueueMessage('<pre>' . print_r($result, 1) . '</pre>');
                 $result = $result->toArray();
+
             } catch (Exception $e) {
                 $result = array('status' => 'unsubscribed');
             }
@@ -84,12 +102,10 @@ class MailChimp implements \JObserverInterface
             if ($result['status'] === 'unsubscribed') {
                 // The email is not subscribed. Let's subscribe it.
                 $mc->post("lists/{$listId}/members/", array(
-                    'email_address' => $this->email,
+                    'email_address' => $email,
                     'status'        => 'subscribed'
                 ));
             }
         }
     }
-
-
 }

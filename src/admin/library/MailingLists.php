@@ -24,16 +24,47 @@
 namespace Alledia\OSDownloads;
 
 use Alledia\Framework\Factory;
-use Alledia\OSDownloads\Free\MailingList\MailChimp;
+use Alledia\Installer\Extension\Licensed;
+use JFolder;
 use JForm;
+use JTable;
 
 defined('_JEXEC') or die();
 
 abstract class MailingLists
 {
-    public static function loadObservers(\JTable $table)
+    /**
+     * @var Licensed
+     */
+    protected static $extension = null;
+
+    /**
+     * @var string
+     */
+    protected static $basePath = null;
+
+    /**
+     * @var string
+     */
+    protected static $baseClass = '\\Alledia\\OSDownloads';
+
+    /**
+     * Find all Mailing List plugins and attach
+     *
+     * @param JTable $table
+     *
+     * @return void
+     */
+    public static function loadObservers(JTable $table)
     {
-        MailChimp::createObserver($table);
+        $plugins = static::getConfigurationFiles('php');
+
+        foreach ($plugins as $pluginPath) {
+            /** @var \JObserverInterface $pluginClass */
+            $pluginClass = static::convertPathToClass($pluginPath);
+
+            $pluginClass::createObserver($table);
+        }
     }
 
     /**
@@ -41,18 +72,21 @@ abstract class MailingLists
      *
      * @return string[]
      */
-    public static function getConfigurationFiles()
+    public static function getConfigurationFiles($type)
     {
+        jimport('joomla.filesystem.folder');
+
         $extension = Factory::getExtension('OSDownloads', 'component');
 
-        $freePath = $extension->getLibraryPath() . '/free';
+        $freePath = $extension->getLibraryPath() . '/Free';
         $proPath  = $extension->isPro() ? $extension->getProLibraryPath() : null;
 
         $folder = '/MailingList';
 
+        $regex       = sprintf('\.%s$', $type);
         $configFiles = array_merge(
-            $proPath ? \JFolder::files($proPath . $folder, '\.xml$', false, true) : array(),
-            \JFolder::files($freePath . $folder, '\.xml$', false, true)
+            $proPath ? JFolder::files($proPath . $folder, $regex, false, true) : array(),
+            JFolder::files($freePath . $folder, $regex, false, true)
         );
 
         return $configFiles;
@@ -67,7 +101,7 @@ abstract class MailingLists
     public static function loadConfigurationForms(JForm $form)
     {
         $mailingLists = $form->getXml()->xpath('//fields[@name="mailinglist"]');
-        $files        = static::getConfigurationFiles();
+        $files        = static::getConfigurationFiles('xml');
 
         if ($mailingLists && $files) {
             $mailingLists = array_shift($mailingLists);
@@ -85,5 +119,49 @@ abstract class MailingLists
                 }
             }
         }
+    }
+
+    /**
+     * @return Licensed
+     */
+    protected static function getExtension()
+    {
+        if (static::$extension === null) {
+            static::$extension = Factory::getExtension('com_osdownloads', 'component');
+        }
+
+        return static::$extension;
+    }
+
+    /**
+     * Get the base path for autoloaded library files
+     *
+     * @return string
+     */
+    protected static function getBasePath()
+    {
+        if (static::$basePath === null) {
+            static::$basePath = static::getExtension()->getLibraryPath();
+        }
+
+        return static::$basePath;
+    }
+
+    /**
+     * Converts a file path to an autoloadable class name
+     *
+     * @param string $filePath
+     *
+     * @return string
+     */
+    protected static function convertPathToClass($filePath)
+    {
+        $classPath = str_replace(static::getBasePath(), '', $filePath);
+
+        $className = static::$baseClass
+            . str_replace(DIRECTORY_SEPARATOR, '\\', dirname($classPath))
+            . '\\' . basename($classPath, '.php');
+
+        return $className;
     }
 }

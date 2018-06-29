@@ -16,6 +16,7 @@ if (file_exists($includePath)) {
 }
 
 use Alledia\Installer\AbstractScript;
+use Joomla\Registry\Registry;
 
 class AbstractOSDownloadsInstallerScript extends AbstractScript
 {
@@ -30,11 +31,39 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
      * Method to run after an install/update method
      *
      * @return void
+     * @throws Exception
      */
     public function postFlight($type, $parent)
     {
-        parent::postFlight($type, $parent);
+        try {
+            parent::postFlight($type, $parent);
 
+            // All other integrity checks and fixes
+            $this->cleanLegacyInstalls();
+            $this->checkAndCreateDefaultCategory();
+            $this->moveCurrentUploadedFiles();
+            $this->legacyDatabaseUpdates();
+            $this->fixOrderingParamForMenus();
+            $this->fixDownloadsViewParams();
+            $this->fixItemViewParams();
+            $this->checkParamStructure();
+
+        } catch (Exception $e) {
+            $this->setMessage($e->getMessage(), 'error');
+
+        } catch (Throwable $e) {
+            $this->setMessage($e->getMessage(), 'error');
+        }
+
+        // To catch any new messages that may have been queued
+        $this->showMessages();
+    }
+
+    /**
+     * Legacy configuration checks and warnings
+     */
+    protected function cleanLegacyInstalls()
+    {
         $db = JFactory::getDBO();
 
         // Check if mod_osdownloads is installed to show the warning of deprecated
@@ -56,17 +85,6 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
                 )
             );
         $db->setQuery($query)->execute();
-
-        // All other integrity checks and fixes
-        $this->checkAndCreateDefaultCategory();
-        $this->moveCurrentUploadedFiles();
-        $this->legacyDatabaseUpdates();
-        $this->fixOrderingParamForMenus();
-        $this->fixDownloadsViewParams();
-        $this->fixItemViewParams();
-
-        // To catch any new messages that may have been queued
-        $this->showMessages();
     }
 
     /**
@@ -514,6 +532,46 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
                     $db->setQuery($query)->execute();
                 }
             }
+        }
+    }
+
+    /**
+     * Adjust component parameters as needed
+     */
+    protected function checkParamStructure()
+    {
+        /** @var JTableExtension $table */
+        $table = JTable::getInstance('Extension');
+        $table->load(array('element' => 'com_osdownloads', 'type' => 'component'));
+
+        $data = json_decode($table->params);
+
+        // Mailinglist parameters have changed
+        if (isset($data->connect_mailchimp)) {
+            $params = new Registry($data);
+
+            $varMap = array(
+                'connect_mailchimp'       => 'mailinglist.mailchimp.enable',
+                'mailchimp_api'           => 'mailinglist.mailchimp.api',
+                'list_id'                 => 'mailinglist.mailchimp.list_id',
+                'mailchimp_groups'        => 'mailinglist.mailchimp.groups',
+                'mailchimp_double_option' => 'mailinglist.mailchimp.double_optin'
+            );
+
+            foreach ($varMap as $oldKey => $newKey) {
+                if ($value = $params->get($oldKey)) {
+                    $params->set($newKey, $value);
+                    $params->set($oldKey, null);
+                }
+            }
+            $data = $params->toObject();
+            unset($data->connect_mailchimp);
+            $params = new Registry($data);
+        }
+
+        if (!empty($params)) {
+            $table->params = $params->toString();
+            $table->store();
         }
     }
 }

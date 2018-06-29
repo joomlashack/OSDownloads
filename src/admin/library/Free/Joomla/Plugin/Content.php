@@ -30,11 +30,6 @@ defined('_JEXEC') or die();
 
 class Content extends \JPlugin
 {
-    public function __construct($subject, array $config = array())
-    {
-        parent::__construct($subject, $config);
-
-    }
     /**
      * @var bool
      */

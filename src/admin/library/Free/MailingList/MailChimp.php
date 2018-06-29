@@ -67,8 +67,8 @@ class MailChimp implements \JObserverInterface
     {
         $app    = Factory::getApplication();
         $params = $app->getParams('com_osdownloads');
-        $apiKey = $params->get("mailchimp_api", 0);
-        $listId = $params->get("list_id", 0);
+        $apiKey = $params->get("mailinglist.mailchimp.api", 0);
+        $listId = $params->get("mailinglist.mailchimp.list_id", 0);
 
         if (!empty($this->email)) {
             $mc = new \Mailchimp\Mailchimp($apiKey);

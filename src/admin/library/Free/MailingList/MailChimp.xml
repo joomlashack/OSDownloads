@@ -1,24 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
 <config>
     <fields name="mailinglist">
         <fields name="mailchimp">
-            <field name="connect_mailchimp"
+            <field name="enable"
                    type="radio"
                    class="btn-group btn-group-yesno"
                    default="0"
-                   label="COM_OSDOWNLOADS_CONNECT_TO_MAILCHIMP">
+                   label="COM_OSDOWNLOADS_ML_MAILCHIMP_ENABLE">
                 <option value="0">JNO</option>
                 <option value="1">JYES</option>
             </field>
 
-            <field name="mailchimp_api"
+            <field name="api"
                    type="text"
-                   label="COM_OSDOWNLOADS_MAILCHIMP_API"
-                   showon="connect_mailchimp:1"/>
+                   label="COM_OSDOWNLOADS_ML_MAILCHIMP_API"
+                   showon="enable:1"/>
 
             <field name="list_id"
                    type="text"
-                   label="COM_OSDOWNLOADS_LIST_ID"
-                   showon="connect_mailchimp:1"/>
+                   label="COM_OSDOWNLOADS_ML_MAILCHIMP_LIST_ID"
+                   showon="enable:1"/>
         </fields>
     </fields>
 </config>

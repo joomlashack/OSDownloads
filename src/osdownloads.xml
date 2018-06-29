@@ -115,7 +115,7 @@
                 type="module"
                 element="osdownloadsfiles"
                 uninstall="true"
-                updateversion="true">OSDownloadsFiles</extension>
+                downgrade="true">OSDownloadsFiles</extension>
 
             <extension
                 type="plugin"

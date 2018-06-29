@@ -24,6 +24,7 @@
 namespace Alledia\OSDownloads\Free\Joomla\Plugin;
 
 use Alledia\OSDownloads\MailingLists;
+use JFactory;
 
 defined('_JEXEC') or die();
 
@@ -34,6 +35,10 @@ class Content extends \JPlugin
         parent::__construct($subject, $config);
 
     }
+    /**
+     * @var bool
+     */
+    protected $enabled = null;
 
     /**
      * @param \JForm $form
@@ -42,6 +47,32 @@ class Content extends \JPlugin
      */
     public function onContentPrepareForm($form)
     {
-        MailingLists::loadConfigurationForms($form);
+        $app = JFactory::getApplication();
+
+        if ($this->isEnabled()
+            && $form->getName() == 'com_config.component'
+            && $app->input->getCmd('component') == 'com_osdownloads'
+        ) {
+            MailingLists::loadConfigurationForms($form);
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isEnabled()
+    {
+        if ($this->enabled === null) {
+            if (!defined('OSDOWNLOADS_LOADED')) {
+                $includePath = JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
+                if (is_file($includePath)) {
+                    require_once $includePath;
+                }
+            }
+
+            $this->enabled = defined('OSDOWNLOADS_LOADED');
+        }
+
+        return $this->enabled;
     }
 }

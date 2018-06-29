@@ -23,9 +23,33 @@ if (defined('OSDOWNLOADS_LOADED')) {
         class PlgContentOsdownloads extends \Alledia\OSDownloads\Pro\Joomla\Plugin\Content
         {
         }
-    } else {
+
+    } elseif (class_exists(sprintf($baseClass, 'Free'))) {
         class PlgContentOsdownloads extends \Alledia\OSDownloads\Free\Joomla\Plugin\Content
         {
+        }
+
+    } else {
+        class PlgContentOsdownloads extends JPlugin
+        {
+            protected $autoloadLanguage = true;
+
+            /**
+             * PlgContentOsdownloads constructor.
+             *
+             * @param JEventDispatcher $subject
+             * @param array            $config
+             *
+             * @throws Exception
+             */
+            public function __construct($subject, array $config = array())
+            {
+                parent::__construct($subject, $config);
+
+                JFactory::getApplication()->enqueueMessage(
+                    Jtext::sprintf('PLG_CONTENT_OSDOWNLOADS_NOT_INSTALLED', JText::_('PLG_CONTENT_OSDOWNLOADS'))
+                );
+            }
         }
     }
 }

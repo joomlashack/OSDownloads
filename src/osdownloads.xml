@@ -124,6 +124,13 @@
                 publish="true"
                 ordering="first">OSSystem</extension>
 
+            <extension
+                type="plugin"
+                group="content"
+                element="osdownloads"
+                publish="true"
+                downgrade="true"
+                uninstall="true">plg_content_osdownloads</extension>
         </relatedExtensions>
 
         <minify suffix=".min">

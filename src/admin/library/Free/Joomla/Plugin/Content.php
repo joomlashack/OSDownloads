@@ -21,17 +21,27 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Alledia\OSDownloads\Free;
+namespace Alledia\OSDownloads\Free\Joomla\Plugin;
 
-use Alledia\OSDownloads\Free\MailingList\MailChimp;
+use Alledia\OSDownloads\MailingLists;
 
 defined('_JEXEC') or die();
 
-abstract class MailingLists
+class Content extends \JPlugin
 {
-    public static function loadObservers(\JTable $table)
+    public function __construct($subject, array $config = array())
     {
-        \JFactory::getApplication()->enqueueMessage(__METHOD__);
-        MailChimp::createObserver($table);
+        parent::__construct($subject, $config);
+
+    }
+
+    /**
+     * @param \JForm $form
+     *
+     * @throws \Exception
+     */
+    public function onContentPrepareForm($form)
+    {
+        MailingLists::loadConfigurationForms($form);
     }
 }

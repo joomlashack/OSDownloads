@@ -106,17 +106,25 @@ abstract class MailingLists
         if ($mailingLists && $files) {
             $mailingLists = array_shift($mailingLists);
 
+            $configurations = array();
             foreach ($files as $file) {
                 $configuration = simplexml_load_file($file);
                 if ($newNode = $configuration->xpath('fields[@name="mailinglist"]/fields')) {
                     $newNode = array_shift($newNode);
-                    if ($group = (string)$newNode['name']) {
-                        $listNode = $mailingLists->addChild('fields');
-                        $listNode->addAttribute('name', $group);
-                        $newFields = $newNode->children();
-                        $form->setFields($newFields, 'mailinglist.' . $group);
+                    if (($group = (string)$newNode['name']) && empty($configurations[$group])) {
+                        $configurations[$group] = $newNode;
                     }
                 }
+            }
+
+            foreach ($configurations as $group => $configuration) {
+                $listNode = $mailingLists->xpath(sprintf('fields[@name="%s"]', $group));
+                if (!$listNode) {
+                    $listNode = $mailingLists->addChild('fields');
+                    $listNode->addAttribute('name', $group);
+                }
+                $newFields = $configuration->children();
+                $form->setFields($newFields, 'mailinglist.' . $group);
             }
         }
     }

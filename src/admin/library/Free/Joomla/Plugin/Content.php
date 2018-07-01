@@ -31,6 +31,11 @@ defined('_JEXEC') or die();
 class Content extends \JPlugin
 {
     /**
+     * @var \JApplicationCms
+     */
+    protected $app = null;
+
+    /**
      * @var bool
      */
     protected $enabled = null;

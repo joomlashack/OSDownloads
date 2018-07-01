@@ -537,6 +537,7 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
 
     /**
      * Adjust component parameters as needed
+     * @TODO: Move to AbstractInstaller script
      */
     protected function checkParamStructure()
     {
@@ -545,33 +546,37 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
         $table->load(array('element' => 'com_osdownloads', 'type' => 'component'));
 
         $data = json_decode($table->params);
+        $params = new Registry($data);
 
-        // Mailinglist parameters have changed
-        if (isset($data->connect_mailchimp)) {
-            $params = new Registry($data);
-
-            $varMap = array(
-                'connect_mailchimp'       => 'mailinglist.mailchimp.enable',
-                'mailchimp_api'           => 'mailinglist.mailchimp.api',
-                'list_id'                 => 'mailinglist.mailchimp.list_id',
-                'mailchimp_groups'        => 'mailinglist.mailchimp.groups',
-                'mailchimp_double_option' => 'mailinglist.mailchimp.double_optin'
-            );
-
-            foreach ($varMap as $oldKey => $newKey) {
-                if ($value = $params->get($oldKey)) {
-                    $params->set($newKey, $value);
-                    $params->set($oldKey, null);
-                }
+        $parameterMap = $this->getParameterChangeMap();
+        foreach ($parameterMap as $oldKey => $newKey) {
+            if ($value = $params->get($oldKey)) {
+                $params->set($newKey, $value);
+                $params->set($oldKey, null);
             }
-            $data = $params->toObject();
-            unset($data->connect_mailchimp);
-            $params = new Registry($data);
         }
 
-        if (!empty($params)) {
+        if ($data != $params->toObject()) {
             $table->params = $params->toString();
             $table->store();
         }
+    }
+
+    /**
+     * Return array mapping old Parameter kesy to new
+     *
+     * @return array
+     */
+    protected function getParameterChangeMap()
+    {
+        $parameterMap = array(
+            'connect_mailchimp'       => 'mailinglist.mailchimp.enable',
+            'mailchimp_api'           => 'mailinglist.mailchimp.api',
+            'list_id'                 => 'mailinglist.mailchimp.list_id',
+            'mailchimp_groups'        => 'mailinglist.mailchimp.groups',
+            'mailchimp_double_option' => 'mailinglist.mailchimp.double_optin'
+        );
+
+        return $parameterMap;
     }
 }

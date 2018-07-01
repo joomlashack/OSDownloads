@@ -28,6 +28,7 @@ use Alledia\Installer\Extension\Licensed;
 use JFolder;
 use JForm;
 use JTable;
+use SimpleXMLElement;
 
 defined('_JEXEC') or die();
 
@@ -116,6 +117,16 @@ abstract class MailingLists
                     }
                 }
             }
+
+            // Sort configuration field groups on optional 'order' attribute
+            uasort($configurations, function (SimpleXMLElement $a, SimpleXMLElement $b) {
+                $orderA = (int)$a['order'] ?: 999;
+                $orderB = (int)$b['order'] ?: 999;
+
+                return $orderA == $orderB
+                    ? 0
+                    : ($orderA < $orderB ? -1 : 1);
+            });
 
             foreach ($configurations as $group => $configuration) {
                 $listNode = $mailingLists->xpath(sprintf('fields[@name="%s"]', $group));

@@ -39,6 +39,7 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
             parent::postFlight($type, $parent);
 
             // All other integrity checks and fixes
+            $this->checkParamStructure();
             $this->cleanLegacyInstalls();
             $this->checkAndCreateDefaultCategory();
             $this->moveCurrentUploadedFiles();
@@ -46,7 +47,6 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
             $this->fixOrderingParamForMenus();
             $this->fixDownloadsViewParams();
             $this->fixItemViewParams();
-            $this->checkParamStructure();
 
         } catch (Exception $e) {
             $this->setMessage($e->getMessage(), 'error');

@@ -9,6 +9,7 @@
 defined('_JEXEC') or die();
 
 use Alledia\Framework\Factory;
+use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 
 jimport('joomla.application.component.modeladmin');
@@ -16,14 +17,11 @@ jimport('joomla.application.component.modeladmin');
 abstract class OSDownloadsModelFileAbstract extends JModelAdmin
 {
     /**
-     * Method to get the row form.
+     * @param array $data
+     * @param bool  $loadData
      *
-     * @param   array   $data     Data for the form.
-     * @param   boolean $loadData True if the form is to load its own data (default case), false if not.
-     *
-     * @return  mixed    A JForm object on success, false on failure
-     *
-     * @since   1.6
+     * @return JForm
+     * @throws Exception
      */
     public function getForm($data = array(), $loadData = true)
     {
@@ -35,11 +33,10 @@ abstract class OSDownloadsModelFileAbstract extends JModelAdmin
         $extension->loadLibrary();
 
         if (empty($form)) {
-            return false;
+            return null;
         }
 
-        if ($loadData)
-        {
+        if ($loadData) {
             $data = $this->loadFormData();
 
             // Load the data into the form after the plugins have operated.
@@ -49,33 +46,17 @@ abstract class OSDownloadsModelFileAbstract extends JModelAdmin
         return $form;
     }
 
-    /**
-     * Returns a JTable object, always creating it.
-     *
-     * @param   string  $type    The table type to instantiate. [optional]
-     * @param   string  $prefix  A prefix for the table class name. [optional]
-     * @param   array   $config  Configuration array for model. [optional]
-     *
-     * @return  JTable  A database object
-     *
-     * @since   1.6
-     */
     public function getTable($type = 'Document', $prefix = 'OSDownloadsTable', $config = array())
     {
         return JTable::getInstance($type, $prefix, $config);
     }
 
     /**
-     * Method to get the data that should be injected in the form.
-     *
-     * @return  mixed  The data for the form.
-     *
-     * @since   1.6
+     * @return array|bool|JObject|object
+     * @throws Exception
      */
     protected function loadFormData()
     {
-        $app = JFactory::getApplication();
-
         $data = $this->getItem();
 
         $this->preprocessData('com_osdownloads.file', $data);
@@ -84,40 +65,34 @@ abstract class OSDownloadsModelFileAbstract extends JModelAdmin
     }
 
     /**
-     * Method to get a single record.
+     * @param int $pk
      *
-     * @param   integer  $pk  The id of the primary key.
-     *
-     * @return  \JObject|boolean  Object on success, false on failure.
-     *
-     * @since   1.6
+     * @return JObject
+     * @throws Exception
      */
     public function getItem($pk = null)
     {
-        $pk = (!empty($pk)) ? $pk : (int) $this->getState()->get($this->getName() . '.id');
+        $pk    = $pk ?: (int)$this->getState()->get($this->getName() . '.id');
         $table = $this->getTable();
 
-        if ($pk > 0)
-        {
+        if ($pk > 0) {
             // Attempt to load the row.
             $return = $table->load($pk);
 
             // Check for a table object error.
-            if ($return === false && $table->getError())
-            {
+            if ($return === false && $table->getError()) {
                 $this->setError($table->getError());
 
-                return false;
+                return null;
             }
         }
 
-        // Convert to the \JObject before adding other data.
+        /** @var JObject $item */
         $properties = $table->getProperties(1);
-        $item = ArrayHelper::toObject($properties, '\JObject');
+        $item       = ArrayHelper::toObject($properties, '\JObject');
 
-        if (property_exists($item, 'params'))
-        {
-            $registry = new Registry($item->params);
+        if (property_exists($item, 'params')) {
+            $registry     = new Registry($item->params);
             $item->params = $registry->toArray();
         }
 

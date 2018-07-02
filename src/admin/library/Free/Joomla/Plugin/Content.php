@@ -24,7 +24,7 @@
 namespace Alledia\OSDownloads\Free\Joomla\Plugin;
 
 use Alledia\OSDownloads\MailingLists;
-use JFactory;
+use Exception;
 
 defined('_JEXEC') or die();
 
@@ -45,6 +45,7 @@ class Content extends \JPlugin
      * @param object $data
      *
      * @return bool
+     * @throws Exception
      */
     public function onContentPrepareForm($form, $data)
     {

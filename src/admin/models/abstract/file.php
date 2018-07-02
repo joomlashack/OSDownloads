@@ -34,10 +34,6 @@ abstract class OSDownloadsModelFileAbstract extends JModelAdmin
         $extension = Factory::getExtension('OSDownloads', 'component');
         $extension->loadLibrary();
 
-        if ($extension->isPro()) {
-            $form->loadFile(JPATH_COMPONENT . '/models/forms/file_pro.xml', true);
-        }
-
         if (empty($form)) {
             return false;
         }

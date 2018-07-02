@@ -50,7 +50,20 @@ abstract class MailingLists
     protected static $baseClass = '\\Alledia\\OSDownloads';
 
     /**
-     * Find all Mailing List plugins and attach
+     * @var string[]
+     */
+    protected static $sourceNames = array(
+        'com_config.component'                   => 'config',
+        'com_categories.categorycom_osdownloads' => 'category'
+    );
+
+    /**
+     * @var string
+     */
+    protected static $xpathMailinglists = '//fields[@name="mailinglist"]';
+
+    /**
+     * Find all Mailing List plugins and attach as Table observers
      *
      * @param JTable $table
      *
@@ -69,11 +82,51 @@ abstract class MailingLists
     }
 
     /**
+     * Load plugin fragments to selected forms. The target form requires:
+     * <fields name="mailinglist"/>
+     *
+     * The plugin source form file must be structured as:
+     * <form order="##" group="PluginName">
+     *    <fields name="FormName">
+     *       <FormField tag>
+     *       ...
+     *    </fields>
+     * </form>
+     *
+     * ##              : (Optional) ordering/priority for the plugin form fragment in the form
+     * PluginGroupName : The field group name for the added fields in the form
+     * FormName        : A form name listed in static::$sourceNames
+     *
+     * @param JForm $form
+     *
+     * @throws \Exception
+     */
+    public static function loadForms(JForm $form)
+    {
+        if ($formFiles = static::getPluginFiles('xml')) {
+            $formName = $form->getName();
+
+            if (!empty(static::$sourceNames[$formName])) {
+                $sourceName = static::$sourceNames[$formName];
+
+                // Special handling for configuration form
+                if ($sourceName == 'config'
+                    && \JFactory::getApplication()->input->getCmd('component') != 'com_osdownloads'
+                ) {
+                    return;
+                }
+
+                static::addFields($formFiles, $form, $sourceName);
+            }
+        }
+    }
+
+    /**
      * Load all xmk configuration files for mailing list plugins
      *
      * @return string[]
      */
-    public static function getPluginFiles($type)
+    protected static function getPluginFiles($type)
     {
         jimport('joomla.filesystem.folder');
 
@@ -107,56 +160,53 @@ abstract class MailingLists
     }
 
     /**
-     * @param JForm $form
-     *
-     * @throws \Exception
-     */
-    public static function loadForms(JForm $form)
-    {
-        if ($formFiles = static::getPluginFiles('xml')) {
-            switch ($form->getName()) {
-                case 'com_config.component':
-                    $component = \JFactory::getApplication()->input->getCmd('component');
-                    if ($component == 'com_osdownloads') {
-                        static::loadConfigurationForms($form, $formFiles);
-                    }
-                    break;
-            }
-        }
-    }
-
-    /**
-     * Add Mailing list fields to OSDownloads Configuration form
-     * which must contain the tag
-     * <fields name="mailinglist"/>
-     *
-     * @param JForm    $form
      * @param string[] $files
+     * @param string   $name
+     *
+     * @return array
      */
-    protected static function loadConfigurationForms(JForm $form, $files)
+    protected static function getFormSources($files, $name)
     {
-        $mailingLists = $form->getXml()->xpath('//fields[@name="mailinglist"]');
+        $sources = array();
+        foreach ($files as $file) {
+            $source  = simplexml_load_file($file);
+            $group   = (string)$source['group'];
+            $order   = (int)$source['order'] ?: 999;
+            $newNode = $source->xpath(sprintf('fields[@name="%s"]', $name));
 
-        if ($mailingLists && $files) {
-            $mailingLists = array_shift($mailingLists);
+            if ($group && $newNode) {
+                $newNode = array_shift($newNode);
+                if (!(int)$newNode['order']) {
+                    $newNode->addAttribute('order', $order);
+                }
 
-            $configurations = array();
-            foreach ($files as $file) {
-                $configuration = simplexml_load_file($file);
-                if ($newNode = $configuration->xpath('fields[@name="config"]/fields')) {
-                    $newNode = array_shift($newNode);
-                    if (!(int)$newNode['order']) {
-                        $newNode->addAttribute('order', (int)$configuration['order']);
-                    }
-
-                    if (($group = (string)$newNode['name']) && empty($configurations[$group])) {
-                        $configurations[$group] = $newNode;
-                    }
+                if (empty($sources[$group])) {
+                    $sources[$group] = $newNode;
                 }
             }
+        }
 
-            // Sort configuration field groups on optional 'order' attribute
-            uasort($configurations, function (SimpleXMLElement $a, SimpleXMLElement $b) {
+        return $sources;
+    }
+
+    protected static function addFields($files, JForm $form, $sourceName)
+    {
+        $sources = static::getFormSources($files, $sourceName);
+
+        if ($target = $form->getXml()->xpath(static::$xpathMailinglists)) {
+            $target = array_shift($target);
+        }
+
+        if ($sources && $target) {
+            $parents        = $target->xpath('ancestor::fields[@name]/@name');
+            $parentGroups   = array_map('strval', $parents ?: array());
+            $parentGroups[] = (string)$target['name'];
+            $parentGroup    = join('.', $parentGroups) . '.';
+
+            var_dump($parentGroup);
+
+            // Sort field groups on optional 'order' attribute
+            uasort($sources, function (SimpleXMLElement $a, SimpleXMLElement $b) {
                 $orderA = (int)$a['order'] ?: 999;
                 $orderB = (int)$b['order'] ?: 999;
 
@@ -165,14 +215,14 @@ abstract class MailingLists
                     : ($orderA < $orderB ? -1 : 1);
             });
 
-            foreach ($configurations as $group => $configuration) {
-                $listNode = $mailingLists->xpath(sprintf('fields[@name="%s"]', $group));
+            foreach ($sources as $group => $source) {
+                $listNode = $target->xpath(sprintf('fields[@name="%s"]', $group));
                 if (!$listNode) {
-                    $listNode = $mailingLists->addChild('fields');
+                    $listNode = $target->addChild('fields');
                     $listNode->addAttribute('name', $group);
                 }
-                $newFields = $configuration->children();
-                $form->setFields($newFields, 'mailinglist.' . $group);
+                $newFields = $source->children();
+                $form->setFields($newFields, $parentGroup . $group);
             }
         }
     }

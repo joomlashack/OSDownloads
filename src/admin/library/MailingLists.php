@@ -58,7 +58,7 @@ abstract class MailingLists
      */
     public static function loadObservers(JTable $table)
     {
-        $plugins = static::getConfigurationFiles('php');
+        $plugins = static::getPluginFiles('php');
 
         foreach ($plugins as $pluginPath) {
             /** @var \JObserverInterface $pluginClass */
@@ -73,36 +73,69 @@ abstract class MailingLists
      *
      * @return string[]
      */
-    public static function getConfigurationFiles($type)
+    public static function getPluginFiles($type)
     {
         jimport('joomla.filesystem.folder');
 
-        $extension = Factory::getExtension('OSDownloads', 'component');
+        $baseFolder = '/MailingList';
+        $regex      = sprintf('\.%s$', $type);
+        $extension  = Factory::getExtension('OSDownloads', 'component');
 
-        $freePath = $extension->getLibraryPath() . '/Free';
-        $proPath  = $extension->isPro() ? $extension->getProLibraryPath() : null;
+        $configFiles = array();
 
-        $folder = '/MailingList';
+        // Collect Pro configuration files first
+        if ($extension->isPro()) {
+            $proPath  = $extension->getProLibraryPath() . $baseFolder;
+            $proFiles = JFolder::files($proPath, $regex, false, true);
+            foreach ($proFiles as $proFile) {
+                $key               = strtolower(basename($proFile, '.' . $type));
+                $configFiles[$key] = $proFile;
+            }
+        }
 
-        $regex       = sprintf('\.%s$', $type);
-        $configFiles = array_merge(
-            $proPath ? JFolder::files($proPath . $folder, $regex, false, true) : array(),
-            JFolder::files($freePath . $folder, $regex, false, true)
-        );
+        // Collect free files but don't override pro versions
+        $freePath  = $extension->getLibraryPath() . '/Free' . $baseFolder;
+        $freeFiles = JFolder::files($freePath, $regex, false, true);
+        foreach ($freeFiles as $freeFile) {
+            $key = strtolower(basename($freeFile, '.' . $type));
+            if (empty($configFiles[$key])) {
+                $configFiles[$key] = $freeFile;
+            }
+        }
 
         return $configFiles;
     }
 
     /**
-     * Add Mailing list fields to any JForm that has a
-     * <fields name="mailinglist"/> tag
-     *
      * @param JForm $form
+     *
+     * @throws \Exception
      */
-    public static function loadConfigurationForms(JForm $form)
+    public static function loadForms(JForm $form)
+    {
+        if ($formFiles = static::getPluginFiles('xml')) {
+            switch ($form->getName()) {
+                case 'com_config.component':
+                    $component = \JFactory::getApplication()->input->getCmd('component');
+                    if ($component == 'com_osdownloads') {
+                        static::loadConfigurationForms($form, $formFiles);
+                    }
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Add Mailing list fields to OSDownloads Configuration form
+     * which must contain the tag
+     * <fields name="mailinglist"/>
+     *
+     * @param JForm    $form
+     * @param string[] $files
+     */
+    protected static function loadConfigurationForms(JForm $form, $files)
     {
         $mailingLists = $form->getXml()->xpath('//fields[@name="mailinglist"]');
-        $files        = static::getConfigurationFiles('xml');
 
         if ($mailingLists && $files) {
             $mailingLists = array_shift($mailingLists);
@@ -110,8 +143,12 @@ abstract class MailingLists
             $configurations = array();
             foreach ($files as $file) {
                 $configuration = simplexml_load_file($file);
-                if ($newNode = $configuration->xpath('fields[@name="mailinglist"]/fields')) {
+                if ($newNode = $configuration->xpath('fields[@name="config"]/fields')) {
                     $newNode = array_shift($newNode);
+                    if (!(int)$newNode['order']) {
+                        $newNode->addAttribute('order', (int)$configuration['order']);
+                    }
+
                     if (($group = (string)$newNode['name']) && empty($configurations[$group])) {
                         $configurations[$group] = $newNode;
                     }

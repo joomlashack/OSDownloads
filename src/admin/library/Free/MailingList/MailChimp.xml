@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<config>
-    <fields name="mailinglist">
+<form>
+    <fields name="config">
         <fields name="mailchimp">
             <field name="enable"
                    type="radio"
@@ -22,4 +22,4 @@
                    showon="enable:1"/>
         </fields>
     </fields>
-</config>
+</form>

@@ -42,19 +42,17 @@ class Content extends \JPlugin
 
     /**
      * @param \JForm $form
+     * @param object $data
      *
-     * @throws \Exception
+     * @return bool
      */
-    public function onContentPrepareForm($form)
+    public function onContentPrepareForm($form, $data)
     {
-        $app = JFactory::getApplication();
-
-        if ($this->isEnabled()
-            && $form->getName() == 'com_config.component'
-            && $app->input->getCmd('component') == 'com_osdownloads'
-        ) {
-            MailingLists::loadConfigurationForms($form);
+        if ($this->isEnabled()) {
+            MailingLists::loadForms($form);
         }
+
+        return true;
     }
 
     /**

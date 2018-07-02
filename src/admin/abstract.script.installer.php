@@ -572,9 +572,7 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
         $parameterMap = array(
             'connect_mailchimp'       => 'mailinglist.mailchimp.enable',
             'mailchimp_api'           => 'mailinglist.mailchimp.api',
-            'list_id'                 => 'mailinglist.mailchimp.list_id',
-            'mailchimp_groups'        => 'mailinglist.mailchimp.groups',
-            'mailchimp_double_option' => 'mailinglist.mailchimp.double_optin'
+            'list_id'                 => 'mailinglist.mailchimp.list_id'
         );
 
         return $parameterMap;

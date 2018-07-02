@@ -203,8 +203,6 @@ abstract class MailingLists
             $parentGroups[] = (string)$target['name'];
             $parentGroup    = join('.', $parentGroups) . '.';
 
-            var_dump($parentGroup);
-
             // Sort field groups on optional 'order' attribute
             uasort($sources, function (SimpleXMLElement $a, SimpleXMLElement $b) {
                 $orderA = (int)$a['order'] ?: 999;

@@ -54,7 +54,8 @@ abstract class MailingLists
      */
     protected static $sourceNames = array(
         'com_config.component'                   => 'config',
-        'com_categories.categorycom_osdownloads' => 'category'
+        'com_categories.categorycom_osdownloads' => 'category',
+        'com_osdownloads.file'                   => 'file'
     );
 
     /**

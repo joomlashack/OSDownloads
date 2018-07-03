@@ -28,15 +28,31 @@ use Alledia\OSDownloads\Free\Joomla\Table\Email as EmailTableFree;
 use Exception;
 use JObservableInterface;
 use JObserverInterface;
+use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die();
 
+/**
+ * Class MailChimp
+ *
+ * @package Alledia\OSDownloads\Free\MailingList
+ */
 class MailChimp implements JObserverInterface
 {
     /**
      * @var EmailTableFree
      */
     protected $table = null;
+
+    /**
+     * @var Registry
+     */
+    protected static $params = null;
+
+    /**
+     * @var \Mailchimp\Mailchimp
+     */
+    protected static $apiManager = null;
 
     public function __construct(JObservableInterface $table)
     {
@@ -77,18 +93,12 @@ class MailChimp implements JObserverInterface
      */
     protected function addToList()
     {
-        /** @var \JApplicationSite $app */
         $app    = Factory::getApplication();
-        $params = $app->getParams('com_osdownloads');
+        $email  = empty($this->table->email) ? null : $this->table->email;
+        $mc     = static::getMailChimp();
+        $listId = static::getParams()->get("mailinglist.mailchimp.list_id", 0);
 
-        $enabled = $params->get('mailinglist.mailchimp.enable');
-        $apiKey  = $params->get("mailinglist.mailchimp.api", 0);
-        $listId  = $params->get("mailinglist.mailchimp.list_id", 0);
-        $email   = empty($this->table->email) ? null : $this->table->email;
-
-        if ($email && $enabled && $apiKey && $listId) {
-            $mc = new \Mailchimp\Mailchimp($apiKey);
-
+        if ($email && $mc && $listId) {
             // Check if the email already exists
             try {
                 $result = $mc->get("lists/{$listId}/members/" . md5(strtolower($email)));
@@ -107,5 +117,41 @@ class MailChimp implements JObserverInterface
                 ));
             }
         }
+    }
+
+    /**
+     * @return \Mailchimp\Mailchimp
+     */
+    public static function getMailChimp()
+    {
+        if (static::$apiManager === null) {
+            static::$apiManager = false;
+            try {
+                $params  = static::getParams();
+                $enabled = $params->get('mailinglist.mailchimp.enable');
+                $apiKey  = $params->get("mailinglist.mailchimp.api", 0);
+                if ($enabled && $apiKey) {
+                    static::$apiManager = new \Mailchimp\Mailchimp($apiKey);
+                }
+
+            } catch (Exception $e) {
+                // Just ignore this
+            }
+        }
+
+        return static::$apiManager ?: null;
+    }
+
+    /**
+     * @return Registry
+     * @throws Exception
+     */
+    protected static function getParams()
+    {
+        if (static::$params === null) {
+            static::$params = Factory::getApplication()->getParams('com_osdownloads');
+        }
+
+        return static::$params;
     }
 }

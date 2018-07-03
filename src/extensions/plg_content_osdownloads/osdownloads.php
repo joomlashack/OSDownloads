@@ -16,14 +16,9 @@ if (!defined('OSDOWNLOADS_LOADED')) {
 }
 
 if (defined('OSDOWNLOADS_LOADED')) {
-    $baseClass = '\\Alledia\\OSDownloads\\%s\\Joomla\\Plugin\\Content';
+    $className = '\\Alledia\\OSDownloads\\Free\\Joomla\\Plugin\\Content';
 
-    if (class_exists(sprintf($baseClass, 'Pro'))) {
-        class PlgContentOsdownloads extends \Alledia\OSDownloads\Pro\Joomla\Plugin\Content
-        {
-        }
-
-    } elseif (class_exists(sprintf($baseClass, 'Free'))) {
+    if (class_exists($className)) {
         class PlgContentOsdownloads extends \Alledia\OSDownloads\Free\Joomla\Plugin\Content
         {
         }

@@ -25,6 +25,7 @@ namespace Alledia\OSDownloads\Free\MailingList;
 
 use Alledia\OSDownloads\Free\Factory;
 use Alledia\OSDownloads\Free\Joomla\Table\Email as EmailTableFree;
+use Alledia\OSDownloads\MailingLists\AbstractClient;
 use Exception;
 use JObservableInterface;
 use JObserverInterface;
@@ -37,7 +38,7 @@ defined('_JEXEC') or die();
  *
  * @package Alledia\OSDownloads\Free\MailingList
  */
-class MailChimp implements JObserverInterface
+class MailChimp extends AbstractClient
 {
     /**
      * @var EmailTableFree

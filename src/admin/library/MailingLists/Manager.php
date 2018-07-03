@@ -21,7 +21,7 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Alledia\OSDownloads;
+namespace Alledia\OSDownloads\MailingLists;
 
 use Alledia\Framework\Factory;
 use Alledia\Installer\Extension\Licensed;
@@ -32,7 +32,7 @@ use SimpleXMLElement;
 
 defined('_JEXEC') or die();
 
-abstract class MailingLists
+abstract class Manager
 {
     /**
      * @var Licensed

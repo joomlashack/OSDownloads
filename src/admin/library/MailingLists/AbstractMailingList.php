@@ -21,57 +21,44 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Alledia\OSDownloads\Free\Joomla\Plugin;
+namespace Alledia\OSDownloads\MailingLists;
 
-use Alledia\OSDownloads\MailingLists;
-use Exception;
+use CategoriesTableCategory;
+use Joomla\Registry\Registry;
+use JTable;
 
 defined('_JEXEC') or die();
 
-class Content extends \JPlugin
+abstract class AbstractClient implements \JObserverInterface
 {
     /**
-     * @var \JApplicationCms
+     * @var CategoriesTableCategory[]
      */
-    protected $app = null;
+    protected static $categories = array();
 
     /**
-     * @var bool
-     */
-    protected $enabled = null;
-
-    /**
-     * @param \JForm $form
-     * @param object $data
+     * @param int $categoryId
      *
-     * @return bool
-     * @throws Exception
+     * @return CategoriesTableCategory
      */
-    public function onContentPrepareForm($form, $data)
+    protected function getCategory($categoryId)
     {
-        if ($this->isEnabled()) {
-            MailingLists\Manager::loadForms($form);
-        }
+        $categoryId = (int)$categoryId;
+        if ($categoryId && empty(static::$categories[$categoryId])) {
+            /** @var CategoriesTableCategory $category */
+            $category = JTable::getInstance('Category', 'JTable');
+            $category->load($categoryId);
 
-        return true;
-    }
-
-    /**
-     * @return bool
-     */
-    protected function isEnabled()
-    {
-        if ($this->enabled === null) {
-            if (!defined('OSDOWNLOADS_LOADED')) {
-                $includePath = JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
-                if (is_file($includePath)) {
-                    require_once $includePath;
-                }
+            if (!$category->params instanceof Registry) {
+                $category->params = new Registry($category->params);
             }
-
-            $this->enabled = defined('OSDOWNLOADS_LOADED');
+            static::$categories[$categoryId] = $category;
         }
 
-        return $this->enabled;
+        if (!empty(static::$categories[$categoryId])) {
+            return static::$categories[$categoryId];
+        }
+
+        return null;
     }
 }

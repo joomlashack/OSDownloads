@@ -21,13 +21,6 @@ use Joomla\Registry\Registry;
 class AbstractOSDownloadsInstallerScript extends AbstractScript
 {
     /**
-     * Flag to set if the old mod_osdownloads is installed
-     *
-     * @var boolean
-     */
-    protected $deprecatedModOSDownloadsIsInstalled;
-
-    /**
      * Method to run after an install/update method
      *
      * @return void
@@ -40,10 +33,7 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
 
             // All other integrity checks and fixes
             $this->checkParamStructure();
-            $this->cleanLegacyInstalls();
             $this->checkAndCreateDefaultCategory();
-            $this->moveCurrentUploadedFiles();
-            $this->legacyDatabaseUpdates();
             $this->fixOrderingParamForMenus();
             $this->fixDownloadsViewParams();
             $this->fixItemViewParams();
@@ -57,223 +47,6 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
 
         // To catch any new messages that may have been queued
         $this->showMessages();
-    }
-
-    /**
-     * Legacy configuration checks and warnings
-     */
-    protected function cleanLegacyInstalls()
-    {
-        $db = JFactory::getDBO();
-
-        // Check if mod_osdownloads is installed to show the warning of deprecated
-        $query = $db->getQuery(true)
-            ->select('COUNT(*)')
-            ->from('#__extensions')
-            ->where($db->qn('type') . '=' . $db->q('module'))
-            ->where($db->qn('element') . '=' . $db->q('mod_osdownloads'));
-        $db->setQuery($query);
-        $this->deprecatedModOSDownloadsIsInstalled = (int)$db->loadResult();
-
-        // Remove the old pkg_osdownloads, if existent
-        $query = $db->getQuery(true)
-            ->delete('#__extensions')
-            ->where(
-                array(
-                    $db->quoteName('type') . '=' . $db->quote('package'),
-                    $db->quoteName('element') . '=' . $db->quote('pkg_osdownloads')
-                )
-            );
-        $db->setQuery($query)->execute();
-    }
-
-    /**
-     * Method to move the current files to the new upload folder
-     *
-     * @return void
-     */
-    protected function moveCurrentUploadedFiles()
-    {
-        jimport('joomla.filesystem.folder');
-        jimport('joomla.filesystem.file');
-
-        $oldUploadPath = JPATH_SITE . '/media/OSDownloads';
-        $newUploadPath = JPATH_SITE . '/media/com_osdownloads/files';
-
-        if (JFolder::exists($oldUploadPath)) {
-            $files = JFolder::files($oldUploadPath);
-            if (!empty($files)) {
-                // Move all the files
-                if (!JFolder::exists($newUploadPath)) {
-                    JFolder::create($newUploadPath);
-                }
-
-                foreach ($files as $file) {
-                    $current = "{$oldUploadPath}/{$file}";
-                    $new     = "{$newUploadPath}/{$file}";
-                    $a       = JFile::move($current, $new);
-                }
-            }
-
-            // Try to remove the old folder, if it is empty
-            $files                 = JFolder::files($oldUploadPath);
-            $oldUploadRelativePath = str_replace(JPATH_SITE . DIRECTORY_SEPARATOR, '', $oldUploadPath);
-            $newUploadRelativePath = str_replace(JPATH_SITE . DIRECTORY_SEPARATOR, '', $newUploadPath);
-            if (empty($files)) {
-                JFolder::delete($oldUploadPath);
-                $this->setMessage(
-                    JText::sprintf(
-                        'COM_OSDOWNLOADS_INSTALL_REMOVED_FOLDER',
-                        $oldUploadRelativePath,
-                        $newUploadRelativePath
-                    )
-                );
-
-            } else {
-                $this->setMessage(
-                    JText::sprintf('COM_OSDOWNLOADS_INSTALL_COULD_NOT_REMOVE_FOLDER', $oldUploadRelativePath)
-                );
-            }
-        }
-    }
-
-    /**
-     * Check and fix various legacy database versions
-     *
-     * @return void
-     */
-    protected function legacyDatabaseUpdates()
-    {
-        $db = JFactory::getDbo();
-
-        $db->setQuery("SHOW COLUMNS FROM #__osdownloads_documents");
-        $rows       = $db->loadObjectList();
-        $db_version = "1.0.0";
-
-        $has_show_email    = false;
-        $has_description_3 = false;
-        $has_direct_field  = false;
-        $has_file_url      = false;
-
-        foreach ($rows as $row) {
-            if ($row->Field == "show_email") {
-                $has_show_email = true;
-            }
-
-            if ($row->Field == "description_3") {
-                $has_description_3 = true;
-            }
-
-            if ($row->Field == "direct_page") {
-                $has_direct_field = true;
-            }
-
-            if ($row->Field == "file_url") {
-                $has_file_url = true;
-            }
-
-            if ($row->Field == "file_url") {
-                $has_file_url = true;
-            }
-        }
-
-        if ($has_show_email && !$has_description_3) {
-            $db_version = "1.0.1";
-        }
-
-        if ($has_show_email && $has_description_3) {
-            $db_version = "1.0.2";
-        }
-
-        if ($has_direct_field) {
-            $db_version = "1.0.3";
-        }
-
-        if ($db_version == "1.0.0") {
-            echo("<div>Migrate database from version 1.0.0 to 1.0.3</div>");
-            $db->setQuery(
-                file_get_contents(
-                    JPATH_ADMINISTRATOR . '/components/com_osdownloads/sql/update_1.0.0_1.0.3.mysql.utf8.sql'
-                )
-            )->execute();
-        }
-
-        if ($db_version == "1.0.1") {
-            echo("<div>Migrate database from version 1.0.1 to 1.0.3</div>");
-            $db->setQuery(
-                file_get_contents(
-                    JPATH_ADMINISTRATOR . '/components/com_osdownloads/sql/update_1.0.1_1.0.3.mysql.utf8.sql'
-                )
-            )->execute();
-        }
-
-        if ($db_version == "1.0.2") {
-            echo("<div>Migrate database from version 1.0.2 to 1.0.3</div>");
-            $db->setQuery(
-                file_get_contents(
-                    JPATH_ADMINISTRATOR . '/components/com_osdownloads/sql/update_1.0.2_1.0.3.mysql.utf8.sql'
-                )
-            )->execute();
-        }
-        if (!$has_description_3) {
-            // Fix database if upgrade from version 1.0.2 (new install). If upgrade from 1.0.x to 1.0.2 it still correct
-            $db->setQuery("SHOW COLUMNS FROM #__osdownloads_documents");
-            $rows              = $db->loadObjectList();
-            $has_description_3 = false;
-            foreach ($rows as $row) {
-                if ($row->Field == "description_3") {
-                    $has_description_3 = true;
-                }
-            }
-            if (!$has_description_3) {
-                echo("<div>Apply patch for database version 1.0.2</div>");
-                $db->setQuery(
-                    sprintf(
-                        'ALTER TABLE %s ADD %s TEXT NOT NULL AFTER %s',
-                        $db->quoteName('#__osdownloads_documents'),
-                        $db->quoteName('description_3'),
-                        $db->quoteName('description_2')
-                    )
-                )->execute();
-            }
-        }
-
-        if (!$has_file_url) {
-            echo("<div>Migrate database for remote files</div>");
-            $sql = file_get_contents(JPATH_ADMINISTRATOR . "/components/com_osdownloads/sql/updates/mysql/1.0.17.sql");
-            $db->setQuery($sql)->execute();
-        }
-
-        // Legacy database update
-        $columns = array(
-            'external_ref'         => 'VARCHAR(100)',
-            'access'               => 'INT(11) NOT NULL DEFAULT 1',
-            'agreement_article_id' => 'INT(11)',
-            'created_user_id'      => 'INT(10) UNSIGNED NOT NULL DEFAULT "0"',
-            'created_time'         => 'DATETIME NOT NULL DEFAULT "0000-00-00 00:00:00"',
-            'modified_user_id'     => 'INT(10) unsigned NOT NULL DEFAULT "0"',
-            'modified_time'        => 'DATETIME NOT NULL DEFAULT "0000-00-00 00:00:00"'
-        );
-        $this->addColumnsIfNotExists('#__osdownloads_documents', $columns);
-
-        $columns = array(
-            'parent_id',
-            'cms_version',
-            'picture'
-        );
-        $this->dropColumnsIfExists('#__osdownloads_documents', $columns);
-
-        if ($has_show_email) {
-            $this->removeDeprecatedFieldShowEmail();
-        }
-
-        $db->setQuery(
-            sprintf(
-                'ALTER TABLE %1$s CHANGE %2$s %2$s BIGINT(20) NOT NULL  AUTO_INCREMENT',
-                $db->quoteName('#__osdownloads_emails'),
-                $db->quoteName('id')
-            )
-        )->execute();
     }
 
     /**
@@ -355,31 +128,6 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
                 }
             }
         }
-    }
-
-    /**
-     * @return void
-     */
-    protected function removeDeprecatedFieldShowEmail()
-    {
-        $db = JFactory::getDBO();
-
-        // Fix the current data
-        $query = $db->getQuery(true)
-            ->update('#__osdownloads_documents')
-            ->set('require_email = 2')
-            ->where('show_email = 1')
-            ->where('require_email = 0');
-        $db->setQuery($query)->execute();
-
-        // Drop the show_email column
-        $db->setQuery(
-            sprintf(
-                'ALTER TABLE %s DROP COLUMN %s',
-                $db->quoteName('#__osdownloads_documents'),
-                $db->quoteName('show_email')
-            )
-        )->execute();
     }
 
     /**
@@ -537,6 +285,7 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
 
     /**
      * Adjust component parameters as needed
+     *
      * @TODO: Move to AbstractInstaller script
      */
     protected function checkParamStructure()
@@ -545,7 +294,7 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
         $table = JTable::getInstance('Extension');
         $table->load(array('element' => 'com_osdownloads', 'type' => 'component'));
 
-        $data = json_decode($table->params);
+        $data   = json_decode($table->params);
         $params = new Registry($data);
 
         $parameterMap = $this->getParameterChangeMap();
@@ -570,9 +319,9 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
     protected function getParameterChangeMap()
     {
         $parameterMap = array(
-            'connect_mailchimp'       => 'mailinglist.mailchimp.enable',
-            'mailchimp_api'           => 'mailinglist.mailchimp.api',
-            'list_id'                 => 'mailinglist.mailchimp.list_id'
+            'connect_mailchimp' => 'mailinglist.mailchimp.enable',
+            'mailchimp_api'     => 'mailinglist.mailchimp.api',
+            'list_id'           => 'mailinglist.mailchimp.list_id'
         );
 
         return $parameterMap;

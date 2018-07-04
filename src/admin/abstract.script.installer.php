@@ -31,7 +31,6 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
         try {
             parent::postFlight($type, $parent);
 
-            // All other integrity checks and fixes
             $this->checkParamStructure();
             $this->checkAndCreateDefaultCategory();
             $this->fixOrderingParamForMenus();

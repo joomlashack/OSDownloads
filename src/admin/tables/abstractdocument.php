@@ -12,45 +12,6 @@ require_once __DIR__ . '/abstract.php';
 
 class OSDownloadsTableAbstractDocument extends OSDownloadsTableAbstract
 {
-    public $id;
-    public $cate_id;
-    public $documents;
-    public $name;
-    public $alias;
-    public $brief;
-    public $description_1;
-    public $description_2;
-    public $description_3;
-    public $require_email;
-    public $require_agree;
-    public $download_text;
-    public $download_color;
-    public $documentation_link;
-    public $demo_link;
-    public $support_link;
-    public $other_name;
-    public $other_link;
-    public $file_path;
-    public $file_url;
-    public $downloaded;
-    public $direct_page;
-    public $published = true;
-    public $ordering;
-    public $external_ref;
-    public $access;
-    public $agreement_article_id;
-    public $created_user_id;
-    public $created_time;
-    public $modified_user_id;
-    public $modified_time;
-
-    /**
-     * Event dispatcher
-     *
-     * @var JEventDispatcher
-     */
-    protected $dispatcher;
-
     public function __construct(&$_db)
     {
         parent::__construct('#__osdownloads_documents', 'id', $_db);

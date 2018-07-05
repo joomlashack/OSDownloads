@@ -103,7 +103,7 @@
         <license>free</license>
         <targetplatform>3.7</targetplatform>
         <phpminimum>5.6</phpminimum>
-        <previousminimum>1.4.9</previousminimum>
+        <previousminimum>1.7.2</previousminimum>
 
         <include>AllediaFreeDefaultFiles</include>
 

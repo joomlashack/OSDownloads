@@ -91,7 +91,6 @@ class MailChimp extends AbstractClient
                     // Check if the email already exists
                     try {
                         $result = $mc->get("lists/{$listId}/members/" . md5(strtolower($email)));
-                        $app->enqueueMessage('<pre>' . print_r($result, 1) . '</pre>');
                         $result = $result->toArray();
 
                     } catch (Exception $e) {

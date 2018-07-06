@@ -85,35 +85,37 @@ class MailChimp extends AbstractClient
      */
     public function onAfterStore($result)
     {
-        try {
-            $app    = Factory::getApplication();
-            $email  = empty($this->table->email) ? null : $this->table->email;
-            $mc     = static::getMailChimp();
-            $listId = static::getParams()->get("mailinglist.mailchimp.list_id", 0);
+        if ($result) {
+            try {
+                $app    = Factory::getApplication();
+                $email  = empty($this->table->email) ? null : $this->table->email;
+                $mc     = static::getMailChimp();
+                $listId = static::getParams()->get("mailinglist.mailchimp.list_id", 0);
 
-            if ($email && $mc && $listId) {
-                // Check if the email already exists
-                try {
-                    $result = $mc->get("lists/{$listId}/members/" . md5(strtolower($email)));
-                    $app->enqueueMessage('<pre>' . print_r($result, 1) . '</pre>');
-                    $result = $result->toArray();
+                if ($email && $mc && $listId) {
+                    // Check if the email already exists
+                    try {
+                        $result = $mc->get("lists/{$listId}/members/" . md5(strtolower($email)));
+                        $app->enqueueMessage('<pre>' . print_r($result, 1) . '</pre>');
+                        $result = $result->toArray();
 
-                } catch (Exception $e) {
-                    $result = array('status' => 'unsubscribed');
+                    } catch (Exception $e) {
+                        $result = array('status' => 'unsubscribed');
+                    }
+
+                    if ($result['status'] === 'unsubscribed') {
+                        // The email is not subscribed. Let's subscribe it.
+                        $mc->post("lists/{$listId}/members/", array(
+                            'email_address' => $email,
+                            'status'        => 'subscribed'
+                        ));
+                    }
                 }
 
-                if ($result['status'] === 'unsubscribed') {
-                    // The email is not subscribed. Let's subscribe it.
-                    $mc->post("lists/{$listId}/members/", array(
-                        'email_address' => $email,
-                        'status'        => 'subscribed'
-                    ));
-                }
+            } catch (Exception $e) {
+                \JLog::addLogger(array('text_file' => 'osdownloads.log.php'));
+                \JLog::add($e->getMessage(), \JLog::ALERT, 'mailchimp-api');
             }
-
-        } catch (Exception $e) {
-            \JLog::addLogger(array('text_file' => 'osdownloads.log.php'));
-            \JLog::add($e->getMessage(), \JLog::ALERT, 'mailchimp-api');
         }
     }
 

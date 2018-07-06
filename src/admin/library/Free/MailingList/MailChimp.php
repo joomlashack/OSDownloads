@@ -46,11 +46,6 @@ class MailChimp extends AbstractClient
     protected $table = null;
 
     /**
-     * @var Registry
-     */
-    protected static $params = null;
-
-    /**
      * @var \Mailchimp\Mailchimp
      */
     protected static $apiManager = null;
@@ -140,18 +135,5 @@ class MailChimp extends AbstractClient
         }
 
         return static::$apiManager ?: null;
-    }
-
-    /**
-     * @return Registry
-     * @throws Exception
-     */
-    protected static function getParams()
-    {
-        if (static::$params === null) {
-            static::$params = Factory::getApplication()->getParams('com_osdownloads');
-        }
-
-        return static::$params;
     }
 }

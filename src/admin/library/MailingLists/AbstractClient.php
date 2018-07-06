@@ -32,6 +32,11 @@ defined('_JEXEC') or die();
 abstract class AbstractClient implements \JObserverInterface
 {
     /**
+     * @var Registry
+     */
+    protected static $params = null;
+
+    /**
      * @var CategoriesTableCategory[]
      */
     protected static $categories = array();
@@ -61,4 +66,16 @@ abstract class AbstractClient implements \JObserverInterface
 
         return null;
     }
+    /**
+     * @return Registry
+     */
+    protected static function getParams()
+    {
+        if (static::$params === null) {
+            static::$params = \JComponentHelper::getParams('com_osdownloads');
+        }
+
+        return static::$params;
+    }
+
 }

@@ -56,6 +56,19 @@ abstract class AbstractClient implements JObserverInterface
     }
 
     /**
+     * @param   JObservableInterface $observableObject The observable subject object
+     * @param   array                $params           Params for this observer
+     *
+     * @return  JObserverInterface
+     */
+    public static function createObserver(JObservableInterface $observableObject, $params = array())
+    {
+        $observer = new static($observableObject);
+
+        return $observer;
+    }
+
+    /**
      * @param int $categoryId
      *
      * @return CategoriesTableCategory

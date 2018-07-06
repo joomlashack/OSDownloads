@@ -44,19 +44,6 @@ class MailChimp extends AbstractClient
     protected static $apiManager = null;
 
     /**
-     * @param   JObservableInterface $observableObject The observable subject object
-     * @param   array                $params           Params for this observer
-     *
-     * @return  JObserverInterface
-     */
-    public static function createObserver(JObservableInterface $observableObject, $params = array())
-    {
-        $observer = new self($observableObject);
-
-        return $observer;
-    }
-
-    /**
      * @param $result
      *
      * @return void

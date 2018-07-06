@@ -16,11 +16,6 @@ use JEventDispatcher;
 
 class Email extends BaseTable
 {
-    public $id;
-    public $email;
-    public $document_id;
-    public $downloaded_date;
-
     public function __construct(&$db)
     {
         parent::__construct('#__osdownloads_emails', 'id', $db);

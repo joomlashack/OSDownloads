@@ -13,6 +13,7 @@ defined('_JEXEC') or die();
 use Alledia\Framework\Joomla\Table\Base as BaseTable;
 use JApplicationHelper;
 use JFactory;
+use Joomla\Registry\Registry;
 
 
 class Item extends BaseTable
@@ -20,6 +21,19 @@ class Item extends BaseTable
     public function __construct(&$db)
     {
         parent::__construct('#__osdownloads_documents', 'id', $db);
+    }
+
+    public function load($keys = null, $reset = true)
+    {
+        if (parent::load($keys, $reset)) {
+            if (property_exists($this, 'params')) {
+                $this->params = new Registry($this->params);
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     public function store($updateNulls = false)
@@ -43,6 +57,22 @@ class Item extends BaseTable
             $this->alias = $this->name;
         }
         $this->alias = JApplicationHelper::stringURLSafe($this->alias);
+
+        if (isset($this->catid)) {
+            unset($this->catid);
+        }
+
+        if (property_exists($this, 'params')) {
+            if (!is_string($this->params)) {
+                if ($this->params instanceof Registry) {
+                    $params = $this->params->toString();
+                } else {
+                    $params = new Registry($this->params);
+                    $params = $params->toString();
+                }
+                $this->params = $params;
+            }
+        }
 
         return parent::store($updateNulls);
     }

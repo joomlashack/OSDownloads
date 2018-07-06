@@ -24,12 +24,10 @@
 namespace Alledia\OSDownloads\Free\MailingList;
 
 use Alledia\OSDownloads\Free\Factory;
-use Alledia\OSDownloads\Free\Joomla\Table\Email as EmailTableFree;
 use Alledia\OSDownloads\MailingLists\AbstractClient;
 use Exception;
 use JObservableInterface;
 use JObserverInterface;
-use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die();
 
@@ -41,30 +39,15 @@ defined('_JEXEC') or die();
 class MailChimp extends AbstractClient
 {
     /**
-     * @var EmailTableFree
-     */
-    protected $table = null;
-
-    /**
      * @var \Mailchimp\Mailchimp
      */
     protected static $apiManager = null;
 
-    public function __construct(JObservableInterface $table)
-    {
-        $table->attachObserver($this);
-        $this->table = $table;
-    }
-
     /**
-     * Creates the associated observer instance and attaches it to the $observableObject
-     *
      * @param   JObservableInterface $observableObject The observable subject object
      * @param   array                $params           Params for this observer
      *
      * @return  JObserverInterface
-     *
-     * @since   3.1.2
      */
     public static function createObserver(JObservableInterface $observableObject, $params = array())
     {

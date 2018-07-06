@@ -23,14 +23,22 @@
 
 namespace Alledia\OSDownloads\MailingLists;
 
+use Alledia\OSDownloads\Free;
 use CategoriesTableCategory;
+use JObservableInterface;
+use JObserverInterface;
 use Joomla\Registry\Registry;
 use JTable;
 
 defined('_JEXEC') or die();
 
-abstract class AbstractClient implements \JObserverInterface
+abstract class AbstractClient implements JObserverInterface
 {
+    /**
+     * @var Free\Joomla\Table\Email
+     */
+    protected $table = null;
+
     /**
      * @var Registry
      */
@@ -40,6 +48,12 @@ abstract class AbstractClient implements \JObserverInterface
      * @var CategoriesTableCategory[]
      */
     protected static $categories = array();
+
+    public function __construct(JObservableInterface $table)
+    {
+        $table->attachObserver($this);
+        $this->table = $table;
+    }
 
     /**
      * @param int $categoryId

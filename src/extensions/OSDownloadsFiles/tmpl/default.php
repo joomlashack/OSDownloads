@@ -84,7 +84,7 @@ echo sprintf('<%s %s>', $moduleTag, ArrayHelper::toString($moduleAttribs));
                     echo JHtml::_(
                         'link',
                         JRoute::_($container->helperRoute->getViewItemRoute($file->id, $this->itemId)),
-                        $this->params->get('link_label', JText::_('MOD_OSDOWNLOADSFILES_READ_MORE')),
+                        $this->params->get('link_label', JText::_('COM_OSDOWNLOADS_FILES_READ_MORE')),
                         sprintf(
                             'class="modosdownloadsDownloadButton osdownloads-readmore readmore" data-direct-page="%s"',
                             $file->direct_page

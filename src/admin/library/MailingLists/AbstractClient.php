@@ -29,6 +29,7 @@ use JObservableInterface;
 use JObserverInterface;
 use Joomla\Registry\Registry;
 use JTable;
+use OsdownloadsTableDocument;
 
 defined('_JEXEC') or die();
 
@@ -43,6 +44,11 @@ abstract class AbstractClient implements JObserverInterface
      * @var Registry
      */
     protected static $params = null;
+
+    /**
+     * @var OsdownloadsTableDocument[]
+     */
+    protected static $documents = array();
 
     /**
      * @var CategoriesTableCategory[]
@@ -67,6 +73,25 @@ abstract class AbstractClient implements JObserverInterface
 
         return $observer;
     }
+
+    /**
+     * @param int $documentId
+     *
+     * @return OsdownloadsTableDocument
+     */
+    protected function getDocument($documentId = null)
+    {
+        $documentId = (int)($documentId ?: $this->table->document_id);
+        if (!isset(static::$documents[$documentId])) {
+            /** @var OsdownloadsTableDocument $document */
+            $document = JTable::getInstance('Document', 'OsdownloadsTable');
+            $document->load($documentId);
+            static::$documents[$documentId] = $document->id ? $document : false;
+        }
+
+        return static::$documents[$documentId] ?: null;
+    }
+
 
     /**
      * @param int $categoryId

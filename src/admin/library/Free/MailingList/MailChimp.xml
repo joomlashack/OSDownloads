@@ -5,9 +5,10 @@
                type="radio"
                class="btn-group btn-group-yesno"
                default="0"
-               label="COM_OSDOWNLOADS_ML_MAILCHIMP_ENABLE">
-            <option value="0">JNO</option>
-            <option value="1">JYES</option>
+               label="COM_OSDOWNLOADS_ML_MAILCHIMP_ENABLE"
+               labelclass="alert alert-info span12">
+            <option value="0">JTOOLBAR_DISABLE</option>
+            <option value="1">JTOOLBAR_ENABLE</option>
         </field>
 
         <field name="api"

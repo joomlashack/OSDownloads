@@ -140,6 +140,7 @@ class Manager
         // Collect Pro configuration files first
         if ($extension->isPro()) {
             $proPath = $extension->getProLibraryPath() . $baseFolder;
+
             if (is_dir($proPath)) {
                 $proFiles = JFolder::files($proPath, $regex, false, true);
                 foreach ($proFiles as $proFile) {
@@ -240,7 +241,7 @@ class Manager
     protected function getExtension()
     {
         if (static::$extension === null) {
-            static::$extension = Factory::getExtension('com_osdownloads', 'component');
+            static::$extension = Factory::getExtension('OSDownloads', 'component');
         }
 
         return static::$extension;

@@ -61,7 +61,12 @@ class Manager
     /**
      * @var string
      */
-    protected static $xpathMailinglists = '//fields[@name="mailinglist"]';
+    protected static $xpathFields = '//fields[@name="mailinglist"]';
+
+    /**
+     * @var string
+     */
+    protected static $xpathFieldset = '//fieldset[@name="mailinglists"]';
 
     /**
      * Find all Mailing List plugins and attach as Table observers
@@ -123,7 +128,7 @@ class Manager
     }
 
     /**
-     * Load all xmk configuration files for mailing list plugins
+     * Load all xml configuration files for mailing list plugins
      *
      * @return string[]
      */
@@ -206,36 +211,46 @@ class Manager
      */
     protected function addFields($files, JForm $form, $sourceName)
     {
-        $sources = $this->getFormSources($files, $sourceName);
+        $formXml = $form->getXml();
 
-        if ($target = $form->getXml()->xpath(static::$xpathMailinglists)) {
+        if ($target = $formXml->xpath(static::$xpathFields)) {
             $target = array_shift($target);
         }
 
-        if ($sources && $target) {
-            $parents        = $target->xpath('ancestor::fields[@name]/@name');
-            $parentGroups   = array_map('strval', $parents ?: array());
-            $parentGroups[] = (string)$target['name'];
-            $parentGroup    = join('.', $parentGroups) . '.';
+        if ($target) {
+            $sources = $this->getFormSources($files, $sourceName);
+            if (!$sources) {
+                if ($fieldset = $formXml->xpath(static::$xpathFieldset)) {
+                    $fieldset = array_shift($fieldset);
 
-            // Sort field groups on optional 'order' attribute
-            uasort($sources, function (SimpleXMLElement $a, SimpleXMLElement $b) {
-                $orderA = (int)$a['order'] ?: 999;
-                $orderB = (int)$b['order'] ?: 999;
-
-                return $orderA == $orderB
-                    ? 0
-                    : ($orderA < $orderB ? -1 : 1);
-            });
-
-            foreach ($sources as $group => $source) {
-                $listNode = $target->xpath(sprintf('fields[@name="%s"]', $group));
-                if (!$listNode) {
-                    $listNode = $target->addChild('fields');
-                    $listNode->addAttribute('name', $group);
+                    $fieldset['description'] = \JText::_('COM_OSDOWNLOADS_ML_NO_PLUGINS');
                 }
-                $newFields = $source->children();
-                $form->setFields($newFields, $parentGroup . $group);
+
+            } else {
+                $parents        = $target->xpath('ancestor::fields[@name]/@name');
+                $parentGroups   = array_map('strval', $parents ?: array());
+                $parentGroups[] = (string)$target['name'];
+                $parentGroup    = join('.', $parentGroups) . '.';
+
+                // Sort field groups on optional 'order' attribute
+                uasort($sources, function (SimpleXMLElement $a, SimpleXMLElement $b) {
+                    $orderA = (int)$a['order'] ?: 999;
+                    $orderB = (int)$b['order'] ?: 999;
+
+                    return $orderA == $orderB
+                        ? 0
+                        : ($orderA < $orderB ? -1 : 1);
+                });
+
+                foreach ($sources as $group => $source) {
+                    $listNode = $target->xpath(sprintf('fields[@name="%s"]', $group));
+                    if (!$listNode) {
+                        $listNode = $target->addChild('fields');
+                        $listNode->addAttribute('name', $group);
+                    }
+                    $newFields = $source->children();
+                    $form->setFields($newFields, $parentGroup . $group);
+                }
             }
         }
     }
@@ -290,10 +305,10 @@ class Manager
 
         $className = $this->convertPathToClass($file);
         if (class_exists($className)) {
-            $method = 'checkDependencies';
+            $method  = 'checkDependencies';
             $enabled = !method_exists($className, $method) || call_user_func(array($className, $method));
             if ($enabled && $formName != 'config') {
-                $method = 'isEnabled';
+                $method  = 'isEnabled';
                 $enabled = !method_exists($className, $method) || call_user_func(array($className, $method));
             }
         }

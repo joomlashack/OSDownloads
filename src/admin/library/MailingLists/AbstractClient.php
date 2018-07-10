@@ -86,6 +86,17 @@ abstract class AbstractClient implements JObserverInterface
     }
 
     /**
+     * For use in subclasses for display of plugin options on any form
+     * other than the configuration form
+     *
+     * @return bool
+     */
+    public static function isEnabled()
+    {
+        return true;
+    }
+
+    /**
      * @param int $documentId
      *
      * @return OsdownloadsTableDocument

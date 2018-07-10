@@ -173,11 +173,7 @@ class Manager
     {
         $sources = array();
         foreach ($files as $file) {
-            $className = $this->convertPathToClass($file);
-            if (!class_exists($className)
-                || !method_exists($className, 'checkDependencies')
-                || call_user_func(array($className, 'checkDependencies'))
-            ) {
+            if ($this->pluginEnabled($file, $name)) {
                 $source  = simplexml_load_file($file);
                 $group   = (string)$source['group'];
                 $order   = (int)$source['order'] ?: 999;
@@ -199,6 +195,15 @@ class Manager
         return $sources;
     }
 
+    /**
+     * Add plugin fields for the selected form
+     *
+     * @param string[] $files
+     * @param JForm    $form
+     * @param string   $sourceName
+     *
+     * @return void
+     */
     protected function addFields($files, JForm $form, $sourceName)
     {
         $sources = $this->getFormSources($files, $sourceName);
@@ -277,5 +282,22 @@ class Manager
             . '\\' . preg_replace('/\.(php|xml)$/', '', basename($classPath));
 
         return $className;
+    }
+
+    protected function pluginEnabled($file, $formName)
+    {
+        $enabled = true;
+
+        $className = $this->convertPathToClass($file);
+        if (class_exists($className)) {
+            $method = 'checkDependencies';
+            $enabled = !method_exists($className, $method) || call_user_func(array($className, $method));
+            if ($enabled && $formName != 'config') {
+                $method = 'isEnabled';
+                $enabled = !method_exists($className, $method) || call_user_func(array($className, $method));
+            }
+        }
+
+        return $enabled;
     }
 }

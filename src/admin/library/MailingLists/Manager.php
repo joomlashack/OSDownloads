@@ -140,10 +140,12 @@ abstract class Manager
         // Collect Pro configuration files first
         if ($extension->isPro()) {
             $proPath  = $extension->getProLibraryPath() . $baseFolder;
-            $proFiles = JFolder::files($proPath, $regex, false, true);
-            foreach ($proFiles as $proFile) {
-                $key               = strtolower(basename($proFile, '.' . $type));
-                $configFiles[$key] = $proFile;
+            if (is_dir($proPath)) {
+                $proFiles = JFolder::files($proPath, $regex, false, true);
+                foreach ($proFiles as $proFile) {
+                    $key               = strtolower(basename($proFile, '.' . $type));
+                    $configFiles[$key] = $proFile;
+                }
             }
         }
 

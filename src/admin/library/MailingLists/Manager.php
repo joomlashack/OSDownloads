@@ -172,19 +172,25 @@ abstract class Manager
     {
         $sources = array();
         foreach ($files as $file) {
-            $source  = simplexml_load_file($file);
-            $group   = (string)$source['group'];
-            $order   = (int)$source['order'] ?: 999;
-            $newNode = $source->xpath(sprintf('fields[@name="%s"]', $name));
+            $className = $this->convertPathToClass($file);
+            if (!class_exists($className)
+                || !method_exists($className, 'checkDependencies')
+                || call_user_func(array($className, 'checkDependencies'))
+            ) {
+                $source  = simplexml_load_file($file);
+                $group   = (string)$source['group'];
+                $order   = (int)$source['order'] ?: 999;
+                $newNode = $source->xpath(sprintf('fields[@name="%s"]', $name));
 
-            if ($group && $newNode) {
-                $newNode = array_shift($newNode);
-                if (!(int)$newNode['order']) {
-                    $newNode->addAttribute('order', $order);
-                }
+                if ($group && $newNode) {
+                    $newNode = array_shift($newNode);
+                    if (!(int)$newNode['order']) {
+                        $newNode->addAttribute('order', $order);
+                    }
 
-                if (empty($sources[$group])) {
-                    $sources[$group] = $newNode;
+                    if (empty($sources[$group])) {
+                        $sources[$group] = $newNode;
+                    }
                 }
             }
         }

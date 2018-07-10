@@ -75,6 +75,17 @@ abstract class AbstractClient implements JObserverInterface
     }
 
     /**
+     * For customizing in subclasses. Prevents any access to a particular mailing list
+     * if local dependencies are not available
+     *
+     * @return bool
+     */
+    public static function checkDependencies()
+    {
+        return true;
+    }
+
+    /**
      * @param int $documentId
      *
      * @return OsdownloadsTableDocument
@@ -118,6 +129,7 @@ abstract class AbstractClient implements JObserverInterface
 
         return null;
     }
+
     /**
      * @return Registry
      */

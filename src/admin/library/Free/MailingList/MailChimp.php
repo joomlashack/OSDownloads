@@ -50,7 +50,7 @@ class MailChimp extends AbstractClient
      */
     public function onAfterStore($result)
     {
-        if ($result && static::getParams()->get('mailinglist.mailchimp.enable')) {
+        if ($result && static::isEnabled()) {
             try {
                 $email  = empty($this->table->email) ? null : $this->table->email;
                 $mc     = static::getMailChimp();
@@ -102,5 +102,10 @@ class MailChimp extends AbstractClient
         }
 
         return static::$apiManager ?: null;
+    }
+
+    public static function isEnabled()
+    {
+        return static::getParams()->get('mailinglist.mailchimp.enable');
     }
 }

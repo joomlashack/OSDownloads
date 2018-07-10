@@ -32,7 +32,7 @@ use SimpleXMLElement;
 
 defined('_JEXEC') or die();
 
-abstract class Manager
+class Manager
 {
     /**
      * @var Licensed
@@ -70,13 +70,13 @@ abstract class Manager
      *
      * @return void
      */
-    public static function loadObservers(JTable $table)
+    public function loadObservers(JTable $table)
     {
-        $plugins = static::getPluginFiles('php');
+        $plugins = $this->getPluginFiles('php');
 
         foreach ($plugins as $pluginPath) {
             /** @var \JObserverInterface $pluginClass */
-            $pluginClass = static::convertPathToClass($pluginPath);
+            $pluginClass = $this->convertPathToClass($pluginPath);
 
             $pluginClass::createObserver($table);
         }
@@ -102,9 +102,9 @@ abstract class Manager
      *
      * @throws \Exception
      */
-    public static function loadForms(JForm $form)
+    public function loadForms(JForm $form)
     {
-        if ($formFiles = static::getPluginFiles('xml')) {
+        if ($formFiles = $this->getPluginFiles('xml')) {
             $formName = $form->getName();
 
             if (!empty(static::$sourceNames[$formName])) {
@@ -117,7 +117,7 @@ abstract class Manager
                     return;
                 }
 
-                static::addFields($formFiles, $form, $sourceName);
+                $this->addFields($formFiles, $form, $sourceName);
             }
         }
     }
@@ -127,19 +127,19 @@ abstract class Manager
      *
      * @return string[]
      */
-    protected static function getPluginFiles($type)
+    protected function getPluginFiles($type)
     {
         jimport('joomla.filesystem.folder');
 
         $baseFolder = '/MailingList';
         $regex      = sprintf('\.%s$', $type);
-        $extension  = Factory::getExtension('OSDownloads', 'component');
+        $extension  = $this->getExtension();
 
         $configFiles = array();
 
         // Collect Pro configuration files first
         if ($extension->isPro()) {
-            $proPath  = $extension->getProLibraryPath() . $baseFolder;
+            $proPath = $extension->getProLibraryPath() . $baseFolder;
             if (is_dir($proPath)) {
                 $proFiles = JFolder::files($proPath, $regex, false, true);
                 foreach ($proFiles as $proFile) {
@@ -168,7 +168,7 @@ abstract class Manager
      *
      * @return array
      */
-    protected static function getFormSources($files, $name)
+    protected function getFormSources($files, $name)
     {
         $sources = array();
         foreach ($files as $file) {
@@ -198,9 +198,9 @@ abstract class Manager
         return $sources;
     }
 
-    protected static function addFields($files, JForm $form, $sourceName)
+    protected function addFields($files, JForm $form, $sourceName)
     {
-        $sources = static::getFormSources($files, $sourceName);
+        $sources = $this->getFormSources($files, $sourceName);
 
         if ($target = $form->getXml()->xpath(static::$xpathMailinglists)) {
             $target = array_shift($target);
@@ -237,7 +237,7 @@ abstract class Manager
     /**
      * @return Licensed
      */
-    protected static function getExtension()
+    protected function getExtension()
     {
         if (static::$extension === null) {
             static::$extension = Factory::getExtension('com_osdownloads', 'component');
@@ -251,10 +251,10 @@ abstract class Manager
      *
      * @return string
      */
-    protected static function getBasePath()
+    protected function getBasePath()
     {
         if (static::$basePath === null) {
-            static::$basePath = static::getExtension()->getLibraryPath();
+            static::$basePath = $this->getExtension()->getLibraryPath();
         }
 
         return static::$basePath;
@@ -267,13 +267,13 @@ abstract class Manager
      *
      * @return string
      */
-    protected static function convertPathToClass($filePath)
+    protected function convertPathToClass($filePath)
     {
-        $classPath = str_replace(static::getBasePath(), '', $filePath);
+        $classPath = str_replace($this->getBasePath(), '', $filePath);
 
         $className = static::$baseClass
             . str_replace(DIRECTORY_SEPARATOR, '\\', dirname($classPath))
-            . '\\' . basename($classPath, '.php');
+            . '\\' . preg_replace('/\.(php|xml)$/', '', basename($classPath));
 
         return $className;
     }

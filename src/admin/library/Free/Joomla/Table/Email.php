@@ -11,6 +11,7 @@ namespace Alledia\OSDownloads\Free\Joomla\Table;
 defined('_JEXEC') or die();
 
 use Alledia\Framework\Joomla\Table\Base as BaseTable;
+use Alledia\OSDownloads\Free\Factory;
 use Alledia\OSDownloads\MailingLists;
 use JEventDispatcher;
 
@@ -20,7 +21,7 @@ class Email extends BaseTable
     {
         parent::__construct('#__osdownloads_emails', 'id', $db);
 
-        MailingLists\Manager::loadObservers($this);
+        Factory::getContainer()->mailingLists->loadObservers($this);
     }
 
     public function store($updateNulls = false)

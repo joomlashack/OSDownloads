@@ -23,7 +23,7 @@
 
 namespace Alledia\OSDownloads\Free\Joomla\Plugin;
 
-use Alledia\OSDownloads\MailingLists;
+use Alledia\OSDownloads\Free\Factory;
 use Exception;
 
 defined('_JEXEC') or die();
@@ -50,7 +50,7 @@ class Content extends \JPlugin
     public function onContentPrepareForm($form, $data)
     {
         if ($this->isEnabled()) {
-            MailingLists\Manager::loadForms($form);
+            Factory::getContainer()->mailingLists->loadForms($form);
         }
 
         return true;

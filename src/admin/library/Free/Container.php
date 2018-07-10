@@ -10,6 +10,7 @@ namespace Alledia\OSDownloads\Free;
 
 use Alledia\OSDownloads\Free\Helper\Route;
 use Alledia\OSDownloads\Free\Helper\SEF;
+use Alledia\OSDownloads\MailingLists\Manager;
 
 defined('_JEXEC') or die();
 
@@ -18,8 +19,9 @@ defined('_JEXEC') or die();
  *
  * @package OSDownloads
  *
- * @property Route helperRoute
- * @property SEF   helperSEF
+ * @property Route   helperRoute
+ * @property SEF     helperSEF
+ * @property Manager mailingLists
  *
  * @method Route  getHelperRoute()
  * @method SEF    helperSEF()

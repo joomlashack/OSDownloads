@@ -8,6 +8,7 @@
 
 namespace Alledia\OSDownloads\Free;
 
+use Alledia\OSDownloads\MailingLists\Manager;
 use Pimple\Container as Pimple;
 use Pimple\ServiceProviderInterface;
 use JFactory;
@@ -52,6 +53,10 @@ class Services implements ServiceProviderInterface
 
         $pimple['helperView'] = function (Container $c) {
             return new Helper\View();
+        };
+
+        $pimple['mailingLists'] = function (Container $c) {
+            return new Manager();
         };
     }
 }

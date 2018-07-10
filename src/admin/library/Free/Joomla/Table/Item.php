@@ -2,7 +2,7 @@
 /**
  * @package   OSDownloads
  * @contact   www.joomlashack.com, help@joomlashack.com
- * @copyright 2016-2017 Open Source Training, LLC. All rights reserved
+ * @copyright 2016-2018 Open Source Training, LLC. All rights reserved
  * @license   http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
  */
 
@@ -13,45 +13,27 @@ defined('_JEXEC') or die();
 use Alledia\Framework\Joomla\Table\Base as BaseTable;
 use JApplicationHelper;
 use JFactory;
+use Joomla\Registry\Registry;
 
 
 class Item extends BaseTable
 {
-    public $id;
-    public $cate_id;
-    public $documents;
-    public $name;
-    public $alias;
-    public $brief;
-    public $description_1;
-    public $description_2;
-    public $description_3;
-    public $require_email;
-    public $require_agree;
-    public $download_text;
-    public $download_color;
-    public $documentation_link;
-    public $demo_link;
-    public $support_link;
-    public $other_name;
-    public $other_link;
-    public $file_path;
-    public $file_url;
-    public $downloaded;
-    public $direct_page;
-    public $published = true;
-    public $ordering;
-    public $external_ref;
-    public $access;
-    public $agreement_article_id;
-    public $created_user_id;
-    public $created_time;
-    public $modified_user_id;
-    public $modified_time;
-
     public function __construct(&$db)
     {
         parent::__construct('#__osdownloads_documents', 'id', $db);
+    }
+
+    public function load($keys = null, $reset = true)
+    {
+        if (parent::load($keys, $reset)) {
+            if (property_exists($this, 'params')) {
+                $this->params = new Registry($this->params);
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     public function store($updateNulls = false)
@@ -75,6 +57,22 @@ class Item extends BaseTable
             $this->alias = $this->name;
         }
         $this->alias = JApplicationHelper::stringURLSafe($this->alias);
+
+        if (isset($this->catid)) {
+            unset($this->catid);
+        }
+
+        if (property_exists($this, 'params')) {
+            if (!is_string($this->params)) {
+                if ($this->params instanceof Registry) {
+                    $params = $this->params->toString();
+                } else {
+                    $params = new Registry($this->params);
+                    $params = $params->toString();
+                }
+                $this->params = $params;
+            }
+        }
 
         return parent::store($updateNulls);
     }

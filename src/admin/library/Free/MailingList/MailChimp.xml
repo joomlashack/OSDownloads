@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form group="mailchimp">
+    <fields name="config">
+        <field name="enable"
+               type="radio"
+               class="btn-group btn-group-yesno"
+               default="0"
+               label="COM_OSDOWNLOADS_ML_MAILCHIMP_ENABLE"
+               labelclass="alert alert-info span12">
+            <option value="0">JTOOLBAR_DISABLE</option>
+            <option value="1">JTOOLBAR_ENABLE</option>
+        </field>
+
+        <field name="api"
+               type="text"
+               label="COM_OSDOWNLOADS_ML_MAILCHIMP_API"
+               showon="enable:1"/>
+
+        <field name="list_id"
+               type="text"
+               label="COM_OSDOWNLOADS_ML_MAILCHIMP_LIST_ID"
+               showon="enable:1"/>
+    </fields>
+</form>

@@ -2,12 +2,12 @@
 <extension version="3.7" type="component" method="upgrade">
     <name>com_osdownloads</name>
     <author>Joomlashack</author>
-    <creationDate>June 19 2018</creationDate>
-    <copyright>Copyright (C) 2016 Open Source Training, LLC</copyright>
+    <creationDate>July 09 2018</creationDate>
+    <copyright>Copyright (C) 2016-2018 Open Source Training, LLC</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>help@joomlashack.com</authorEmail>
     <authorUrl>https://www.joomlashack.com</authorUrl>
-    <version>1.9.7b1</version>
+    <version>1.13.0b1</version>
     <variant>FREE</variant>
     <description>COM_OSDOWNLOADS_DESCRIPTION</description>
 
@@ -77,19 +77,19 @@
 
     <install>
         <sql>
-            <file driver="mysqli" charset="utf8">sql/install/mysql/install.sql</file>
+            <file driver="mysqli">sql/install/mysql/install.sql</file>
         </sql>
     </install>
 
     <uninstall>
         <sql>
-            <file driver="mysqli" charset="utf8">sql/install/mysql/uninstall.sql</file>
+            <file driver="mysqli">sql/install/mysql/uninstall.sql</file>
         </sql>
     </uninstall>
 
     <update>
         <schemas>
-            <schemapath type="mysql" charset="utf8">sql/updates/mysql</schemapath>
+            <schemapath type="mysql">sql/updates/mysql</schemapath>
         </schemas>
     </update>
 
@@ -103,6 +103,7 @@
         <license>free</license>
         <targetplatform>3.7</targetplatform>
         <phpminimum>5.6</phpminimum>
+        <previousminimum>1.7.2</previousminimum>
 
         <include>AllediaFreeDefaultFiles</include>
 
@@ -115,7 +116,7 @@
                 type="module"
                 element="osdownloadsfiles"
                 uninstall="true"
-                updateversion="true">OSDownloadsFiles</extension>
+                downgrade="true">OSDownloadsFiles</extension>
 
             <extension
                 type="plugin"
@@ -124,6 +125,13 @@
                 publish="true"
                 ordering="first">OSSystem</extension>
 
+            <extension
+                type="plugin"
+                group="content"
+                element="osdownloads"
+                publish="true"
+                downgrade="true"
+                uninstall="true">plg_content_osdownloads</extension>
         </relatedExtensions>
 
         <minify suffix=".min">
@@ -138,6 +146,7 @@
         <obsolete>
             <file>administrator/components/com_osdownloads/views/file/tmpl/default.j2.php</file>
             <file>administrator/components/com_osdownloads/views/files/tmpl/default.j2.php</file>
+            <file>administrator/components/com_osdownloads/views/installer/tmpl/default_custom.php</file>
             <file>administrator/language/en-GB/en-GB.com_osdownloads.ini</file>
             <file>administrator/language/en-GB/en-GB.com_osdownloads.sys.ini</file>
             <file>administrator/language/en-GB/en-GB.plg_editors-xtd_osdownseditorxtdfile.ini</file>

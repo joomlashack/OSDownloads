@@ -36,7 +36,7 @@
                type="text"
                default="files"
                label="COM_OSDOWNLOADS_ROUTE_SEGMENT_FILES_LABEL"
-               description="COM_OSDOWNLOADS_ROUTE_SEGMENT_FILES_DESC" />
+               description="COM_OSDOWNLOADS_ROUTE_SEGMENT_FILES_DESC"/>
 
         <field type="spacer"/>
 
@@ -52,25 +52,9 @@
                jedurl="https://extensions.joomla.org/extension/osdownloads/"/>
     </fieldset>
 
-    <fieldset name="mailchimp"
-              label="COM_OSDOWNLOADS_FIELDSET_CONFIG_MAILCHIMP">
-
-        <field name="connect_mailchimp"
-               type="radio"
-               class="btn-group btn-group-yesno"
-               default="0"
-               label="COM_OSDOWNLOADS_CONNECT_TO_MAILCHIMP">
-            <option value="0">JNO</option>
-            <option value="1">JYES</option>
-        </field>
-
-        <field name="mailchimp_api"
-               type="text"
-               label="COM_OSDOWNLOADS_MAILCHIMP_API"/>
-
-        <field name="list_id"
-               type="text"
-               label="COM_OSDOWNLOADS_LIST_ID"/>
+    <fieldset name="mailinglists"
+              label="COM_OSDOWNLOADS_FIELDSET_CONFIG_MAILINGLISTS">
+        <fields name="mailinglist"/>
     </fieldset>
 
     <fieldset name="permissions"

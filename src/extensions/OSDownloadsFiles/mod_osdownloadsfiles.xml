@@ -2,12 +2,12 @@
 <extension type="module" version="2.5.0" client="site" method="upgrade">
     <name>MOD_OSDOWNLOADSFILES</name>
     <author>Joomlashack</author>
-    <creationDate>June 19 2018</creationDate>
-    <copyright>Copyright (C) 2016 Open Source Training, LLC</copyright>
+    <creationDate>July 09 2018</creationDate>
+    <copyright>Copyright (C) 2016-2018 Open Source Training, LLC</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <authorEmail>help@joomlashack.com</authorEmail>
     <authorUrl>http://www.joomlashack.com</authorUrl>
-    <version>1.9.7b1</version>
+    <version>1.13.0b1</version>
     <description>MOD_OSDOWNLOADFILES_DESC</description>
 
     <alledia>
@@ -29,50 +29,50 @@
                 <field
                     name="category"
                     type="category"
-                    label="MOD_OSDOWNLOADSFILES_FIELD_CATEGORY"
+                    label="COM_OSDOWNLOADS_FILES_FIELD_CATEGORY"
                     extension="com_osdownloads"
-                    description="MOD_OSDOWNLOADSFILES_FIELD_CATEGORY_DESC" />
+                    description="COM_OSDOWNLOADS_FILES_FIELD_CATEGORY_DESC" />
 
                 <field
                     name="link_to"
                     type="radio"
                     class="btn-group"
                     default="download"
-                    label="MOD_OSDOWNLOADSFILES_FIELD_LINK_TO"
-                    description="MOD_OSDOWNLOADSFILES_FIELD_LINK_TO_DESC">
-                        <option value="download">MOD_OSDOWNLOADSFILES_LINK_FILE_DOWNLOAD</option>
-                        <option value="details">MOD_OSDOWNLOADSFILES_LINK_TO_FILE_DESCRIPTION</option>
+                    label="COM_OSDOWNLOADS_FILES_FIELD_LINK_TO"
+                    description="COM_OSDOWNLOADS_FILES_FIELD_LINK_TO_DESC">
+                        <option value="download">COM_OSDOWNLOADS_FILES_LINK_FILE_DOWNLOAD</option>
+                        <option value="details">COM_OSDOWNLOADS_FILES_LINK_TO_FILE_DESCRIPTION</option>
                 </field>
 
                 <field
                     name="link_label"
                     type="text"
-                    label="MOD_OSDOWNLOADSFILES_FIELD_LINK_LABEL"
-                    description="MOD_OSDOWNLOADSFILES_FIELD_LINK_DESC" />
+                    label="COM_OSDOWNLOADS_FILES_FIELD_LINK_LABEL"
+                    description="COM_OSDOWNLOADS_FILES_FIELD_LINK_DESC" />
 
                 <field
                     name="ordering"
                     type="list"
                     default="ordering"
-                    label="MOD_OSDOWNLOADSFILES_FIELD_ORDERING_LABEL"
-                    description="MOD_OSDOWNLOADSFILES_FIELD_ORDERING_DESC">
+                    label="COM_OSDOWNLOADS_FILES_FIELD_ORDERING_LABEL"
+                    description="COM_OSDOWNLOADS_FILES_FIELD_ORDERING_DESC">
 
-                    <option value="ordering">MOD_OSDOWNLOADSFILES_ORDERING</option>
-                    <option value="name">MOD_OSDOWNLOADSFILES_NAME</option>
-                    <option value="downloaded">MOD_OSDOWNLOADSFILES_DOWNLOAD_COUNTER</option>
-                    <option value="created_time">MOD_OSDOWNLOADSFILES_CREATED_TIME</option>
-                    <option value="modified_time">MOD_OSDOWNLOADSFILES_MODIFIED_TIME</option>
+                    <option value="ordering">COM_OSDOWNLOADS_FILES_ORDERING</option>
+                    <option value="name">COM_OSDOWNLOADS_FILES_NAME</option>
+                    <option value="downloaded">COM_OSDOWNLOADS_FILES_DOWNLOAD_COUNTER</option>
+                    <option value="created_time">COM_OSDOWNLOADS_FILES_CREATED_TIME</option>
+                    <option value="modified_time">COM_OSDOWNLOADS_FILES_MODIFIED_TIME</option>
                 </field>
 
                 <field
                     name="ordering_dir"
                     type="list"
                     default="asc"
-                    label="MOD_OSDOWNLOADSFILES_FIELD_ORDERING_DIR_LABEL"
-                    description="MOD_OSDOWNLOADSFILES_FIELD_ORDERING_DIR_DESC">
+                    label="COM_OSDOWNLOADS_FILES_FIELD_ORDERING_DIR_LABEL"
+                    description="COM_OSDOWNLOADS_FILES_FIELD_ORDERING_DIR_DESC">
 
-                    <option value="asc">MOD_OSDOWNLOADSFILES_ASC</option>
-                    <option value="desc">MOD_OSDOWNLOADSFILES_DESC</option>
+                    <option value="asc">COM_OSDOWNLOADS_FILES_ASC</option>
+                    <option value="desc">COM_OSDOWNLOADS_FILES_DESC</option>
                 </field>
 
                 <field

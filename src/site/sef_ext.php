@@ -3,7 +3,7 @@
  * @package      SEF Advance
  * @copyright    Copyright (C) 2003-2013 Emir Sakic, http://www.sakic.net. All rights reserved.
  * @contact      www.joomlashack.com, help@joomlashack.com
- * @copyright    2016-2017 Open Source Training, LLC. All rights reserved
+ * @copyright    2016-2018 Open Source Training, LLC. All rights reserved
  * @license      GNU/GPL, see LICENSE.TXT
  *
  * This program is free software; you can redistribute it and/or modify it

@@ -79,22 +79,22 @@
             <field name="ordering"
                    type="list"
                    default="ordering"
-                   label="COM_OSDOWNLOADSFILES_FIELD_ORDERING_LABEL"
-                   description="COM_OSDOWNLOADSFILES_FIELD_ORDERING_DESC">
-                <option value="doc.ordering">COM_OSDOWNLOADSFILES_ORDERING</option>
-                <option value="doc.name">COM_OSDOWNLOADSFILES_NAME</option>
-                <option value="doc.downloaded">COM_OSDOWNLOADSFILES_DOWNLOADED</option>
-                <option value="doc.created_time">COM_OSDOWNLOADSFILES_CREATED_TIME</option>
-                <option value="doc.modified_time">COM_OSDOWNLOADSFILES_MODIFIED_TIME</option>
+                   label="COM_OSDOWNLOADS_FILES_FIELD_ORDERING_LABEL"
+                   description="COM_OSDOWNLOADS_FILES_FIELD_ORDERING_DESC">
+                <option value="doc.ordering">COM_OSDOWNLOADS_FILES_ORDERING</option>
+                <option value="doc.name">COM_OSDOWNLOADS_FILES_NAME</option>
+                <option value="doc.downloaded">COM_OSDOWNLOADS_FILES_DOWNLOADED</option>
+                <option value="doc.created_time">COM_OSDOWNLOADS_FILES_CREATED_TIME</option>
+                <option value="doc.modified_time">COM_OSDOWNLOADS_FILES_MODIFIED_TIME</option>
             </field>
 
             <field name="ordering_dir"
                    type="list"
                    default="asc"
-                   label="COM_OSDOWNLOADSFILES_FIELD_ORDERING_DIR_LABEL"
-                   description="COM_OSDOWNLOADSFILES_FIELD_ORDERING_DIR_DESC">
-                <option value="asc">COM_OSDOWNLOADSFILES_ASC</option>
-                <option value="desc">COM_OSDOWNLOADSFILES_DESC</option>
+                   label="COM_OSDOWNLOADS_FILES_FIELD_ORDERING_DIR_LABEL"
+                   description="COM_OSDOWNLOADS_FILES_FIELD_ORDERING_DIR_DESC">
+                <option value="asc">COM_OSDOWNLOADS_FILES_ASC</option>
+                <option value="desc">COM_OSDOWNLOADS_FILES_DESC</option>
             </field>
         </fieldset>
     </fields>

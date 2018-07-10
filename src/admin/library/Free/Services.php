@@ -2,12 +2,13 @@
 /**
  * @package   com_osdownloads
  * @contact   www.joomlashack.com, help@joomlashack.com
- * @copyright 2016-2017 Open Source Training, LLC. All rights reserved
+ * @copyright 2016-2018 Open Source Training, LLC. All rights reserved
  * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  */
 
 namespace Alledia\OSDownloads\Free;
 
+use Alledia\OSDownloads\MailingLists\Manager;
 use Pimple\Container as Pimple;
 use Pimple\ServiceProviderInterface;
 use JFactory;
@@ -52,6 +53,10 @@ class Services implements ServiceProviderInterface
 
         $pimple['helperView'] = function (Container $c) {
             return new Helper\View();
+        };
+
+        $pimple['mailingLists'] = function (Container $c) {
+            return new Manager();
         };
     }
 }

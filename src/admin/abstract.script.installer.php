@@ -21,7 +21,8 @@ use Joomla\Registry\Registry;
 class AbstractOSDownloadsInstallerScript extends AbstractScript
 {
     /**
-     * Method to run after an install/update method
+     * @param string            $type
+     * @param JInstallerAdapter $parent
      *
      * @return void
      * @throws Exception

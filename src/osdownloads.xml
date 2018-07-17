@@ -77,19 +77,19 @@
 
     <install>
         <sql>
-            <file driver="mysqli">sql/install/mysql/install.sql</file>
+            <file driver="mysql" charset="utf8">sql/install/mysql/install.sql</file>
         </sql>
     </install>
 
     <uninstall>
         <sql>
-            <file driver="mysqli">sql/install/mysql/uninstall.sql</file>
+            <file driver="mysql" charset="utf8">sql/install/mysql/uninstall.sql</file>
         </sql>
     </uninstall>
 
     <update>
         <schemas>
-            <schemapath type="mysql">sql/updates/mysql</schemapath>
+            <schemapath type="mysql" charset="utf8">sql/updates/mysql</schemapath>
         </schemas>
     </update>
 

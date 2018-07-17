@@ -8,8 +8,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('legacy.controller.legacy');
-
 require_once 'include.php';
 
 if (defined('OSDOWNLOADS_LOADED')) {

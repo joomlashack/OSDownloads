@@ -290,11 +290,11 @@ class Manager
      */
     protected function convertPathToClass($filePath)
     {
-        $classPath = str_replace($this->getBasePath(), '', $filePath);
+        $basePath = str_replace('/', '\\', $this->getBasePath());
+        $filePath = str_replace('/', '\\', $filePath);
+        $classPath = str_replace($basePath, '', $filePath);
 
-        $className = static::$baseClass
-            . str_replace(DIRECTORY_SEPARATOR, '\\', dirname($classPath))
-            . '\\' . preg_replace('/\.(php|xml)$/', '', basename($classPath));
+        $className = static::$baseClass . preg_replace('/\.(php|xml)$/', '', $classPath);
 
         return $className;
     }

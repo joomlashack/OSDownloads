@@ -109,10 +109,10 @@ class OSDownloadsViewFiles extends OSDownloadsViewAbstract
 
         JToolBarHelper::custom('file', 'new.png', 'new_f2.png', 'JTOOLBAR_NEW', false);
         JToolBarHelper::custom('file', 'edit.png', 'edit_f2.png', 'JTOOLBAR_EDIT', true);
-        JToolBarHelper::custom('file.delete', 'delete.png', 'delete_f2.png', 'JTOOLBAR_DELETE', true);
+        JToolBarHelper::custom('files.delete', 'delete.png', 'delete_f2.png', 'JTOOLBAR_DELETE', true);
         JToolBarHelper::divider();
-        JToolBarHelper::custom('file.publish', 'publish.png', 'publish_f2.png', 'JTOOLBAR_PUBLISH', true);
-        JToolBarHelper::custom('file.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
+        JToolBarHelper::custom('files.publish', 'publish.png', 'publish_f2.png', 'JTOOLBAR_PUBLISH', true);
+        JToolBarHelper::custom('files.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
         JToolBarHelper::divider();
         JToolBarHelper::preferences('com_osdownloads', '450');
     }

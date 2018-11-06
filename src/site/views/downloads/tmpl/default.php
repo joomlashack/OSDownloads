@@ -31,7 +31,6 @@ $options = array('version' => $this->version, 'relative' => true);
 JHtml::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', $options, array());
 
 ?>
-
 <div class="contentopen osdownloads-container">
     <?php
     if ($this->params->get('show_page_heading')
@@ -80,7 +79,7 @@ JHtml::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', $options,
                     if ($this->numberOfColumns && $column == $this->numberOfColumns - 1) :
                         ?>
                         <div class="clr"></div>
-                    <?php
+                        <?php
                     endif;
                     $i++;
                 endif;
@@ -99,10 +98,15 @@ JHtml::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', $options,
             foreach ($this->items as $file) :
                 $column = $i % $this->numberOfColumns;
                 $this->item = $file;
+                $classes    = array(
+                    'column',
+                    'column-' . $column,
+                    'item' . $column,
+                    'file_' . $this->item->id
+                );
                 ?>
 
-                <div
-                    class="column column-<?php echo $column; ?> item<?php echo $column; ?> file_<?php echo $this->item->id; ?>">
+                <div class="<?php echo join(' ', $classes); ?>">
                     <?php
                     $this->requireEmail = $this->item->require_user_email;
                     $this->requireAgree = (bool)$this->item->require_agree;
@@ -122,18 +126,18 @@ JHtml::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', $options,
                 if ($this->numberOfColumns && $column == $this->numberOfColumns - 1) :
                     ?>
                     <div class="clr"></div>
-                <?php
+                    <?php
                 endif;
             endforeach;
             ?>
         </div>
-    <?php
+        <?php
     else :
         ?>
         <div class="osd-alert">
             <?php echo JText::_('COM_OSDOWNLOADS_NO_DOWNLOADS'); ?>
         </div>
-    <?php
+        <?php
     endif;
     ?>
     <div class="clr"></div>

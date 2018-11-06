@@ -15,6 +15,7 @@ use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Alledia\OSDownloads\Free\Factory as OSDFactory;
 use Exception;
 use JHtml;
+use Joomla\CMS\Application\SiteApplication;
 use Joomla\Registry\Registry;
 use JText;
 use OSDownloadsModelItem;
@@ -69,6 +70,7 @@ class Item extends Base
      */
     public function display($tpl = null)
     {
+        /** @var SiteApplication $app */
         $app       = Factory::getApplication();
         $component = FreeComponentSite::getInstance();
         $container = OSDFactory::getContainer();

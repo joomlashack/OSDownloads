@@ -47,16 +47,16 @@ if (!$this->isPro) {
         ?>
         <div class="cate_info">
             Category:
-                <a href="<?php echo JRoute::_($container->helperRoute->getFileListRoute($this->category->id)); ?>">
-                    <?php echo $this->category->title; ?>
-                </a>
+            <a href="<?php echo JRoute::_($container->helperRoute->getFileListRoute($this->category->id)); ?>">
+                <?php echo $this->category->title; ?>
+            </a>
         </div>
-        <?php
+    <?php
     endif;
     if ($this->params->get("show_download_count", 0)) :
         ?>
         <div><?php echo(JText::_("COM_OSDOWNLOADS_DOWNLOADED")); ?>: <?php echo($this->item->downloaded); ?></div>
-        <?php
+    <?php
     endif;
     ?>
 
@@ -71,7 +71,7 @@ if (!$this->isPro) {
                     <?php echo(JText::_("COM_OSDOWNLOADS_DOCUMENTATION")); ?>
                 </a>
             </div>
-            <?php
+        <?php
         endif;
         if ($this->item->demo_link) :
             ?>
@@ -80,7 +80,7 @@ if (!$this->isPro) {
                     <?php echo(JText::_("COM_OSDOWNLOADS_DEMO")); ?>
                 </a>
             </div>
-            <?php
+        <?php
         endif;
         if ($this->item->support_link) :
             ?>
@@ -89,7 +89,7 @@ if (!$this->isPro) {
                     <?php echo(JText::_("COM_OSDOWNLOADS_SUPPORT")); ?>
                 </a>
             </div>
-            <?php
+        <?php
         endif;
         if ($this->item->other_link) :
             ?>
@@ -98,7 +98,7 @@ if (!$this->isPro) {
                     <?php echo($this->item->other_name); ?>
                 </a>
             </div>
-            <?php
+        <?php
         endif;
         ?>
         <div class="clr"></div>
@@ -107,13 +107,13 @@ if (!$this->isPro) {
     if ($this->item->brief || $this->item->description_1) :
         ?>
         <div class="description1"><?php echo($this->item->brief . $this->item->description_1); ?></div>
-        <?php
+    <?php
     endif;
 
     if ($this->item->description_2) :
         ?>
         <div class="description2"><?php echo($this->item->description_2); ?></div>
-        <?php
+    <?php
     endif;
     ?>
     <div class="osdownloadsactions">
@@ -126,7 +126,7 @@ if (!$this->isPro) {
     if ($this->item->description_3) :
         ?>
         <div><?php echo($this->item->description_3); ?></div>
-        <?php
+    <?php
     endif;
     ?>
 

@@ -34,6 +34,16 @@ JHtml::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', $options,
 
 <div class="contentopen osdownloads-container">
     <?php
+    if ($this->params->get('show_page_heading')
+        && ($heading = $this->params->get('page_heading'))
+    ) :
+        ?>
+        <div class="page-header">
+            <h1> <?php echo $this->escape($this->params->get('page_heading')); ?> </h1>
+        </div>
+        <?php
+    endif;
+
     if ($this->showCategoryFilter && !empty($this->categories)) :
         ?>
         <div class="category_filter columns-<?php echo $this->numberOfColumns; ?>">

@@ -77,6 +77,11 @@ class Item extends Base
         $this->params = $app->getParams();
         $this->itemId = (int)$app->input->getInt('Itemid');
 
+        $menu = $app->getMenu()->getActive();
+        if ($menu) {
+            $this->params->def('page_heading', $this->params->get('page_title', $menu->title));
+        }
+
         $id = (int)$app->input->getInt('id') ?: (int)$this->params->get('document_id');
 
         $this->item = $this->model->getItem($id);

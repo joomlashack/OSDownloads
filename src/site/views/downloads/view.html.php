@@ -59,6 +59,11 @@ class OSDownloadsViewDownloads extends View\Site\Base
         $includeChildFiles   = (bool)$params->get('include_child_files', 0);
         $showChildCategories = (bool)$params->get('show_child_categories', 1);
 
+        $menu = $app->getMenu()->getActive();
+        if ($menu) {
+            $params->def('page_heading', $params->get('page_title', $menu->title));
+        }
+
         // Load the extension
         $extension = Alledia\Framework\Factory::getExtension('OSDownloads', 'component');
         $extension->loadLibrary();
@@ -153,6 +158,7 @@ class OSDownloadsViewDownloads extends View\Site\Base
         $container = Factory::getContainer();
         $container->helperView->buildCategoryBreadcrumbs($id);
 
+        $this->params             = $params;
         $this->categories         = $categories;
         $this->showCategoryFilter = $showCategoryFilter;
         $this->items              = $items;

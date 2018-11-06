@@ -26,7 +26,18 @@ if (!$this->isPro) {
 
 ?>
 <div class="contentopen osdownloads-container item_<?php echo $this->item->id; ?>">
-
+    <?php
+    if ($this->params->get('show_page_heading')
+        && ($heading = $this->params->get('page_heading'))
+    ) :
+        ?>
+        <div class="page-header">
+            <h1> <?php echo $this->escape($this->params->get('page_heading')); ?> </h1>
+        </div>
+        <?php
+    endif;
+    ?>
+    
     <h2><?php echo($this->item->name); ?></h2>
 
     <?php echo $this->item->event->afterDisplayTitle; ?>

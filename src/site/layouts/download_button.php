@@ -99,7 +99,8 @@ endif;
                 <label for="<?php echo $elementsId; ?>RequireEmail">
                     <input type="email"
                            aria-required="true"
-                           required name="require_email"
+                           <?php echo $displayData->item->require_user_email == 1 ? 'required' : ''; ?>
+                           name="require_email"
                            id="<?php echo $elementsId; ?>RequireEmail"
                            class="osdownloads-field-email"
                            placeholder="<?php echo JText::_("COM_OSDOWNLOADS_ENTER_EMAIL_ADDRESS"); ?>"/>

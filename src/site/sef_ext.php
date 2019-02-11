@@ -1,19 +1,26 @@
 <?php
 /**
- * @package      SEF Advance
- * @copyright    Copyright (C) 2003-2013 Emir Sakic, http://www.sakic.net. All rights reserved.
- * @contact      www.joomlashack.com, help@joomlashack.com
- * @copyright    2016-2018 Open Source Training, LLC. All rights reserved
- * @license      GNU/GPL, see LICENSE.TXT
+ * @package   OSDownloads
+ * @contact   www.joomlashack.com, help@joomlashack.com
+ * @copyright 2005-2019 Joomlashack.com. All rights reserved
+ * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the
- * Free Software Foundation; either version 2 of the License, or
+ * This file is part of OSDownloads.
+ *
+ * OSDownloads is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
  * (at your option) any later version.
  *
- * This header must not be removed. Additional contributions/changes
- * may be added to this header as long as no information is deleted.
+ * OSDownloads is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 /**
  * SEF Advance component extension
  *

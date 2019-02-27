@@ -21,7 +21,7 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 use Alledia\Framework\Factory;
 use Alledia\Installer\Extension\Licensed;
@@ -66,6 +66,10 @@ class OSDownloadsViewFile extends JViewLegacy
         parent::display($tpl);
     }
 
+    /**
+     * @return void
+     * @throws Exception
+     */
     protected function addToolbar()
     {
         JFactory::getApplication()->input->set('hidemainmenu', true);

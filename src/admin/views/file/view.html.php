@@ -25,10 +25,7 @@ defined('_JEXEC') or die;
 
 use Alledia\Framework\Factory;
 
-require_once __DIR__ . '/../view.html.php';
-require_once __DIR__ . '/../../models/file.php';
-
-class OSDownloadsViewFile extends OSDownloadsViewAbstract
+class OSDownloadsViewFile extends JViewLegacy
 {
     protected $form;
 
@@ -95,29 +92,26 @@ class OSDownloadsViewFile extends OSDownloadsViewAbstract
     {
         JFactory::getApplication()->input->set('hidemainmenu', true);
 
-        $user       = JFactory::getUser();
-        $isNew      = ($this->item->id == 0);
-        $canDo      = $this->canDo;
+        $user  = JFactory::getUser();
+        $isNew = ($this->item->id == 0);
+        $canDo = $this->canDo;
 
         JToolbarHelper::title(JText::_('COM_OSDOWNLOADS') . ': ' .
             ($isNew ? JText::_('COM_OSDOWNLOADS_FILE_NEW') : JText::_('COM_OSDOWNLOADS_FILE_EDIT')),
             'file-2 osdownloads-files'
         );
 
-        if ($canDo->get('core.edit') || $canDo->get('core.create'))
-        {
+        if ($canDo->get('core.edit') || $canDo->get('core.create')) {
             JToolbarHelper::apply('file.apply', 'JTOOLBAR_APPLY');
             JToolbarHelper::save('file.save', 'JTOOLBAR_SAVE');
         }
 
-        if ($canDo->get('core.create'))
-        {
+        if ($canDo->get('core.create')) {
             JToolbarHelper::save2new('file.save2new');
         }
 
         // If an existing item, can save to a copy.
-        if (!$isNew && $canDo->get('core.create'))
-        {
+        if (!$isNew && $canDo->get('core.create')) {
             JToolbarHelper::save2copy('file.save2copy');
         }
 

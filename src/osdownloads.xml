@@ -140,6 +140,7 @@
             <file>administrator/components/com_osdownloads/views/file/tmpl/default.j2.php</file>
             <file>administrator/components/com_osdownloads/views/files/tmpl/default.j2.php</file>
             <file>administrator/components/com_osdownloads/views/installer/tmpl/default_custom.php</file>
+            <file>administrator/components/com_osdownloads/views/view.html.php</file>
             <file>administrator/language/en-GB/en-GB.com_osdownloads.ini</file>
             <file>administrator/language/en-GB/en-GB.com_osdownloads.sys.ini</file>
             <file>administrator/language/en-GB/en-GB.plg_editors-xtd_osdownseditorxtdfile.ini</file>

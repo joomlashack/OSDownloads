@@ -23,10 +23,7 @@
 
 defined('_JEXEC') or die();
 
-require_once __DIR__ . '/../view.html.php';
-require_once __DIR__ . '/../../models/items.php';
-
-class OSDownloadsViewFiles extends OSDownloadsViewAbstract
+class OSDownloadsViewFiles extends JViewLegacy
 {
     /**
      * @var string
@@ -37,10 +34,8 @@ class OSDownloadsViewFiles extends OSDownloadsViewAbstract
     {
         parent::__construct($config);
 
-        $model = JModelLegacy::getInstance('OSDownloadsModelItems');
+        $model = JModelLegacy::getInstance('Items', 'OSDownloadsModel');
         $this->setModel($model, true);
-
-        $this->addTemplatePath(__DIR__ . '/tmpl');
     }
 
     /**

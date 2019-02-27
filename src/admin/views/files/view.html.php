@@ -21,6 +21,10 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Alledia\Installer\Extension\Licensed;
+use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Pagination\Pagination;
+
 defined('_JEXEC') or die();
 
 class OSDownloadsViewFiles extends JViewLegacy
@@ -29,6 +33,26 @@ class OSDownloadsViewFiles extends JViewLegacy
      * @var string
      */
     protected $sidebar = null;
+
+    /**
+     * @var CMSObject
+     */
+    protected $state = null;
+
+    /**
+     * @var Pagination
+     */
+    protected $pagination = null;
+
+    /**
+     * @var Licensed
+     */
+    protected $extension = null;
+
+    /**
+     * @var object[]
+     */
+    protected $items = null;
 
     public function __construct($config = array())
     {
@@ -46,63 +70,28 @@ class OSDownloadsViewFiles extends JViewLegacy
      */
     public function display($tpl = null)
     {
-        $app   = JFactory::getApplication();
+        /** @var OSDownloadsModelItems $model */
         $model = $this->getModel();
+
+        $this->state      = $model->getState();
+        $this->pagination = $model->getPagination();
+
+        $this->extension = Alledia\Framework\Factory::getExtension('OSDownloads', 'component');
+        $this->extension->loadLibrary();
+
         $db    = JFactory::getDBO();
-
-        $pagination = $model->getPagination();
-
         $query = $model->getItemsQuery();
 
-        $db->setQuery($query, $pagination->limitstart, $pagination->limit);
-        $items = $db->loadObjectList();
+        $db->setQuery($query, $this->pagination->limitstart, $this->pagination->limit);
+        $this->items = $db->loadObjectList();
 
-        $filterOrder    = $app->getUserStateFromRequest(
-            'com_osdownloads.document.filter_order',
-            'filter_order',
-            'doc.id',
-            ''
-        );
-        $filterOrderDir = $app->getUserStateFromRequest(
-            'com_osdownloads.document.filter_order_Dir',
-            'filter_order_Dir',
-            'asc',
-            'word'
-        );
-
-        $lists              = array();
-        $lists['order_Dir'] = $filterOrderDir;
-        $lists['order']     = $filterOrder;
-
-        $filter             = new stdClass;
-        $filter->search     = $app->getUserStateFromRequest('com_osdownloads.document.request.search', 'search');
-        $filter->categoryId = $app->getUserStateFromRequest('com_osdownloads.document.request.cate_id', 'flt_cate_id');
-        $filter->limit      = $app->getUserStateFromRequest('com_osdownloads.document.request.limit', 'limit');
-
-        if (empty($filter->limit)) {
-            $filter->limit = 25;
-        }
-
-        // Load the extension
-        $extension = Alledia\Framework\Factory::getExtension('OSDownloads', 'component');
-        $extension->loadLibrary();
-
-        // Add the agreementLink property
-        if (!empty($items)) {
-            foreach ($items as &$item) {
-                $item->agreementLink = '';
-                if ((bool)$item->require_agree) {
-                    JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
-                    $item->agreementLink = JRoute::_(ContentHelperRoute::getArticleRoute($item->agreement_article_id));
-                }
+        foreach ($this->items as &$item) {
+            $item->agreementLink = '';
+            if ((bool)$item->require_agree) {
+                JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
+                $item->agreementLink = JRoute::_(ContentHelperRoute::getArticleRoute($item->agreement_article_id));
             }
         }
-
-        $this->lists      = $lists;
-        $this->items      = $items;
-        $this->filter     = $filter;
-        $this->pagination = $pagination;
-        $this->extension  = $extension;
 
         $this->addToolbar();
         $this->sidebar = JHtmlSidebar::render();

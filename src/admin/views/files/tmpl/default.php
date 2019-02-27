@@ -28,9 +28,9 @@ use Alledia\OSDownloads\Free\Factory;
 JHtml::_('bootstrap.tooltip');
 JHtml::_('formbehavior.chosen', 'select');
 
-$listOrder = $this->lists['order'];
-$listDirn  = strtolower($this->lists['order_Dir']);
-$saveOrder = strtolower($listOrder) === 'doc.ordering asc';
+$listOrder = $this->state->get('list.ordering');
+$listDirn  = $this->state->get('list.direction');
+$saveOrder = $listOrder === 'doc.ordering asc';
 $container = Factory::getContainer();
 
 if ($saveOrder) {
@@ -69,7 +69,8 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
 }
 
 ?>
-    <form action="<?php echo $container->helperRoute->getAdminMainViewRoute(); ?>" method="post" name="adminForm" id="adminForm">
+    <form action="<?php echo $container->helperRoute->getAdminMainViewRoute(); ?>" method="post" name="adminForm"
+          id="adminForm">
         <?php
         // Load search tools
         $options = array(
@@ -91,7 +92,7 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                                            name="search"
                                            id="search"
                                            placeholder="<?php echo JText::_('JSEARCH_FILTER'); ?>"
-                                           value="<?php echo htmlspecialchars($this->filter->search); ?>"
+                                           value="<?php echo htmlspecialchars($this->state->get('filter.search')); ?>"
                                            class="text_area"
                                            onchange="document.adminForm.submit();"/>
                                     <button class="btn hasTooltip" title="" type="submit" data-original-title="Search">
@@ -114,7 +115,7 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                             echo category(
                                 'flt_cate_id',
                                 'com_osdownloads',
-                                $this->filter->categoryId,
+                                $this->state->get('filter.category_id'),
                                 "onchange='this.form.submit();'",
                                 'title',
                                 $size = 1,
@@ -135,7 +136,7 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                                 'class="inputbox chosen inputbox input-mini" size="' . 5 . '" onchange="this.form.submit();"',
                                 'value',
                                 'text',
-                                $this->filter->limit
+                                $this->state->get('list.limit')
                             );
                             ?>
                         </div>
@@ -217,8 +218,15 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                     endif;
                     ?>
                     <th class="hidden-phone center">
-                        <?php echo JHtml::_('searchtools.sort', 'COM_OSDOWNLOADS_ID', 'doc.id', $listDirn,
-                            $listOrder); ?>
+                        <?php
+                        echo JHtml::_(
+                            'searchtools.sort',
+                            'COM_OSDOWNLOADS_ID',
+                            'doc.id',
+                            $listDirn,
+                            $listOrder
+                        );
+                        ?>
                     </th>
                 </tr>
                 </thead>

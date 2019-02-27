@@ -24,64 +24,42 @@
 defined('_JEXEC') or die;
 
 use Alledia\Framework\Factory;
+use Alledia\Installer\Extension\Licensed;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Object\CMSObject;
 
 class OSDownloadsViewFile extends JViewLegacy
 {
-    protected $form;
+    /**
+     * @var Form
+     */
+    protected $form = null;
 
+    /**
+     * @var OSDownloadsModelFile
+     */
     protected $model;
 
+    /**
+     * @var Licensed
+     */
+    protected $extension = null;
+
+    /**
+     * @param string $tpl
+     *
+     * @return void
+     * @throws Exception
+     */
     public function display($tpl = null)
     {
-        $app = JFactory::getApplication();
-        $cid = $app->input->get('cid', array(), 'array');
-        $cid = (int)array_shift($cid);
-
         $this->model = $this->getModel();
-        $this->model->getState()->set('file.id', $cid);
+        $this->form  = $this->model->getForm();
 
-        $this->form = $this->get('Form');
+        $this->extension = Factory::getExtension('OSDownloads', 'component');
+        $this->extension->loadLibrary();
 
-        $this->canDo = JHelperContent::getActions('com_osdownloads');
-
-        JTable::addIncludePath(JPATH_COMPONENT . '/tables');
-
-        $item = JTable::getInstance("document", "OSDownloadsTable");
-        $item->load($cid);
-
-        if ($item->description_1) {
-            $item->description_1 = $item->brief . "<hr id=\"system-readmore\" />" . $item->description_1;
-        } else {
-            $item->description_1 = $item->brief;
-        }
-
-        $this->form->bind($item);
-
-        /*===============================================
-        =            Trigger content plugins            =
-        ===============================================*/
-        // In the Pro version this will allow com_files to save the custom fields values.
-
-        JPluginHelper::importPlugin('content');
-        $dispatcher = JEventDispatcher::getInstance();
-
-        /*=====  End of Trigger content plugins  ======*/
-
-        // Load the extension
-        $extension = Factory::getExtension('OSDownloads', 'component');
-        $extension->loadLibrary();
-
-        // Add the agreementLink property
-        if (!empty($item)) {
-            $item->agreementLink = '';
-            if ((bool)$item->require_agree) {
-                \JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
-                $item->agreementLink = JRoute::_(\ContentHelperRoute::getArticleRoute($item->agreement_article_id));
-            }
-        }
-
-        $this->item      = $item;
-        $this->extension = $extension;
+        $this->item = $this->model->getItem();
 
         $this->addToolbar();
 

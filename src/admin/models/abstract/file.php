@@ -21,17 +21,33 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
 use Alledia\Framework\Factory;
-use Joomla\Registry\Registry;
-use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Application\AdministratorApplication;
 
-jimport('joomla.application.component.modeladmin');
+JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
 
 abstract class OSDownloadsModelFileAbstract extends JModelAdmin
 {
+    /**
+     * The parent method is being overridden because we're doing things
+     * weirdly
+     *
+     * @return void
+     * @throws Exception
+     */
+    protected function populateState()
+    {
+        /** @var AdministratorApplication $app */
+        $app = JFactory::getApplication();
+
+        $id = $app->input->get('cid', array(), 'array');
+        $id = (int)array_shift($id);
+
+        $this->setState('file.id', $id);
+    }
+
     /**
      * @param array $data
      * @param bool  $loadData
@@ -88,28 +104,25 @@ abstract class OSDownloadsModelFileAbstract extends JModelAdmin
      */
     public function getItem($pk = null)
     {
-        $pk    = $pk ?: (int)$this->getState()->get($this->getName() . '.id');
-        $table = $this->getTable();
+        if ($item = parent::getItem($pk)) {
+            if ($description = $item->get('description_1')) {
+                $brief = $item->get('brief');
 
-        if ($pk > 0) {
-            // Attempt to load the row.
-            $return = $table->load($pk);
+                $item->description_1 = sprintf(
+                    '%s<hr id="system-readmore" />%s',
+                    $brief,
+                    $description
+                );
 
-            // Check for a table object error.
-            if ($return === false && $table->getError()) {
-                $this->setError($table->getError());
-
-                return null;
+            } else {
+                $item->description_1 = $item->get('brief');
             }
-        }
 
-        /** @var JObject $item */
-        $properties = $table->getProperties(1);
-        $item       = ArrayHelper::toObject($properties, '\JObject');
-
-        if (property_exists($item, 'params')) {
-            $registry     = new Registry($item->params);
-            $item->params = $registry->toArray();
+            $agreementRequired   = (bool)$item->get('require_agree');
+            $agreementId         = (int)$item->get('agreement_article_id');
+            $item->agreementLink = ($agreementRequired && $agreementId)
+                ? JRoute::_(ContentHelperRoute::getArticleRoute($agreementId))
+                : '';
         }
 
         return $item;

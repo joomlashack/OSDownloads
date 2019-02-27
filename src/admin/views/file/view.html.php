@@ -74,16 +74,17 @@ class OSDownloadsViewFile extends JViewLegacy
     {
         JFactory::getApplication()->input->set('hidemainmenu', true);
 
-        $user  = JFactory::getUser();
         $isNew = ($this->item->id == 0);
-        $canDo = $this->canDo;
+        $canDo = JHelperContent::getActions('com_osdownloads');
 
         JToolbarHelper::title(JText::_('COM_OSDOWNLOADS') . ': ' .
             ($isNew ? JText::_('COM_OSDOWNLOADS_FILE_NEW') : JText::_('COM_OSDOWNLOADS_FILE_EDIT')),
             'file-2 osdownloads-files'
         );
 
-        if ($canDo->get('core.edit') || $canDo->get('core.create')) {
+        if ((!$isNew && $canDo->get('core.edit'))
+            || ($isNew && $canDo->get('core.create'))
+        ) {
             JToolbarHelper::apply('file.apply', 'JTOOLBAR_APPLY');
             JToolbarHelper::save('file.save', 'JTOOLBAR_SAVE');
         }

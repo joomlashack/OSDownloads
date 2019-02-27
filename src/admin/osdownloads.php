@@ -21,7 +21,11 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
+
+if (!JFactory::getUser()->authorise('core.manage', 'com_osdownloads')) {
+    throw new JAccessExceptionNotallowed(JText::_('JERROR_ALERTNOAUTHOR'), 403);
+}
 
 require_once 'include.php';
 

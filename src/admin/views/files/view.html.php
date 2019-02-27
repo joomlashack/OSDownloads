@@ -106,14 +106,29 @@ class OSDownloadsViewFiles extends JViewLegacy
             'file-2 osdownloads-files'
         );
 
-        JToolBarHelper::custom('file', 'new.png', 'new_f2.png', 'JTOOLBAR_NEW', false);
-        JToolBarHelper::custom('file', 'edit.png', 'edit_f2.png', 'JTOOLBAR_EDIT', true);
-        JToolBarHelper::custom('files.delete', 'delete.png', 'delete_f2.png', 'JTOOLBAR_DELETE', true);
-        JToolBarHelper::divider();
-        JToolBarHelper::custom('files.publish', 'publish.png', 'publish_f2.png', 'JTOOLBAR_PUBLISH', true);
-        JToolBarHelper::custom('files.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
-        JToolBarHelper::divider();
-        JToolBarHelper::preferences('com_osdownloads', '450');
+        $user  = JFactory::getUser();
+        $canDo = JHelperContent::getActions('com_osdownloads', 'category', $this->state->get('filter.category_id'));
+
+        if ($canDo->get('core.create') || $user->getAuthorisedCategories('com_osdownloads', 'core.create')) {
+            JToolBarHelper::addNew('file');
+        }
+
+        if ($canDo->get('core.edit') || $canDo->get('edit.own')) {
+            JToolBarHelper::editList('file');
+        }
+
+        if ($canDo->get('core.delete')) {
+            JToolBarHelper::deleteList('', 'files.delete');
+        }
+
+        if ($canDo->get('core.edit.state')) {
+            JToolBarHelper::publishList('files.publish');
+            JToolBarHelper::unpublishList('files.unpublish');
+        }
+
+        if ($canDo->get('core.admin') || $canDo->get('core.options')) {
+            JToolBarHelper::preferences('com_osdownloads', '450');
+        }
     }
 
     /**

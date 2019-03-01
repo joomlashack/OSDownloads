@@ -16,8 +16,9 @@
     </fieldset>
 
     <fieldset name="basic">
-        <field name="file"
-               type="file"
+
+        <field name="file_path"
+               type="osdownloads.upload"
                label="COM_OSDOWNLOADS_UPLOAD_FILE"
                description="COM_OSDOWNLOADS_UPLOAD_FILE_DESC"/>
 

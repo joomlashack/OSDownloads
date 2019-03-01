@@ -26,7 +26,6 @@ defined('_JEXEC') or die();
 use Alledia\Framework\Factory;
 use Alledia\Installer\Extension\Licensed;
 use Joomla\CMS\Form\Form;
-use Joomla\CMS\Object\CMSObject;
 
 class OSDownloadsViewFile extends JViewLegacy
 {
@@ -77,8 +76,9 @@ class OSDownloadsViewFile extends JViewLegacy
         $isNew = ($this->item->id == 0);
         $canDo = JHelperContent::getActions('com_osdownloads');
 
-        JToolbarHelper::title(JText::_('COM_OSDOWNLOADS') . ': ' .
-            ($isNew ? JText::_('COM_OSDOWNLOADS_FILE_NEW') : JText::_('COM_OSDOWNLOADS_FILE_EDIT')),
+        JToolbarHelper::title(
+            JText::_('COM_OSDOWNLOADS') . ': '
+            . ($isNew ? JText::_('COM_OSDOWNLOADS_FILE_NEW') : JText::_('COM_OSDOWNLOADS_FILE_EDIT')),
             'file-2 osdownloads-files'
         );
 

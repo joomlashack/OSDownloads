@@ -12,21 +12,21 @@
         "package-license": "free",
         "target-platform": "3.*"
     },
-    "authors": [
+    "authors"          : [
         {
             "name" : "Joomlashack",
             "email": "help@joomlashack.com"
         }
     ],
-    "config": {
+    "config"           : {
         "vendor-dir": "src/admin/vendor"
     },
-    "require": {
-        "php": ">= 5.6",
+    "require"          : {
+        "php"                   : ">= 5.6",
         "pacely/mailchimp-apiv3": "dev-master",
-        "pimple/pimple": "~3.0"
+        "pimple/pimple"         : "~3.0"
     },
-    "require-dev": {
+    "require-dev"      : {
         "codeception/codeception": "^2.3"
     }
 }

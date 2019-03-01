@@ -234,6 +234,8 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                 <tbody>
                 <?php
                 foreach ($this->items as $i => $item) :
+                    $link = 'index.php?option=com_osdownloads&view=file&id=' . $item->id;
+
                     $item->checked_out = false;
                     $checked = JHtml::_('grid.checkedout', $item, $i);
                     $canChange = true;
@@ -282,7 +284,7 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                             </div>
                         </td>
                         <td class="has-context span6">
-                            <a href="<?php echo $container->helperRoute->getAdminFileFormRoute($item->id); ?>"><?php echo($item->name); ?></a>
+                            <?php echo JHtml::_('link', $link, $item->name); ?>
                             <span class="small">
                                 <?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
                             </span>

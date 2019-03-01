@@ -156,23 +156,6 @@ class Route
     }
 
     /**
-     * Get the route for the file form in the admin
-     *
-     * @param   integer $id The id of the file
-     *
-     * @return  string  The file form route
-     */
-    public function getAdminFileFormRoute($id)
-    {
-        $id = abs((int)$id);
-
-        // Create the link
-        $link = 'index.php?option=com_osdownloads&view=file&cid[]=' . $id;
-
-        return $link;
-    }
-
-    /**
      * Get the route for the file list in the admin
      *
      * @return  string  The files list route

@@ -24,11 +24,23 @@
 defined('_JEXEC') or die();
 
 use Alledia\Framework\Factory;
+use Joomla\Registry\Registry;
 
 JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
 
 abstract class OSDownloadsModelFileAbstract extends JModelAdmin
 {
+    protected $uploadDir = JPATH_SITE . '/media/com_osdownloads/files';
+
+    protected $uploadErrors = array(
+        UPLOAD_ERR_CANT_WRITE => 'COM_OSDOWNLOADS_UPLOAD_ERR_CANT_WRITE',
+        UPLOAD_ERR_EXTENSION  => 'COM_OSDOWNLOADS_UPLOAD_ERR_EXTENSION',
+        UPLOAD_ERR_FORM_SIZE  => 'COM_OSDOWNLOADS_UPLOAD_ERR_FORM_SIZE',
+        UPLOAD_ERR_INI_SIZE   => 'COM_OSDOWNLOADS_UPLOAD_ERR_INI_SIZE',
+        UPLOAD_ERR_NO_TMP_DIR => 'COM_OSDOWNLOADS_UPLOAD_ERR_NO_TMP_DIR',
+        UPLOAD_ERR_PARTIAL    => 'COM_OSDOWNLOADS_UPLOAD_ERR_PARTIAL'
+    );
+
     /**
      * @param array $data
      * @param bool  $loadData
@@ -90,7 +102,7 @@ abstract class OSDownloadsModelFileAbstract extends JModelAdmin
     public function getItem($pk = null)
     {
         if ($item = parent::getItem($pk)) {
-            if ($description= $item->get('description_1')) {
+            if ($description = $item->get('description_1')) {
                 $item->description_1 = sprintf(
                     '%s<hr id="system-readmore" />%s',
                     $item->get('brief'),
@@ -112,95 +124,152 @@ abstract class OSDownloadsModelFileAbstract extends JModelAdmin
 
     public function save($data)
     {
-        $mainText = $data['description_1'];
-        if (preg_match('#<hr\s+id=("|\')system-readmore("|\')\s*\/*>#i', $mainText, $match)) {
-            $splitText = explode($match[0], $mainText, 2);
-        } else {
-            $splitText = array($mainText, '');
-        }
+        try {
+            $mainText = $data['description_1'];
+            if (preg_match('#<hr\s+id=("|\')system-readmore("|\')\s*\/*>#i', $mainText, $match)) {
+                $splitText = explode($match[0], $mainText, 2);
+            } else {
+                $splitText = array($mainText, '');
+            }
 
-        $data['description_1'] = array_pop($splitText);
-        $data['brief']         = array_pop($splitText);
+            $data['description_1'] = array_pop($splitText);
+            $data['brief']         = array_pop($splitText);
 
-        $data['require_email'] = (int)$data['require_email'];
-        $data['require_agree'] = (int)$data['require_agree'];
+            $data['require_email'] = (int)$data['require_email'];
+            $data['require_agree'] = (int)$data['require_agree'];
 
-        if (empty($data['file_url'])) {
-            $this->uploadFile($data);
-        } else {
-            $this->clearFilePath($data);
+            // File URL takes precedence over File Path
+            if (empty($data['file_url'])) {
+                $this->uploadFile($data);
+
+            } else {
+                $this->clearFilePath($data);
+            }
+        } catch (Exception $e) {
+            $this->setError($e->getMessage());
+            return false;
+
+        } catch (Throwable $e) {
+            $this->setError($e->getMessage());
+            return false;
         }
 
         return parent::save($data);
     }
 
-    protected function clearFilePath(&$data) {
-        $app = JFactory::getApplication();
-        $app->enqueueMessage(__METHOD__);
+    /**
+     * Clear file_path in the submitted data and delete the file
+     *
+     * @param array $data
+     */
+    protected function clearFilePath(array &$data)
+    {
+        $currentFile     = empty($data['file_path']) ? null : $data['file_path'];
+        $currentFilePath = $this->uploadDir . '/' . $currentFile;
+        if (file_exists($currentFilePath)) {
+            unlink($currentFilePath);
+        }
+
+        $data['file_path'] = '';
     }
 
-    protected function uploadFile($data)
+    /**
+     * Handle all the work of uploading a selected file
+     *
+     * @param array $data
+     *
+     * @return void
+     * @throws Exception
+     */
+    protected function uploadFile(&$data)
     {
-        $app = JFactory::getApplication();
-        $app->enqueueMessage(__METHOD__ . '<pre>' . print_r($data, 1) . '</pre>');
-        return;
+        $app   = JFactory::getApplication();
+        $files = $app->input->files->get('jform', array(), 'raw');
 
-        $files = $app->input->files->get('jform', null, 'raw');
-        if (isset($files['file'])) {
-            $file        = $files['file'];
-            $fileName    = $file["name"];
-            $fileTmpName = $file["tmp_name"];
-        } else {
-            $fileName    = '';
-            $fileTmpName = '';
+        if (empty($files['file_path_upload'])) {
+            return;
         }
 
-        if (!empty($fileName)) {
-            $fileName = JFile::makeSafe($fileName);
+        $upload = new Registry($files['file_path_upload']);
 
-            if (isset($fileName) && $fileName) {
-                $uploadDir = JPATH_SITE . "/media/com_osdownloads/files/";
+        $uploadError = $upload->get('error');
+        if ($uploadError == UPLOAD_ERR_NO_FILE) {
+            return;
 
-                $oldFile = $app->input->getPath('old_dir');
-                if ($oldFile && JFile::exists(JPath::clean($uploadDir . $oldFile))) {
-                    unlink(JPath::clean($uploadDir . $oldFile));
-                }
+        } elseif ($uploadError != UPLOAD_ERR_OK) {
+            if (isset($this->uploadErrors[$uploadError])) {
+                $errorMessage = JText::_($this->uploadErrors[$uploadError]);
 
-                if (!JFolder::exists(JPath::clean($uploadDir))) {
-                    JFolder::create(JPath::clean($uploadDir));
-                }
-
-                $timestamp      = md5(microtime());
-                $filepath       = JPath::clean($uploadDir . $timestamp . "_" . $fileName);
-                $row->file_path = $timestamp . "_" . $fileName;
-
-
-                $safeFileOptions = array(
-                    // Null byte in file name
-                    'null_byte'                  => true,
-                    // Forbidden string in extension (e.g. php matched .php, .xxx.php, .php.xxx and so on)
-                    'forbidden_extensions'       => array(),
-                    // <?php tag in file contents
-                    'php_tag_in_content'         => false,
-                    // <? tag in file contents
-                    'shorttag_in_content'        => false,
-                    // Which file extensions to scan for short tags
-                    'shorttag_extensions'        => array(),
-                    // Forbidden extensions anywhere in the content
-                    'fobidden_ext_in_content'    => false,
-                    // Which file extensions to scan for .php in the content
-                    'php_ext_content_extensions' => array(),
-                );
-
-                if (!JFile::upload($fileTmpName, $filepath, false, false, $safeFileOptions)) {
-                    // Upload failed and message already queued
-                    $this->setRedirect(
-                        $container->helperRoute->getAdminFileFormRoute($row->id)
-                    );
-                    return;
-                }
+            } else {
+                $errorMessage = JText::sprintf('COM_OSDOWNLOADS_UPLOAD_ERR_UNKNOWN', $uploadError);
             }
+
+            throw new Exception($errorMessage);
         }
 
+        jimport('joomla.filesystem.file');
+        if ($fileName = JFile::makeSafe($upload->get('name'))) {
+            jimport('joomla.filesystem.folder');
+
+            if (!is_dir($this->uploadDir)) {
+                if (is_file($this->uploadDir)) {
+                    throw new Exception(JText::_('COM_OSDOWNLOADS_UPLOAD_ERR_FILESYSTEM'));
+                }
+
+                JFolder::create($this->uploadDir);
+
+                $accessFile = array(
+                    'Order Deny,Allow',
+                    'Deny from all',
+                    ''
+                );
+                file_put_contents($this->uploadDir . '/.htaccess', join("\n", $accessFile));
+            }
+
+            $fileHash = md5(microtime()) . '_' . $fileName;
+            $filePath = JPath::clean($this->uploadDir . '/' . $fileHash);
+
+            $tempPath = $upload->get('tmp_name');
+
+            // Disable file extension and tag checks
+            $safeFileOptions = array(
+                'forbidden_extensions'       => array(),
+                'php_tag_in_content'         => false,
+                'shorttag_in_content'        => false,
+                'shorttag_extensions'        => array(),
+                'fobidden_ext_in_content'    => false,
+                'php_ext_content_extensions' => array(),
+            );
+
+            if (!JFile::upload($tempPath, $filePath, false, false, $safeFileOptions)) {
+                if ($messages = $app->getMessageQueue(true)) {
+                    $uploadErrorMessage = array_pop($messages);
+
+                    // Restore any previous messages
+                    foreach ($messages as $message) {
+                        $app->enqueueMessage($message['message'], $message['type']);
+                    }
+
+                    $uploadErrorMessage = str_replace(
+                        $filePath,
+                        '"' . $fileName . '"',
+                        $uploadErrorMessage['message']
+                    );
+
+                } else {
+                    $uploadErrorMessage = JText::_('COM_OSDOWNLOADS_UPLOAD_ERR_UNKNOWN');
+                }
+
+                throw new Exception($uploadErrorMessage);
+            }
+
+            $this->clearFilePath($data);
+            $data['file_path'] = $fileHash;
+
+            return;
+        }
+
+        $fileName = $upload->get('name');
+        throw new Exception(JText::sprintf('COM_OSDOWNLOADS_UPLOAD_ERR_FILENAME', $fileName));
     }
 }

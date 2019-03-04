@@ -18,10 +18,10 @@
     <fieldset name="file">
         <field name="type"
                type="list"
-               label="File Type"
+               label="COM_OSDOWNLOADS_FILE_TYPE"
                default="upload">
-            <option value="upload">Upload</option>
-            <option value="url">Url</option>
+            <option value="upload">COM_OSDOWNLOADS_OPTION_UPLOAD</option>
+            <option value="url">COM_OSDOWNLOADS_OPTION_URL</option>
         </field>
 
         <field name="file_path"

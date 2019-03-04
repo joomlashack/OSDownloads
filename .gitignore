@@ -3,7 +3,6 @@
 .*
 *~
 !.gitignore
-!.gitkeep
 !.htaccess
 
 # Icon must ends with two \r.
@@ -47,7 +46,6 @@ nb-configuration.xml
 # Phing #
 #########
 packages/*
-!.gitkeep
 
 # misc other files #
 ####################
@@ -55,10 +53,7 @@ _notes/
 error_log
 
 config.codekit
-.DS_Store
-phing/.DS_Store
 
 build.properties
-composer.lock
 
 tests/_output/*

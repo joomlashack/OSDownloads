@@ -6,7 +6,8 @@ composer.json
 *.dist
 .gitignore
 !/.gitignore
+tests/
+Tests/
 
 # pimple/pimple
 pimple/pimple/ext
-pimple/pimple/src/Pimple/Tests

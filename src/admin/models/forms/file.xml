@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form addfieldpath="/administrator/components/com_osdownloads/form/fields">
-    <fieldset name="file">
+    <fieldset>
         <field name="name"
                type="text"
                label="COM_OSDOWNLOADS_NAME"
@@ -15,19 +15,27 @@
                hint="JFIELD_ALIAS_PLACEHOLDER"/>
     </fieldset>
 
-    <fieldset name="basic">
+    <fieldset name="file">
+        <field name="type"
+               type="list"
+               label="File Type"
+               default="upload">
+            <option value="upload">Upload</option>
+            <option value="url">Url</option>
+        </field>
 
         <field name="file_path"
                type="osdownloads.upload"
-               label="COM_OSDOWNLOADS_UPLOAD_FILE"
-               description="COM_OSDOWNLOADS_UPLOAD_FILE_DESC"/>
+               showon="type:upload"/>
 
         <field name="file_url"
                type="text"
                label="COM_OSDOWNLOADS_FILE_URL"
                description="COM_OSDOWNLOADS_FILE_URL_DESC"
-               class="input-xxlarge"/>
+               showon="type:url"/>
+    </fieldset>
 
+    <fieldset>
         <field name="description_1"
                type="editor"
                label="COM_OSDOWNLOADS_DESCRIPTION_1H"

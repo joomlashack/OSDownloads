@@ -117,6 +117,8 @@ abstract class OSDownloadsModelFileAbstract extends JModelAdmin
             $item->agreementLink = ($agreementRequired && $agreementId)
                 ? JRoute::_(ContentHelperRoute::getArticleRoute($agreementId))
                 : '';
+
+            $item->type = $item->file_url ? 'url' : 'upload';
         }
 
         return $item;

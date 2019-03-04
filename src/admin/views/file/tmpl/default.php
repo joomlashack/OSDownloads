@@ -33,7 +33,7 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('behavior.formvalidation');
 JHtml::_('behavior.keepalive');
 JHtml::_('behavior.tooltip');
-JHtml::_('formbehavior.chosen');
+JHtml::_('formbehavior.chosen', 'select');
 
 JFilterOutput::objectHTMLSafe($this->item);
 
@@ -64,10 +64,8 @@ $container = Factory::getContainer();
             ?>
             <div class="row-fluid">
                 <div class="span9">
-                    <?php
-                    echo $this->form->renderField('file_path');
-                    echo $this->form->renderField('file_url');
-                    ?>
+                    <?php echo $this->form->renderFieldset('file'); ?>
+
                     <div class="control-group">
                         <div class="control-label">
                             <?php echo JText::_('COM_OSDOWNLOADS_DESCRIPTIONS'); ?>
@@ -118,13 +116,7 @@ $container = Factory::getContainer();
 
                 <div class="span3">
                     <fieldset class="form-vertical">
-                        <?php
-                        $fields = $this->form->getFieldset('file-vertical');
-
-                        foreach ($fields as $fieldName => $field) :
-                            echo $this->form->renderField($field->fieldname);
-                        endforeach;
-                        ?>
+                        <?php echo $this->form->renderFieldset('file-vertical'); ?>
                     </fieldset>
                 </div>
             </div>

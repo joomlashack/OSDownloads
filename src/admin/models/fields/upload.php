@@ -36,18 +36,12 @@ class OsdownloadsFormFieldUpload extends JFormField
 
     public function setup(\SimpleXMLElement $element, $value, $group = null)
     {
-        $this->baseAttribs = array_merge(
-            $this->baseAttribs,
-            array(
-                'name'        => (string)$element['name'],
-                'label'       => (string)$element['label'],
-                'description' => (string)$element['description']
-            )
-        );
+        $this->baseAttribs = array();
+        foreach ($element->attributes() as $name => $attribute) {
+            $this->baseAttribs[$name] = (string)$attribute;
+        }
 
-        $element['name']        .= '_current';
-        $element['label']       = 'COM_OSDOWNLOADS_CURRENT_FILE';
-        $element['description'] = '';
+        $element['hiddenLabel'] = true;
 
         return parent::setup($element, $value, $group);
     }
@@ -59,10 +53,15 @@ class OsdownloadsFormFieldUpload extends JFormField
      */
     protected function getInput()
     {
-        $parts    = explode('_', $this->value, 2);
-        $fileName = array_pop($parts) ?: 'N/A';
+        $parts = explode('_', $this->value, 2);
 
-        return $fileName;
+        if ($fileName = array_pop($parts)) {
+            $text = JText::sprintf('COM_OSDOWNLOADS_CURRENT_FILE', $fileName);
+        } else {
+            $text = JText::_('COM_OSDOWNLOADS_CURRENT_FILE_NONE');
+        }
+
+        return sprintf('<span class="btn alert-info">%s</span>', $text);
     }
 
     public function renderField($options = array())
@@ -70,7 +69,7 @@ class OsdownloadsFormFieldUpload extends JFormField
         $hiddenField = $this->renderHiddenField();
         $uploadField = $this->renderUploader();
 
-        return parent::renderField($options) . $hiddenField . $uploadField;
+        return $hiddenField . $uploadField . parent::renderField();
     }
 
     protected function renderHiddenField()
@@ -87,9 +86,11 @@ class OsdownloadsFormFieldUpload extends JFormField
 
     protected function renderUploader()
     {
-        $attribs         = $this->baseAttribs;
-        $attribs['name'] .= '_upload';
-        $attribs['type'] = 'file';
+        $attribs                = $this->baseAttribs;
+        $attribs['name']        .= '_upload';
+        $attribs['type']        = 'file';
+        $attribs['label']       = 'COM_OSDOWNLOADS_UPLOAD_FILE';
+        $attribs['description'] = 'COM_OSDOWNLOADS_UPLOAD_FILE_DESC';
 
         $uploadField = $this->renderSubfield($attribs);
 
@@ -112,21 +113,3 @@ class OsdownloadsFormFieldUpload extends JFormField
         return empty($renderedField) ? null : $renderedField;
     }
 }
-
-/*
- * $index    = strpos($this->item->file_path, "_");
-$realname = substr($this->item->file_path, $index + 1);
-
-                <?php if ($this->item->file_path): ?>
-                    <div class="control-group">
-                        <div class="control-label">
-                            <?php echo JText::_('COM_OSDOWNLOADS_CURRENT_FILE'); ?>
-                        </div>
-                        <div class="controls">
-                            <?php echo $realname; ?>
-                            <input type="hidden" name="old_file" value="<?php echo($this->item->file_path); ?>"/>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
-*/

@@ -1,0 +1,12 @@
+# Keep unneeded composer files out of repo
+##########################################
+*.yml
+CHANGELOG
+composer.json
+*.dist
+.gitignore
+!/.gitignore
+
+# pimple/pimple
+pimple/pimple/ext
+pimple/pimple/src/Pimple/Tests

@@ -110,6 +110,7 @@ abstract class AbstractClient implements JObserverInterface
             /** @var OsdownloadsTableDocument $document */
             $document = JTable::getInstance('Document', 'OsdownloadsTable');
             $document->load($documentId);
+
             static::$documents[$documentId] = $document->id ? $document : false;
         }
 
@@ -173,5 +174,4 @@ abstract class AbstractClient implements JObserverInterface
 
         return static::$params;
     }
-
 }

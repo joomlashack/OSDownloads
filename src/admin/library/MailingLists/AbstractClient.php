@@ -23,10 +23,12 @@
 
 namespace Alledia\OSDownloads\MailingLists;
 
+use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free;
 use CategoriesTableCategory;
 use JObservableInterface;
 use JObserverInterface;
+use Joomla\CMS\User\User;
 use Joomla\Registry\Registry;
 use JTable;
 use OsdownloadsTableDocument;
@@ -114,6 +116,25 @@ abstract class AbstractClient implements JObserverInterface
         return static::$documents[$documentId] ?: null;
     }
 
+    /**
+     * @param string $email
+     *
+     * @return User
+     */
+    protected function getUserByEmail($email)
+    {
+        $db    = Factory::getDbo();
+        $query = $db->getQuery(true)
+            ->select('id')
+            ->from('#__users')
+            ->where('email = ' . $db->quote($email));
+
+        if ($userId = (int)$db->setQuery($query)->loadResult()) {
+            return Factory::getUser($userId);
+        }
+
+        return null;
+    }
 
     /**
      * @param int $categoryId

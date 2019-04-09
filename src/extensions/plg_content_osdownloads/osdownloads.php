@@ -56,7 +56,7 @@ if (defined('OSDOWNLOADS_LOADED')) {
                 parent::__construct($subject, $config);
 
                 JFactory::getApplication()->enqueueMessage(
-                    Jtext::sprintf('PLG_CONTENT_OSDOWNLOADS_NOT_INSTALLED', JText::_('PLG_CONTENT_OSDOWNLOADS'))
+                    Jtext::sprintf('COM_OSDOWNLOADS_PLUGIN_NOT_INSTALLED', 'CONTENT')
                 );
             }
         }

@@ -22,6 +22,7 @@
  */
 
 use Alledia\Framework\Joomla\Extension;
+use Alledia\OSDownloads\Free\Factory;
 
 defined('_JEXEC') or die();
 
@@ -50,4 +51,16 @@ if (defined('ALLEDIA_FRAMEWORK_LOADED') && !defined('OSDOWNLOADS_LOADED')) {
     Extension\Helper::loadLibrary('com_osdownloads');
 
     require_once JPATH_ADMINISTRATOR . '/components/com_osdownloads/vendor/autoload.php';
+
+    $lang = JFactory::getLanguage();
+
+    switch (JFactory::getApplication()->getName()) {
+        case 'site':
+            $lang->load('com_osdownloads', JPATH_SITE . '/components/com_osdownloads');
+            break;
+
+        case 'administrator':
+            $lang->load('com_osdownloads', JPATH_ADMINISTRATOR . '/components/com_osdownloads');
+            break;
+    }
 }

@@ -23,11 +23,20 @@
 
 use Alledia\Framework\Helper as AllediaHelper;
 use Alledia\OSDownloads\Free\Factory;
+use Joomla\CMS\Layout\FileLayout;
 use Joomla\Utilities\ArrayHelper;
+use Alledia\OSDownloads\Free\DisplayData;
 
 defined('_JEXEC') or die();
 
-$lang          = JFactory::getLanguage();
+/**
+ * @var FileLayout                      $this
+ * @var OSDownloadsViewItem|DisplayData $displayData
+ * @var string                          $layoutOutput
+ * @var string                          $path
+ */
+
+$lang          = Factory::getLanguage();
 $container     = Factory::getContainer();
 $app           = JFactory::getApplication('site');
 $compParams    = $app->getParams('com_osdownloads');

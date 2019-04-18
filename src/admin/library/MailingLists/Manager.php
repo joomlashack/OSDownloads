@@ -305,11 +305,11 @@ class Manager
 
         $className = $this->convertPathToClass($file);
         if (class_exists($className)) {
-            $method  = 'checkDependencies';
-            $enabled = !method_exists($className, $method) || call_user_func(array($className, $method));
+            $checkDependencies  = array($className, 'checkDependencies');
+            $enabled = !is_callable($checkDependencies) || call_user_func($checkDependencies);
             if ($enabled && $formName != 'config') {
-                $method  = 'isEnabled';
-                $enabled = !method_exists($className, $method) || call_user_func(array($className, $method));
+                $isEnabled = array($className, 'isEnabled');
+                $enabled = !is_callable($isEnabled) || call_user_func($isEnabled);
             }
         }
 

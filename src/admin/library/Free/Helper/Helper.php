@@ -23,6 +23,9 @@
 
 namespace Alledia\OSDownloads\Free\Helper;
 
+use Alledia\OSDownloads\Free\MailingList\MailChimp;
+use Exception;
+use JComponentHelper;
 use JHtmlSidebar;
 use JText;
 use JToolBarHelper;
@@ -43,6 +46,7 @@ class Helper
      * @param string $vName
      *
      * @return void
+     * @throws Exception
      */
     public static function addSubmenu($vName)
     {
@@ -75,6 +79,24 @@ class Helper
 
         // Load responsive CSS
         JHtml::_('stylesheet', 'media/jui/css/jquery.searchtools.css');
+
+        static::displayAdminMessages();
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    public static function displayAdminMessages()
+    {
+        $params = JComponentHelper::getParams('com_osdownloads');
+
+        // Check MailChimp php requirements
+        if ($params->get('mailinglist.mailchimp.api')) {
+            if ($warning = MailChimp::getPhpUpgradeMessage()) {
+                JFactory::getApplication()->enqueueMessage($warning, 'warn');
+            }
+        }
     }
 
     /**

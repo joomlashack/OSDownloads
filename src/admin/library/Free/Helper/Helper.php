@@ -74,7 +74,7 @@ class Helper
         );
 
         // Load responsive CSS
-        JHtml::stylesheet('media/jui/css/jquery.searchtools.css');
+        JHtml::_('stylesheet', 'media/jui/css/jquery.searchtools.css');
     }
 
     /**

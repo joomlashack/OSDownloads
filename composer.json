@@ -10,7 +10,8 @@
         "name"           : "OSDownloads",
         "client"         : "administrator",
         "package-license": "free",
-        "target-platform": "3.*"
+        "target-platform": "3.*",
+        "infourl"        : "/changelog/osdownloads/"
     },
     "authors"          : [
         {

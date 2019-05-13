@@ -103,7 +103,7 @@ abstract class OSDownloadsModelItemsAbstract extends JModelAdmin
             $total = $db->getNumRows();
 
             $limitStart = $app->getUserStateFromRequest('com_osdownloads.request.limitstart', 'limitstart', 0, 'int');
-            $limit      = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int');
+            $limit      = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->get('list_limit'), 'int');
 
             $this->pagination = new JPagination($total, $limitStart, $limit);
         }

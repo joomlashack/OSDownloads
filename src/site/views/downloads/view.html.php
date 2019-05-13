@@ -29,6 +29,7 @@ require_once JPATH_SITE . '/components/com_osdownloads/models/item.php';
 use Alledia\OSDownloads\Free\Joomla\View;
 use Alledia\OSDownloads\Free\Factory;
 use Alledia\OSDownloads\Free\Helper\View as HelperView;
+use Joomla\CMS\Application\SiteApplication;
 
 class OSDownloadsViewDownloads extends View\Site\Base
 {
@@ -69,6 +70,7 @@ class OSDownloadsViewDownloads extends View\Site\Base
 
     public function display($tpl = null)
     {
+        /** @var SiteApplication $app */
         $app                 = JFactory::getApplication();
         $db                  = JFactory::getDbo();
         $params              = $app->getParams();

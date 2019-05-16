@@ -188,7 +188,8 @@ endif;
             echo JLayoutHelper::render(
                 'social_download',
                 $displayData,
-                JPATH_SITE . '/components/com_osdownloads/layouts'
+                null,
+                array('component' => 'com_osdownloads')
             );
         endif;
         ?>

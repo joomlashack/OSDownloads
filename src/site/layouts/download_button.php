@@ -185,7 +185,12 @@ endif;
         </form>
         <?php
         if ($displayData->isPro) :
-            echo JLayoutHelper::render('social_download', $displayData);
+            echo JLayoutHelper::render(
+                'social_download',
+                $displayData,
+                null,
+                array('component' => 'com_osdownloads')
+            );
         endif;
         ?>
 

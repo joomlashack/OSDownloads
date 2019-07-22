@@ -90,7 +90,8 @@ echo sprintf('<%s %s>', $moduleTag, ArrayHelper::toString($moduleAttribs));
                             echo JLayoutHelper::render(
                                 'download_button',
                                 $this,
-                                JPATH_SITE . '/components/com_osdownloads/layouts'
+                                null,
+                                array('component' => 'com_osdownloads')
                             );
                             ?>
                         </div>

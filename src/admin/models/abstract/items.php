@@ -21,7 +21,6 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 defined('_JEXEC') or die();
 
 require_once JPATH_ADMINISTRATOR . '/components/com_osdownloads/tables/document.php';
@@ -35,15 +34,17 @@ abstract class OSDownloadsModelItemsAbstract extends JModelAdmin
     /**
      * Get the documents list query
      *
-     * @param  int $documentId
+     * @param int $documentId
+     *
      * @return JDatabaseQuery
+     * @throws Throwable
      */
     public function getItemsQuery()
     {
         $app = JFactory::getApplication();
         $db  = $this->getDBO();
 
-        $query  = $db->getQuery(true)
+        $query = $db->getQuery(true)
             ->select(
                 array(
                     'doc.*',
@@ -55,41 +56,52 @@ abstract class OSDownloadsModelItemsAbstract extends JModelAdmin
             ->from('#__osdownloads_documents AS doc')
             ->leftJoin(
                 '#__categories AS cat'
-                    . ' ON (doc.cate_id = cat.id AND cat.extension = ' . $db->quote('com_osdownloads') . ')'
+                . ' ON (doc.cate_id = cat.id AND cat.extension = ' . $db->quote('com_osdownloads') . ')'
             )
             ->leftJoin(
                 '#__viewlevels AS vl'
-                    . ' ON (doc.access = vl.id)'
+                . ' ON (doc.access = vl.id)'
             );
 
         $search = $app->getUserStateFromRequest('com_osdownloads.document.request.search', 'search');
         if ($search) {
-            $query->where("doc.name LIKE '%{$search}%'");
+            $query->where(sprintf('doc.name LIKE %s', $db->quote("%{$search}%")));
         }
 
         $categoryId = $app->getUserStateFromRequest('com_osdownloads.document.request.cate_id', 'flt_cate_id');
         if (!empty($categoryId)) {
-            $query->where("cat.id = " . $categoryId);
+            $query->where('cat.id = ' . $categoryId);
         }
 
-        $filterOrder    = $app->getUserStateFromRequest("com_osdownloads.document.filter_order", 'filter_order', 'doc.id', '');
-        $filterOrderDir = $app->getUserStateFromRequest("com_osdownloads.document.filter_order_Dir", 'filter_order_Dir', 'asc', 'word');
+        $filterOrder    = $app->getUserStateFromRequest(
+            'com_osdownloads.document.filter_order',
+            'filter_order',
+            'doc.id',
+            ''
+        );
+        $filterOrderDir = $app->getUserStateFromRequest(
+            'com_osdownloads.document.filter_order_Dir',
+            'filter_order_Dir',
+            'asc',
+            'word'
+        );
 
-        if ($filterOrder == "doc.ordering") {
+        if ($filterOrder == 'doc.ordering') {
             $query->order('doc.cate_id, ' . $filterOrder);
         } else {
-            $query->order($filterOrder);
+            $query->order($filterOrder . ' ' . $filterOrderDir);
         }
 
         return $query;
     }
 
+    /**
+     * @return JPagination
+     * @throws Throwable
+     */
     public function getPagination()
     {
-        jimport('joomla.html.pagination');
-
         if (empty($this->pagination)) {
-
             $app   = JFactory::getApplication();
             $db    = $this->getDBO();
             $query = $this->getItemsQuery();
@@ -111,8 +123,8 @@ abstract class OSDownloadsModelItemsAbstract extends JModelAdmin
     /**
      * Method to get the row form.
      *
-     * @param   array    $data      Data for the form.
-     * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+     * @param array   $data     Data for the form.
+     * @param boolean $loadData True if the form is to load its own data (default case), false if not.
      *
      * @return  mixed    A JForm object on success, false on failure
      *
@@ -125,7 +137,7 @@ abstract class OSDownloadsModelItemsAbstract extends JModelAdmin
 
     public function publish(&$pks, $value = 1)
     {
-        $db = $this->getDBO();
+        $db    = $this->getDBO();
         $query = $db->getQuery(true)
             ->update('#__osdownloads_documents')
             ->set('published = ' . $db->quote($value))
@@ -137,17 +149,19 @@ abstract class OSDownloadsModelItemsAbstract extends JModelAdmin
     /**
      * Method to get a table object, load it if necessary.
      *
-     * @param   string  $name     The table name. Optional.
-     * @param   string  $prefix   The class prefix. Optional.
-     * @param   array   $options  Configuration array for model. Optional.
+     * @param string $name    The table name. Optional.
+     * @param string $prefix  The class prefix. Optional.
+     * @param array  $options Configuration array for model. Optional.
      *
-     * @return  JTable  A JTable object
+     * @return OsdownloadsTableDocument
      *
-     * @since   12.2
      * @throws  Exception
      */
     public function getTable($name = '', $prefix = 'Table', $options = array())
     {
-        return JTable::getInstance('Document', 'OsdownloadsTable', $options);
+        /** @var OsdownloadsTableDocument $table */
+        $table = JTable::getInstance('Document', 'OsdownloadsTable', $options);
+
+        return $table;
     }
 }

@@ -28,10 +28,6 @@ defined('_JEXEC') or die();
 use Alledia\Framework\Joomla\Model\Base as BaseModel;
 use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
-use Alledia\OSDownloads\Free\Helper\Helper;
-use JRoute;
-use JEventDispatcher;
-use JPluginHelper;
 use JFactory;
 
 \JLoader::register('OSDownloadsHelper', JPATH_ADMINISTRATOR . '/components/com_osdownloads/helpers/osdownloads.php');

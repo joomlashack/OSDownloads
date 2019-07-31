@@ -21,8 +21,7 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die();
 
 use Alledia\OSDownloads\Free\Joomla\Table\Email as FreeEmailTable;
 

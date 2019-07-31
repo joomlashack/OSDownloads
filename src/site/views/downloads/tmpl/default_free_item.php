@@ -21,7 +21,7 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die();
 ?>
 
 <div class="item_<?php echo $this->item->id; ?>">

@@ -20,6 +20,10 @@
     padding-bottom:20px;
 }
 
+.osdownloads-container .item_content ul {
+	margin: 0 0 15px 0;
+}
+
 .osdownloads-readmore
 {
     float:right;

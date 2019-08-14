@@ -159,6 +159,7 @@
             <file>administrator/language/fr-FR/fr-FR.plg_editors-xtd_osdownseditorxtdfile.sys.ini</file>
             <file>administrator/language/fr-FR/fr-FR.plg_system_osdownloadssystem.ini</file>
             <file>administrator/language/fr-FR/fr-FR.plg_system_osdownloadssystem.sys.ini</file>
+            <file>components/com_osdownloads/layouts/download_button.php</file>
             <file>components/com_osdownloads/views/download/tmpl/error_not_available.php</file>
             <file>components/com_osdownloads/views/download/tmpl/error_too_big.php</file>
             <file>language/en-GB/en-GB.com_osdownloads.ini</file>

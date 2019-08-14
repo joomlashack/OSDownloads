@@ -134,7 +134,7 @@ if (!$this->isPro) {
     ?>
     <div class="osdownloadsactions">
         <div class="btn_download">
-            <?php echo JLayoutHelper::render('download_button', $this); ?>
+            <?php echo JLayoutHelper::render('buttons.download', $this); ?>
         </div>
     </div>
 

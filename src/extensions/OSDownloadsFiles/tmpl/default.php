@@ -88,7 +88,7 @@ echo sprintf('<%s %s>', $moduleTag, ArrayHelper::toString($moduleAttribs));
                             <?php
                             $this->item = $file;
                             echo JLayoutHelper::render(
-                                'download_button',
+                                'buttons.download',
                                 $this,
                                 null,
                                 array('component' => 'com_osdownloads')

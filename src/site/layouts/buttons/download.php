@@ -186,7 +186,7 @@ endif;
         <?php
         if ($displayData->isPro) :
             echo JLayoutHelper::render(
-                'social_download',
+                'buttons.social',
                 $displayData,
                 null,
                 array('component' => 'com_osdownloads')

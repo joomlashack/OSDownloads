@@ -53,6 +53,10 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
             $this->fixDownloadsViewParams();
             $this->fixItemViewParams();
 
+            if ($type == 'update') {
+                $this->moveLayouts();
+            }
+
         } catch (Exception $e) {
             $this->setMessage($e->getMessage(), 'error');
 
@@ -340,5 +344,47 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
         );
 
         return $parameterMap;
+    }
+
+    /**
+     * Update layout overrides for new location (free and pro)
+     *
+     * @since v1.13.14
+     */
+    public function moveLayouts()
+    {
+        $renames = array(
+            'download_button' => 'download',
+            'social_download' => 'social'
+        );
+
+        $files = JFolder::files(
+            JPATH_SITE . '/templates',
+            sprintf('(%s)\.php', join('|', array_keys($renames))),
+            true,
+            true
+        );
+
+        foreach ($files as $file) {
+            $dir     = dirname($file) . '/buttons/';
+            $layout  = basename($file, '.php');
+            $newPath = $dir . $renames[$layout] . '.php';
+
+            if (!is_dir($dir)) {
+                JFolder::create($dir);
+            }
+
+            switch ($layout) {
+                case 'download_button':
+                    $script = file_get_contents($file);
+                    $script = str_replace("'social_download'", "'buttons.social'", $script);
+                    JFile::write($file, $script);
+                    // Fall through
+
+                default:
+                    JFile::move($file, $newPath);
+                    break;
+            }
+        }
     }
 }

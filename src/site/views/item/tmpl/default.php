@@ -23,7 +23,6 @@
 
 defined('_JEXEC') or die();
 
-use Alledia\Framework\Helper as AllediaHelper;
 use Alledia\OSDownloads\Free\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 
@@ -48,65 +47,63 @@ if (!$this->isPro) {
     ) :
         ?>
         <div class="page-header">
-            <h1> <?php echo $this->escape($this->params->get('page_heading')); ?> </h1>
+            <h1>
+                <?php echo $this->escape($this->params->get('page_heading')); ?>
+            </h1>
         </div>
-        <?php
-    endif;
-    ?>
+    <?php endif; ?>
 
     <h2><?php echo($this->item->name); ?></h2>
 
     <?php echo $this->item->event->afterDisplayTitle; ?>
 
     <?php
-    if ($this->params->get("show_category", 0) && is_object($this->category)) :
+    if ($this->params->get('show_category', 0) && is_object($this->category)) :
         ?>
         <div class="cate_info">
-            Category:
+            <?php echo JText::_('COM_OSDOWNLOADS_CATEGORY') . ':'; ?>
             <a href="<?php echo JRoute::_($container->helperRoute->getFileListRoute($this->category->id)); ?>">
                 <?php echo $this->category->title; ?>
             </a>
         </div>
-    <?php
-    endif;
-    if ($this->params->get("show_download_count", 0)) :
+    <?php endif;
+
+    if ($this->params->get('show_download_count', 0)) :
         ?>
-        <div><?php echo(JText::_("COM_OSDOWNLOADS_DOWNLOADED")); ?>: <?php echo($this->item->downloaded); ?></div>
-    <?php
-    endif;
+        <div><?php echo(JText::_('COM_OSDOWNLOADS_DOWNLOADED')); ?>: <?php echo($this->item->downloaded); ?></div>
+    <?php endif;
+
+    echo $this->item->event->beforeDisplayContent;
     ?>
-
-    <?php echo $this->item->event->beforeDisplayContent; ?>
-
     <div class="reference">
         <?php
         if ($this->item->documentation_link) :
             ?>
             <div class="osdownloads-readmore readmore">
                 <a href="<?php echo($this->item->documentation_link); ?>">
-                    <?php echo(JText::_("COM_OSDOWNLOADS_DOCUMENTATION")); ?>
+                    <?php echo(JText::_('COM_OSDOWNLOADS_DOCUMENTATION')); ?>
                 </a>
             </div>
-        <?php
-        endif;
+        <?php endif;
+
         if ($this->item->demo_link) :
             ?>
             <div class="osdownloads-readmore readmore">
                 <a href="<?php echo($this->item->demo_link); ?>">
-                    <?php echo(JText::_("COM_OSDOWNLOADS_DEMO")); ?>
+                    <?php echo(JText::_('COM_OSDOWNLOADS_DEMO')); ?>
                 </a>
             </div>
-        <?php
-        endif;
+        <?php endif;
+
         if ($this->item->support_link) :
             ?>
             <div class="osdownloads-readmore readmore">
                 <a href="<?php echo($this->item->support_link); ?>">
-                    <?php echo(JText::_("COM_OSDOWNLOADS_SUPPORT")); ?>
+                    <?php echo(JText::_('COM_OSDOWNLOADS_SUPPORT')); ?>
                 </a>
             </div>
-        <?php
-        endif;
+        <?php endif;
+
         if ($this->item->other_link) :
             ?>
             <div class="osdownloads-readmore readmore">
@@ -114,24 +111,19 @@ if (!$this->isPro) {
                     <?php echo($this->item->other_name); ?>
                 </a>
             </div>
-        <?php
-        endif;
-        ?>
+        <?php endif; ?>
         <div class="clr"></div>
     </div>
     <?php
     if ($this->item->brief || $this->item->description_1) :
         ?>
         <div class="description1"><?php echo($this->item->brief . $this->item->description_1); ?></div>
-    <?php
-    endif;
+    <?php endif;
 
     if ($this->item->description_2) :
         ?>
         <div class="description2"><?php echo($this->item->description_2); ?></div>
-    <?php
-    endif;
-    ?>
+    <?php endif; ?>
     <div class="osdownloadsactions">
         <div class="btn_download">
             <?php echo JLayoutHelper::render('buttons.download', $this); ?>
@@ -142,9 +134,8 @@ if (!$this->isPro) {
     if ($this->item->description_3) :
         ?>
         <div><?php echo($this->item->description_3); ?></div>
-    <?php
-    endif;
-    ?>
+    <?php endif;
 
-    <?php echo $this->item->event->afterDisplayContent; ?>
+    echo $this->item->event->afterDisplayContent;
+    ?>
 </div>

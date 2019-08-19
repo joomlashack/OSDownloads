@@ -47,7 +47,9 @@ if (!$this->isPro) {
     ) :
         ?>
         <div class="page-header">
-            <h1> <?php echo $this->escape($this->params->get('page_heading')); ?> </h1>
+            <h1>
+                <?php echo $this->escape($this->params->get('page_heading')); ?>
+            </h1>
         </div>
     <?php endif; ?>
 
@@ -59,7 +61,7 @@ if (!$this->isPro) {
     if ($this->params->get('show_category', 0) && is_object($this->category)) :
         ?>
         <div class="cate_info">
-            <?php echo(JText::_('COM_OSDOWNLOADS_CATEGORY')); ?>:
+            <?php echo JText::_('COM_OSDOWNLOADS_CATEGORY') . ':'; ?>
             <a href="<?php echo JRoute::_($container->helperRoute->getFileListRoute($this->category->id)); ?>">
                 <?php echo $this->category->title; ?>
             </a>

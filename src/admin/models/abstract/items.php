@@ -27,8 +27,6 @@ require_once JPATH_ADMINISTRATOR . '/components/com_osdownloads/tables/document.
 
 abstract class OSDownloadsModelItemsAbstract extends JModelAdmin
 {
-    protected $state;
-
     protected $pagination;
 
     /**
@@ -73,24 +71,13 @@ abstract class OSDownloadsModelItemsAbstract extends JModelAdmin
             $query->where('cat.id = ' . $categoryId);
         }
 
-        $filterOrder    = $app->getUserStateFromRequest(
-            'com_osdownloads.document.filter_order',
-            'filter_order',
-            'doc.id',
-            ''
-        );
-        $filterOrderDir = $app->getUserStateFromRequest(
-            'com_osdownloads.document.filter_order_Dir',
-            'filter_order_Dir',
-            'asc',
-            'word'
-        );
+        $ordering  = $this->getState('list.ordering');
+        $direction = $this->getState('list.direction');
 
-        if ($filterOrder == 'doc.ordering') {
-            $query->order('doc.cate_id, ' . $filterOrder);
-        } else {
-            $query->order($filterOrder . ' ' . $filterOrderDir);
+        if ($ordering == 'doc.ordering') {
+            $query->order('doc.cate_id ' . $direction);
         }
+        $query->order($ordering . ' ' . $direction);
 
         return $query;
     }

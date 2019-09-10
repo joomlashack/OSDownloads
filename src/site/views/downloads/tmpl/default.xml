@@ -10,7 +10,7 @@
         <fieldset name="request">
             <field name="id"
                    type="category"
-                   label="COM_OSDOWNLOADS_CATEGORY_LABEL"
+                   label="COM_OSDOWNLOADS_CATEGORY"
                    description="COM_OSDOWNLOADS_CATEGORY_DESC"
                    extension="com_osdownloads"
                    required="true"

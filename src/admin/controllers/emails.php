@@ -23,7 +23,7 @@
 
 use Alledia\OSDownloads\Free\Joomla\Controller\Admin\Emails as EmailsController;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 
 class OSDownloadsControllerEmails extends EmailsController

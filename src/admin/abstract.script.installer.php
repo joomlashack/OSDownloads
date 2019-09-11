@@ -21,7 +21,7 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 $includePath = __DIR__ . '/admin/library/Installer/include.php';
 if (file_exists($includePath)) {

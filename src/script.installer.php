@@ -21,7 +21,7 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 if (file_exists(__DIR__ . '/admin/abstract.script.installer.php')) {
     require_once __DIR__ . '/admin/abstract.script.installer.php';

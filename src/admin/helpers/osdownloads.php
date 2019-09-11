@@ -24,7 +24,7 @@
 use Alledia\OSDownloads\Free;
 use Alledia\OSDownloads\Pro;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 /**
  * Backward compatibility for the helper. We moved it to improve inheritance between

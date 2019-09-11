@@ -21,7 +21,7 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('JPATH_BASE') or die;
+defined('JPATH_BASE') or die();
 
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');

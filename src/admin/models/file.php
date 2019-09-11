@@ -28,7 +28,7 @@ use Joomla\Registry\Registry;
 
 class OSDownloadsModelFile extends JModelAdmin
 {
-    protected $uploadDir = JPATH_SITE . '/media/com_osdownloads/files';
+    protected $uploadDir = OSDOWNLOADS_MEDIA . '/files';
 
     protected $uploadErrors = array(
         UPLOAD_ERR_CANT_WRITE => 'COM_OSDOWNLOADS_UPLOAD_ERR_CANT_WRITE',

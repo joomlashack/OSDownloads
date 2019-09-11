@@ -163,10 +163,8 @@ class OSDownloadsModelFile extends JModelAdmin
             // File URL takes precedence over File Path
             if (empty($data['file_url'])) {
                 $this->uploadFile($data);
-
-            } else {
-                $this->clearFilePath($data);
             }
+
         } catch (Exception $e) {
             $this->setError($e->getMessage());
             return false;
@@ -176,23 +174,45 @@ class OSDownloadsModelFile extends JModelAdmin
             return false;
         }
 
-        return parent::save($data);
+        if (parent::save($data)) {
+            $this->gcFileUploads();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public function delete(&$pks)
+    {
+        if (parent::delete($pks)) {
+            $this->gcFileUploads();
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
-     * Clear file_path in the submitted data and delete the file
-     *
-     * @param array $data
+     * Check for any files in the upload folder that are not linked
      */
-    protected function clearFilePath(array &$data)
+    protected function gcFileUploads()
     {
-        $currentFile     = empty($data['file_path']) ? null : $data['file_path'];
-        $currentFilePath = $this->uploadDir . '/' . $currentFile;
-        if (file_exists($currentFilePath)) {
-            unlink($currentFilePath);
-        }
+        $db = $this->getDbo();
 
-        $data['file_path'] = '';
+        $query = $db->getQuery(true)
+            ->select('file_path')
+            ->from('#__osdownloads_documents')
+            ->where('file_path != ' . $db->quote(''));
+
+        $files         = $db->setQuery($query)->loadColumn();
+        $uploadedFiles = JFolder::files($this->uploadDir);
+
+        $unlinkedFiles = array_diff($uploadedFiles, $files);
+        foreach ($unlinkedFiles as $file) {
+            @unlink($this->uploadDir . '/' . $file);
+        }
     }
 
     /**
@@ -285,7 +305,6 @@ class OSDownloadsModelFile extends JModelAdmin
                 throw new Exception($uploadErrorMessage);
             }
 
-            $this->clearFilePath($data);
             $data['file_path'] = $fileHash;
 
             return;

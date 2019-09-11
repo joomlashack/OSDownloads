@@ -23,14 +23,10 @@
 
 defined('_JEXEC') or die;
 
-jimport('legacy.controller.admin');
-
-require_once JPATH_ADMINISTRATOR . '/components/com_osdownloads/models/items.php';
-
 class OSDownloadsControllerFiles extends JControllerAdmin
 {
-    public function getModel($name = '', $prefix = '', $config = array())
+    public function getModel($name = 'Items', $prefix = 'OsdownloadsModel', $config = array())
     {
-        return OSDownloadsModelItems::getInstance('Items', 'OSDownloadsModel');
+        return parent::getModel($name, $prefix, $config);
     }
 }

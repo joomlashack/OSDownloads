@@ -24,12 +24,12 @@
 defined('_JEXEC') or die();
 
 use Alledia\Framework\Factory;
+use Alledia\Framework\Joomla\Extension\Licensed;
 
 class OSDownloadsControllerFile extends JControllerForm
 {
     /**
-     * Alledia Extension
-     * @var \Alledia\Framework\Joomla\Extension\Licensed
+     * @var Licensed
      */
     protected $extension;
 

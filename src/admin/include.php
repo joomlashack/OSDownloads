@@ -21,6 +21,7 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Alledia\Framework\AutoLoader;
 use Alledia\Framework\Joomla\Extension;
 use Alledia\OSDownloads\Free\Factory;
 
@@ -45,22 +46,25 @@ if (defined('ALLEDIA_FRAMEWORK_LOADED') && !defined('OSDOWNLOADS_LOADED')) {
     // Define the constant that say OSDownloads is ok to run
     define('OSDOWNLOADS_LOADED', 1);
 
-    define('OSDOWNLOADS_MEDIA_PATH', JPATH_SITE . 'media/com_osdownloads');
-    define('OSDOWNLOADS_MEDIA_URI', JUri::root() . 'media/com_osdownloads');
+    define('OSDOWNLOADS_ADMIN', JPATH_ADMINISTRATOR . '/components/com_osdownloads');
+    define('OSDOWNLOADS_SITE', JPATH_SITE . '/components/com_osdownloads');
+    define('OSDOWNLOADS_LIBRARY', OSDOWNLOADS_ADMIN . '/library');
+    define('OSDOWNLOADS_MEDIA', JPATH_SITE . '/media/com_osdownloads');
 
     Extension\Helper::loadLibrary('com_osdownloads');
 
-    require_once JPATH_ADMINISTRATOR . '/components/com_osdownloads/vendor/autoload.php';
-
-    $lang = JFactory::getLanguage();
+    require_once OSDOWNLOADS_ADMIN . '/vendor/autoload.php';
+    JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
 
     switch (JFactory::getApplication()->getName()) {
         case 'site':
-            $lang->load('com_osdownloads', JPATH_SITE . '/components/com_osdownloads');
+            JFactory::getLanguage()->load('com_osdownloads', OSDOWNLOADS_SITE);
             break;
 
         case 'administrator':
-            $lang->load('com_osdownloads', JPATH_ADMINISTRATOR . '/components/com_osdownloads');
+            JFactory::getLanguage()->load('com_osdownloads', OSDOWNLOADS_ADMIN);
+
+            JLoader::register('TraitModelUploads', OSDOWNLOADS_ADMIN . '/models/TraitModelUploads.php');
             break;
     }
 }

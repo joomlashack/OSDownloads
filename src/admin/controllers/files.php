@@ -25,7 +25,7 @@ defined('_JEXEC') or die();
 
 class OSDownloadsControllerFiles extends JControllerAdmin
 {
-    public function getModel($name = 'Items', $prefix = 'OsdownloadsModel', $config = array())
+    public function getModel($name = 'File', $prefix = 'OsdownloadsModel', $config = array())
     {
         return parent::getModel($name, $prefix, $config);
     }

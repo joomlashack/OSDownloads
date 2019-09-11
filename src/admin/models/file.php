@@ -26,7 +26,7 @@ defined('_JEXEC') or die();
 use Alledia\Framework\Factory;
 use Joomla\Registry\Registry;
 
-abstract class OSDownloadsModelFile extends JModelAdmin
+class OSDownloadsModelFile extends JModelAdmin
 {
     protected $uploadDir = JPATH_SITE . '/media/com_osdownloads/files';
 

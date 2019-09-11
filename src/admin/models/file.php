@@ -143,7 +143,8 @@ class OSDownloadsModelFile extends JModelAdmin
                     }
                 }
 
-                $data['published'] = 0;
+                $data['published']  = 0;
+                $data['downloaded'] = 0;
             }
 
             $mainText = $data['description_1'];

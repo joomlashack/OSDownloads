@@ -139,6 +139,7 @@
         <obsolete>
             <folder>administrator/components/com_osdownloads/models/abstract</folder>
 
+            <file>administrator/com_osdownloads/library/Free/Joomla/View/Legacy.php</file>
             <file>administrator/components/com_osdownloads/models/items.php</file>
             <file>administrator/components/com_osdownloads/tables/abstract.php</file>
             <file>administrator/components/com_osdownloads/tables/abstractdocument.php</file>

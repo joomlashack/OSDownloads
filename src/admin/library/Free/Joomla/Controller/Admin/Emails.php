@@ -24,16 +24,11 @@
 namespace Alledia\OSDownloads\Free\Joomla\Controller\Admin;
 
 use Alledia\Framework\Factory;
-use Alledia\Framework\Joomla\Controller\Base as BaseController;
-use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Alledia\OSDownloads\Free\Factory as OSDFactory;
 use JControllerLegacy;
 use JText;
 
 defined('_JEXEC') or die();
-
-jimport('joomla.application.component.controller');
-
 
 class Emails extends JControllerLegacy
 {

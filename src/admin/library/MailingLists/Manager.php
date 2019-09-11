@@ -134,8 +134,6 @@ class Manager
      */
     protected function getPluginFiles($type)
     {
-        jimport('joomla.filesystem.folder');
-
         $baseFolder = '/MailingList';
         $regex      = sprintf('\.%s$', $type);
         $extension  = $this->getExtension();

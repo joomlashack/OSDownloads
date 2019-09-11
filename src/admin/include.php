@@ -55,6 +55,12 @@ if (defined('ALLEDIA_FRAMEWORK_LOADED') && !defined('OSDOWNLOADS_LOADED')) {
 
     require_once OSDOWNLOADS_ADMIN . '/vendor/autoload.php';
     JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
+    if (version_compare(JVERSION, '3.9.0', 'lt')) {
+        JLoader::register('JFile', JPATH_LIBRARIES . '/joomla/filesystem/file.php');
+        JLoader::register('JFolder', JPATH_LIBRARIES . '/joomla/filesystem/folder.php');
+        JLoader::register('JPagination', JPATH_LIBRARIES . '/joomla/html/pagination.php');
+        JLoader::register('JLog', JPATH_LIBRARIES . '/joomla/log/log.php');
+    }
 
     switch (JFactory::getApplication()->getName()) {
         case 'site':

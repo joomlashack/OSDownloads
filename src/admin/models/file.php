@@ -249,10 +249,7 @@ class OSDownloadsModelFile extends JModelAdmin
             throw new Exception($errorMessage);
         }
 
-        jimport('joomla.filesystem.file');
         if ($fileName = JFile::makeSafe($upload->get('name'))) {
-            jimport('joomla.filesystem.folder');
-
             if (!is_dir($this->uploadDir)) {
                 if (is_file($this->uploadDir)) {
                     throw new Exception(JText::_('COM_OSDOWNLOADS_UPLOAD_ERR_FILESYSTEM'));

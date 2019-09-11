@@ -26,8 +26,6 @@ use Alledia\OSDownloads\Free\Factory as OSDFactory;
 
 defined('_JEXEC') or die();
 
-jimport('joomla.log.log');
-
 if (!defined('OSDOWNLOADS_LOADED')) {
     require_once JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
 }

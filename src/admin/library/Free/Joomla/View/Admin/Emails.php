@@ -24,17 +24,16 @@
 namespace Alledia\OSDownloads\Free\Joomla\View\Admin;
 
 use Alledia\Framework\Joomla\Extension\Licensed;
-use Alledia\OSDownloads\Free\Joomla\View\Legacy as LegacyView;
 use Alledia\Framework\Factory;
 use JHtmlSidebar;
 use JPagination;
 use JToolBarHelper;
 use JText;
+use JViewLegacy;
 
 defined('_JEXEC') or die();
 
-
-class Emails extends LegacyView
+class Emails extends JViewLegacy
 {
     /**
      * @var string
@@ -135,7 +134,6 @@ class Emails extends LegacyView
         $db->setQuery($query)->execute();
         $total = $db->getNumRows();
 
-        jimport('joomla.html.pagination');
         $this->pagination = new JPagination($total, $limitstart, $limit);
         $db->setQuery($query, $this->pagination->limitstart, $this->pagination->limit);
         $this->items = (array)$db->loadObjectList();

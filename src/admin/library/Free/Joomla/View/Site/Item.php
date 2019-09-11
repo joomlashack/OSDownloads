@@ -35,11 +35,6 @@ use Joomla\Registry\Registry;
 use JText;
 use OSDownloadsModelItem;
 
-if (!class_exists('JViewLegacy')) {
-    jimport('legacy.view.legacy');
-}
-
-
 class Item extends Base
 {
     /**

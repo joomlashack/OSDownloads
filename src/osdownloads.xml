@@ -140,6 +140,8 @@
             <folder>administrator/components/com_osdownloads/models/abstract</folder>
 
             <file>administrator/components/com_osdownloads/models/items.php</file>
+            <file>administrator/components/com_osdownloads/tables/abstract.php</file>
+            <file>administrator/components/com_osdownloads/tables/abstractdocument.php</file>
             <file>administrator/components/com_osdownloads/views/file/tmpl/default.j2.php</file>
             <file>administrator/components/com_osdownloads/views/files/tmpl/default.j2.php</file>
             <file>administrator/components/com_osdownloads/views/installer/tmpl/default_custom.php</file>

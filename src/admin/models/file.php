@@ -134,7 +134,7 @@ class OSDownloadsModelFile extends JModelAdmin
                 if ($data['name'] == $original->name) {
                     list($name, $alias) = $this->generateNewTitle($data['cate_id'], $data['alias'], $data['name']);
 
-                    $data['name'] = $name;
+                    $data['name']  = $name;
                     $data['alias'] = $alias;
 
                 } else {

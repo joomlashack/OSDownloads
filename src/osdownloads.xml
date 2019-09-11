@@ -37,19 +37,19 @@
         <menu img="class:component">COM_OSDOWNLOADS</menu>
         <submenu>
             <menu link="option=com_osdownloads&amp;view=files"
-                view="files"
-                img="class:component"
-                alt="OSDownloads/Files">COM_OSDOWNLOADS_FILES</menu>
+                  view="files"
+                  img="class:component"
+                  alt="OSDownloads/Files">COM_OSDOWNLOADS_FILES</menu>
 
             <menu link="option=com_categories&amp;extension=com_osdownloads"
-                view="categories"
-                img="class:component"
-                alt="OSDownloads/Categories">COM_OSDOWNLOADS_CATEGORIES</menu>
+                  view="categories"
+                  img="class:component"
+                  alt="OSDownloads/Categories">COM_OSDOWNLOADS_CATEGORIES</menu>
 
             <menu link="option=com_osdownloads&amp;view=emails"
-                view="emails"
-                img="class:component"
-                alt="OSDownloads/Emails">COM_OSDOWNLOADS_EMAILS</menu>
+                  view="emails"
+                  img="class:component"
+                  alt="OSDownloads/Emails">COM_OSDOWNLOADS_EMAILS</menu>
         </submenu>
 
         <files folder="admin">
@@ -106,25 +106,25 @@
 
         <relatedExtensions>
             <extension type="library"
-                element="allediaframework">AllediaFramework</extension>
+                       element="allediaframework">AllediaFramework</extension>
 
             <extension type="module"
-                element="osdownloadsfiles"
-                uninstall="true"
-                downgrade="true">OSDownloadsFiles</extension>
+                       element="osdownloadsfiles"
+                       uninstall="true"
+                       downgrade="true">OSDownloadsFiles</extension>
 
             <extension type="plugin"
-                group="system"
-                element="ossystem"
-                publish="true"
-                ordering="first">OSSystem</extension>
+                       group="system"
+                       element="ossystem"
+                       publish="true"
+                       ordering="first">OSSystem</extension>
 
             <extension type="plugin"
-                group="content"
-                element="osdownloads"
-                publish="true"
-                downgrade="true"
-                uninstall="true">plg_content_osdownloads</extension>
+                       group="content"
+                       element="osdownloads"
+                       publish="true"
+                       downgrade="true"
+                       uninstall="true">plg_content_osdownloads</extension>
         </relatedExtensions>
 
         <minify suffix=".min">

@@ -125,6 +125,27 @@ class OSDownloadsModelFile extends JModelAdmin
     public function save($data)
     {
         try {
+            $app = JFactory::getApplication();
+
+            if ($app->input->getCmd('task') == 'save2copy') {
+                $original = clone $this->getTable();
+                $original->load($app->input->getInt('id'));
+
+                if ($data['name'] == $original->name) {
+                    list($name, $alias) = $this->generateNewTitle($data['cate_id'], $data['alias'], $data['name']);
+
+                    $data['name'] = $name;
+                    $data['alias'] = $alias;
+
+                } else {
+                    if ($data['alias'] == $original->alias) {
+                        $data['alias'] = '';
+                    }
+                }
+
+                $data['published'] = 0;
+            }
+
             $mainText = $data['description_1'];
             if (preg_match('#<hr\s+id=("|\')system-readmore("|\')\s*\/*>#i', $mainText, $match)) {
                 $splitText = explode($match[0], $mainText, 2);

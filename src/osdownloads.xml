@@ -137,6 +137,7 @@
         </minify>
 
         <obsolete>
+            <file>administrator/components/com_osdownloads/models/files.php</file>
             <file>administrator/components/com_osdownloads/views/file/tmpl/default.j2.php</file>
             <file>administrator/components/com_osdownloads/views/files/tmpl/default.j2.php</file>
             <file>administrator/components/com_osdownloads/views/installer/tmpl/default_custom.php</file>

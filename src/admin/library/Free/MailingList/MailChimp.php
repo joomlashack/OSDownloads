@@ -93,7 +93,7 @@ class MailChimp extends AbstractClient
                         $result = array('status' => 'unsubscribed');
                     }
 
-                    if ($result['status'] === 'unsubscribed') {
+                    if ($result['status'] !== 'subscribed') {
                         // The email is not subscribed. Let's subscribe it.
                         $mc->post("lists/{$listId}/members/", array(
                             'email_address' => $email,

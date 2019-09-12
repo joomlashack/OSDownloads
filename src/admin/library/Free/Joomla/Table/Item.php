@@ -56,7 +56,7 @@ class Item extends Base
 
         $this->modified_time = $date->toSql();
 
-        $isNew = !empty($this->id);
+        $isNew = empty($this->id);
         if ($isNew) {
             // New document
             $this->downloaded      = 0;

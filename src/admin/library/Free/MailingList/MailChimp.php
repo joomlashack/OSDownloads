@@ -103,8 +103,7 @@ class MailChimp extends AbstractClient
                 }
 
             } catch (Exception $e) {
-                \JLog::addLogger(array('text_file' => 'osdownloads.log.php'));
-                \JLog::add($e->getMessage(), \JLog::ALERT, 'mailchimp-api');
+                $this->logError($e->getMessage());
             }
         }
     }

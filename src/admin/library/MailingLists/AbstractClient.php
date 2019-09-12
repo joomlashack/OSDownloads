@@ -65,8 +65,8 @@ abstract class AbstractClient implements JObserverInterface
     }
 
     /**
-     * @param   JObservableInterface $observableObject The observable subject object
-     * @param   array                $params           Params for this observer
+     * @param JObservableInterface $observableObject The observable subject object
+     * @param array                $params           Params for this observer
      *
      * @return  JObserverInterface
      */

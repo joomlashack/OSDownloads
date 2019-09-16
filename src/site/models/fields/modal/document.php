@@ -21,11 +21,8 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('JPATH_BASE') or die;
+defined('JPATH_BASE') or die();
 
-jimport('joomla.html.html');
-jimport('joomla.form.formfield');
-jimport('joomla.form.helper');
 JFormHelper::loadFieldClass('list');
 
 class JFormFieldModal_Document extends JFormFieldList
@@ -39,32 +36,26 @@ class JFormFieldModal_Document extends JFormFieldList
 
         $db = JFactory::getDBO();
 
-        $query = $db->getQuery(true);
-        $query->select("*");
-        $query->from("#__osdownloads_documents");
-        $query->where("published = 1");
+        $query = $db->getQuery(true)
+            ->select('*')
+            ->from('#__osdownloads_documents')
+            ->where('published = 1');
+
         $db->setQuery($query);
         $rows = $db->loadObjectList();
 
         foreach ($rows as $item) {
-
-            // Create a new option object based on the <option /> element.
-            $tmp = JHtml::_(
+            $options[] = JHtml::_(
                 'select.option',
-                (string) $item->id,
+                (string)$item->id,
                 JText::alt(
-                    trim((string) $item->name),
+                    trim((string)$item->name),
                     preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)
                 ),
                 'value',
                 'text'
             );
-
-            // Add the option object to the result set.
-            $options[] = $tmp;
         }
-
-        reset($options);
 
         return $options;
     }

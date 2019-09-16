@@ -21,14 +21,11 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
-use Alledia\Framework\Helper as AllediaHelper;
 use Alledia\OSDownloads\Free\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Joomla\Utilities\ArrayHelper;
-
-jimport('joomla.application.component.helper');
 
 $app       = JFactory::getApplication();
 $doc       = JFactory::getDocument();

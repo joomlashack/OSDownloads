@@ -21,6 +21,7 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Alledia\Framework\Extension;
 use Alledia\Installer\Extension\Licensed;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Pagination\Pagination;
@@ -45,22 +46,29 @@ class OSDownloadsViewFiles extends JViewLegacy
     protected $pagination = null;
 
     /**
-     * @var Licensed
+     * @var OSDownloadsModelFiles
+     */
+    protected $model = null;
+
+    /**
+     * @var array
+     */
+    protected $items = array();
+
+    /**
+     * @var Extension
      */
     protected $extension = null;
 
     /**
-     * @var object[]
+     * @var JForm
      */
-    protected $items = null;
+    public $filterForm = null;
 
-    public function __construct($config = array())
-    {
-        parent::__construct($config);
-
-        $model = JModelLegacy::getInstance('Items', 'OSDownloadsModel');
-        $this->setModel($model, true);
-    }
+    /**
+     * @var array
+     */
+    public $activeFilters = null;
 
     /**
      * @param string $tpl
@@ -70,28 +78,15 @@ class OSDownloadsViewFiles extends JViewLegacy
      */
     public function display($tpl = null)
     {
-        /** @var OSDownloadsModelItems $model */
-        $model = $this->getModel();
-
-        $this->state      = $model->getState();
-        $this->pagination = $model->getPagination();
+        $this->model         = $this->getModel();
+        $this->state         = $this->model->getState();
+        $this->items         = $this->model->getItems();
+        $this->filterForm    = $this->model->getFilterForm();
+        $this->activeFilters = $this->model->getActiveFilters();
+        $this->pagination    = $this->model->getPagination();
 
         $this->extension = Alledia\Framework\Factory::getExtension('OSDownloads', 'component');
         $this->extension->loadLibrary();
-
-        $db    = JFactory::getDBO();
-        $query = $model->getItemsQuery();
-
-        $db->setQuery($query, $this->pagination->limitstart, $this->pagination->limit);
-        $this->items = $db->loadObjectList();
-
-        foreach ($this->items as &$item) {
-            $item->agreementLink = '';
-            if ((bool)$item->require_agree) {
-                JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
-                $item->agreementLink = JRoute::_(ContentHelperRoute::getArticleRoute($item->agreement_article_id));
-            }
-        }
 
         $this->addToolbar();
         $this->sidebar = JHtmlSidebar::render();

@@ -26,7 +26,7 @@ use Alledia\OSDownloads\Free\Joomla\Module\File as FreeFileModule;
 use Alledia\OSDownloads\Pro\Joomla\Module\File as ProFileModule;
 use Alledia\Framework\Joomla\Extension\Helper as ExtensionHelper;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 include_once JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
 

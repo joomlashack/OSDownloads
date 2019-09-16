@@ -93,7 +93,7 @@ class MailChimp extends AbstractClient
                         $result = array('status' => 'unsubscribed');
                     }
 
-                    if ($result['status'] === 'unsubscribed') {
+                    if ($result['status'] !== 'subscribed') {
                         // The email is not subscribed. Let's subscribe it.
                         $mc->post("lists/{$listId}/members/", array(
                             'email_address' => $email,
@@ -103,8 +103,7 @@ class MailChimp extends AbstractClient
                 }
 
             } catch (Exception $e) {
-                \JLog::addLogger(array('text_file' => 'osdownloads.log.php'));
-                \JLog::add($e->getMessage(), \JLog::ALERT, 'mailchimp-api');
+                $this->logError($e->getMessage());
             }
         }
     }

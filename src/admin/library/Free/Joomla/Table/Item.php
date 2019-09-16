@@ -25,30 +25,28 @@ namespace Alledia\OSDownloads\Free\Joomla\Table;
 
 defined('_JEXEC') or die();
 
-use Alledia\Framework\Joomla\Table\Base as BaseTable;
+use Alledia\Framework\Joomla\Table\Base;
 use JApplicationHelper;
+use JEventDispatcher;
 use JFactory;
 use Joomla\Registry\Registry;
+use JPluginHelper;
 
-
-class Item extends BaseTable
+class Item extends Base
 {
-    public function __construct(&$db)
+    protected $_columnAlias = array(
+        'title' => 'name',
+        'catid' => 'cate_id'
+    );
+
+    /**
+     * @var JEventDispatcher
+     */
+    protected $_dispatcher = null;
+
+    public function __construct(&$_db)
     {
-        parent::__construct('#__osdownloads_documents', 'id', $db);
-    }
-
-    public function load($keys = null, $reset = true)
-    {
-        if (parent::load($keys, $reset)) {
-            if (property_exists($this, 'params')) {
-                $this->params = new Registry($this->params);
-            }
-
-            return true;
-        }
-
-        return false;
+        parent::__construct('#__osdownloads_documents', 'id', $_db);
     }
 
     public function store($updateNulls = false)
@@ -58,37 +56,72 @@ class Item extends BaseTable
 
         $this->modified_time = $date->toSql();
 
-        if (isset($this->id) && !empty($this->id)) {
-            // Existing item
-            $this->modified_user_id = $user->get('id');
-        } else {
-            // New item
+        $isNew = empty($this->id);
+        if ($isNew) {
+            // New document
             $this->downloaded      = 0;
             $this->created_time    = $date->toSql();
             $this->created_user_id = $user->get('id');
+
+        } else {
+            $this->modified_user_id = $user->get('id');
         }
 
-        if (isset($this->alias) && isset($this->name) && $this->alias == "") {
+        if (empty($this->alias)) {
             $this->alias = $this->name;
         }
         $this->alias = JApplicationHelper::stringURLSafe($this->alias);
 
-        if (isset($this->catid)) {
-            unset($this->catid);
+        if ($this->params instanceof Registry) {
+            $params = $this->params->toString();
+
+        } elseif (!is_string($this->params)) {
+            $params = new Registry($this->params);
+            $params = $params->toString();
+        }
+        $this->params = $params;
+
+        $result = $this->trigger('onOSDownloadsBeforeSaveFile', array(&$this, $isNew)) !== false;
+        if ($result) {
+            $result = parent::store($updateNulls);
+
+            $this->trigger('onOSDownloadsAfterSaveFile', array($result, &$this));
         }
 
-        if (property_exists($this, 'params')) {
-            if (!is_string($this->params)) {
-                if ($this->params instanceof Registry) {
-                    $params = $this->params->toString();
-                } else {
-                    $params = new Registry($this->params);
-                    $params = $params->toString();
-                }
-                $this->params = $params;
-            }
+        return $result;
+    }
+
+    public function delete($pk = null)
+    {
+        // Trigger events to osdownloads plugins
+        $result = $this->trigger('onOSDownloadsBeforeDeleteFile', array(&$this, $pk)) !== false;
+        if ($result) {
+            $result = parent::delete($pk['id']);
+
+            $this->trigger('onOSDownloadsAfterDeleteFile', array($result, $this->id, $pk));
         }
 
-        return parent::store($updateNulls);
+        return $result;
+    }
+
+    protected function trigger($event, array $arguments)
+    {
+        if ($this->_dispatcher === null) {
+            $this->_dispatcher = JEventDispatcher::getInstance();
+            JPluginHelper::importPlugin('osdownloads');
+        }
+
+        return $this->_dispatcher->trigger($event, $arguments);
+    }
+
+    public function load($keys = null, $reset = true)
+    {
+        if (parent::load($keys, $reset)) {
+            $this->params = new Registry($this->params);
+
+            return true;
+        }
+
+        return false;
     }
 }

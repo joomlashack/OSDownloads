@@ -23,14 +23,12 @@
 
 defined('_JEXEC') or die();
 
-use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Alledia\OSDownloads\Free\File;
 use Alledia\OSDownloads\Free\Helper\Helper;
-use Alledia\OSDownloads\Free\Joomla\View\Legacy as LegacyView;
 
 
-class OSDownloadsViewDownload extends LegacyView
+class OSDownloadsViewDownload extends JViewLegacy
 {
     /**
      * @var string

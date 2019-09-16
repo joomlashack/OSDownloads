@@ -21,11 +21,10 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die;
+use Alledia\OSDownloads\Free\Joomla\Table\Item;
 
-require_once 'abstractdocument.php';
+defined('_JEXEC') or die();
 
-class OsdownloadsTableDocument extends OSDownloadsTableAbstractDocument
+class OsdownloadsTableDocument extends Item
 {
-
 }

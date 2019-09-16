@@ -26,6 +26,7 @@ namespace Alledia\OSDownloads\MailingLists;
 use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free;
 use CategoriesTableCategory;
+use JLog;
 use JObservableInterface;
 use JObserverInterface;
 use Joomla\CMS\User\User;
@@ -64,8 +65,8 @@ abstract class AbstractClient implements JObserverInterface
     }
 
     /**
-     * @param   JObservableInterface $observableObject The observable subject object
-     * @param   array                $params           Params for this observer
+     * @param JObservableInterface $observableObject The observable subject object
+     * @param array                $params           Params for this observer
      *
      * @return  JObserverInterface
      */
@@ -173,5 +174,23 @@ abstract class AbstractClient implements JObserverInterface
         }
 
         return static::$params;
+    }
+
+    /**
+     * @param string $message
+     * @param int    $level
+     * @param string $category
+     *
+     * @return void
+     */
+    protected function logError($message, $level = JLog::ALERT, $category = null)
+    {
+        if (!$category) {
+            $classParts = explode('\\', get_class($this));
+            $category   = array_pop($classParts);
+        }
+
+        JLog::addLogger(array('text_file' => 'osdownloads.log.php'), JLog::ALL, $category);
+        JLog::add($message, $level, $category);
     }
 }

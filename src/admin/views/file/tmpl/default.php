@@ -23,7 +23,7 @@
 
 use Alledia\OSDownloads\Free\Factory;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 

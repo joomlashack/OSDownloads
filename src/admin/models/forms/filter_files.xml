@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="filter">
+        <field name="search"
+               type="text"/>
+
+        <field name="published"
+               type="status"
+               onchange="this.form.submit();"
+               filter="0,1">
+            <option value="">COM_OSDOWNLOADS_OPTION_SELECT_PUBLISHED</option>
+        </field>
+
+        <field name="cate_id"
+               type="category"
+               extension="com_osdownloads"
+               onchange="this.form.submit();">
+            <option value="">COM_OSDOWNLOADS_OPTION_SELECT_CATEGORY</option>
+        </field>
+    </fields>
+
+    <fields name="list">
+        <field name="fullordering"
+               type="list"
+               onchange="this.form.submit();"
+               default="doc.id DESC">
+            <option value="">JGLOBAL_SORT_BY</option>
+            <option value="doc.ordering ASC">COM_OSDOWNLOADS_GRID_ORDERING_ORDERING_ASC</option>,
+            <option value="doc.ordering DESC">COM_OSDOWNLOADS_GRID_ORDERING_ORDERING_DESC</option>,
+            <option value="doc.published ASC">COM_OSDOWNLOADS_GRID_ORDERING_PUBLISHED_ASC</option>,
+            <option value="doc.published DESC">COM_OSDOWNLOADS_GRID_ORDERING_PUBLISHED_DESC</option>,
+            <option value="doc.name ASC">COM_OSDOWNLOADS_GRID_ORDERING_NAME_ASC</option>,
+            <option value="doc.name DESC">COM_OSDOWNLOADS_GRID_ORDERING_NAME_DESC</option>,
+            <option value="doc.access ASC">COM_OSDOWNLOADS_GRID_ORDERING_ACCESS_ASC</option>,
+            <option value="doc.access DESC">COM_OSDOWNLOADS_GRID_ORDERING_ACCESS_DESC</option>,
+            <option value="doc.downloaded ASC">COM_OSDOWNLOADS_GRID_ORDERING_DOWNLOADED_ASC</option>,
+            <option value="doc.downloaded DESC">COM_OSDOWNLOADS_GRID_ORDERING_DOWNLOADED_DESC</option>,
+            <option value="doc.id ASC">COM_OSDOWNLOADS_GRID_ORDERING_ID_ASC</option>
+            <option value="doc.id DESC">COM_OSDOWNLOADS_GRID_ORDERING_ID_DESC</option>
+        </field>
+
+        <field name="limit"
+               type="limitbox"
+               class="inputbox input-mini"
+               default="25"
+               label="COM_SIMPLERENEW_LIST_LIMIT"
+               description="COM_SIMPLERENEW_LIST_LIMIT_DESC"
+               onchange="this.form.submit();"/>
+    </fields>
+</form>

@@ -7,7 +7,7 @@
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>help@joomlashack.com</authorEmail>
     <authorUrl>https://www.joomlashack.com</authorUrl>
-    <version>1.13.15</version>
+    <version>1.13.16b1</version>
     <variant>FREE</variant>
     <description>COM_OSDOWNLOADS_DESCRIPTION</description>
 
@@ -37,19 +37,19 @@
         <menu img="class:component">COM_OSDOWNLOADS</menu>
         <submenu>
             <menu link="option=com_osdownloads&amp;view=files"
-                view="files"
-                img="class:component"
-                alt="OSDownloads/Files">COM_OSDOWNLOADS_FILES</menu>
+                  view="files"
+                  img="class:component"
+                  alt="OSDownloads/Files">COM_OSDOWNLOADS_FILES</menu>
 
             <menu link="option=com_categories&amp;extension=com_osdownloads"
-                view="categories"
-                img="class:component"
-                alt="OSDownloads/Categories">COM_OSDOWNLOADS_CATEGORIES</menu>
+                  view="categories"
+                  img="class:component"
+                  alt="OSDownloads/Categories">COM_OSDOWNLOADS_CATEGORIES</menu>
 
             <menu link="option=com_osdownloads&amp;view=emails"
-                view="emails"
-                img="class:component"
-                alt="OSDownloads/Emails">COM_OSDOWNLOADS_EMAILS</menu>
+                  view="emails"
+                  img="class:component"
+                  alt="OSDownloads/Emails">COM_OSDOWNLOADS_EMAILS</menu>
         </submenu>
 
         <files folder="admin">
@@ -106,25 +106,25 @@
 
         <relatedExtensions>
             <extension type="library"
-                element="allediaframework">AllediaFramework</extension>
+                       element="allediaframework">AllediaFramework</extension>
 
             <extension type="module"
-                element="osdownloadsfiles"
-                uninstall="true"
-                downgrade="true">OSDownloadsFiles</extension>
+                       element="osdownloadsfiles"
+                       uninstall="true"
+                       downgrade="true">OSDownloadsFiles</extension>
 
             <extension type="plugin"
-                group="system"
-                element="ossystem"
-                publish="true"
-                ordering="first">OSSystem</extension>
+                       group="system"
+                       element="ossystem"
+                       publish="true"
+                       ordering="first">OSSystem</extension>
 
             <extension type="plugin"
-                group="content"
-                element="osdownloads"
-                publish="true"
-                downgrade="true"
-                uninstall="true">plg_content_osdownloads</extension>
+                       group="content"
+                       element="osdownloads"
+                       publish="true"
+                       downgrade="true"
+                       uninstall="true">plg_content_osdownloads</extension>
         </relatedExtensions>
 
         <minify suffix=".min">
@@ -137,7 +137,12 @@
         </minify>
 
         <obsolete>
-            <file>administrator/components/com_osdownloads/models/files.php</file>
+            <folder>administrator/components/com_osdownloads/models/abstract</folder>
+
+            <file>administrator/components/com_osdownloads/library/Free/Joomla/View/Legacy.php</file>
+            <file>administrator/components/com_osdownloads/models/items.php</file>
+            <file>administrator/components/com_osdownloads/tables/abstract.php</file>
+            <file>administrator/components/com_osdownloads/tables/abstractdocument.php</file>
             <file>administrator/components/com_osdownloads/views/file/tmpl/default.j2.php</file>
             <file>administrator/components/com_osdownloads/views/files/tmpl/default.j2.php</file>
             <file>administrator/components/com_osdownloads/views/installer/tmpl/default_custom.php</file>
@@ -162,6 +167,7 @@
             <file>administrator/language/fr-FR/fr-FR.plg_system_osdownloadssystem.sys.ini</file>
             <file>administrator/manifests/packages/pkg_osdownloads.xml</file>
             <file>components/com_osdownloads/layouts/download_button.php</file>
+            <file>components/com_osdownloads/layouts/social_download.php</file>
             <file>components/com_osdownloads/views/download/tmpl/error_not_available.php</file>
             <file>components/com_osdownloads/views/download/tmpl/error_too_big.php</file>
             <file>language/en-GB/en-GB.com_osdownloads.ini</file>
@@ -172,6 +178,14 @@
             <file>language/fr-FR/fr-FR.com_osdownloads.sys.ini</file>
             <file>media/com_osdownloads/css/frontend.min.css</file>
             <file>media/com_osdownloads/js/jquery.osdownloads.min.js</file>
+
+            <extension type="plugin"
+                       group="system"
+                       element="osdownloadssystem"/>
+
+            <extension type="plugin"
+                       group="content"
+                       element="osdownloadsshortcodes"/>
         </obsolete>
     </alledia>
 </extension>

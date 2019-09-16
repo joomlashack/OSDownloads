@@ -21,16 +21,12 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die;
-
-jimport('legacy.controller.admin');
-
-require_once JPATH_ADMINISTRATOR . '/components/com_osdownloads/models/items.php';
+defined('_JEXEC') or die();
 
 class OSDownloadsControllerFiles extends JControllerAdmin
 {
-    public function getModel($name = '', $prefix = '', $config = array())
+    public function getModel($name = 'File', $prefix = 'OsdownloadsModel', $config = array())
     {
-        return OSDownloadsModelItems::getInstance('Items', 'OSDownloadsModel');
+        return parent::getModel($name, $prefix, $config);
     }
 }

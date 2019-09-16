@@ -38,7 +38,7 @@ use Joomla\Registry\Registry;
 use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Factory as OSDFactory;
 
-defined( '_JEXEC' ) or die;
+defined( '_JEXEC' ) or die();
 
 class sef_osdownloads {
 

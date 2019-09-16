@@ -23,13 +23,12 @@
 
 namespace Alledia\OSDownloads\Free\Joomla\View\Site;
 
-use Alledia\OSDownloads\Free\Joomla\View\Legacy;
 use Exception;
+use JViewLegacy;
 
 defined('_JEXEC') or die();
 
-
-class Base extends Legacy
+class Base extends JViewLegacy
 {
     /**
      * @param string $tpl

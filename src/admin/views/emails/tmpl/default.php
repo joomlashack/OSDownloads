@@ -23,7 +23,7 @@
 
 use Alledia\OSDownloads\Free\Factory;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 JHtml::_('formbehavior.chosen', 'select');
 

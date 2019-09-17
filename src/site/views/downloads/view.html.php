@@ -146,7 +146,7 @@ class OSDownloadsViewDownloads extends View\Site\Base
         $groups = $user->getAuthorisedViewLevels();
 
         if (!isset($items) || (count($items) && !in_array($items[0]->cat_access, $groups))) {
-            throw new Exception(JText::_("COM_OSDOWNLOADS_THIS_CATEGORY_ISNT_AVAILABLE"), 404);
+            throw new Exception(JText::_('COM_OSDOWNLOADS_THIS_CATEGORY_ISNT_AVAILABLE'), 404);
         }
 
         /*----------  Child Categories  ----------*/

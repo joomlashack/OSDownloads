@@ -93,6 +93,11 @@ class OSDownloadsViewDownloads extends View\Site\Base
         }
 
         $model = JModelLegacy::getInstance('OSDownloadsModelItem');
+
+        $app->setUserState('com_osdownloads.files.filter_order', $params->get('ordering', 'doc.ordering'));
+        $app->setUserState('com_osdownloads.files.filter_order_Dir', $params->get('ordering_dir', 'asc'));
+
+        /** @var JDatabaseQuery $query */
         $query = $model->getItemQuery();
 
         $query->select('cat.access as cat_access');
@@ -117,9 +122,6 @@ class OSDownloadsViewDownloads extends View\Site\Base
         $defaultLimit = $params->get('list_limit') ?: $app->get('list_limit');
         $limit        = $app->getUserStateFromRequest('osdownloads.request.list.limit', 'limit', $defaultLimit, 'int');
         $limitstart   = $app->getUserStateFromRequest('osdownloads.request.limitstart', 'limitstart', 0, 'int');
-
-        $app->setUserState("com_osdownloads.files.filter_order", $params->get('ordering', 'doc.ordering'));
-        $app->setUserState("com_osdownloads.files.filter_order_Dir", $params->get('ordering_dir', 'asc'));
 
         $pagination = new JPagination($total, $limitstart, $limit);
 

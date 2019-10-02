@@ -141,6 +141,8 @@
 
             <file>administrator/components/com_osdownloads/library/Free/Joomla/View/Legacy.php</file>
             <file>administrator/components/com_osdownloads/models/items.php</file>
+            <file>administrator/components/com_osdownloads/helpers/category.php</file>
+            <file>administrator/components/com_osdownloads/helpers/file.php</file>
             <file>administrator/components/com_osdownloads/tables/abstract.php</file>
             <file>administrator/components/com_osdownloads/tables/abstractdocument.php</file>
             <file>administrator/components/com_osdownloads/tables/email.php</file>

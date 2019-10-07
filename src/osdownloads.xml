@@ -2,12 +2,12 @@
 <extension version="3.7" type="component" method="upgrade">
     <name>com_osdownloads</name>
     <author>Joomlashack</author>
-    <creationDate>September 23 2019</creationDate>
+    <creationDate>October 07 2019</creationDate>
     <copyright>Copyright 2005-2019 Joomlashack.com</copyright>
     <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
     <authorEmail>help@joomlashack.com</authorEmail>
     <authorUrl>https://www.joomlashack.com</authorUrl>
-    <version>1.13.17</version>
+    <version>1.13.18</version>
     <variant>FREE</variant>
     <description>COM_OSDOWNLOADS_DESCRIPTION</description>
 
@@ -141,8 +141,11 @@
 
             <file>administrator/components/com_osdownloads/library/Free/Joomla/View/Legacy.php</file>
             <file>administrator/components/com_osdownloads/models/items.php</file>
+            <file>administrator/components/com_osdownloads/helpers/category.php</file>
+            <file>administrator/components/com_osdownloads/helpers/file.php</file>
             <file>administrator/components/com_osdownloads/tables/abstract.php</file>
             <file>administrator/components/com_osdownloads/tables/abstractdocument.php</file>
+            <file>administrator/components/com_osdownloads/tables/email.php</file>
             <file>administrator/components/com_osdownloads/views/file/tmpl/default.j2.php</file>
             <file>administrator/components/com_osdownloads/views/files/tmpl/default.j2.php</file>
             <file>administrator/components/com_osdownloads/views/installer/tmpl/default_custom.php</file>

@@ -2,12 +2,12 @@
 <extension version="3.7" type="plugin" group="content" method="upgrade">
     <name>PLG_CONTENT_OSDOWNLOADS</name>
     <author>Joomlashack</author>
-    <creationDate>September 23 2019</creationDate>
+    <creationDate>October 07 2019</creationDate>
     <copyright>Copyright 2005-2019 Joomlashack.com</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <authorEmail>help@joomlashack.com</authorEmail>
     <authorUrl>http://www.joomlashack.com</authorUrl>
-    <version>1.13.17</version>
+    <version>1.13.18</version>
     <description>PLG_CONTENT_OSDOWNLOADS_DESC</description>
 
     <alledia>

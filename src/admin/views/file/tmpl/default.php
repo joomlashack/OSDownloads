@@ -21,6 +21,7 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Alledia\Framework\Joomla\Extension\Licensed;
 use Alledia\OSDownloads\Free\Factory;
 
 defined('_JEXEC') or die();
@@ -32,6 +33,7 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
 JHtml::_('behavior.formvalidation');
 JHtml::_('behavior.keepalive');
+JHtml::_('behavior.tabstate');
 JHtml::_('behavior.tooltip');
 JHtml::_('formbehavior.chosen', 'select');
 
@@ -124,9 +126,11 @@ $container = Factory::getContainer();
             echo JHtml::_('bootstrap.endTab');
 
             /*************************************
-             *          Custom Fields - Pro      *
+             *          Pro parameters           *
              *************************************/
+            /** @var Licensed $component */
             $component = FreeComponentSite::getInstance();
+
             if ($component->isPro()) :
                 echo $this->loadTemplate('custom_fields');
             endif;
@@ -139,20 +143,14 @@ $container = Factory::getContainer();
                 JText::_('COM_OSDOWNLOADS_REQUIREMENTS_TO_DOWNLOAD', true)
             );
 
-            $fields = $this->form->getFieldset('requirements');
-            foreach ($fields as $fieldName => $field) :
-                echo $this->form->renderField($field->fieldname);
-            endforeach;
+            echo $this->form->renderFieldset('requirements');
 
             echo JHtml::_('bootstrap.endTab');
 
             // Advanced tab
             echo JHtml::_('bootstrap.addTab', 'myTab', 'advanced', JText::_('COM_OSDOWNLOADS_ADVANCED', true));
 
-            $fields = $this->form->getFieldset('advanced');
-            foreach ($fields as $fieldName => $field) :
-                echo $this->form->renderField($field->fieldname);
-            endforeach;
+            echo $this->form->renderFieldset('advanced');
 
             echo JHtml::_('bootstrap.endTab');
             echo JHtml::_('bootstrap.endTabSet');

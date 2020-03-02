@@ -11,9 +11,7 @@
             <field name="id"
                    type="modal_document"
                    label="COM_OSDOWNLOADS_FILE"
-                   size="1"
-                   default=""
-            />
+                   size="1"/>
         </fieldset>
     </fields>
 

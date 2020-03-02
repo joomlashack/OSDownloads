@@ -44,9 +44,11 @@
             </field>
 
             <field name="number_of_column"
-                   type="text"
+                   type="number"
                    size="2"
                    default=""
+                   min="1"
+                   max="8"
                    label="COM_OSDOWNLOADS_NUMBER_OF_COLUMN"/>
 
             <field name="show_download_count"

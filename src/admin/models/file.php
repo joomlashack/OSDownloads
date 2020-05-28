@@ -24,6 +24,7 @@
 defined('_JEXEC') or die();
 
 use Alledia\Framework\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
 
 class OSDownloadsModelFile extends JModelAdmin
@@ -160,9 +161,19 @@ class OSDownloadsModelFile extends JModelAdmin
             $data['require_email'] = (int)$data['require_email'];
             $data['require_agree'] = (int)$data['require_agree'];
 
-            // File URL takes precedence over File Path
-            if (empty($data['file_url'])) {
-                $this->uploadFile($data);
+            $type = empty($data['type']) ? null : $data['type'];
+            switch ($type) {
+                case 'url':
+                    $data['file_path'] = '';
+                    break;
+
+                case 'upload':
+                    $this->uploadFile($data);
+                    $data['file_url'] = '';
+                    break;
+
+                default:
+                    throw new Exception(Text::sprintf('COM_OSDOWNLOADS_ERROR_FILE_TYPE_UNKNOWN', $type));
             }
 
         } catch (Exception $e) {

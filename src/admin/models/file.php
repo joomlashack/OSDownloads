@@ -24,10 +24,18 @@
 defined('_JEXEC') or die();
 
 use Alledia\Framework\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\CMS\Object\CMSObject;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Table\Table;
 use Joomla\Registry\Registry;
 
-class OSDownloadsModelFile extends JModelAdmin
+class OSDownloadsModelFile extends AdminModel
 {
     protected $uploadDir = OSDOWNLOADS_MEDIA . '/files';
 
@@ -44,7 +52,7 @@ class OSDownloadsModelFile extends JModelAdmin
      * @param array $data
      * @param bool  $loadData
      *
-     * @return JForm
+     * @return Form
      * @throws Exception
      */
     public function getForm($data = array(), $loadData = true)
@@ -72,16 +80,16 @@ class OSDownloadsModelFile extends JModelAdmin
 
     public function getTable($type = 'Document', $prefix = 'OSDownloadsTable', $config = array())
     {
-        return JTable::getInstance($type, $prefix, $config);
+        return Table::getInstance($type, $prefix, $config);
     }
 
     /**
-     * @return array|bool|JObject|object
+     * @return array|bool|CMSObject|object
      * @throws Exception
      */
     protected function loadFormData()
     {
-        $data = JFactory::getApplication()->getUserState("com_osdownloads.edit.file.data", array());
+        $data = Factory::getApplication()->getUserState("com_osdownloads.edit.file.data", array());
 
         if (empty($data)) {
             $data = $this->getItem();
@@ -95,7 +103,7 @@ class OSDownloadsModelFile extends JModelAdmin
     /**
      * @param int $pk
      *
-     * @return JObject
+     * @return CMSObject
      * @throws Exception
      */
     public function getItem($pk = null)
@@ -114,7 +122,7 @@ class OSDownloadsModelFile extends JModelAdmin
             $agreementRequired   = (bool)$item->get('require_agree');
             $agreementId         = (int)$item->get('agreement_article_id');
             $item->agreementLink = ($agreementRequired && $agreementId)
-                ? JRoute::_(ContentHelperRoute::getArticleRoute($agreementId))
+                ? Route::_(ContentHelperRoute::getArticleRoute($agreementId))
                 : '';
 
             $item->type = $item->file_url ? 'url' : 'upload';
@@ -126,7 +134,7 @@ class OSDownloadsModelFile extends JModelAdmin
     public function save($data)
     {
         try {
-            $app = JFactory::getApplication();
+            $app = Factory::getApplication();
 
             if ($app->input->getCmd('task') == 'save2copy') {
                 $original = clone $this->getTable();
@@ -218,7 +226,7 @@ class OSDownloadsModelFile extends JModelAdmin
             ->where('file_path != ' . $db->quote(''));
 
         $files         = $db->setQuery($query)->loadColumn();
-        $uploadedFiles = JFolder::files($this->uploadDir);
+        $uploadedFiles = Folder::files($this->uploadDir);
 
         $unlinkedFiles = array_diff($uploadedFiles, $files);
         foreach ($unlinkedFiles as $file) {
@@ -236,7 +244,7 @@ class OSDownloadsModelFile extends JModelAdmin
      */
     protected function uploadFile(&$data)
     {
-        $app   = JFactory::getApplication();
+        $app   = Factory::getApplication();
         $files = $app->input->files->get('jform', array(), 'raw');
 
         if (empty($files['file_path_upload'])) {
@@ -251,22 +259,22 @@ class OSDownloadsModelFile extends JModelAdmin
 
         } elseif ($uploadError != UPLOAD_ERR_OK) {
             if (isset($this->uploadErrors[$uploadError])) {
-                $errorMessage = JText::_($this->uploadErrors[$uploadError]);
+                $errorMessage = Text::_($this->uploadErrors[$uploadError]);
 
             } else {
-                $errorMessage = JText::sprintf('COM_OSDOWNLOADS_UPLOAD_ERR_UNKNOWN', $uploadError);
+                $errorMessage = Text::sprintf('COM_OSDOWNLOADS_UPLOAD_ERR_UNKNOWN', $uploadError);
             }
 
             throw new Exception($errorMessage);
         }
 
-        if ($fileName = JFile::makeSafe($upload->get('name'))) {
+        if ($fileName = File::makeSafe($upload->get('name'))) {
             if (!is_dir($this->uploadDir)) {
                 if (is_file($this->uploadDir)) {
-                    throw new Exception(JText::_('COM_OSDOWNLOADS_UPLOAD_ERR_FILESYSTEM'));
+                    throw new Exception(Text::_('COM_OSDOWNLOADS_UPLOAD_ERR_FILESYSTEM'));
                 }
 
-                JFolder::create($this->uploadDir);
+                Folder::create($this->uploadDir);
 
                 $accessFile = array(
                     'Order Deny,Allow',
@@ -277,7 +285,7 @@ class OSDownloadsModelFile extends JModelAdmin
             }
 
             $fileHash = md5(microtime()) . '_' . $fileName;
-            $filePath = JPath::clean($this->uploadDir . '/' . $fileHash);
+            $filePath = Path::clean($this->uploadDir . '/' . $fileHash);
 
             $tempPath = $upload->get('tmp_name');
 
@@ -291,7 +299,7 @@ class OSDownloadsModelFile extends JModelAdmin
                 'php_ext_content_extensions' => array(),
             );
 
-            if (!JFile::upload($tempPath, $filePath, false, false, $safeFileOptions)) {
+            if (!File::upload($tempPath, $filePath, false, false, $safeFileOptions)) {
                 if ($messages = $app->getMessageQueue(true)) {
                     $uploadErrorMessage = array_pop($messages);
 
@@ -307,7 +315,7 @@ class OSDownloadsModelFile extends JModelAdmin
                     );
 
                 } else {
-                    $uploadErrorMessage = JText::_('COM_OSDOWNLOADS_UPLOAD_ERR_UNKNOWN');
+                    $uploadErrorMessage = Text::_('COM_OSDOWNLOADS_UPLOAD_ERR_UNKNOWN');
                 }
 
                 throw new Exception($uploadErrorMessage);
@@ -319,6 +327,6 @@ class OSDownloadsModelFile extends JModelAdmin
         }
 
         $fileName = $upload->get('name');
-        throw new Exception(JText::sprintf('COM_OSDOWNLOADS_UPLOAD_ERR_FILENAME', $fileName));
+        throw new Exception(Text::sprintf('COM_OSDOWNLOADS_UPLOAD_ERR_FILENAME', $fileName));
     }
 }

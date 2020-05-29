@@ -2,7 +2,7 @@
     "name"             : "Joomlashack/OSDownloads",
     "description"      : "OSDownloads",
     "minimum-stability": "stable",
-    "license"          : "GPL-2+",
+    "license"          : "GPL",
     "type"             : "joomla.component",
     "extra"            : {
         "element"        : "com_osdownloads",
@@ -25,6 +25,7 @@
     "require"          : {
         "php"                   : ">= 5.6",
         "ext-simplexml"         : "*",
+        "ext-json"     : "*",
         "pimple/pimple"         : "^3.2",
         "pacely/mailchimp-apiv3": "^1.0"
     }

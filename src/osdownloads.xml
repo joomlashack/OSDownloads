@@ -139,6 +139,12 @@
         <obsolete>
             <folder>administrator/components/com_osdownloads/models/abstract</folder>
 
+            <file>administrator/components/com_osdownloads/form/fields/AbstractMailChimpList.php</file>
+            <file>administrator/components/com_osdownloads/form/fields/constantcontactlistslist.php</file>
+            <file>administrator/components/com_osdownloads/form/fields/mailchimpgroupslist.php</file>
+            <file>administrator/components/com_osdownloads/form/fields/mailchimplistslist.php</file>
+            <file>administrator/components/com_osdownloads/helpers/category.php</file>
+            <file>administrator/components/com_osdownloads/helpers/file.php</file>
             <file>administrator/components/com_osdownloads/library/Free/Joomla/View/Legacy.php</file>
             <file>administrator/components/com_osdownloads/models/items.php</file>
             <file>administrator/components/com_osdownloads/helpers/category.php</file>

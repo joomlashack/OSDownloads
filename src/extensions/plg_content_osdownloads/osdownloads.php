@@ -21,6 +21,10 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\CMSPlugin;
+
 defined('_JEXEC') or die();
 
 if (!defined('OSDOWNLOADS_LOADED')) {
@@ -31,15 +35,20 @@ if (!defined('OSDOWNLOADS_LOADED')) {
 }
 
 if (defined('OSDOWNLOADS_LOADED')) {
-    $className = '\\Alledia\\OSDownloads\\Free\\Joomla\\Plugin\\Content';
+    $baseClass = '\\Alledia\\OSDownloads\\%s\\Joomla\\Plugin\\Content';
 
-    if (class_exists($className)) {
+    if (class_exists(sprintf($baseClass, 'Pro'))) {
+        class PlgContentOsdownloads extends \Alledia\OSDownloads\Pro\Joomla\Plugin\Content
+        {
+        }
+
+    } elseif (class_exists(sprintf($baseClass, 'Free'))) {
         class PlgContentOsdownloads extends \Alledia\OSDownloads\Free\Joomla\Plugin\Content
         {
         }
 
     } else {
-        class PlgContentOsdownloads extends JPlugin
+        class PlgContentOsdownloads extends CMSPlugin
         {
             protected $autoloadLanguage = true;
 
@@ -51,12 +60,12 @@ if (defined('OSDOWNLOADS_LOADED')) {
              *
              * @throws Exception
              */
-            public function __construct($subject, array $config = array())
+            public function __construct($subject, array $config = [])
             {
                 parent::__construct($subject, $config);
 
-                JFactory::getApplication()->enqueueMessage(
-                    Jtext::sprintf('COM_OSDOWNLOADS_PLUGIN_NOT_INSTALLED', 'CONTENT')
+                Factory::getApplication()->enqueueMessage(
+                    Text::sprintf('COM_OSDOWNLOADS_PLUGIN_NOT_INSTALLED', 'CONTENT')
                 );
             }
         }

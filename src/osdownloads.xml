@@ -7,8 +7,8 @@
     <copyright>Copyright 2005-2020 Joomlashack.com</copyright>
     <license>GNU GPL; see LICENSE file</license>
     <description>COM_OSDOWNLOADS_DESCRIPTION</description>
-    <version>1.13.23</version>
-    <creationDate>June 08 2020</creationDate>
+    <version>1.13.24b1</version>
+    <creationDate>September 23 2020</creationDate>
     <variant>FREE</variant>
 
     <scriptfile>script.installer.php</scriptfile>

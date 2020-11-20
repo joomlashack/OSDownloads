@@ -25,28 +25,34 @@ namespace Alledia\OSDownloads\Free\Joomla\Controller\Admin;
 
 use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Factory as OSDFactory;
-use JControllerLegacy;
-use JText;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Controller\BaseController;
 
 defined('_JEXEC') or die();
 
-class Emails extends JControllerLegacy
+class Emails extends BaseController
 {
     public function delete()
     {
         $app       = Factory::getApplication();
         $container = OSDFactory::getContainer();
 
-        $id_arr = $app->input->getVar('cid');
-        $str_id = implode(',', $id_arr);
-        $db     = Factory::getDBO();
+        $ids = array_filter(
+            array_unique(
+                array_map('intval', $app->input->get('cid', [], 'array'))
+            )
+        );
 
-        $query  = "DELETE FROM `#__osdownloads_emails` WHERE id IN (" . $str_id . ")";
+        $db    = Factory::getDbo();
+        $query = $db->getQuery(true)
+            ->delete('#__osdownloads_emails')
+            ->where(sprintf('id IN (%s)', join(',', $ids)));
+
         $db->setQuery($query)->execute();
 
         $this->setRedirect(
             $container->helperRoute->getAdminEmailListRoute(),
-            JText::_("COM_OSDOWNLOADS_EMAIL_IS_DELETED")
+            Text::_("COM_OSDOWNLOADS_EMAIL_IS_DELETED")
         );
     }
 }

@@ -32,6 +32,7 @@ use JToolBarHelper;
 use JAccess;
 use JFactory;
 use JHtml;
+use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die();
 
@@ -184,6 +185,10 @@ class Helper
         if (static::$dispatcher === null) {
             \JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
             static::$dispatcher = \JEventDispatcher::getInstance();
+        }
+
+        if (!($item->params instanceof Registry)) {
+            $item->params = new Registry($item->params);
         }
 
         if ((bool)$item->require_agree && (int)$item->agreement_article_id) {

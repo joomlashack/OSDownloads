@@ -25,7 +25,7 @@
     "require"          : {
         "php"                   : ">= 5.6",
         "ext-simplexml"         : "*",
-        "ext-json"     : "*",
+        "ext-json"              : "*",
         "pimple/pimple"         : "^3.2",
         "pacely/mailchimp-apiv3": "^1.0"
     }

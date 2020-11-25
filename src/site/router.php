@@ -402,6 +402,8 @@ class OsdownloadsRouter extends JComponentRouterBase
                     $middlePath = array();
                     $endPath    = array();
 
+                    $this->getCustomSegments();
+
                     // Append the file alias
                     $endPath[] = $this->customSegments['files'];
 

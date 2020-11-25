@@ -25,13 +25,14 @@ namespace Alledia\OSDownloads\Free\Helper;
 
 use Alledia\OSDownloads\Free\MailingList\MailChimp;
 use Exception;
-use JComponentHelper;
+use JEventDispatcher;
 use JHtmlSidebar;
-use JText;
-use JToolBarHelper;
-use JAccess;
-use JFactory;
-use JHtml;
+use Joomla\CMS\Access\Access;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die();
@@ -39,7 +40,7 @@ defined('_JEXEC') or die();
 class Helper
 {
     /**
-     * @var \JEventDispatcher
+     * @var JEventDispatcher
      */
     protected static $dispatcher = null;
 
@@ -52,34 +53,34 @@ class Helper
     public static function addSubmenu($vName)
     {
         JHtmlSidebar::addEntry(
-            JText::_('COM_OSDOWNLOADS_SUBMENU_FILES'),
+            Text::_('COM_OSDOWNLOADS_SUBMENU_FILES'),
             'index.php?option=com_osdownloads&view=files',
             $vName == 'files'
         );
 
         JHtmlSidebar::addEntry(
-            JText::_('COM_OSDOWNLOADS_SUBMENU_CATEGORIES'),
+            Text::_('COM_OSDOWNLOADS_SUBMENU_CATEGORIES'),
             'index.php?option=com_categories&extension=com_osdownloads',
             $vName == 'categories'
         );
         if ($vName == 'categories') {
-            JToolBarHelper::title(
-                JText::sprintf(
+            ToolbarHelper::title(
+                Text::sprintf(
                     'COM_CATEGORIES_CATEGORIES_TITLE',
-                    JText::_('COM_OSDOWNLOADS')
+                    Text::_('COM_OSDOWNLOADS')
                 ),
                 'osdownloads-categories'
             );
         }
 
         JHtmlSidebar::addEntry(
-            JText::_('COM_OSDOWNLOADS_SUBMENU_EMAILS'),
+            Text::_('COM_OSDOWNLOADS_SUBMENU_EMAILS'),
             'index.php?option=com_osdownloads&view=emails',
             $vName == 'emails'
         );
 
         // Load responsive CSS
-        JHtml::_('stylesheet', 'media/jui/css/jquery.searchtools.css');
+        HTMLHelper::_('stylesheet', 'media/jui/css/jquery.searchtools.css');
 
         static::displayAdminMessages();
     }
@@ -90,12 +91,12 @@ class Helper
      */
     public static function displayAdminMessages()
     {
-        $params = JComponentHelper::getParams('com_osdownloads');
+        $params = ComponentHelper::getParams('com_osdownloads');
 
         // Check MailChimp php requirements
         if ($params->get('mailinglist.mailchimp.api')) {
             if ($warning = MailChimp::getPhpUpgradeMessage()) {
-                JFactory::getApplication()->enqueueMessage($warning, 'warn');
+                Factory::getApplication()->enqueueMessage($warning, 'warn');
             }
         }
     }
@@ -145,21 +146,21 @@ class Helper
     /**
      * Get the files the user has access to, filtering or not by the externalRef.
      *
-     * @param  int    $userId
-     * @param  string $externalRef
+     * @param int    $userId
+     * @param string $externalRef
      *
      * @return array
      */
     public static function getAuthorizedFilesForUser($userId, $externalRef = '')
     {
-        // Flush any JAccess cache
-        JAccess::clearStatics();
+        // Flush any Access cache
+        Access::clearStatics();
 
-        $authorizedViewLevels = JAccess::getAuthorisedViewLevels($userId);
+        $authorizedViewLevels = Access::getAuthorisedViewLevels($userId);
         $authorizedViewLevels = implode(',', $authorizedViewLevels);
 
         // Get the files the user has access to and external ref has the suffix .pro
-        $db    = JFactory::getDbo();
+        $db    = Factory::getDbo();
         $query = $db->getQuery(true)
             ->select('*')
             ->from('#__osdownloads_documents')
@@ -184,7 +185,7 @@ class Helper
     {
         if (static::$dispatcher === null) {
             \JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
-            static::$dispatcher = \JEventDispatcher::getInstance();
+            static::$dispatcher = JEventDispatcher::getInstance();
         }
 
         if (!($item->params instanceof Registry)) {
@@ -205,23 +206,23 @@ class Helper
 
         static::$dispatcher->trigger(
             'onContentPrepare',
-            array('com_osdownloads.file', &$item, &$item->params, null)
+            ['com_osdownloads.file', &$item, &$item->params, null]
         );
 
-        $prepareEvent = array(
+        $prepareEvent = [
             'afterDisplayTitle'    => static::$dispatcher->trigger(
                 'onContentAfterTitle',
-                array('com_osdownloads.file', &$item, &$item->params, null)
+                ['com_osdownloads.file', &$item, &$item->params, null]
             ),
             'beforeDisplayContent' => static::$dispatcher->trigger(
                 'onContentBeforeDisplay',
-                array('com_osdownloads.file', &$item, &$item->params, null)
+                ['com_osdownloads.file', &$item, &$item->params, null]
             ),
             'afterDisplayContent'  => static::$dispatcher->trigger(
                 'onContentAfterDisplay',
-                array('com_osdownloads.file', &$item, &$item->params, null)
+                ['com_osdownloads.file', &$item, &$item->params, null]
             )
-        );
+        ];
         foreach ($prepareEvent as &$results) {
             $results = trim(join("\n", $results));
         }

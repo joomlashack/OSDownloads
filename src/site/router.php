@@ -21,8 +21,13 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Joomla\Utilities\ArrayHelper;
+use Alledia\OSDownloads\Free\Container;
 use Alledia\OSDownloads\Free\Factory as OSDFactory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Component\Router\RouterBase;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
+use Joomla\Utilities\ArrayHelper;
 
 defined('_JEXEC') or die();
 
@@ -37,10 +42,9 @@ if (!defined('OSDOWNLOADS_LOADED')) {
  */
 function OsdownloadsBuildRoute(&$query)
 {
-    $router   = new OsdownloadsRouter();
-    $segments = $router->build($query);
+    $router = new OsdownloadsRouter();
 
-    return $segments;
+    return $router->build($query);
 }
 
 /**
@@ -52,15 +56,14 @@ function OsdownloadsBuildRoute(&$query)
 function OsdownloadsParseRoute($segments)
 {
     $router = new OsdownloadsRouter();
-    $vars   = $router->parse($segments);
 
-    return $vars;
+    return $router->parse($segments);
 }
 
 /**
  * Routing class from com_osdownloads
  */
-class OsdownloadsRouter extends JComponentRouterBase
+class OsdownloadsRouter extends RouterBase
 {
     /**
      * An array with custom segments:
@@ -86,26 +89,21 @@ class OsdownloadsRouter extends JComponentRouterBase
     /**
      * The DI container
      *
-     * @var \Alledia\OSDownloads\Free\Container
+     * @var Container
      */
     protected $container;
 
     /**
-     * Class constructor.
-     *
-     * @param   JApplicationCms $app  Application-object that the router should use
-     * @param   JMenu           $menu Menu-object that the router should use
-     *
-     * @since   3.4
+     * @inheritDoc
      */
     public function __construct($app = null, $menu = null)
     {
         parent::__construct($app, $menu);
 
-        JLog::addLogger(
-            array('text_file' => 'com_osdownloads.router.errors.php'),
-            JLog::ALL,
-            array('com_osdownloads.router')
+        Log::addLogger(
+            ['text_file' => 'com_osdownloads.router.errors.php'],
+            Log::ALL,
+            ['com_osdownloads.router']
         );
 
         $this->container = OSDFactory::getContainer();
@@ -116,14 +114,12 @@ class OsdownloadsRouter extends JComponentRouterBase
      *
      * @param string[] $segments
      */
-    public function setCustomSegments($segments = array())
+    public function setCustomSegments($segments = [])
     {
-        $params = JComponentHelper::getParams('com_osdownloads');
+        $params = ComponentHelper::getParams('com_osdownloads');
 
         // Default values
-        $default = array(
-            'files' => $params->get('route_segment_files', 'files'),
-        );
+        $default = ['files' => $params->get('route_segment_files', 'files')];
 
         $this->customSegments = array_merge($default, $segments);
     }
@@ -146,8 +142,8 @@ class OsdownloadsRouter extends JComponentRouterBase
      * Check if the category and path are correct. If category is empty, or we
      * have a wrong path, trigger a 404 error.
      *
-     * @param  stdClass $category
-     * @param  array    $segments
+     * @param stdClass $category
+     * @param array    $segments
      *
      * @return void
      * @throws Exception
@@ -156,13 +152,13 @@ class OsdownloadsRouter extends JComponentRouterBase
     {
         // Check if the category was foud
         if (empty($category)) {
-            throw new Exception(JText::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'), 404);
+            throw new Exception(Text::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'), 404);
         }
 
         // Check if the path is correct
         $path = implode('/', $segments);
         if ($path !== $category->path) {
-            throw new Exception(JText::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'), 404);
+            throw new Exception(Text::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'), 404);
         }
     }
 
@@ -170,12 +166,12 @@ class OsdownloadsRouter extends JComponentRouterBase
      * Prepend the menu path to the given path, if a menu exists. Returns the
      * modified array of segments.
      *
-     * @param  int   $fileId
-     * @param  int   $categoryId
-     * @param  array $segments
-     * @param  array $middlePath
-     * @param  array $endPath
-     * @param  array $query
+     * @param int   $fileId
+     * @param int   $categoryId
+     * @param array $segments
+     * @param array $middlePath
+     * @param array $endPath
+     * @param array $query
      *
      * @return array
      */
@@ -243,11 +239,11 @@ class OsdownloadsRouter extends JComponentRouterBase
     /**
      * Build the route for the com_osdownloads component.
      *
-     * @param   array &$query An array of URL arguments
-     *
-     * @see https://goo.gl/X8U2wh  Examples of routes
+     * @param array &$query An array of URL arguments
      *
      * @return  array  The URL arguments to use to assemble the subsequent URL.
+     * @see https://goo.gl/X8U2wh  Examples of routes
+     *
      */
     public function build(&$query)
     {
@@ -255,7 +251,7 @@ class OsdownloadsRouter extends JComponentRouterBase
         =            Extract variables from query            =
         ====================================================*/
 
-        $segments = array();
+        $segments = [];
 
         $id     = ArrayHelper::getValue($query, 'id');
         $view   = ArrayHelper::getValue($query, 'view');
@@ -291,10 +287,10 @@ class OsdownloadsRouter extends JComponentRouterBase
         if (!empty($view)) {
             // Check if we have a menu item. If so, we adjust the item ID.
             $menu = $this->container->helperSEF->getMenuItemByQuery(
-                array(
+                [
                     'view' => $view,
                     'id'   => $id
-                )
+                ]
             );
 
             if (!empty($menu)) {
@@ -332,8 +328,8 @@ class OsdownloadsRouter extends JComponentRouterBase
                 case 'download':
                     $categoryId = $this->container->helperSEF->getCategoryIdFromFileId($id);
 
-                    $middlePath = array();
-                    $endPath    = array();
+                    $middlePath = [];
+                    $endPath    = [];
 
 
                     // The task/layout segments
@@ -380,8 +376,8 @@ class OsdownloadsRouter extends JComponentRouterBase
                  *
                  */
                 case 'categories':
-                    $middlePath = array();
-                    $endPath    = array();
+                    $middlePath = [];
+                    $endPath    = [];
 
                     // Build the complete route
                     $segments = $this->buildRoutePrependingMenuPath(
@@ -399,8 +395,8 @@ class OsdownloadsRouter extends JComponentRouterBase
                  * List of files
                  */
                 case 'downloads':
-                    $middlePath = array();
-                    $endPath    = array();
+                    $middlePath = [];
+                    $endPath    = [];
 
                     $this->getCustomSegments();
 
@@ -425,8 +421,8 @@ class OsdownloadsRouter extends JComponentRouterBase
                 case 'item':
                     $categoryId = $this->container->helperSEF->getCategoryIdFromFileId($id);
 
-                    $middlePath = array();
-                    $endPath    = array();
+                    $middlePath = [];
+                    $endPath    = [];
 
                     // Append the file alias
                     $endPath[] = $this->container->helperSEF->getFileAlias($id);
@@ -455,14 +451,14 @@ class OsdownloadsRouter extends JComponentRouterBase
      *
      * @param array $segments
      *
-     * @see  https://goo.gl/X8U2wh  Examples of routes
-     *
      * @return array
      * @throws Exception
+     * @see  https://goo.gl/X8U2wh  Examples of routes
+     *
      */
     public function parse(&$segments)
     {
-        $vars = array();
+        $vars = [];
 
         /**
          *
@@ -480,13 +476,12 @@ class OsdownloadsRouter extends JComponentRouterBase
 
                 // Check if we have the data segment
                 if (empty($lastSegment) || $firstSegment === $lastSegment) {
-                    throw new Exception(JText::_('COM_OSDOWNLOADS_ERROR_EXPECTED_DATA_SEGMENT'), 400);
+                    throw new Exception(Text::_('COM_OSDOWNLOADS_ERROR_EXPECTED_DATA_SEGMENT'), 400);
                 }
 
                 $vars['data'] = $lastSegment;
 
                 return $vars;
-                break;
 
             case 'routedownload':
             case 'download':
@@ -524,7 +519,7 @@ class OsdownloadsRouter extends JComponentRouterBase
                         $menu = $this->container->app->getMenu()->getActive();
 
                         if ('com_osdownloads' === $menu->query['option']) {
-                            if (in_array($menu->query['view'], array('downloads', 'categories'))) {
+                            if (in_array($menu->query['view'], ['downloads', 'categories'])) {
                                 // Complete the path using the path from the menu
                                 $category = $this->container->helperSEF->getCategory($menu->query['id']);
                                 $tmpPath  = $category->path;
@@ -546,7 +541,7 @@ class OsdownloadsRouter extends JComponentRouterBase
                     }
 
                     if (!is_object($file)) {
-                        throw new Exception(JText::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'), 404);
+                        throw new Exception(Text::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'), 404);
                     }
 
                     $vars['id'] = $file->id;
@@ -581,7 +576,7 @@ class OsdownloadsRouter extends JComponentRouterBase
                 $menu = $this->container->app->getMenu()->getActive();
 
                 if ('com_osdownloads' === $menu->query['option']) {
-                    if (in_array($menu->query['view'], array('downloads', 'categories'))) {
+                    if (in_array($menu->query['view'], ['downloads', 'categories'])) {
                         // Complete the path using the path from the menu
                         $category = $this->container->helperSEF->getCategory($menu->query['id']);
                         $tmpPath  = $category->path;
@@ -626,7 +621,7 @@ class OsdownloadsRouter extends JComponentRouterBase
             $menu = $this->container->app->getMenu()->getActive();
 
             if ('com_osdownloads' === $menu->query['option']) {
-                if (in_array($menu->query['view'], array('downloads', 'categories'))) {
+                if (in_array($menu->query['view'], ['downloads', 'categories'])) {
                     // Complete the path using the path from the menu
                     $category = $this->container->helperSEF->getCategory($menu->query['id']);
                     $tmpPath  = $category->path;
@@ -670,6 +665,6 @@ class OsdownloadsRouter extends JComponentRouterBase
         /**
          * Nope, no valid route found.
          */
-        throw new Exception(JText::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'), 404);
+        throw new Exception(Text::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'), 404);
     }
 }

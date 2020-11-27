@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-/**
+/*
  * Authors:
  * - Josh Soref
  * - François B
@@ -34,6 +34,8 @@ return [
     'from_now' => ':time barru',
     'after' => ':time geroago',
     'before' => ':time lehenago',
+    'diff_now' => 'orain',
+    'diff_today' => 'gaur',
     'diff_yesterday' => 'atzo',
     'diff_tomorrow' => 'bihar',
     'formats' => [
@@ -61,4 +63,5 @@ return [
     'first_day_of_week' => 1,
     'day_of_first_week_of_year' => 1,
     'list' => [', ', ' eta '],
+    'meridiem' => ['g', 'a'],
 ];

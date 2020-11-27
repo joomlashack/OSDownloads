@@ -9,10 +9,11 @@
  * file that was distributed with this source code.
  */
 
-/**
+/*
  * Authors:
  * - Ge'ez Frontier Foundation    locales@geez.org
- */return array_replace_recursive(require __DIR__.'/en.php', [
+ */
+return array_replace_recursive(require __DIR__.'/en.php', [
     'formats' => [
         'L' => 'DD.MM.YYYY',
     ],
@@ -24,4 +25,20 @@
     'first_day_of_week' => 6,
     'day_of_first_week_of_year' => 1,
     'meridiem' => ['saaku', 'carra'],
+
+    'year' => ':count gaqambo', // less reliable
+    'y' => ':count gaqambo', // less reliable
+    'a_year' => ':count gaqambo', // less reliable
+
+    'month' => ':count àlsa',
+    'm' => ':count àlsa',
+    'a_month' => ':count àlsa',
+
+    'day' => ':count saaku', // less reliable
+    'd' => ':count saaku', // less reliable
+    'a_day' => ':count saaku', // less reliable
+
+    'hour' => ':count ayti', // less reliable
+    'h' => ':count ayti', // less reliable
+    'a_hour' => ':count ayti', // less reliable
 ]);

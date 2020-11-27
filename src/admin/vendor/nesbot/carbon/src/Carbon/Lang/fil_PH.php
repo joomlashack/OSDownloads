@@ -9,9 +9,10 @@
  * file that was distributed with this source code.
  */
 
-/**
+/*
  * Authors:
  * - Rene Torres Rene Torres, Pablo Saratxaga rgtorre@rocketmail.com, pablo@mandrakesoft.com
+ * - Jaycee Mariano (alohajaycee)
  */
 return array_replace_recursive(require __DIR__.'/en.php', [
     'formats' => [
@@ -24,4 +25,38 @@ return array_replace_recursive(require __DIR__.'/en.php', [
     'weekdays_min' => ['Lin', 'Lun', 'Mar', 'Miy', 'Huw', 'Biy', 'Sab'],
     'day_of_first_week_of_year' => 1,
     'meridiem' => ['N.U.', 'N.H.'],
+
+    'before' => ':time bago',
+    'after' => ':time pagkatapos',
+
+    'year' => ':count taon',
+    'y' => ':count taon',
+    'a_year' => ':count taon',
+
+    'month' => ':count buwan',
+    'm' => ':count buwan',
+    'a_month' => ':count buwan',
+
+    'week' => ':count linggo',
+    'w' => ':count linggo',
+    'a_week' => ':count linggo',
+
+    'day' => ':count araw',
+    'd' => ':count araw',
+    'a_day' => ':count araw',
+
+    'hour' => ':count oras',
+    'h' => ':count oras',
+    'a_hour' => ':count oras',
+
+    'minute' => ':count minuto',
+    'min' => ':count minuto',
+    'a_minute' => ':count minuto',
+
+    'second' => ':count segundo',
+    's' => ':count segundo',
+    'a_second' => ':count segundo',
+
+    'ago' => ':time ang nakalipas',
+    'from_now' => 'sa :time',
 ]);

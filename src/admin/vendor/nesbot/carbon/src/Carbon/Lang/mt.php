@@ -9,20 +9,34 @@
  * file that was distributed with this source code.
  */
 
-/**
+/*
  * Authors:
  * - Alessandro Maruccia
  */
 return [
     'year' => 'sena|:count sni|:count sni|:count sni',
+    'y' => 'sa sena|:count snin|:count snin|:count snin',
     'month' => 'xahar|:count xhur|:count xhur|:count xhur',
+    'm' => ':count xahar|:count xhur|:count xhur|:count xhur',
     'week' => 'gimgħa|:count ġimgħat|:count ġimgħat|:count ġimgħat',
+    'w' => 'ġimgħa|:count ġimgħat|:count ġimgħat|:count ġimgħat',
     'day' => 'ġurnata|:count ġranet|:count ġranet|:count ġranet',
+    'd' => 'ġurnata|:count ġranet|:count ġranet|:count ġranet',
     'hour' => 'siegħa|:count siegħat|:count siegħat|:count siegħat',
+    'h' => 'siegħa|:count sigħat|:count sigħat|:count sigħat',
     'minute' => 'minuta|:count minuti|:count minuti|:count minuti',
+    'min' => 'min.|:count min.|:count min.|:count min.',
     'second' => 'ftit sekondi|:count sekondi|:count sekondi|:count sekondi',
+    's' => 'sek.|:count sek.|:count sek.|:count sek.',
     'ago' => ':time ilu',
     'from_now' => 'f’ :time',
+    'diff_now' => 'issa',
+    'diff_today' => 'Illum',
+    'diff_today_regexp' => 'Illum(?:\\s+fil-)?',
+    'diff_yesterday' => 'lbieraħ',
+    'diff_yesterday_regexp' => 'Il-bieraħ(?:\\s+fil-)?',
+    'diff_tomorrow' => 'għada',
+    'diff_tomorrow_regexp' => 'Għada(?:\\s+fil-)?',
     'formats' => [
         'LT' => 'HH:mm',
         'LTS' => 'HH:mm:ss',

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-/**
+/*
  * Authors:
  * - csb_PL locale Michal Ostrowski bug-glibc-locales@gnu.org
  */
@@ -31,10 +31,11 @@ return [
     'day_of_first_week_of_year' => 4,
     'list' => [', ', ' a téż '],
     'two_words_connector' => ' a téż ',
-    'year' => ':count Rok',
-    'month' => ':count Miesiąc',
-    'day' => ':count Dzéń',
-    'hour' => ':count Gòdzëna',
-    'minute' => ':count Minuta',
-    'second' => ':count Sekunda',
+    'year' => ':count rok',
+    'month' => ':count miesiąc',
+    'week' => ':count tidzéń',
+    'day' => ':count dzéń',
+    'hour' => ':count gòdzëna',
+    'minute' => ':count minuta',
+    'second' => ':count sekunda',
 ];

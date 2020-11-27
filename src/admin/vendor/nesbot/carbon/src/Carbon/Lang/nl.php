@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-/**
+/*
  * Authors:
  * - Roy
  * - Stephan
@@ -31,6 +31,7 @@
  * - JeroenG
  * - RikSomers
  * - proclame
+ * - Rik de Groot (hwdegroot)
  */
 return [
     'year' => ':count jaar|:count jaar',
@@ -38,7 +39,7 @@ return [
     'y' => ':countj',
     'month' => ':count maand|:count maanden',
     'a_month' => 'een maand|:count maanden',
-    'm' => ':countma',
+    'm' => ':countmnd',
     'week' => ':count week|:count weken',
     'a_week' => 'een week|:count weken',
     'w' => ':countw',
@@ -59,8 +60,12 @@ return [
     'after' => ':time later',
     'before' => ':time eerder',
     'diff_now' => 'nu',
+    'diff_today' => 'vandaag',
+    'diff_today_regexp' => 'vandaag(?:\\s+om)?',
     'diff_yesterday' => 'gisteren',
+    'diff_yesterday_regexp' => 'gisteren(?:\\s+om)?',
     'diff_tomorrow' => 'morgen',
+    'diff_tomorrow_regexp' => 'morgen(?:\\s+om)?',
     'diff_after_tomorrow' => 'overmorgen',
     'diff_before_yesterday' => 'eergisteren',
     'period_recurrences' => ':count keer',

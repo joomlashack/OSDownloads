@@ -9,10 +9,11 @@
  * file that was distributed with this source code.
  */
 
-/**
+/*
  * Authors:
  * - Reshat Sabiq tatar.iqtelif.i18n@gmail.com
- */return array_replace_recursive(require __DIR__.'/en.php', [
+ */
+return array_replace_recursive(require __DIR__.'/en.php', [
     'formats' => [
         'L' => 'DD.MM.YYYY',
     ],

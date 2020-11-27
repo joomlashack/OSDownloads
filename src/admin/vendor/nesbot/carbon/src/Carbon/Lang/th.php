@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-/**
+/*
  * Authors:
  * - Nate Whittaker
  * - John MacAslan
@@ -18,6 +18,7 @@
  * - ROKAISAKKON
  * - RO'KAISAKKON
  * - Andreas Möller
+ * - nithisa
  */
 return [
     'year' => ':count ปี',
@@ -32,12 +33,20 @@ return [
     'h' => ':count ชั่วโมง',
     'minute' => ':count นาที',
     'min' => ':count นาที',
-    'second' => '{1}ไม่กี่วินาที|]1,Inf[:count วินาที',
+    'second' => ':count วินาที',
+    'a_second' => '{1}ไม่กี่วินาที|]1,Inf[:count วินาที',
     's' => ':count วินาที',
     'ago' => ':timeที่แล้ว',
     'from_now' => 'อีก :time',
     'after' => ':timeหลังจากนี้',
     'before' => ':timeก่อน',
+    'diff_now' => 'ขณะนี้',
+    'diff_today' => 'วันนี้',
+    'diff_today_regexp' => 'วันนี้(?:\\s+เวลา)?',
+    'diff_yesterday' => 'เมื่อวาน',
+    'diff_yesterday_regexp' => 'เมื่อวานนี้(?:\\s+เวลา)?',
+    'diff_tomorrow' => 'พรุ่งนี้',
+    'diff_tomorrow_regexp' => 'พรุ่งนี้(?:\\s+เวลา)?',
     'formats' => [
         'LT' => 'H:mm',
         'LTS' => 'H:mm:ss',

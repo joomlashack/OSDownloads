@@ -9,10 +9,11 @@
  * file that was distributed with this source code.
  */
 
-/**
+/*
  * Authors:
  * - RAP    bug-glibc-locales@gnu.org
- */return array_replace_recursive(require __DIR__.'/en.php', [
+ */
+return array_replace_recursive(require __DIR__.'/pt.php', [
     'formats' => [
         'L' => 'DD/MM/YYYY',
     ],

@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-/**
+/*
  * Authors:
  * - Free Software Foundation, Inc.    bug-glibc-locales@gnu.org
  */
-return array_replace_recursive(require __DIR__.'/en.php', [
+return array_replace_recursive(require __DIR__.'/fy.php', [
     'formats' => [
         'L' => 'DD-MM-YY',
     ],

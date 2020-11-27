@@ -9,6 +9,10 @@
  * file that was distributed with this source code.
  */
 
+/*
+ * Authors:
+ * - Vikram-enyota
+ */
 return [
     'year' => ':count वर्ष',
     'y' => ':count वर्ष',
@@ -27,7 +31,11 @@ return [
 
     'ago' => ':timeपूर्वी',
     'from_now' => ':timeमध्ये',
+    'before' => ':timeपूर्वी',
+    'after' => ':timeनंतर',
 
+    'diff_now' => 'आत्ता',
+    'diff_today' => 'आज',
     'diff_yesterday' => 'काल',
     'diff_tomorrow' => 'उद्या',
 
@@ -74,4 +82,5 @@ return [
     'list' => [', ', ' आणि '],
     'first_day_of_week' => 0,
     'day_of_first_week_of_year' => 1,
+    'weekend' => [0, 0],
 ];

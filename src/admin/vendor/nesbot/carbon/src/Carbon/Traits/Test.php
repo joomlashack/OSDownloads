@@ -10,7 +10,8 @@
  */
 namespace Carbon\Traits;
 
-use Carbon\CarbonInterface;
+use Closure;
+use DateTimeImmutable;
 
 trait Test
 {
@@ -21,7 +22,7 @@ trait Test
     /**
      * A test Carbon instance to be returned when now instances are created.
      *
-     * @var static|CarbonInterface
+     * @var static
      */
     protected static $testNow;
 
@@ -42,18 +43,39 @@ trait Test
      *
      * /!\ Use this method for unit tests only.
      *
-     * @param CarbonInterface|string|null $testNow real or mock Carbon instance
+     * @param Closure|static|string|false|null $testNow real or mock Carbon instance
      */
     public static function setTestNow($testNow = null)
     {
-        static::$testNow = is_string($testNow) ? static::parse($testNow) : $testNow;
+        if ($testNow === false) {
+            $testNow = null;
+        }
+
+        static::$testNow = \is_string($testNow) ? static::parse($testNow) : $testNow;
+    }
+
+    /**
+     * Temporarily sets a static date to be used within the callback.
+     * Using setTestNow to set the date, executing the callback, then
+     * clearing the test instance.
+     *
+     * /!\ Use this method for unit tests only.
+     *
+     * @param Closure|static|string|false|null $testNow real or mock Carbon instance
+     * @param Closure|null $callback
+     */
+    public static function withTestNow($testNow = null, $callback = null)
+    {
+        static::setTestNow($testNow);
+        $callback();
+        static::setTestNow();
     }
 
     /**
      * Get the Carbon instance (real or mock) to be returned when a "now"
      * instance is created.
      *
-     * @return static|CarbonInterface the current instance used for testing
+     * @return Closure|static the current instance used for testing
      */
     public static function getTestNow()
     {
@@ -71,22 +93,61 @@ trait Test
         return static::getTestNow() !== null;
     }
 
+    /**
+     * Return the given timezone and set it to the test instance if not null.
+     * If null, get the timezone from the test instance and return it.
+     *
+     * @param string|\DateTimeZone    $tz
+     * @param \Carbon\CarbonInterface $testInstance
+     *
+     * @return string|\DateTimeZone
+     */
+    protected static function handleMockTimezone($tz, &$testInstance)
+    {
+        //shift the time according to the given time zone
+        if ($tz !== null && $tz !== static::getMockedTestNow($tz)->getTimezone()) {
+            $testInstance = $testInstance->setTimezone($tz);
+
+            return $tz;
+        }
+
+        return $testInstance->getTimezone();
+    }
+
+    /**
+     * Get the mocked date passed in setTestNow() and if it's a Closure, execute it.
+     *
+     * @param string|\DateTimeZone $tz
+     *
+     * @return \Carbon\CarbonImmutable|\Carbon\Carbon|null
+     */
+    protected static function getMockedTestNow($tz)
+    {
+        $testNow = static::getTestNow();
+
+        if ($testNow instanceof Closure) {
+            $realNow = new DateTimeImmutable('now');
+            $testNow = $testNow(static::parse(
+                $realNow->format('Y-m-d H:i:s.u'),
+                $tz ?: $realNow->getTimezone()
+            ));
+        }
+        /* @var \Carbon\CarbonImmutable|\Carbon\Carbon|null $testNow */
+
+        return $testNow;
+    }
+
     protected static function mockConstructorParameters(&$time, &$tz)
     {
         /** @var \Carbon\CarbonImmutable|\Carbon\Carbon $testInstance */
-        $testInstance = clone static::getTestNow();
+        $testInstance = clone static::getMockedTestNow($tz);
 
-        //shift the time according to the given time zone
-        if ($tz !== null && $tz !== static::getTestNow()->getTimezone()) {
-            $testInstance = $testInstance->setTimezone($tz);
-        } else {
-            $tz = $testInstance->getTimezone();
-        }
+        $tz = static::handleMockTimezone($tz, $testInstance);
 
         if (static::hasRelativeKeywords($time)) {
             $testInstance = $testInstance->modify($time);
         }
 
-        $time = $testInstance->format(static::MOCK_DATETIME_FORMAT);
+        $time = $testInstance instanceof self ? $testInstance->rawFormat(static::MOCK_DATETIME_FORMAT) : $testInstance->format(static::MOCK_DATETIME_FORMAT);
     }
 }

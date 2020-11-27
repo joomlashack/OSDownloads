@@ -21,6 +21,7 @@
  * - victortobias
  * - Paulo Freitas
  * - Sebastian Thierer
+ * - Claudson Martins (claudsonm)
  */
 return [
     'year' => ':count ano|:count anos',
@@ -44,13 +45,23 @@ return [
     'second' => ':count segundo|:count segundos',
     'a_second' => 'alguns segundos|:count segundos',
     's' => ':counts',
+    'millisecond' => ':count milissegundo|:count milissegundos',
+    'a_millisecond' => 'um milissegundo|:count milissegundos',
+    'ms' => ':countms',
+    'microsecond' => ':count microssegundo|:count microssegundos',
+    'a_microsecond' => 'um microssegundo|:count microssegundos',
+    'µs' => ':countµs',
     'ago' => 'há :time',
     'from_now' => 'em :time',
     'after' => ':time depois',
     'before' => ':time antes',
     'diff_now' => 'agora',
+    'diff_today' => 'Hoje',
+    'diff_today_regexp' => 'Hoje(?:\\s+às)?',
     'diff_yesterday' => 'ontem',
+    'diff_yesterday_regexp' => 'Ontem(?:\\s+às)?',
     'diff_tomorrow' => 'amanhã',
+    'diff_tomorrow_regexp' => 'Amanhã(?:\\s+às)?',
     'diff_before_yesterday' => 'anteontem',
     'diff_after_tomorrow' => 'depois de amanhã',
     'period_recurrences' => 'uma vez|:count vezes',
@@ -84,8 +95,8 @@ return [
     'ordinal' => ':numberº',
     'months' => ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'],
     'months_short' => ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'],
-    'weekdays' => ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'],
-    'weekdays_short' => ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+    'weekdays' => ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'],
+    'weekdays_short' => ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'],
     'weekdays_min' => ['Do', '2ª', '3ª', '4ª', '5ª', '6ª', 'Sá'],
     'first_day_of_week' => 1,
     'day_of_first_week_of_year' => 4,

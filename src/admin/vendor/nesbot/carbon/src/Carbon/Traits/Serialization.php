@@ -10,8 +10,7 @@
  */
 namespace Carbon\Traits;
 
-use Carbon\CarbonInterface;
-use InvalidArgumentException;
+use Carbon\Exceptions\InvalidFormatException;
 
 /**
  * Trait Serialization.
@@ -27,17 +26,26 @@ use InvalidArgumentException;
  *
  * Depends on the following methods:
  *
- * @method string|static locale(string $locale = null)
+ * @method string|static locale(string $locale = null, string ...$fallbackLocales)
  * @method string        toJSON()
  */
 trait Serialization
 {
+    use ObjectInitialisation;
+
     /**
      * The custom Carbon JSON serializer.
      *
      * @var callable|null
      */
     protected static $serializer;
+
+    /**
+     * List of key to use for dump/serialization.
+     *
+     * @var string[]
+     */
+    protected $dumpProperties = ['date', 'timezone_type', 'timezone'];
 
     /**
      * Locale to dump comes here before serialization.
@@ -61,16 +69,16 @@ trait Serialization
      *
      * @param string $value
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidFormatException
      *
-     * @return static|CarbonInterface
+     * @return static
      */
     public static function fromSerialized($value)
     {
-        $instance = @unserialize($value);
+        $instance = @unserialize("$value");
 
         if (!$instance instanceof static) {
-            throw new InvalidArgumentException('Invalid serialized value.');
+            throw new InvalidFormatException("Invalid serialized value: $value");
         }
 
         return $instance;
@@ -81,17 +89,17 @@ trait Serialization
      *
      * @param string|array $dump
      *
-     * @return static|CarbonInterface
+     * @return static
      */
     public static function __set_state($dump)
     {
-        if (is_string($dump)) {
+        if (\is_string($dump)) {
             return static::parse($dump);
         }
 
         /** @var \DateTimeInterface $date */
         $date = get_parent_class(static::class) && method_exists(parent::class, '__set_state')
-            ? parent::__set_state($dump)
+            ? parent::__set_state((array) $dump)
             : (object) $dump;
 
         return static::instance($date);
@@ -104,7 +112,8 @@ trait Serialization
      */
     public function __sleep()
     {
-        $properties = ['date', 'timezone_type', 'timezone'];
+        $properties = $this->dumpProperties;
+
         if ($this->localTranslator ?? null) {
             $properties[] = 'dumpLocale';
             $this->dumpLocale = $this->locale ?? null;
@@ -121,10 +130,15 @@ trait Serialization
         if (get_parent_class() && method_exists(parent::class, '__wakeup')) {
             parent::__wakeup();
         }
+
+        $this->constructedObjectId = spl_object_hash($this);
+
         if (isset($this->dumpLocale)) {
             $this->locale($this->dumpLocale);
             $this->dumpLocale = null;
         }
+
+        $this->cleanupDumpProperties();
     }
 
     /**
@@ -136,9 +150,9 @@ trait Serialization
     {
         $serializer = $this->localSerializer ?? static::$serializer;
         if ($serializer) {
-            return is_string($serializer)
-                ? $this->format($serializer)
-                : call_user_func($serializer, $this);
+            return \is_string($serializer)
+                ? $this->rawFormat($serializer)
+                : \call_user_func($serializer, $this);
         }
 
         return $this->toJSON();
@@ -157,5 +171,23 @@ trait Serialization
     public static function serializeUsing($callback)
     {
         static::$serializer = $callback;
+    }
+
+    /**
+     * Cleanup properties attached to the public scope of DateTime when a dump of the date is requested.
+     * foreach ($date as $_) {}
+     * serializer($date)
+     * var_export($date)
+     * get_object_vars($date)
+     */
+    public function cleanupDumpProperties()
+    {
+        foreach ($this->dumpProperties as $property) {
+            if (isset($this->$property)) {
+                unset($this->$property);
+            }
+        }
+
+        return $this;
     }
 }

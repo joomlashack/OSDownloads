@@ -9,11 +9,12 @@
  * file that was distributed with this source code.
  */
 
-/**
+/*
  * Authors:
  * - Josh Soref
  * - JD Isaacks
  * - Cătălin Georgescu
+ * - Valentin Ivaşcu (oriceon)
  */
 return [
     'year' => ':count an|:count ani|:count ani',
@@ -35,14 +36,19 @@ return [
     'a_minute' => 'un minut|:count minute|:count minute',
     'min' => ':count m.',
     'second' => ':count secundă|:count secunde|:count secunde',
-    'a_second' => 'o secundă|:count secunde|:count secunde',
-    's' => 'o sec.',
+    'a_second' => 'câteva secunde|:count secunde|:count secunde',
+    's' => ':count sec.',
     'ago' => ':time în urmă',
     'from_now' => 'peste :time',
     'after' => 'peste :time',
     'before' => 'acum :time',
+    'diff_now' => 'acum',
+    'diff_today' => 'azi',
+    'diff_today_regexp' => 'azi(?:\\s+la)?',
     'diff_yesterday' => 'ieri',
+    'diff_yesterday_regexp' => 'ieri(?:\\s+la)?',
     'diff_tomorrow' => 'mâine',
+    'diff_tomorrow_regexp' => 'mâine(?:\\s+la)?',
     'formats' => [
         'LT' => 'H:mm',
         'LTS' => 'H:mm:ss',
@@ -60,11 +66,12 @@ return [
         'sameElse' => 'L',
     ],
     'months' => ['ianuarie', 'februarie', 'martie', 'aprilie', 'mai', 'iunie', 'iulie', 'august', 'septembrie', 'octombrie', 'noiembrie', 'decembrie'],
-    'months_short' => ['ian.', 'febr.', 'mart.', 'apr.', 'mai', 'iun.', 'iul.', 'aug.', 'sept.', 'oct.', 'nov.', 'dec.'],
+    'months_short' => ['ian.', 'feb.', 'mar.', 'apr.', 'mai', 'iun.', 'iul.', 'aug.', 'sept.', 'oct.', 'nov.', 'dec.'],
     'weekdays' => ['duminică', 'luni', 'marți', 'miercuri', 'joi', 'vineri', 'sâmbătă'],
-    'weekdays_short' => ['Dum', 'Lun', 'Mar', 'Mie', 'Joi', 'Vin', 'Sâm'],
-    'weekdays_min' => ['Du', 'Lu', 'Ma', 'Mi', 'Jo', 'Vi', 'Sâ'],
+    'weekdays_short' => ['dum', 'lun', 'mar', 'mie', 'joi', 'vin', 'sâm'],
+    'weekdays_min' => ['du', 'lu', 'ma', 'mi', 'jo', 'vi', 'sâ'],
     'first_day_of_week' => 1,
     'day_of_first_week_of_year' => 1,
     'list' => [', ', ' și '],
+    'meridiem' => ['a.m.', 'p.m.'],
 ];

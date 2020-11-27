@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-/**
+/*
  * Authors:
  * - Josh Soref
  * - JD Isaacks
@@ -25,6 +25,7 @@ return [
     'ago' => ':time སྔན་ལ',
     'from_now' => ':time ལ་',
     'diff_yesterday' => 'ཁ་སང',
+    'diff_today' => 'དི་རིང',
     'diff_tomorrow' => 'སང་ཉིན',
     'formats' => [
         'LT' => 'A h:mm',
@@ -66,4 +67,5 @@ return [
     'list' => [', ', ' ཨནད་ '],
     'first_day_of_week' => 0,
     'day_of_first_week_of_year' => 1,
+    'months_standalone' => ['ཟླ་བ་དང་པོ་', 'ཟླ་བ་གཉིས་པ་', 'ཟླ་བ་གསུམ་པ་', 'ཟླ་བ་བཞི་པ་', 'ཟླ་བ་ལྔ་པ་', 'ཟླ་བ་དྲུག་པ་', 'ཟླ་བ་བདུན་པ་', 'ཟླ་བ་བརྒྱད་པ་', 'ཟླ་བ་དགུ་པ་', 'ཟླ་བ་བཅུ་པ་', 'ཟླ་བ་བཅུ་གཅིག་པ་', 'ཟླ་བ་བཅུ་གཉིས་པ་'],
 ];

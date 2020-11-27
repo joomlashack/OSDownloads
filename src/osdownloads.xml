@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.9" type="component" method="upgrade">
+<extension type="component" method="upgrade">
     <name>com_osdownloads</name>
     <author>Joomlashack</author>
     <authorEmail>help@joomlashack.com</authorEmail>
@@ -148,11 +148,11 @@
             <file>administrator/components/com_osdownloads/form/fields/mailchimpgroupslist.php</file>
             <file>administrator/components/com_osdownloads/form/fields/mailchimplistslist.php</file>
             <file>administrator/components/com_osdownloads/helpers/category.php</file>
+            <file>administrator/components/com_osdownloads/helpers/category.php</file>
+            <file>administrator/components/com_osdownloads/helpers/file.php</file>
             <file>administrator/components/com_osdownloads/helpers/file.php</file>
             <file>administrator/components/com_osdownloads/library/Free/Joomla/View/Legacy.php</file>
             <file>administrator/components/com_osdownloads/models/items.php</file>
-            <file>administrator/components/com_osdownloads/helpers/category.php</file>
-            <file>administrator/components/com_osdownloads/helpers/file.php</file>
             <file>administrator/components/com_osdownloads/tables/abstract.php</file>
             <file>administrator/components/com_osdownloads/tables/abstractdocument.php</file>
             <file>administrator/components/com_osdownloads/tables/email.php</file>

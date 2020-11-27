@@ -177,6 +177,35 @@ abstract class AbstractClient implements JObserverInterface
     }
 
     /**
+     * Get a parameter for a document.
+     * Tracing back through category and global settings if needed
+     *
+     * @param int    $documentId
+     * @param string $key
+     * @param mixed $default
+     *
+     * @return mixed
+     */
+    protected function getDocumentParam($documentId, $key, $default = null)
+    {
+        $document = $this->getDocument($documentId);
+        $value    = $document->params->get($key);
+
+        if (empty($value)) {
+            // Try category lookup
+            $category = $this->getCategory($document->cate_id);
+            $value    = $category->params->get($key);
+
+            if (empty($value)) {
+                // Try global
+                $value = $this->getParams()->get($key);
+            }
+        }
+
+        return $value ?: $default;
+    }
+
+    /**
      * @param string $message
      * @param int    $level
      * @param string $category

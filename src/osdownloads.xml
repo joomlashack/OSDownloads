@@ -138,6 +138,10 @@
 
         <obsolete>
             <folder>administrator/components/com_osdownloads/models/abstract</folder>
+            <folder>administrator/components/com_osdownloads/vendor/guzzlehttp/promises</folder>
+            <folder>administrator/components/com_osdownloads/vendor/guzzlehttp/psr7</folder>
+            <folder>administrator/components/com_osdownloads/vendor/ralouphie</folder>
+            <folder>administrator/components/com_osdownloads/vendor/symfony/contracts</folder>
 
             <file>administrator/components/com_osdownloads/form/fields/AbstractMailChimpList.php</file>
             <file>administrator/components/com_osdownloads/form/fields/constantcontactlistslist.php</file>

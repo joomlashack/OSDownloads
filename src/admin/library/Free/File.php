@@ -23,10 +23,7 @@
 
 namespace Alledia\OSDownloads\Free;
 
-use JEventDispatcher;
-use JPluginHelper;
-use JRoute;
-use Alledia\OSDownloads\Free\Factory;
+use Joomla\CMS\Router\Route;
 
 defined('_JEXEC') or die();
 
@@ -37,7 +34,7 @@ class File
      *
      * @var string[]
      */
-    protected static $mimeTypes = array(
+    protected static $mimeTypes = [
         'aif'  => 'audio/aiff',
         'aiff' => 'audio/aiff',
         'avi'  => 'video/msvideo',
@@ -80,18 +77,18 @@ class File
         'xlw'  => 'application/vnd.ms-excel',
         'xml'  => 'application/xml',
         'zip'  => 'application/zip'
-    );
+    ];
 
     /**
      * @var array[]
      */
-    protected static $headers = array();
+    protected static $headers = [];
 
     /**
      * Return's the content type based on the file name
      * Can accept external urls to determine from URL
      *
-     * @param  string $path Filename, full path or url
+     * @param string $path Filename, full path or url
      *
      * @return string The content type
      */
@@ -123,16 +120,14 @@ class File
     {
         $key = md5($url);
         if (!isset(static::$headers[$key])) {
-            static::$headers[$key] = array();
+            static::$headers[$key] = [];
             if (filter_var($url, FILTER_VALIDATE_URL) !== false) {
                 if (preg_match('#^(https?)://#i', $url, $schema)) {
-                    stream_context_set_default(
-                        array(
-                            $schema[1] => array(
-                                'method' => 'HEAD'
-                            )
-                        )
-                    );
+                    stream_context_set_default([
+                        $schema[1] => [
+                            'method' => 'HEAD'
+                        ]
+                    ]);
 
                     // Handle possibility of redirects
                     if ($headers = @get_headers($url, 1)) {
@@ -140,7 +135,7 @@ class File
                             if (!is_int($property)) {
                                 static::$headers[$key][$property] = is_array($value) ? array_pop($value) : $value;
 
-                            } elseif (preg_match('#HTTP/[0-9\.]+\s+(\d+)#', $value, $code)) {
+                            } elseif (preg_match('#HTTP/[0-9.]+\s+(\d+)#', $value, $code)) {
                                 static::$headers[$key]['http_code'] = (int)$code[1];
                             }
                         }
@@ -190,6 +185,6 @@ class File
     {
         $container = Factory::getContainer();
 
-        return JRoute::_($container->helperRoute->getFileDownloadRoute($fileId));
+        return Route::_($container->helperRoute->getFileDownloadRoute($fileId));
     }
 }

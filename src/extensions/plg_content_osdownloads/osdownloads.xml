@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.7" type="plugin" group="content" method="upgrade">
+<extension type="plugin" group="content" method="upgrade">
     <name>PLG_CONTENT_OSDOWNLOADS</name>
     <author>Joomlashack</author>
     <creationDate>November 30 2020</creationDate>
-    <copyright>Copyright 2005-2019 Joomlashack.com</copyright>
+    <copyright>Copyright 2005-2021 Joomlashack.com</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
     <authorEmail>help@joomlashack.com</authorEmail>
     <authorUrl>http://www.joomlashack.com</authorUrl>

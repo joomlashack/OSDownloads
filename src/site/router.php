@@ -555,7 +555,10 @@ class OsdownloadsRouter extends RouterBase
         /*
          * Check the last segment. Is it a list of files?
          */
-        if ($this->customSegments['files'] === $lastSegment) {
+        if (
+            isset($this->customSegments['files'])
+            && $this->customSegments['files'] === $lastSegment
+        ) {
             // Yes
             $vars['view'] = 'downloads';
 

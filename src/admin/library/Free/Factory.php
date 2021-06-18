@@ -35,17 +35,17 @@ abstract class Factory extends \JFactory
     /**
      * @var Container
      */
-    protected static $container;
+    protected static $pimpleContainer;
 
     /**
      * Get the current container instance. Creates if not set yet.
      *
      * @return Container
      */
-    public static function getContainer()
+    public static function getPimpleContainer()
     {
-        if (!empty(static::$container)) {
-            return static::$container;
+        if (!empty(static::$pimpleContainer)) {
+            return static::$pimpleContainer;
         }
 
         // Instantiate the container and services
@@ -60,8 +60,8 @@ abstract class Factory extends \JFactory
 
         $container->register($services);
 
-        static::$container = $container;
+        static::$pimpleContainer = $container;
 
-        return static::$container;
+        return static::$pimpleContainer;
     }
 }

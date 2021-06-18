@@ -50,7 +50,7 @@ class Content extends \JPlugin
     public function onContentPrepareForm($form, $data)
     {
         if ($this->isEnabled()) {
-            Factory::getContainer()->mailingLists->loadForms($form);
+            Factory::getPimpleContainer()->mailingLists->loadForms($form);
         }
 
         return true;

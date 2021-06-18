@@ -31,7 +31,7 @@ JHtml::_('formbehavior.chosen', 'select');
 $listOrder = $this->state->get('list.ordering');
 $listDirn  = $this->state->get('list.direction');
 $saveOrder = $listOrder === 'doc.ordering';
-$container = Factory::getContainer();
+$container = Factory::getPimpleContainer();
 
 if ($saveOrder) :
     JHtml::_(

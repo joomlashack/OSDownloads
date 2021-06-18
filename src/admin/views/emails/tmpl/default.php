@@ -27,7 +27,7 @@ defined('_JEXEC') or die();
 
 JHtml::_('formbehavior.chosen', 'select');
 
-$container = Factory::getContainer();
+$container = Factory::getPimpleContainer();
 
 function category($name, $extension, $selected = null, $javascript = null, $order = null, $size = 1, $sel_cat = 1)
 {

@@ -73,4 +73,9 @@ if (defined('ALLEDIA_FRAMEWORK_LOADED') && !defined('OSDOWNLOADS_LOADED')) {
             JLoader::register('TraitModelUploads', OSDOWNLOADS_ADMIN . '/models/TraitModelUploads.php');
             break;
     }
+
+    if (version_compare(JVERSION, '4')) {
+        require_once OSDOWNLOADS_LIBRARY . '/Free/Joomla/Legacy/JObservableInterface.php';
+        require_once OSDOWNLOADS_LIBRARY . '/Free/Joomla/Legacy/JObserverInterface.php';
+    }
 }

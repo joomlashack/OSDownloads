@@ -26,8 +26,9 @@ defined('_JEXEC') or die();
 use Alledia\Framework\Factory;
 use Alledia\Installer\Extension\Licensed;
 use Joomla\CMS\Form\Form;
+use Alledia\OSDownloads\Free\Joomla\View\Admin\Base;
 
-class OSDownloadsViewFile extends JViewLegacy
+class OSDownloadsViewFile extends Base
 {
     /**
      * @var Form

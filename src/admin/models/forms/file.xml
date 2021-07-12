@@ -91,6 +91,14 @@
                description="JGLOBAL_FIELD_ID_DESC"
                class="readonly"
                readonly="true"/>
+
+        <field
+                name="ordering"
+                type="hidden"
+                label="JFIELD_ORDERING_LABEL"
+                size="6"
+                default="0"
+        />
     </fieldset>
 
     <fieldset name="requirements" addfieldpath="/administrator/components/com_content/models/fields">

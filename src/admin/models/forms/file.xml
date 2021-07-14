@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<form addfieldpath="/administrator/components/com_osdownloads/form/fields">
+<form addfieldpath="/administrator/components/com_osdownloads/form/fields" addfieldprefix="Joomla\Component\Content\Administrator\Field">
     <fieldset>
         <field name="name"
                type="text"

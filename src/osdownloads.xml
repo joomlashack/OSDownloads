@@ -50,6 +50,26 @@
                   view="emails"
                   img="class:component"
                   alt="OSDownloads/Emails">COM_OSDOWNLOADS_EMAILS</menu>
+
+            <menu link="option=com_fields&amp;context=com_osdownloads.file"
+                  view="files"
+                  img="class:component"
+                  alt="OSDownloads/Files">COM_OSDOWNLOADS_FILE_FIELDS</menu>
+
+            <menu link="option=com_fields&amp;view=groups&amp;context=com_osdownloads.file"
+                  view="files"
+                  img="class:component"
+                  alt="OSDownloads/Files">COM_OSDOWNLOADS_FILE_FIELD_GROUPS</menu>
+
+            <menu link="option=com_fields&amp;context=com_osdownloads.download"
+                  view="files"
+                  img="class:component"
+                  alt="OSDownloads/Files">COM_OSDOWNLOADS_DOWNLOAD_FIELDS</menu>
+
+            <menu link="option=com_fields&amp;view=groups&amp;context=com_osdownloads.download"
+                  view="files"
+                  img="class:component"
+                  alt="OSDownloads/Files">COM_OSDOWNLOADS_DOWNLOAD_FIELD_GROUPS</menu>
         </submenu>
 
         <files folder="admin">

@@ -35,7 +35,7 @@ class Email extends BaseTable
     {
         parent::__construct('#__osdownloads_emails', 'id', $db);
 
-        Factory::getContainer()->mailingLists->loadObservers($this);
+        Factory::getPimpleContainer()->mailingLists->loadObservers($this);
     }
 
     public function store($updateNulls = false)

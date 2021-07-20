@@ -39,7 +39,7 @@ JHtml::_('formbehavior.chosen', 'select');
 
 JFilterOutput::objectHTMLSafe($this->item);
 
-$container = Factory::getContainer();
+$container = Factory::getPimpleContainer();
 ?>
     <script type="text/javascript">
         Joomla.submitbutton = function(task) {

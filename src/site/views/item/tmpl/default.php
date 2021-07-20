@@ -27,7 +27,7 @@ use Alledia\OSDownloads\Free\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 
 $lang      = JFactory::getLanguage();
-$container = Factory::getContainer();
+$container = Factory::getPimpleContainer();
 $component = FreeComponentSite::getInstance();
 
 JHtml::_('jquery.framework');

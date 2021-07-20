@@ -30,7 +30,7 @@ use Joomla\Utilities\ArrayHelper;
 $app       = JFactory::getApplication();
 $doc       = JFactory::getDocument();
 $lang      = JFactory::getLanguage();
-$container = Factory::getContainer();
+$container = Factory::getPimpleContainer();
 
 $this->itemId = (int)$app->input->getInt('Itemid');
 

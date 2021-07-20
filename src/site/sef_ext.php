@@ -84,7 +84,7 @@ class sef_osdownloads {
      */
     public function setContainer()
     {
-        $this->container = OSDFactory::getContainer();
+        $this->container = OSDFactory::getPimpleContainer();
     }
 
     /**

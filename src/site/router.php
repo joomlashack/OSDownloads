@@ -106,7 +106,7 @@ class OsdownloadsRouter extends RouterBase
             ['com_osdownloads.router']
         );
 
-        $this->container = OSDFactory::getContainer();
+        $this->container = OSDFactory::getPimpleContainer();
     }
 
     /**

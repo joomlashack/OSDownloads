@@ -37,7 +37,7 @@ defined('_JEXEC') or die();
  */
 
 $lang          = Factory::getLanguage();
-$container     = Factory::getContainer();
+$container     = Factory::getPimpleContainer();
 $compParams    = JComponentHelper::getParams('com_osdownloads');
 $elementsId    = md5('osdownloads_download_button_' . $displayData->item->id . '_' . uniqid());
 $buttonClasses = isset($displayData->buttonClasses) ? $displayData->buttonClasses : '';

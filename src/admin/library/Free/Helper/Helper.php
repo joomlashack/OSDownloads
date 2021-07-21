@@ -34,6 +34,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Registry\Registry;
+use Alledia\Framework\Factory;
 
 defined('_JEXEC') or die();
 
@@ -183,10 +184,7 @@ class Helper
      */
     public static function prepareItem(&$item)
     {
-        if (static::$dispatcher === null) {
-            \JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
-            static::$dispatcher = JEventDispatcher::getInstance();
-        }
+        \JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
 
         if (!($item->params instanceof Registry)) {
             $item->params = new Registry($item->params);
@@ -204,21 +202,21 @@ class Helper
         // Make compatible with content plugins
         $item->text = null;
 
-        static::$dispatcher->trigger(
+        Factory::getApplication()->triggerEvent(
             'onContentPrepare',
             ['com_osdownloads.file', &$item, &$item->params, null]
         );
 
         $prepareEvent = [
-            'afterDisplayTitle'    => static::$dispatcher->trigger(
+            'afterDisplayTitle'    => Factory::getApplication()->triggerEvent(
                 'onContentAfterTitle',
                 ['com_osdownloads.file', &$item, &$item->params, null]
             ),
-            'beforeDisplayContent' => static::$dispatcher->trigger(
+            'beforeDisplayContent' => Factory::getApplication()->triggerEvent(
                 'onContentBeforeDisplay',
                 ['com_osdownloads.file', &$item, &$item->params, null]
             ),
-            'afterDisplayContent'  => static::$dispatcher->trigger(
+            'afterDisplayContent'  => Factory::getApplication()->triggerEvent(
                 'onContentAfterDisplay',
                 ['com_osdownloads.file', &$item, &$item->params, null]
             )

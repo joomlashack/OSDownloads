@@ -135,6 +135,7 @@ class OSDownloadsModelFile extends AdminModel
     {
         try {
             $app = Factory::getApplication();
+            $db = Factory::getDbo();
 
             if ($app->input->getCmd('task') == 'save2copy') {
                 $original = clone $this->getTable();
@@ -170,10 +171,10 @@ class OSDownloadsModelFile extends AdminModel
             $data['require_agree'] = (int)$data['require_agree'];
             $data['agreement_article_id'] = (int)$data['agreement_article_id'];
             if (empty($data['publish_up'])) {
-                $data['publish_up'] = null;
+                $data['publish_up'] = $db->getNullDate();
             }
             if (empty($data['publish_down'])) {
-                $data['publish_down'] = null;
+                $data['publish_down'] = $db->getNullDate();
             }
 
             $type = empty($data['type']) ? null : $data['type'];

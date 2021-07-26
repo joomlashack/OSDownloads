@@ -144,8 +144,7 @@ endif;
 
                     $displayData->form = new JForm('com_osdownloads.download');
 
-                    $dispatcher = JEventDispatcher::getInstance();
-                    $dispatcher->trigger(
+                    Factory::getApplication()->triggerEvent(
                         'onContentPrepareForm',
                         array(
                             $displayData->form,

@@ -33,7 +33,7 @@ class OSDownloadsControllerFile extends JControllerForm
      */
     protected $extension;
 
-    public function __construct($default = array())
+    public function __construct($default = [])
     {
         parent::__construct($default);
 

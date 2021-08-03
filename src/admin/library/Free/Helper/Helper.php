@@ -25,7 +25,6 @@ namespace Alledia\OSDownloads\Free\Helper;
 
 use Alledia\OSDownloads\Free\MailingList\MailChimp;
 use Exception;
-use JEventDispatcher;
 use JHtmlSidebar;
 use Joomla\CMS\Access\Access;
 use Joomla\CMS\Component\ComponentHelper;
@@ -37,13 +36,8 @@ use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die();
 
-class Helper
+abstract class Helper
 {
-    /**
-     * @var JEventDispatcher
-     */
-    protected static $dispatcher = null;
-
     /**
      * @param string $vName
      *
@@ -107,7 +101,7 @@ class Helper
     public static function validateEmail($email, $acceptPlusSign = true)
     {
         if ($acceptPlusSign) {
-            $pattern = '/^([a-z0-9_\-\.\+])+\@([a-z0-9_\-\.])+\.([a-z]{2,25})$/i';
+            $pattern = '/^([a-z0-9_\-.+])+@([a-z0-9_\-.])+\.([a-z]{2,25})$/i';
 
             return (bool)preg_match($pattern, $email);
         }

@@ -23,11 +23,8 @@
 
 namespace Alledia\OSDownloads\Free\MailingList;
 
-use Alledia\OSDownloads\Free\Factory;
 use Alledia\OSDownloads\MailingLists\AbstractClient;
 use Exception;
-use JObservableInterface;
-use JObserverInterface;
 
 defined('_JEXEC') or die();
 

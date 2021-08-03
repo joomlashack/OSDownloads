@@ -20,6 +20,7 @@
         <folder>models</folder>
         <folder>tables</folder>
         <folder>views</folder>
+
         <filename>controller.php</filename>
         <filename>osdownloads.php</filename>
         <filename>router.php</filename>
@@ -34,42 +35,35 @@
     </media>
 
     <administration>
-        <menu img="class:component">COM_OSDOWNLOADS</menu>
+        <menu>COM_OSDOWNLOADS</menu>
         <submenu>
-            <menu link="option=com_osdownloads&amp;view=files"
-                  view="files"
-                  img="class:component"
-                  alt="OSDownloads/Files">COM_OSDOWNLOADS_FILES</menu>
+            <menu view="files"
+                  alt="OSDownloads/Files">COM_OSDOWNLOADS_FILES
+            </menu>
 
             <menu link="option=com_categories&amp;extension=com_osdownloads"
-                  view="categories"
-                  img="class:component"
-                  alt="OSDownloads/Categories">COM_OSDOWNLOADS_CATEGORIES</menu>
+                  alt="OSDownloads/Categories">COM_OSDOWNLOADS_CATEGORIES
+            </menu>
 
-            <menu link="option=com_osdownloads&amp;view=emails"
-                  view="emails"
-                  img="class:component"
-                  alt="OSDownloads/Emails">COM_OSDOWNLOADS_EMAILS</menu>
+            <menu view="emails"
+                  alt="OSDownloads/Emails">COM_OSDOWNLOADS_EMAILS
+            </menu>
 
             <menu link="option=com_fields&amp;context=com_osdownloads.file"
-                  view="files"
-                  img="class:component"
-                  alt="OSDownloads/Files">COM_OSDOWNLOADS_FILE_FIELDS</menu>
+                  alt="OSDownloads/Files">COM_OSDOWNLOADS_FILE_FIELDS
+            </menu>
 
             <menu link="option=com_fields&amp;view=groups&amp;context=com_osdownloads.file"
-                  view="files"
-                  img="class:component"
-                  alt="OSDownloads/Files">COM_OSDOWNLOADS_FILE_FIELD_GROUPS</menu>
+                  alt="OSDownloads/Files">COM_OSDOWNLOADS_FILE_FIELD_GROUPS
+            </menu>
 
             <menu link="option=com_fields&amp;context=com_osdownloads.download"
-                  view="files"
-                  img="class:component"
-                  alt="OSDownloads/Files">COM_OSDOWNLOADS_DOWNLOAD_FIELDS</menu>
+                  alt="OSDownloads/Files">COM_OSDOWNLOADS_DOWNLOAD_FIELDS
+            </menu>
 
             <menu link="option=com_fields&amp;view=groups&amp;context=com_osdownloads.download"
-                  view="files"
-                  img="class:component"
-                  alt="OSDownloads/Files">COM_OSDOWNLOADS_DOWNLOAD_FIELD_GROUPS</menu>
+                  alt="OSDownloads/Files">COM_OSDOWNLOADS_DOWNLOAD_FIELD_GROUPS
+            </menu>
         </submenu>
 
         <files folder="admin">

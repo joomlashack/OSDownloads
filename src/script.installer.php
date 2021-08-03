@@ -21,15 +21,13 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Alledia\OSDownloads\Free\Installer\AbstractScript;
+
 defined('_JEXEC') or die();
 
-if (file_exists(__DIR__ . '/admin/abstract.script.installer.php')) {
-    require_once __DIR__ . '/admin/abstract.script.installer.php';
-} else {
-    require_once __DIR__ . '/abstract.script.installer.php';
-}
+$installPath = __DIR__ . (is_dir(__DIR__ . '/admin') ? '/admin' : '');
+require_once $installPath . '/library/Free/Installer/AbstractScript.php';
 
-class Com_OSDownloadsInstallerScript extends AbstractOSDownloadsInstallerScript
+class Com_OsdownloadsInstallerScript extends AbstractScript
 {
-
 }

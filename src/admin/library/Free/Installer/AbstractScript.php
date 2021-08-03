@@ -21,26 +21,30 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die();
+namespace Alledia\OSDownloads\Free\Installer;
 
-$includePath = __DIR__ . '/admin/library/Installer/include.php';
-if (file_exists($includePath)) {
-    require_once $includePath;
-} else {
-    require_once __DIR__ . '/library/Installer/include.php';
-}
-
-use Alledia\Installer\AbstractScript;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Table\Category;
+use Joomla\CMS\Table\Extension;
+use Joomla\CMS\Table\Table;
 use Joomla\Registry\Registry;
 
-class AbstractOSDownloadsInstallerScript extends AbstractScript
+defined('_JEXEC') or die();
+
+$includePath = realpath(__DIR__ . '/../../../library/Installer/include.php');
+if ($includePath) {
+    require_once $includePath;
+
+} else {
+    require_once __DIR__ . '/AbstractFail.php';
+}
+
+class AbstractScript extends \Alledia\Installer\AbstractScript
 {
     /**
-     * @param string            $type
-     * @param JInstallerAdapter $parent
-     *
-     * @return void
-     * @throws Exception
+     * @inheritDoc
      */
     public function postFlight($type, $parent)
     {
@@ -57,15 +61,9 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
                 $this->moveLayouts();
             }
 
-        } catch (Exception $e) {
-            $this->setMessage($e->getMessage(), 'error');
-
-        } catch (Throwable $e) {
-            $this->setMessage($e->getMessage(), 'error');
+        } catch (\Throwable $error) {
+            $this->sendErrorMessage($error);
         }
-
-        // To catch any new messages that may have been queued
-        $this->showMessages();
     }
 
     /**
@@ -73,41 +71,40 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
      */
     protected function checkAndCreateDefaultCategory()
     {
-        $db = JFactory::getDBO();
+        $db = $this->dbo;
 
         // Make sure we have at least one category
         $query = $db->getQuery(true)
             ->select('count(*)')
             ->from('#__categories')
-            ->where(
-                array(
-                    'extension = ' . $db->quote('com_osdownloads'),
-                    'published >= 0'
-                )
-            );
-        $db->setQuery($query);
-        $total = (int)$db->loadResult();
+            ->where([
+                'extension = ' . $db->quote('com_osdownloads'),
+                'published >= 0'
+            ]);
+
+        $total = (int)$db->setQuery($query)->loadResult();
 
         if ($total === 0) {
-            /** @var JTableCategory $row */
-            $row = JTable::getInstance('category');
+            /** @var Category $row */
+            $row = Table::getInstance('category');
 
-            $data = array(
+            $data = [
                 'title'     => 'General',
                 'parent_id' => 1,
                 'extension' => 'com_osdownloads',
                 'published' => 1,
                 'language'  => '*'
-            );
+            ];
 
             $row->setLocation($data['parent_id'], 'last-child');
             $row->bind($data);
             if ($row->check()) {
                 $row->store();
                 $row->rebuildPath();
-                $this->setMessage(JText::_('COM_OSDOWNLOADS_INSTALL_GENERAL_CATEGORY_CREATED'));
+                $this->sendMessage(Text::_('COM_OSDOWNLOADS_INSTALL_GENERAL_CATEGORY_CREATED'));
+
             } else {
-                $this->setMessage(JText::_('COM_OSDOWNLOADS_INSTALL_GENERAL_CATEGORY_WARNING'), 'notice');
+                $this->sendMessage(Text::_('COM_OSDOWNLOADS_INSTALL_GENERAL_CATEGORY_WARNING'), 'notice');
             }
 
         } else {
@@ -115,32 +112,28 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
             $query = $db->getQuery(true)
                 ->update('#__categories')
                 ->set($db->quoteName('language') . '=' . $db->quote('*'))
-                ->where(
-                    array(
-                        $db->quoteName('extension') . ' = ' . $db->quote('com_osdownloads'),
-                        sprintf(
-                            '(%1$s IS NULL OR %1$s = %2$s)',
-                            $db->quoteName('language'),
-                            $db->quote('')
-                        )
+                ->where([
+                    $db->quoteName('extension') . ' = ' . $db->quote('com_osdownloads'),
+                    sprintf(
+                        '(%1$s IS NULL OR %1$s = %2$s)',
+                        $db->quoteName('language'),
+                        $db->quote('')
                     )
-                );
+                ]);
             $db->setQuery($query)->execute();
 
             // Rebuild paths where needed
             $query = $db->getQuery(true)
                 ->select('id')
                 ->from('#__categories')
-                ->where(
-                    array(
-                        $db->quoteName('extension') . '=' . $db->quote('com_osdownloads'),
-                        $db->quoteName('path') . '=' . $db->quote('')
-                    )
-                );
+                ->where([
+                    $db->quoteName('extension') . '=' . $db->quote('com_osdownloads'),
+                    $db->quoteName('path') . '=' . $db->quote('')
+                ]);
 
             if ($ids = $db->setQuery($query)->loadColumn()) {
-                /** @var JTableCategory $category */
-                $category = JTable::getInstance('Category');
+                /** @var Category $category */
+                $category = Table::getInstance('Category');
 
                 foreach ($ids as $id) {
                     $category->rebuildPath($id);
@@ -156,9 +149,9 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
      */
     protected function fixOrderingParamForMenus()
     {
-        require JPATH_SITE . '/administrator/components/com_osdownloads/include.php';
+        require_once JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
 
-        $db = JFactory::getDbo();
+        $db = $this->dbo;
 
         $query = $db->getQuery(true)
             ->select('link')
@@ -169,27 +162,27 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
         $db->setQuery($query);
         $menus = $db->loadObjectList();
 
-        if (!empty($menus)) {
+        if ($menus) {
             foreach ($menus as $menu) {
-                $params          = @json_decode($menu->params);
-                $legacyOrderings = array(
+                $params          = new Registry($menu->params);
+                $legacyOrderings = [
                     'ordering',
                     'name',
                     'downloaded',
                     'created_time',
                     'modified_time'
-                );
+                ];
 
-                if (isset($params->ordering) && in_array($params->ordering, $legacyOrderings)) {
-                    $params->ordering = 'doc.' . $params->ordering;
-                    $params           = json_encode($params);
+                $ordering = $params->get('ordering');
+                if (in_array($ordering, $legacyOrderings)) {
+                    $params->set('ordering', 'doc.' . $ordering);
 
                     $query = $db->getQuery(true)
                         ->update('#__menu')
-                        ->set('params = ' . $db->quote($params))
+                        ->set('params = ' . $db->quote($params->toString()))
                         ->where('id = ' . $menu->id);
-                    $db->setQuery($query);
-                    $db->execute();
+
+                    $db->setQuery($query)->execute();
                 }
             }
         }
@@ -205,53 +198,43 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
      */
     protected function fixDownloadsViewParams()
     {
-        $db = JFactory::getDbo();
+        $db = $this->dbo;
 
         // Look for menu items for Category view
-        $query    = $db->getQuery(true)
-            ->select(
-                array(
-                    'id',
-                    'params',
-                )
-            )
+        $query = $db->getQuery(true)
+            ->select([
+                'id',
+                'params',
+            ])
             ->from('#__menu')
             ->where('link = ' . $db->quote('index.php?option=com_osdownloads&view=downloads'));
-        $menuList = $db->setQuery($query)->loadObjectList();
 
-        if (!empty($menuList)) {
+        $menuList = $db->setQuery($query)->loadObjectList();
+        if ($menuList) {
             foreach ($menuList as $menu) {
-                $params = json_decode($menu->params);
+                $params = new Registry($menu->params);
 
                 // Does it have the old param and multiple categories selected?
-                if (isset($params->category_id) && is_array($params->category_id) && !empty($params->category_id)) {
+                $categories = (array)$params->get('category_id');
+                if (count($categories) > 1) {
                     // Get the first category for the new param. If empty, use 0, the root category
-                    $id = (int)$params->category_id[0];
-
-                    unset($params->category_id);
+                    $categoryId = (int)array_shift($categories);
+                    $params->remove('category_id');
 
                     // Update the link adding the selected category
-                    $link = 'index.php?option=com_osdownloads&view=downloads&id=' . $id;
+                    $link = 'index.php?option=com_osdownloads&view=downloads&id=' . $categoryId;
 
                     $query = $db->getQuery(true)
                         ->update('#__menu')
                         ->where('id = ' . (int)$menu->id)
                         ->set('link = ' . $db->quote($link))
-                        ->set('params = ' . $db->quote(json_encode($params)));
+                        ->set('params = ' . $db->quote($params->toString()));
                     $db->setQuery($query)->execute();
 
-                    try {
-                        JFactory::getApplication()->enqueueMessage(
-                            sprintf(
-                                JText::_('Only one category is allowed for the OSDOwnloads Category Files view. The params for menu item %s were upgraded.'),
-                                $menu->id
-                            ),
-                            'warning'
-                        );
-
-                    } catch (Exception $e) {
-                        // Fail silently
-                    }
+                    $this->sendMessage(
+                        Text::sprintf('COM_OSDOWNLOADS_ERROR_INSTALLER_CATEGORY', $menu->id),
+                        'warning'
+                    );
                 }
             }
         }
@@ -264,38 +247,35 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
      */
     protected function fixItemViewParams()
     {
-        $db = JFactory::getDbo();
+        $db = $this->dbo;
 
         // Look for menu items for Item view
-        $query    = $db->getQuery(true)
-            ->select(
-                array(
-                    'id',
-                    'params',
-                )
-            )
+        $query = $db->getQuery(true)
+            ->select([
+                'id',
+                'params',
+            ])
             ->from('#__menu')
             ->where('link = ' . $db->quote('index.php?option=com_osdownloads&view=item'));
-        $menuList = $db->setQuery($query)->loadObjectList();
 
-        if (!empty($menuList)) {
+        $menuList = $db->setQuery($query)->loadObjectList();
+        if ($menuList) {
             foreach ($menuList as $menu) {
-                $params = json_decode($menu->params);
+                $params = new Registry($menu->params);
 
                 // Does it have the old param?
-                if (isset($params->document_id) && !empty($params->document_id)) {
-                    $id = (int)$params->document_id;
-
-                    unset($params->document_id);
+                $documentId = (int)$params->get('document_id');
+                if ($documentId) {
+                    $params->remove('document_id');
 
                     // Update the link adding the selected category
-                    $link = 'index.php?option=com_osdownloads&view=item&id=' . $id;
+                    $link = 'index.php?option=com_osdownloads&view=item&id=' . $documentId;
 
                     $query = $db->getQuery(true)
                         ->update('#__menu')
                         ->where('id = ' . (int)$menu->id)
                         ->set('link = ' . $db->quote($link))
-                        ->set('params = ' . $db->quote(json_encode($params)));
+                        ->set('params = ' . $db->quote($params->toString()));
                     $db->setQuery($query)->execute();
                 }
             }
@@ -309,41 +289,39 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
      */
     protected function checkParamStructure()
     {
-        /** @var JTableExtension $table */
-        $table = JTable::getInstance('Extension');
-        $table->load(array('element' => 'com_osdownloads', 'type' => 'component'));
+        /** @var Extension $table */
+        $table = Table::getInstance('Extension');
+        $table->load(['element' => 'com_osdownloads', 'type' => 'component']);
 
-        $data   = json_decode($table->params);
-        $params = new Registry($data);
+        $params  = new Registry($table->params);
+        $current = $params->toObject();
 
         $parameterMap = $this->getParameterChangeMap();
         foreach ($parameterMap as $oldKey => $newKey) {
             if ($value = $params->get($oldKey)) {
                 $params->set($newKey, $value);
-                $params->set($oldKey, null);
+                $params->remove($oldKey);
             }
         }
 
-        if ($data != $params->toObject()) {
+        if ($current != $params->toObject()) {
             $table->params = $params->toString();
             $table->store();
         }
     }
 
     /**
-     * Return array mapping old Parameter kesy to new
+     * Return array mapping old Parameter keys to new
      *
      * @return array
      */
     protected function getParameterChangeMap()
     {
-        $parameterMap = array(
+        return [
             'connect_mailchimp' => 'mailinglist.mailchimp.enable',
             'mailchimp_api'     => 'mailinglist.mailchimp.api',
             'list_id'           => 'mailinglist.mailchimp.list_id'
-        );
-
-        return $parameterMap;
+        ];
     }
 
     /**
@@ -353,12 +331,12 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
      */
     public function moveLayouts()
     {
-        $renames = array(
+        $renames = [
             'download_button' => 'download',
             'social_download' => 'social'
-        );
+        ];
 
-        $files = JFolder::files(
+        $files = Folder::files(
             JPATH_SITE . '/templates',
             sprintf('(%s)\.php', join('|', array_keys($renames))),
             true,
@@ -371,18 +349,18 @@ class AbstractOSDownloadsInstallerScript extends AbstractScript
             $newPath = $dir . $renames[$layout] . '.php';
 
             if (!is_dir($dir)) {
-                JFolder::create($dir);
+                Folder::create($dir);
             }
 
             switch ($layout) {
                 case 'download_button':
                     $script = file_get_contents($file);
                     $script = str_replace("'social_download'", "'buttons.social'", $script);
-                    JFile::write($file, $script);
-                    // Fall through
+                    File::write($file, $script);
+                // Fall through
 
                 default:
-                    JFile::move($file, $newPath);
+                    File::move($file, $newPath);
                     break;
             }
         }

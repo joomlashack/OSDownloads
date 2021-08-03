@@ -21,7 +21,6 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Alledia\Framework\AutoLoader;
 use Alledia\Framework\Joomla\Extension;
 use Alledia\OSDownloads\Free\Factory;
 
@@ -34,16 +33,15 @@ if (!defined('ALLEDIA_FRAMEWORK_LOADED')) {
     if (file_exists($allediaFrameworkPath)) {
         require_once $allediaFrameworkPath;
     } else {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 
         if ($app->isClient('administrator')) {
-            $app->enqueueMessage('[OSDownloads] Alledia framework not found', 'error');
+            $app->enqueueMessage('[OSDownloads] Joomlashack framework not found', 'error');
         }
     }
 }
 
 if (defined('ALLEDIA_FRAMEWORK_LOADED') && !defined('OSDOWNLOADS_LOADED')) {
-    // Define the constant that say OSDownloads is ok to run
     define('OSDOWNLOADS_LOADED', 1);
 
     define('OSDOWNLOADS_ADMIN', JPATH_ADMINISTRATOR . '/components/com_osdownloads');
@@ -55,20 +53,14 @@ if (defined('ALLEDIA_FRAMEWORK_LOADED') && !defined('OSDOWNLOADS_LOADED')) {
 
     require_once OSDOWNLOADS_ADMIN . '/vendor/autoload.php';
     JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
-    if (version_compare(JVERSION, '3.9.0', 'lt')) {
-        JLoader::register('JFile', JPATH_LIBRARIES . '/joomla/filesystem/file.php');
-        JLoader::register('JFolder', JPATH_LIBRARIES . '/joomla/filesystem/folder.php');
-        JLoader::register('JPagination', JPATH_LIBRARIES . '/joomla/html/pagination.php');
-        JLoader::register('JLog', JPATH_LIBRARIES . '/joomla/log/log.php');
-    }
 
-    switch (JFactory::getApplication()->getName()) {
+    switch (Factory::getApplication()->getName()) {
         case 'site':
-            JFactory::getLanguage()->load('com_osdownloads', OSDOWNLOADS_SITE);
+            Factory::getLanguage()->load('com_osdownloads', OSDOWNLOADS_SITE);
             break;
 
         case 'administrator':
-            JFactory::getLanguage()->load('com_osdownloads', OSDOWNLOADS_ADMIN);
+            Factory::getLanguage()->load('com_osdownloads', OSDOWNLOADS_ADMIN);
 
             JLoader::register('TraitModelUploads', OSDOWNLOADS_ADMIN . '/models/TraitModelUploads.php');
             break;

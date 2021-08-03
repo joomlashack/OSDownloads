@@ -91,14 +91,7 @@ class Helper
      */
     public static function displayAdminMessages()
     {
-        $params = ComponentHelper::getParams('com_osdownloads');
-
-        // Check MailChimp php requirements
-        if ($params->get('mailinglist.mailchimp.api')) {
-            if ($warning = MailChimp::getPhpUpgradeMessage()) {
-                Factory::getApplication()->enqueueMessage($warning, 'warn');
-            }
-        }
+        // No messages at this time
     }
 
     /**

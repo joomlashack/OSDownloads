@@ -44,40 +44,13 @@ class MailChimp extends AbstractClient
     protected static $apiManager = null;
 
     /**
-     * @return string
-     */
-    public static function getPhpMinimum()
-    {
-        return '7.1';
-    }
-
-    /**
-     * @return string
-     */
-    public static function getPhpUpgradeMessage()
-    {
-        if (version_compare(PHP_VERSION, static::getPhpMinimum(), 'lt')) {
-            return \JText::sprintf(
-                'COM_OSDOWNLOADS_ML_MAILCHIMP_PHP_UPGRADE',
-                static::getPhpMinimum(),
-                PHP_VERSION
-            );
-        }
-
-        return null;
-    }
-
-    /**
      * @param $result
      *
      * @return void
      */
     public function onAfterStore($result)
     {
-        if ($result
-            && static::isEnabled()
-            && !static::getPhpUpgradeMessage()
-        ) {
+        if ($result && static::isEnabled()) {
             try {
                 $email  = empty($this->table->email) ? null : $this->table->email;
                 $mc     = static::getMailChimp();
@@ -115,17 +88,15 @@ class MailChimp extends AbstractClient
     {
         if (static::$apiManager === null) {
             static::$apiManager = false;
-            if (!static::getPhpUpgradeMessage()) {
-                try {
-                    $params = static::getParams();
-                    $apiKey = $params->get("mailinglist.mailchimp.api", 0);
-                    if ($apiKey) {
-                        static::$apiManager = new \Mailchimp\Mailchimp($apiKey);
-                    }
-
-                } catch (Exception $e) {
-                    // Just ignore this
+            try {
+                $params = static::getParams();
+                $apiKey = $params->get("mailinglist.mailchimp.api", 0);
+                if ($apiKey) {
+                    static::$apiManager = new \Mailchimp\Mailchimp($apiKey);
                 }
+
+            } catch (Exception $e) {
+                // Just ignore this
             }
         }
 

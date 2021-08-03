@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package   OSDownloads
  * @contact   www.joomlashack.com, help@joomlashack.com
@@ -21,47 +22,27 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Alledia\OSDownloads\Free;
+namespace Alledia\OSDownloads\Free\Joomla\View\Admin;
 
-defined('_JEXEC') or die();
+use Joomla\CMS\Version;
+use JViewLegacy;
 
-/**
- * Class Factory
- *
- * @package OSDownloads
- */
-abstract class Factory extends \JFactory
+class Base extends JViewLegacy
 {
     /**
-     * @var Container
-     */
-    protected static $pimpleContainer;
-
-    /**
-     * Get the current container instance. Creates if not set yet.
+     * Load different layout depending on Joomla 2.5 vs 3.x
+     * For default layout, the j2 version is not required.
      *
-     * @return Container
+     * @TODO: Test for existence of j2 non-default layout
+     *
+     * @return string
      */
-    public static function getPimpleContainer()
+    public function getLayout()
     {
-        if (!empty(static::$pimpleContainer)) {
-            return static::$pimpleContainer;
+        $layout = parent::getLayout();
+        if (version_compare(JVERSION, '4.0', 'lt')) {
+            $layout .= '.j' . Version::MAJOR_VERSION;
         }
-
-        // Instantiate the container and services
-        $container = new Container;
-
-        // Decide what services to load. Free or Pro?
-        if (class_exists('\\Alledia\\OSDownloads\\Pro\\Services')) {
-            $services = new \Alledia\OSDownloads\Pro\Services;
-        } else {
-            $services = new Services;
-        }
-
-        $container->register($services);
-
-        static::$pimpleContainer = $container;
-
-        return static::$pimpleContainer;
+        return $layout;
     }
 }

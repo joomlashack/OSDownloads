@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<form addfieldpath="/administrator/components/com_osdownloads/form/fields">
+<form addfieldpath="/administrator/components/com_osdownloads/form/fields" addfieldprefix="Joomla\Component\Content\Administrator\Field">
     <fieldset>
         <field name="name"
                type="text"
@@ -91,6 +91,14 @@
                description="JGLOBAL_FIELD_ID_DESC"
                class="readonly"
                readonly="true"/>
+
+        <field
+                name="ordering"
+                type="hidden"
+                label="JFIELD_ORDERING_LABEL"
+                size="6"
+                default="0"
+        />
     </fieldset>
 
     <fieldset name="requirements" addfieldpath="/administrator/components/com_content/models/fields">

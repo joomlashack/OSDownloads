@@ -29,11 +29,10 @@ use JHtmlSidebar;
 use JPagination;
 use JToolBarHelper;
 use JText;
-use JViewLegacy;
 
 defined('_JEXEC') or die();
 
-class Emails extends JViewLegacy
+class Emails extends Base
 {
     /**
      * @var string

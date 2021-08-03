@@ -183,7 +183,7 @@ class File
      */
     public static function getDownloadUrl($fileId)
     {
-        $container = Factory::getContainer();
+        $container = Factory::getPimpleContainer();
 
         return Route::_($container->helperRoute->getFileDownloadRoute($fileId));
     }

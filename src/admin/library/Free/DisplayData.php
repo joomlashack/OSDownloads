@@ -68,16 +68,12 @@ class DisplayData
         // Get the form.
         $form = new JForm('com_osdownloads.download');
 
-        $dispatcher = JEventDispatcher::getInstance();
-        $dispatcher->trigger(
-            'onContentPrepareForm',
+        Factory::getApplication()->triggerEvent('onContentPrepareForm', array(
+            $form,
             array(
-                $form,
-                array(
-                    'catid' => @$data->cate_id,
-                )
+                'catid' => @$data->cate_id,
             )
-        );
+        ));
 
         return $form;
     }

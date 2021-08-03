@@ -46,7 +46,7 @@ class View
         $this->buildPath($paths, $categoryId);
 
         $app       = JFactory::getApplication();
-        $container = OSDFactory::getContainer();
+        $container = OSDFactory::getPimpleContainer();
 
         $pathway    = $app->getPathway();
         $itemID     = $app->input->getInt('Itemid');
@@ -81,7 +81,7 @@ class View
      */
     public function buildFileBreadcrumbs($file)
     {
-        $container = OSDFactory::getContainer();
+        $container = OSDFactory::getPimpleContainer();
 
         // Check if the current file has a menu item
         $menu = $container->app->getMenu()->getActive();
@@ -96,7 +96,7 @@ class View
         $this->buildCategoryBreadcrumbs($file->cate_id);
 
         $app       = JFactory::getApplication();
-        $container = OSDFactory::getContainer();
+        $container = OSDFactory::getPimpleContainer();
 
         $pathway = $app->getPathway();
         $itemID  = $app->input->getInt('Itemid');

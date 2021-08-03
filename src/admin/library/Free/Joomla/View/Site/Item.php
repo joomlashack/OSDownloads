@@ -83,7 +83,7 @@ class Item extends Base
         /** @var SiteApplication $app */
         $app       = Factory::getApplication();
         $component = FreeComponentSite::getInstance();
-        $container = OSDFactory::getContainer();
+        $container = OSDFactory::getPimpleContainer();
 
         $this->model  = $component->getModel('Item');
         $this->params = $app->getParams();

@@ -25,10 +25,11 @@ use Alledia\Framework\Extension;
 use Alledia\Installer\Extension\Licensed;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Pagination\Pagination;
+use Alledia\OSDownloads\Free\Joomla\View\Admin\Base;
 
 defined('_JEXEC') or die();
 
-class OSDownloadsViewFiles extends JViewLegacy
+class OSDownloadsViewFiles extends Base
 {
     /**
      * @var string
@@ -89,6 +90,13 @@ class OSDownloadsViewFiles extends JViewLegacy
         $this->extension->loadLibrary();
 
         $this->addToolbar();
+
+        // only on J4
+        if (!count($this->items) && $this->isEmptyState = $this->get('IsEmptyState') && IsJoomla4)
+        {
+            $this->setLayout('emptystate');
+        }
+
         $this->sidebar = JHtmlSidebar::render();
 
         parent::display($tpl);

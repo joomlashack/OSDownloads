@@ -25,6 +25,7 @@ namespace Alledia\OSDownloads\Free\Joomla\Table;
 
 defined('_JEXEC') or die();
 
+use Alledia\Framework\Factory;
 use Alledia\Framework\Joomla\Table\Base;
 use JApplicationHelper;
 use JEventDispatcher;
@@ -106,12 +107,8 @@ class Item extends Base
 
     protected function trigger($event, array $arguments)
     {
-        if ($this->_dispatcher === null) {
-            $this->_dispatcher = JEventDispatcher::getInstance();
-            JPluginHelper::importPlugin('osdownloads');
-        }
-
-        return $this->_dispatcher->trigger($event, $arguments);
+        JPluginHelper::importPlugin('osdownloads');
+        return Factory::getApplication()->triggerEvent($event, $arguments);
     }
 
     public function load($keys = null, $reset = true)

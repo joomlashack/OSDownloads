@@ -51,7 +51,7 @@ class SEF
 
     public function __construct()
     {
-        $this->container = OSDFactory::getContainer();
+        $this->container = OSDFactory::getPimpleContainer();
 
         $this->getMenuItems();
     }

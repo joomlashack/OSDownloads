@@ -35,7 +35,7 @@ class Emails extends BaseController
     public function delete()
     {
         $app       = Factory::getApplication();
-        $container = OSDFactory::getContainer();
+        $container = OSDFactory::getPimpleContainer();
 
         $ids = array_filter(
             array_unique(

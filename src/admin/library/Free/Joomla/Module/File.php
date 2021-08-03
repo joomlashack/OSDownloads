@@ -115,8 +115,7 @@ class File extends AbstractFlexibleModule
         // Get the form.
         $form = new JForm('com_osdownloads.download');
 
-        $dispatcher = JEventDispatcher::getInstance();
-        $dispatcher->trigger(
+        Factory::getApplication()->triggerEvent(
             'onContentPrepareForm',
             array(
                 $form,

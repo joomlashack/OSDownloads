@@ -29,7 +29,7 @@ use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 
 $this->app                    = Factory::getApplication();
 $this->lang                   = Factory::getLanguage();
-$this->container              = Factory::getContainer();
+$this->container              = Factory::getPimpleContainer();
 $this->params                 = $this->app->getParams();
 $this->numberOfColumns        = (int)$this->params->get("number_of_column", 1);
 $this->authorizedAccessLevels = Factory::getUser()->getAuthorisedViewLevels();

@@ -24,8 +24,10 @@
 defined('_JEXEC') or die();
 
 use Alledia\OSDownloads\Free\File;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 
 // Get the download URL for the file
 $downloadUrl = File::getDownloadUrl($this->item->id);
@@ -42,25 +44,27 @@ $downloadUrl = File::getDownloadUrl($this->item->id);
  */
 
 // Is coming from an iOS browser?
-$iOSBrowser = stripos($_SERVER['HTTP_USER_AGENT'],"iPod")
-    || stripos($_SERVER['HTTP_USER_AGENT'],"iPhone")
-    || stripos($_SERVER['HTTP_USER_AGENT'],"iPad");
+$iOSBrowser = stripos($_SERVER['HTTP_USER_AGENT'], 'iPod')
+    || stripos($_SERVER['HTTP_USER_AGENT'], 'iPhone')
+    || stripos($_SERVER['HTTP_USER_AGENT'], 'iPad');
 
 // Get a custom thank you page from the settings
-$thankyoupage = $this->params->get("thankyoupage");
+$thankyoupage = $this->params->get('thankyoupage');
 
 if (empty($thankyoupage)) {
-    $defaultMessage = $iOSBrowser ? 'COM_OSDOWNLOADS_CLICK_TO_DOWNLOAD_FILE_IOS' : 'COM_OSDOWNLOADS_CLICK_TO_DOWNLOAD_FILE';
+    $defaultMessage = $iOSBrowser
+        ? 'COM_OSDOWNLOADS_CLICK_TO_DOWNLOAD_FILE_IOS'
+        : 'COM_OSDOWNLOADS_CLICK_TO_DOWNLOAD_FILE';
 
     $thankyoupage = sprintf(
         '<h2>%s</h2><p>%s</p>',
-        JText::_('COM_OSDOWNLOADS_THANK_YOU'),
-        JText::sprintf($defaultMessage, $downloadUrl)
+        Text::_('COM_OSDOWNLOADS_THANK_YOU'),
+        Text::sprintf($defaultMessage, $downloadUrl)
     );
 } elseif ($iOSBrowser) {
     $thankyoupage .= sprintf(
         '<p>%s</p>',
-        JText::sprintf('COM_OSDOWNLOADS_CLICK_TO_DOWNLOAD_FILE_IOS', $downloadUrl)
+        Text::sprintf('COM_OSDOWNLOADS_CLICK_TO_DOWNLOAD_FILE_IOS', $downloadUrl)
     );
 }
 
@@ -69,15 +73,15 @@ $thankyoupage = str_replace('{{download_url}}', $downloadUrl, $thankyoupage);
 ?>
 
 <style>
-    body,
-    div#all,
-    div#main {
-        background: none transparent !important;
-    }
+  body,
+  div#all,
+  div#main {
+    background: none transparent !important;
+  }
 
-    div#main {
-        min-height: 0 !important;
-    }
+  div#main {
+    min-height: 0 !important;
+  }
 </style>
 
 <div id="osdownloads-thankyou">

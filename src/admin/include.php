@@ -26,12 +26,12 @@ use Alledia\OSDownloads\Free\Factory;
 
 defined('_JEXEC') or die();
 
-// Alledia Framework
 if (!defined('ALLEDIA_FRAMEWORK_LOADED')) {
     $allediaFrameworkPath = JPATH_SITE . '/libraries/allediaframework/include.php';
 
-    if (file_exists($allediaFrameworkPath)) {
+    if (is_file($allediaFrameworkPath)) {
         require_once $allediaFrameworkPath;
+
     } else {
         $app = Factory::getApplication();
 
@@ -62,8 +62,6 @@ if (defined('ALLEDIA_FRAMEWORK_LOADED') && !defined('OSDOWNLOADS_LOADED')) {
 
         case 'administrator':
             Factory::getLanguage()->load('com_osdownloads', OSDOWNLOADS_ADMIN);
-
-            JLoader::register('TraitModelUploads', OSDOWNLOADS_ADMIN . '/models/TraitModelUploads.php');
             break;
     }
 
@@ -75,3 +73,4 @@ if (defined('ALLEDIA_FRAMEWORK_LOADED') && !defined('OSDOWNLOADS_LOADED')) {
     }
 }
 
+return defined('OSDOWNLOADS_LOADED');

@@ -40,6 +40,14 @@ abstract class Factory extends \Alledia\Framework\Factory
     protected static $pimpleContainer = null;
 
     /**
+     * @inheritDoc
+     */
+    public static function getExtension($namespace = 'osdownloads', $type = 'component', $folder = null)
+    {
+        return parent::getExtension($namespace, $type, $folder);
+    }
+
+    /**
      * Get the current container instance. Creates if not set yet.
      *
      * @return Container
@@ -47,7 +55,7 @@ abstract class Factory extends \Alledia\Framework\Factory
     public static function getPimpleContainer(): Container
     {
         if (static::$pimpleContainer === null) {
-            $services  = class_exists('\\Alledia\\OSDownloads\\Pro\\Services')
+            $services = static::getExtension()->isPro()
                 ? new ProServices()
                 : new Services();
 

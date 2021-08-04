@@ -56,6 +56,7 @@ class AbstractScript extends \Alledia\Installer\AbstractScript
             $this->fixOrderingParamForMenus();
             $this->fixDownloadsViewParams();
             $this->fixItemViewParams();
+            $this->fixDatabase();
 
             if ($type == 'update') {
                 $this->moveLayouts();
@@ -363,6 +364,27 @@ class AbstractScript extends \Alledia\Installer\AbstractScript
                     File::move($file, $newPath);
                     break;
             }
+        }
+    }
+
+    /**
+     * Apply any needed database fixes
+     */
+    protected function fixDatabase()
+    {
+        /*
+         * There is an odd issue in Joomla 4 that reports database errors
+         * when there aren't any. Stupid.
+         */
+        $oldUpdates = Folder::files(
+            JPATH_ADMINISTRATOR . '/components/com_osdownloads/sql/updates',
+            '1\.4\.9\.sql',
+            true,
+            true
+        );
+
+        foreach ($oldUpdates as $oldUpdate) {
+            File::delete($oldUpdate);
         }
     }
 }

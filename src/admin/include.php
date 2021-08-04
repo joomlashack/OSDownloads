@@ -21,7 +21,7 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Alledia\Framework\Joomla\Extension;
+use Alledia\Framework\Joomla\Extension\Helper;
 use Alledia\OSDownloads\Free\Factory;
 
 defined('_JEXEC') or die();
@@ -49,9 +49,10 @@ if (defined('ALLEDIA_FRAMEWORK_LOADED') && !defined('OSDOWNLOADS_LOADED')) {
     define('OSDOWNLOADS_LIBRARY', OSDOWNLOADS_ADMIN . '/library');
     define('OSDOWNLOADS_MEDIA', JPATH_SITE . '/media/com_osdownloads');
 
-    Extension\Helper::loadLibrary('com_osdownloads');
-
     require_once OSDOWNLOADS_ADMIN . '/vendor/autoload.php';
+
+    Helper::loadLibrary('com_osdownloads');
+
     JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
 
     switch (Factory::getApplication()->getName()) {

@@ -27,6 +27,7 @@ defined('_JEXEC') or die();
 
 use Alledia\Framework\Joomla\Extension\AbstractFlexibleModule;
 use Alledia\Framework\Factory;
+use Alledia\OSDownloads\Free\Helper\Helper as FreeHelper;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use JRoute;
 use JFactory;
@@ -93,7 +94,7 @@ class File extends AbstractFlexibleModule
             JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
 
             foreach ($rows as $row) {
-                \OSDownloadsHelper::prepareItem($row);
+                FreeHelper::prepareItem($row);
             }
         }
 

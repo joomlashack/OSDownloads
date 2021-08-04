@@ -28,9 +28,8 @@ defined('_JEXEC') or die();
 use Alledia\Framework\Joomla\Model\Base as BaseModel;
 use Alledia\Framework\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
+use Alledia\OSDownloads\Free\Helper\Helper;
 use JFactory;
-
-\JLoader::register('OSDownloadsHelper', JPATH_ADMINISTRATOR . '/components/com_osdownloads/helpers/osdownloads.php');
 
 class Item extends BaseModel
 {
@@ -50,7 +49,7 @@ class Item extends BaseModel
         $db->setQuery($query);
 
         if ($item = $db->loadObject()) {
-            \OSDownloadsHelper::prepareItem($item);
+            Helper::prepareItem($item);
         }
 
         return $item;

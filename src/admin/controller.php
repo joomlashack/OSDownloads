@@ -57,9 +57,8 @@ class OSDownloadsController extends JControllerLegacy
         }
 
         if ($view !== 'file') {
-            require_once JPATH_COMPONENT . '/helpers/osdownloads.php';
-
-            if (class_exists('\\Alledia\\OSDownloads\\Pro\\Helper\\Helper')) {
+            $extension = Factory::getExtension('com_osdownloads', 'component');
+            if ($extension->isPro()) {
                 Alledia\OSDownloads\Pro\Helper\Helper::addSubmenu($app->input->getCmd('view', $view));
             } else {
                 Alledia\OSDownloads\Free\Helper\Helper::addSubmenu($app->input->getCmd('view', $view));

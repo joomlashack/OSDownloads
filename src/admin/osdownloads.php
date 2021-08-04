@@ -21,20 +21,23 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Joomla\CMS\Access\Exception\NotAllowed;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Controller\BaseController;
+
 defined('_JEXEC') or die();
 
-if (!JFactory::getUser()->authorise('core.manage', 'com_osdownloads')) {
-    throw new JAccessExceptionNotallowed(JText::_('JERROR_ALERTNOAUTHOR'), 403);
+if (!Factory::getUser()->authorise('core.manage', 'com_osdownloads')) {
+    throw new NotAllowed(Text::_('JERROR_ALERTNOAUTHOR'), 403);
 }
 
-require_once 'include.php';
+if (require_once 'include.php') {
+    $controller = BaseController::getInstance('osdownloads');
 
-if (defined('OSDOWNLOADS_LOADED')) {
-    $controller = JControllerLegacy::getInstance('osdownloads');
-    $controller->execute(JFactory::getApplication()->input->get('task'));
+    $controller->execute(Factory::getApplication()->input->get('task'));
     $controller->redirect();
 
 } else {
     echo '<h3>Joomlashack Framework is not installed</h3>';
 }
-

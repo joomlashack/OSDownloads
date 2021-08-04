@@ -293,7 +293,7 @@ class AbstractScript extends \Alledia\Installer\AbstractScript
         $table = Table::getInstance('Extension');
         $table->load(['element' => 'com_osdownloads', 'type' => 'component']);
 
-        $params  = new Registry($table->params);
+        $params  = new Registry($table->get('params'));
         $current = $params->toObject();
 
         $parameterMap = $this->getParameterChangeMap();
@@ -329,7 +329,7 @@ class AbstractScript extends \Alledia\Installer\AbstractScript
      *
      * @since v1.13.14
      */
-    public function moveLayouts()
+    protected function moveLayouts()
     {
         $renames = [
             'download_button' => 'download',

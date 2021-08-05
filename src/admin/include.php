@@ -23,6 +23,7 @@
 
 use Alledia\Framework\Joomla\Extension\Helper;
 use Alledia\OSDownloads\Factory;
+use Joomla\CMS\Version;
 
 defined('_JEXEC') or die();
 
@@ -53,7 +54,9 @@ if (defined('ALLEDIA_FRAMEWORK_LOADED') && !defined('OSDOWNLOADS_LOADED')) {
 
     Helper::loadLibrary('com_osdownloads');
 
-    JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
+    if (version_compare(Version::MAJOR_VERSION, '4', 'lt')) {
+        JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
+    }
 
     switch (Factory::getApplication()->getName()) {
         case 'site':

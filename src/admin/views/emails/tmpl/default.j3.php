@@ -58,7 +58,7 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
         <?php echo $this->sidebar; ?>
     </div>
     <div id="j-main-container" class="span10">
-        <table width="100%">
+        <table style="width: 100%">
             <tr>
                 <td>
                     <div class="js-stools clearfix">
@@ -82,7 +82,7 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                         </div>
                     </div>
                 </td>
-                <td align="right">
+                <td style="text-align: right;">
                     <div class="js-stools clearfix">
                         <?php if ($this->isPro) : ?>
                             <?php echo $this->loadTemplate('pro_filters'); ?>

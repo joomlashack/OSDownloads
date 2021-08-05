@@ -30,13 +30,20 @@ use Alledia\OSDownloads\Factory;
 
 class Email extends BaseTable
 {
-    public function __construct(&$db)
+    /**
+     * @inheritDoc
+     */
+    public function __construct($db)
     {
         parent::__construct('#__osdownloads_emails', 'id', $db);
 
         Factory::getPimpleContainer()->mailingLists->loadObservers($this);
     }
 
+    /**
+     * @inheritDoc
+     * @throws \Exception
+     */
     public function store($updateNulls = false)
     {
         $app = Factory::getApplication();
@@ -53,6 +60,10 @@ class Email extends BaseTable
         return $result;
     }
 
+    /**
+     * @inheritDoc
+     * @throws \Exception
+     */
     public function delete($pk = null)
     {
         $app = Factory::getApplication();

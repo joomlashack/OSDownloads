@@ -57,7 +57,7 @@ class Email extends BaseModel
             $row->email = $email;
 
             $row->document_id     = (int)$documentId;
-            $row->downloaded_date = Factory::getDate()->toSQL();
+            $row->downloaded_date = Factory::getDate()->toSql();
 
             $this->prepareRow($row);
 

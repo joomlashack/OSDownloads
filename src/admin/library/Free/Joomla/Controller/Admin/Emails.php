@@ -31,6 +31,10 @@ defined('_JEXEC') or die();
 
 class Emails extends BaseController
 {
+    /**
+     * @return void
+     * @throws \Exception
+     */
     public function delete()
     {
         $app       = Factory::getApplication();
@@ -51,7 +55,7 @@ class Emails extends BaseController
 
         $this->setRedirect(
             $container->helperRoute->getAdminEmailListRoute(),
-            Text::_("COM_OSDOWNLOADS_EMAIL_IS_DELETED")
+            Text::_('COM_OSDOWNLOADS_EMAIL_IS_DELETED')
         );
     }
 }

@@ -27,11 +27,10 @@ defined('_JEXEC') or die();
 
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
-use Exception;
-use JHtml;
 use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
-use JText;
 use OSDownloadsModelItem;
 
 class Item extends Base
@@ -75,7 +74,7 @@ class Item extends Base
      * @param string $tpl
      *
      * @return void
-     * @throws Exception
+     * @throws \Exception
      */
     public function display($tpl = null)
     {
@@ -86,19 +85,19 @@ class Item extends Base
 
         $this->model  = $component->getModel('Item');
         $this->params = $app->getParams();
-        $this->itemId = (int)$app->input->getInt('Itemid');
+        $this->itemId = $app->input->getInt('Itemid');
 
         $menu = $app->getMenu()->getActive();
         if ($menu) {
             $this->params->def('page_heading', $this->params->get('page_title', $menu->title));
         }
 
-        $id = (int)$app->input->getInt('id') ?: (int)$this->params->get('document_id');
+        $id = $app->input->getInt('id') ?: (int)$this->params->get('document_id');
 
         $this->item = $this->model->getItem($id);
 
         if (empty($this->item)) {
-            throw new Exception(JText::_('COM_OSDOWNLOADS_ERROR_DOWNLOAD_NOT_AVAILABLE'), 404);
+            throw new \Exception(Text::_('COM_OSDOWNLOADS_ERROR_DOWNLOAD_NOT_AVAILABLE'), 404);
         }
 
         // Breadcrumbs
@@ -111,10 +110,10 @@ class Item extends Base
         $this->category = $container->helperSEF->getCategory($this->item->cate_id);
 
         // Process content plugins
-        $this->item->brief         = JHtml::_('content.prepare', $this->item->brief);
-        $this->item->description_1 = JHtml::_('content.prepare', $this->item->description_1);
-        $this->item->description_2 = JHtml::_('content.prepare', $this->item->description_2);
-        $this->item->description_3 = JHtml::_('content.prepare', $this->item->description_3);
+        $this->item->brief         = HTMLHelper::_('content.prepare', $this->item->brief);
+        $this->item->description_1 = HTMLHelper::_('content.prepare', $this->item->description_1);
+        $this->item->description_2 = HTMLHelper::_('content.prepare', $this->item->description_2);
+        $this->item->description_3 = HTMLHelper::_('content.prepare', $this->item->description_3);
 
         /**
          * Temporary backward compatibility for user's template overrides.
@@ -122,7 +121,7 @@ class Item extends Base
          * @var array
          * @deprecated  1.9.9  Use JPathway and the breadcrumb module instead to display the breadcrumbs
          */
-        $this->paths = array();
+        $this->paths = [];
 
         parent::display($tpl);
     }

@@ -23,13 +23,10 @@
 
 namespace Alledia\OSDownloads\Free\Helper;
 
-use Joomla\Registry\Registry;
-use Joomla\Utilities\ArrayHelper;
-use JFactory;
-use JLog;
-use JText;
-use SefAdvanceHelper;
 use Alledia\OSDownloads\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\Menu\MenuItem;
 
 defined('_JEXEC') or die();
 
@@ -39,7 +36,7 @@ defined('_JEXEC') or die();
 class SEF
 {
     /**
-     * @var object[]
+     * @var MenuItem[]
      */
     protected static $menuItemsById = null;
 
@@ -75,13 +72,13 @@ class SEF
         $categoryId = $db->setQuery($query)->loadResult();
 
         if (empty($categoryId)) {
-            JLog::add(
-                JText::sprintf(
+            Log::add(
+                Text::sprintf(
                     'COM_OSDOWNLOADS_ERROR_FILE_NOT_FOUND',
                     $fileId,
                     'getCategoryIdFromFileId'
                 ),
-                JLog::WARNING
+                Log::WARNING
             );
         }
 
@@ -94,21 +91,23 @@ class SEF
      * @param array  $categories
      * @param int    $categoryId
      * @param string $categorySegmentToSkip
+     *
+     * @return array
      */
     public function buildCategoriesPath($categories, $categoryId, $categorySegmentToSkip = null)
     {
         if (empty($categoryId)) {
-            return;
+            return [];
         }
 
         $category = $this->getCategory($categoryId);
 
-        $categoriesToSkip = array();
-        if (!empty($categorySegmentToSkip)) {
+        $categoriesToSkip = [];
+        if ($categorySegmentToSkip) {
             $categoriesToSkip = explode('/', $categorySegmentToSkip);
         }
 
-        if (is_object($category) && $category->alias !== 'root' && ! in_array($category->alias, $categoriesToSkip)) {
+        if (is_object($category) && $category->alias !== 'root' && !in_array($category->alias, $categoriesToSkip)) {
             $categories[] = $category->alias;
         }
 
@@ -132,7 +131,7 @@ class SEF
     public function appendCategoriesToSegments($segments, $categoryId, $categorySegmentToSkip = null)
     {
         // Append the categories before the alias of the file
-        $categories = $this->buildCategoriesPath(array(), $categoryId, $categorySegmentToSkip);
+        $categories = $this->buildCategoriesPath([], $categoryId, $categorySegmentToSkip);
 
         for ($i = count($categories) - 1; $i >= 0; $i--) {
             $segments[] = $categories[$i];
@@ -145,8 +144,8 @@ class SEF
      * Append menu path segments to the segments array, returning the new
      * array of segments.
      *
-     * @param  array     $segments
-     * @param  JMenuItem $menu
+     * @param string[] $segments
+     * @param MenuItem $menu
      *
      * @return array
      */
@@ -181,13 +180,13 @@ class SEF
         $alias = $db->setQuery($query)->loadResult();
 
         if (empty($alias)) {
-            JLog::add(
-                JText::sprintf(
+            Log::add(
+                Text::sprintf(
                     'COM_OSDOWNLOADS_ERROR_FILE_NOT_FOUND',
                     $id,
                     'getFileAlias'
                 ),
-                JLog::WARNING
+                Log::WARNING
             );
         }
 
@@ -197,8 +196,8 @@ class SEF
     /**
      * Return the file object from alias
      *
-     * @param  string $alias
-     * @param  string $path
+     * @param string $alias
+     * @param string $path
      *
      * @return object|false
      */
@@ -214,13 +213,13 @@ class SEF
         $files = $db->setQuery($query)->loadObjectList();
 
         if (empty($files)) {
-            JLog::add(
-                JText::sprintf(
+            Log::add(
+                Text::sprintf(
                     'COM_OSDOWNLOADS_ERROR_FILE_NOT_FOUND',
                     $alias,
                     'getFileIdFromAlias'
                 ),
-                JLog::WARNING
+                Log::WARNING
             );
 
             return false;
@@ -281,13 +280,13 @@ class SEF
         $category = $db->setQuery($query)->loadObject();
 
         if (!is_object($category)) {
-            JLog::add(
-                JText::sprintf(
+            Log::add(
+                Text::sprintf(
                     'COM_OSDOWNLOADS_ERROR_CATEGORY_NOT_FOUND',
                     $id,
                     'getCategory'
                 ),
-                JLog::WARNING
+                Log::WARNING
             );
         }
 
@@ -308,12 +307,10 @@ class SEF
         $query = $db->getQuery(true)
             ->select('*')
             ->from('#__categories')
-            ->where(
-                array(
-                    'extension = ' . $db->quote('com_osdownloads'),
-                    'alias = ' . $db->quote($alias)
-                )
-            );
+            ->where([
+                'extension = ' . $db->quote('com_osdownloads'),
+                'alias = ' . $db->quote($alias)
+            ]);
 
         return $db->setQuery($query)->loadObjectList();
     }
@@ -321,23 +318,23 @@ class SEF
     /**
      * Returns the category as object based on the alias.
      *
-     * @param string $alias
-     * @param string $path
+     * @param string  $alias
+     * @param ?string $path
      *
-     * @return stdClass
+     * @return ?object
      */
     public function getCategoryFromAlias($alias, $path = null)
     {
         $categories = $this->getCategoriesFromAlias($alias);
 
         if (empty($categories)) {
-            JLog::add(
-                JText::sprintf(
+            Log::add(
+                Text::sprintf(
                     'COM_OSDOWNLOADS_ERROR_CATEGORY_NOT_FOUND',
                     $alias,
                     'getCategoryFromAlias'
                 ),
-                JLog::WARNING
+                Log::WARNING
             );
         }
 
@@ -352,27 +349,22 @@ class SEF
                 return $category;
             }
         }
-        return false;
+
+        return null;
     }
 
     /**
      * Returns the file category as object based on the file id.
      *
-     * @param int $id
+     * @param int $fileId
      *
-     * @return stdClass
+     * @return ?object
      */
     public function getCategoryFromFileId($fileId)
     {
         $categoryId = $this->getCategoryIdFromFileId($fileId);
 
-        if (!empty($categoryId)) {
-            $category = $this->getCategory($categoryId);
-
-            return $category;
-        }
-
-        return false;
+        return $categoryId ? $this->getCategory($categoryId) : null;
     }
 
     /**
@@ -384,12 +376,12 @@ class SEF
      */
     public function getIdFromLink($link)
     {
-        $vars = array();
+        $vars = [];
 
         parse_str($link, $vars);
 
         if (isset($vars['id'])) {
-            return (int) $vars['id'];
+            return (int)$vars['id'];
         }
 
         return null;
@@ -397,13 +389,13 @@ class SEF
 
     /**
      * Returns the last item of the array not considering empty items.
-     * Somes rotes, with trailing slash can produce an empty segment item,
+     * Some routes, with trailing slash can produce an empty segment item,
      * specially when using SEF Advance. The array is modified, having the
      * last items removed.
      *
-     * @param  array  $array
+     * @param array $array
      *
-     * @return mix
+     * @return mixed
      */
     public function getLastNoEmptyArrayItem(array &$array)
     {
@@ -415,11 +407,14 @@ class SEF
             }
         }
 
-        return $lastItem;
+        return $lastItem ?? null;
     }
 
     /**
      * Get the list of menu items
+     *
+     * @return MenuItem[]
+     * @throws \Exception
      */
     protected function getMenuItems()
     {
@@ -428,7 +423,7 @@ class SEF
         $menu      = $app->getMenu();
         $menuItems = $menu->getItems('component', 'com_osdownloads');
 
-        static::$menuItemsById = array();
+        static::$menuItemsById = [];
 
         foreach ($menuItems as $item) {
             static::$menuItemsById[$item->id] = $item;
@@ -437,12 +432,12 @@ class SEF
         return static::$menuItemsById;
     }
 
-     /**
+    /**
      * Look for a menu item related to the given category id.
      *
-     * @param  int $categoryId
+     * @param int $categoryId
      *
-     * @return stdClass|false
+     * @return ?MenuItem
      */
     public function getMenuItemForListOfFiles($categoryId)
     {
@@ -456,15 +451,15 @@ class SEF
             }
         }
 
-        return false;
+        return null;
     }
 
     /**
      * Look for a menu item related to the given category id.
      *
-     * @param  int $fileId
+     * @param int $fileId
      *
-     * @return stdClass|false
+     * @return ?object
      */
     public function getMenuItemForFile($fileId)
     {
@@ -476,7 +471,7 @@ class SEF
             }
         }
 
-        return false;
+        return null;
     }
 
     /**
@@ -492,9 +487,9 @@ class SEF
     /**
      * Look for a menu item based on the path
      *
-     * @param  string  $path
+     * @param string $path
      *
-     * @return stdClass|null
+     * @return ?object
      */
     public function getMenuItemsFromPath($path)
     {
@@ -506,16 +501,16 @@ class SEF
             }
         }
 
-        return false;
+        return null;
     }
 
     /**
      * Look for a menu item related to the most close category up in the tree,
      * recursively, including the root category.
      *
-     * @param  int $categoryId
+     * @param int $categoryId
      *
-     * @return JMenuItem|false
+     * @return ?MenuItem
      */
     public function getMenuItemForCategoryTreeRecursively($categoryId)
     {
@@ -527,7 +522,7 @@ class SEF
             $category = $this->getCategory($categoryId);
 
             if (!empty($category)) {
-                return $this->getMenuItemForCategoryTreeRecursively((int) $category->parent_id);
+                return $this->getMenuItemForCategoryTreeRecursively((int)$category->parent_id);
             }
 
             // Check the root category, since no other category seems to be on a menu
@@ -542,7 +537,7 @@ class SEF
     /**
      * Get a menu item related to the component, by id.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return object|bool
      */
@@ -560,7 +555,7 @@ class SEF
      * You don't need to give the full query, but all given query vars should
      * match.
      *
-     * @param  array $query
+     * @param array $query
      *
      * @return object|bool
      */

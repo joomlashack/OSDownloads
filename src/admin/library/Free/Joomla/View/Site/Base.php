@@ -25,11 +25,11 @@ namespace Alledia\OSDownloads\Free\Joomla\View\Site;
 
 use Alledia\OSDownloads\Factory;
 use Exception;
-use JViewLegacy;
+use Joomla\CMS\MVC\View\HtmlView;
 
 defined('_JEXEC') or die();
 
-class Base extends JViewLegacy
+class Base extends HtmlView
 {
     /**
      * @param string $tpl
@@ -56,7 +56,6 @@ class Base extends JViewLegacy
         $menus  = $app->getMenu();
         $doc    = Factory::getDocument();
         $params = $app->getParams();
-        $title  = null;
 
         // Because the application sets a default page title, we need to get it from the menu item itself
         $menu = $menus->getActive();

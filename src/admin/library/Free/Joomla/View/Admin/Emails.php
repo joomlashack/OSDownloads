@@ -72,10 +72,10 @@ class Emails extends Base
     {
         $app = Factory::getApplication();
 
-        $this->flt = (object)array(
+        $this->flt = (object)[
             'search'  => $app->getUserStateFromRequest('osdownloads.email.request.search', 'search', ""),
             'cate_id' => $app->getUserStateFromRequest('osdownloads.email.request.cate_id', 'cate_id')
-        );
+        ];
 
         $limit = $app->getUserStateFromRequest(
             'global.list.limit',

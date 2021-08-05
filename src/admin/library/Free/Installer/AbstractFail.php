@@ -29,9 +29,14 @@ defined('_JEXEC') or die();
 
 class AbstractFail
 {
-    public function preFlight($type, $parent)
+    /**
+     * @return false
+     * @throws \Exception
+     */
+    public function preFlight()
     {
         Factory::getApplication()->enqueueMessage('Required libraries are missing', 'error');
+
         return false;
     }
 }

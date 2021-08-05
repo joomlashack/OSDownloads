@@ -23,9 +23,8 @@
 
 namespace Alledia\OSDownloads\Free\Helper;
 
-use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
-use JRoute;
 use Alledia\OSDownloads\Factory;
+use Joomla\CMS\Router\Route;
 
 defined('_JEXEC') or die();
 
@@ -37,11 +36,14 @@ class View
     /**
      * Build a list of category breadcrumbs.
      *
-     * @param  int     $categoryId
+     * @param int $categoryId
+     *
+     * @return void
+     * @throws \Exception
      */
     public function buildCategoryBreadcrumbs($categoryId)
     {
-        $paths = array();
+        $paths = [];
         $this->buildPath($paths, $categoryId);
 
         $app       = Factory::getApplication();
@@ -50,13 +52,12 @@ class View
         $pathway    = $app->getPathway();
         $itemID     = $app->input->getInt('Itemid');
         $countPaths = count($paths) - 1;
-        $component  = FreeComponentSite::getInstance();
 
         $pathwayList = $pathway->getPathway();
 
         for ($i = $countPaths; $i >= 0; $i--) {
             $link   = $container->helperRoute->getFileListRoute($paths[$i]->id, $itemID);
-            $route  = JRoute::_($link);
+            $route  = Route::_($link);
             $exists = false;
 
             // Check if the current category is already in the pathway, to ignore
@@ -76,7 +77,10 @@ class View
     /**
      * Build a list of file breadcrumbs.
      *
-     * @param  object  $file
+     * @param object $file
+     *
+     * @return void
+     * @throws \Exception
      */
     public function buildFileBreadcrumbs($file)
     {
@@ -100,22 +104,16 @@ class View
         $pathway = $app->getPathway();
         $itemID  = $app->input->getInt('Itemid');
 
-        $pathwayList = $pathway->getPathway();
+        $link = $container->helperRoute->getViewItemRoute($file->id, $itemID);
 
-        $link   = $container->helperRoute->getViewItemRoute($file->id, $itemID);
-        $route  = JRoute::_($link);
-        $exists = false;
-
-        if (!$exists) {
-            $pathway->addItem($file->name, $link);
-        }
+        $pathway->addItem($file->name, $link);
     }
 
     /**
      * Build an inverse recurcive list of paths for categories' breadcrumbs.
      *
-     * @param  array &$paths
-     * @param  int   $categoryId
+     * @param array &$paths
+     * @param int    $categoryId
      */
     protected function buildPath(&$paths, $categoryId)
     {
@@ -125,15 +123,13 @@ class View
 
         $db = Factory::getDbo();
 
-        $query = $db->getQuery(true)
+        $query    = $db->getQuery(true)
             ->select('*')
             ->from('#__categories')
-            ->where(
-                array(
-                    'extension = ' . $db->quote('com_osdownloads'),
-                    'id = ' . $db->quote((int) $categoryId)
-                )
-            );
+            ->where([
+                'extension = ' . $db->quote('com_osdownloads'),
+                'id = ' . $db->quote((int)$categoryId)
+            ]);
         $category = $db->setQuery($query)->loadObject();
 
         if (!empty($category)) {

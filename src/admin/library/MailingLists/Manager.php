@@ -24,10 +24,10 @@
 namespace Alledia\OSDownloads\MailingLists;
 
 use Alledia\Installer\Extension\Licensed;
-use JFolder;
-use JForm;
-use JTable;
 use Alledia\OSDownloads\Factory;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Table\Table;
 use SimpleXMLElement;
 
 defined('_JEXEC') or die();
@@ -52,11 +52,11 @@ class Manager
     /**
      * @var string[]
      */
-    protected static $sourceNames = array(
+    protected static $sourceNames = [
         'com_config.component'                   => 'config',
         'com_categories.categorycom_osdownloads' => 'category',
         'com_osdownloads.file'                   => 'file'
-    );
+    ];
 
     /**
      * @var string
@@ -71,11 +71,11 @@ class Manager
     /**
      * Find all Mailing List plugins and attach as Table observers
      *
-     * @param JTable $table
+     * @param Table $table
      *
      * @return void
      */
-    public function loadObservers(JTable $table)
+    public function loadObservers(Table $table)
     {
         $plugins = $this->getPluginFiles('php');
 
@@ -103,11 +103,11 @@ class Manager
      * PluginGroupName : The field group name for the added fields in the form
      * FormName        : A form name listed in static::$sourceNames
      *
-     * @param JForm $form
+     * @param Form $form
      *
      * @throws \Exception
      */
-    public function loadForms(JForm $form)
+    public function loadForms(Form $form)
     {
         if ($formFiles = $this->getPluginFiles('xml')) {
             $formName = $form->getName();
@@ -139,14 +139,14 @@ class Manager
         $regex      = sprintf('\.%s$', $type);
         $extension  = $this->getExtension();
 
-        $configFiles = array();
+        $configFiles = [];
 
         // Collect Pro configuration files first
         if ($extension->isPro()) {
             $proPath = $extension->getProLibraryPath() . $baseFolder;
 
             if (is_dir($proPath)) {
-                $proFiles = JFolder::files($proPath, $regex, false, true);
+                $proFiles = Folder::files($proPath, $regex, false, true);
                 foreach ($proFiles as $proFile) {
                     $key               = strtolower(basename($proFile, '.' . $type));
                     $configFiles[$key] = $proFile;
@@ -156,7 +156,7 @@ class Manager
 
         // Collect free files but don't override pro versions
         $freePath  = $extension->getLibraryPath() . '/Free' . $baseFolder;
-        $freeFiles = JFolder::files($freePath, $regex, false, true);
+        $freeFiles = Folder::files($freePath, $regex, false, true);
         foreach ($freeFiles as $freeFile) {
             $key = strtolower(basename($freeFile, '.' . $type));
             if (empty($configFiles[$key])) {
@@ -175,7 +175,7 @@ class Manager
      */
     protected function getFormSources($files, $name)
     {
-        $sources = array();
+        $sources = [];
         foreach ($files as $file) {
             if ($this->pluginEnabled($file, $name)) {
                 $source  = simplexml_load_file($file);
@@ -203,12 +203,12 @@ class Manager
      * Add plugin fields for the selected form
      *
      * @param string[] $files
-     * @param JForm    $form
+     * @param Form     $form
      * @param string   $sourceName
      *
      * @return void
      */
-    protected function addFields($files, JForm $form, $sourceName)
+    protected function addFields($files, Form $form, $sourceName)
     {
         $formXml = $form->getXml();
 
@@ -227,7 +227,7 @@ class Manager
 
             } else {
                 $parents        = $target->xpath('ancestor::fields[@name]/@name');
-                $parentGroups   = array_map('strval', $parents ?: array());
+                $parentGroups   = array_map('strval', $parents ?: []);
                 $parentGroups[] = (string)$target['name'];
                 $parentGroup    = join('.', $parentGroups) . '.';
 
@@ -289,13 +289,11 @@ class Manager
      */
     protected function convertPathToClass($filePath)
     {
-        $basePath = str_replace('/', '\\', $this->getBasePath());
-        $filePath = str_replace('/', '\\', $filePath);
+        $basePath  = str_replace('/', '\\', $this->getBasePath());
+        $filePath  = str_replace('/', '\\', $filePath);
         $classPath = str_replace($basePath, '', $filePath);
 
-        $className = static::$baseClass . preg_replace('/\.(php|xml)$/', '', $classPath);
-
-        return $className;
+        return static::$baseClass . preg_replace('/\.(php|xml)$/', '', $classPath);
     }
 
     protected function pluginEnabled($file, $formName)
@@ -304,11 +302,11 @@ class Manager
 
         $className = $this->convertPathToClass($file);
         if (class_exists($className)) {
-            $checkDependencies  = array($className, 'checkDependencies');
-            $enabled = !is_callable($checkDependencies) || call_user_func($checkDependencies);
+            $checkDependencies = [$className, 'checkDependencies'];
+            $enabled           = !is_callable($checkDependencies) || call_user_func($checkDependencies);
             if ($enabled && $formName != 'config') {
-                $isEnabled = array($className, 'isEnabled');
-                $enabled = !is_callable($isEnabled) || call_user_func($isEnabled);
+                $isEnabled = [$className, 'isEnabled'];
+                $enabled   = !is_callable($isEnabled) || call_user_func($isEnabled);
             }
         }
 

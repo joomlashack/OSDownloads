@@ -25,13 +25,16 @@ namespace Alledia\OSDownloads\Free\Joomla\Plugin;
 
 use Alledia\OSDownloads\Factory;
 use Exception;
+use Joomla\CMS\Application\CMSApplication;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Plugin\CMSPlugin;
 
 defined('_JEXEC') or die();
 
-class Content extends \JPlugin
+class Content extends CMSPlugin
 {
     /**
-     * @var \JApplicationCms
+     * @var CMSApplication
      */
     protected $app = null;
 
@@ -41,8 +44,8 @@ class Content extends \JPlugin
     protected $enabled = null;
 
     /**
-     * @param \JForm $form
-     * @param object $data
+     * @param Form|\JForm $form
+     * @param object      $data
      *
      * @return bool
      * @throws Exception

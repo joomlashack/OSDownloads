@@ -27,8 +27,13 @@ require_once JPATH_SITE . '/components/com_osdownloads/models/item.php';
 
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Joomla\View;
-use Alledia\OSDownloads\Free\Helper\View as HelperView;
 use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Pagination\Pagination;
+use Joomla\CMS\Router\Route;
+use Joomla\Registry\Registry;
 
 class OSDownloadsViewDownloads extends View\Site\Base
 {
@@ -53,12 +58,12 @@ class OSDownloadsViewDownloads extends View\Site\Base
     protected $paths = null;
 
     /**
-     * @var JPagination
+     * @var Pagination
      */
     protected $pagination = null;
 
     /**
-     * @var \Joomla\Registry\Registry
+     * @var Registry
      */
     public $params = null;
 
@@ -92,19 +97,19 @@ class OSDownloadsViewDownloads extends View\Site\Base
             $id = 1;
         }
 
-        $model = JModelLegacy::getInstance('OSDownloadsModelItem');
+        /** @var OSDownloadsModelItem $model */
+        $model = BaseDatabaseModel::getInstance('OSDownloadsModelItem');
 
         $app->setUserState('com_osdownloads.files.filter_order', $params->get('ordering', 'doc.ordering'));
         $app->setUserState('com_osdownloads.files.filter_order_Dir', $params->get('ordering_dir', 'asc'));
 
-        /** @var JDatabaseQuery $query */
         $query = $model->getItemQuery();
 
         $query->select('cat.access as cat_access');
 
-        $where = array(
+        $where = [
             sprintf('cate_id = %s', $db->quote($id))
-        );
+        ];
 
         if ($includeChildFiles) {
             $where[] = sprintf('cat.parent_id = %s', $db->quote($id));
@@ -123,47 +128,45 @@ class OSDownloadsViewDownloads extends View\Site\Base
         $limit        = $app->getUserStateFromRequest('osdownloads.request.list.limit', 'limit', $defaultLimit, 'int');
         $limitstart   = $app->getUserStateFromRequest('osdownloads.request.limitstart', 'limitstart', 0, 'int');
 
-        $pagination = new JPagination($total, $limitstart, $limit);
+        $pagination = new Pagination($total, $limitstart, $limit);
 
         /*----------  Files  ----------*/
         $db->setQuery($query, $pagination->limitstart, $pagination->limit);
 
         JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
         $items = $db->loadObjectList();
-        foreach ($items as &$item) {
+        foreach ($items as $item) {
             $item->agreementLink = '';
-            if ((bool)$item->require_agree) {
-                $item->agreementLink = JRoute::_(ContentHelperRoute::getArticleRoute($item->agreement_article_id));
+            if ($item->require_agree) {
+                $item->agreementLink = Route::_(ContentHelperRoute::getArticleRoute($item->agreement_article_id));
             }
 
-            $item->brief         = JHtml::_('content.prepare', $item->brief);
-            $item->description_1 = JHtml::_('content.prepare', $item->description_1);
-            $item->description_2 = JHtml::_('content.prepare', $item->description_2);
-            $item->description_3 = JHtml::_('content.prepare', $item->description_3);
+            $item->brief         = HTMLHelper::_('content.prepare', $item->brief);
+            $item->description_1 = HTMLHelper::_('content.prepare', $item->description_1);
+            $item->description_2 = HTMLHelper::_('content.prepare', $item->description_2);
+            $item->description_3 = HTMLHelper::_('content.prepare', $item->description_3);
         }
 
         $user   = Factory::getUser();
         $groups = $user->getAuthorisedViewLevels();
 
         if (!isset($items) || (count($items) && !in_array($items[0]->cat_access, $groups))) {
-            throw new Exception(JText::_('COM_OSDOWNLOADS_THIS_CATEGORY_ISNT_AVAILABLE'), 404);
+            throw new Exception(Text::_('COM_OSDOWNLOADS_THIS_CATEGORY_ISNT_AVAILABLE'), 404);
         }
 
         /*----------  Child Categories  ----------*/
-        $categories = array();
+        $categories = [];
 
         if ($showChildCategories) {
             $query = $db->getQuery(true)
                 ->select('*')
                 ->from('#__categories AS c')
-                ->where(
-                    array(
-                        'extension = ' . $db->quote('com_osdownloads'),
-                        'published = 1',
-                        'parent_id = ' . $db->quote($id),
-                        sprintf('access IN (%s)', join(',', $groups))
-                    )
-                )
+                ->where([
+                    'extension = ' . $db->quote('com_osdownloads'),
+                    'published = 1',
+                    'parent_id = ' . $db->quote($id),
+                    sprintf('access IN (%s)', join(',', $groups))
+                ])
                 ->order('c.lft ASC');
 
             $db->setQuery($query);
@@ -182,14 +185,6 @@ class OSDownloadsViewDownloads extends View\Site\Base
         $this->items              = $items;
         $this->pagination         = $pagination;
         $this->isPro              = $extension->isPro();
-
-        /**
-         * Temporary backward compatibility for user's template overrides.
-         *
-         * @var array
-         * @deprecated  1.9.9  Use JPathway and the breadcrumb module instead to display the breadcrumbs
-         */
-        $this->paths = array();
 
         parent::display($tpl);
     }

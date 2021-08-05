@@ -35,11 +35,11 @@
 
 use Alledia\OSDownloads\Factory;
 use Joomla\Utilities\ArrayHelper;
-use Joomla\Registry\Registry;
 
-defined( '_JEXEC' ) or die();
+defined('_JEXEC') or die();
 
-class sef_osdownloads {
+class sef_osdownloads
+{
 
     /**
      * An array with custom segments:
@@ -54,6 +54,7 @@ class sef_osdownloads {
 
     /**
      * The DI container
+     *
      * @var object
      */
     protected $container;
@@ -61,8 +62,8 @@ class sef_osdownloads {
     /**
      * Class constructor.
      *
-     * @param   JApplicationCms $app  Application-object that the router should use
-     * @param   JMenu           $menu Menu-object that the router should use
+     * @param JApplicationCms $app  Application-object that the router should use
+     * @param JMenu           $menu Menu-object that the router should use
      *
      * @since   3.4
      */
@@ -114,11 +115,11 @@ class sef_osdownloads {
     }
 
     /**
-    * Creates the SEF Advance URL out of the request
-    * Input: $string, string, The request URL (index.php?option=com_example&Itemid=$Itemid)
-    * Output: $sefstring, string, SEF Advance URL ($var1/$var2/)
-    **/
-    public function create ($string)
+     * Creates the SEF Advance URL out of the request
+     * Input: $string, string, The request URL (index.php?option=com_example&Itemid=$Itemid)
+     * Output: $sefstring, string, SEF Advance URL ($var1/$var2/)
+     **/
+    public function create($string)
     {
         /*====================================================
         =            Extract variables from query            =
@@ -211,10 +212,9 @@ class sef_osdownloads {
         if (!empty($view)) {
             switch ($view) {
                 /**
-
-                    TODO:
-                    - Filter this for the Pro version only
-
+                 *
+                 * TODO:
+                 * - Filter this for the Pro version only
                  */
 
                 /**
@@ -273,7 +273,7 @@ class sef_osdownloads {
     /**
      * Build and return the query string based on the array of vars.
      *
-     * @param  array $vars
+     * @param array $vars
      *
      * @return array
      */
@@ -292,14 +292,14 @@ class sef_osdownloads {
     }
 
     /**
-    * Reverts to the query string out of the SEF Advance URL
-    * Input:
-    *    $url_array, array, The SEF Advance URL split in arrays
-    *    $pos, int, The position offset for virtual directories (first virtual directory, which is the component name, begins at $pos+1)
-    * Output: $QUERY_STRING, string, query string (var1=$var1&var2=$var2)
-    *    Note that this will be added to already defined first part (option=com_example&Itemid=$Itemid)
-    **/
-    public function revert ($segments, $pos)
+     * Reverts to the query string out of the SEF Advance URL
+     * Input:
+     *    $url_array, array, The SEF Advance URL split in arrays
+     *    $pos, int, The position offset for virtual directories (first virtual directory, which is the component name,
+     *    begins at $pos+1) Output: $QUERY_STRING, string, query string (var1=$var1&var2=$var2) Note that this will be
+     *    added to already defined first part (option=com_example&Itemid=$Itemid)
+     **/
+    public function revert($segments, $pos)
     {
         $segments = array_splice($segments, $pos + 2);
         $segments = array_map('trim', $segments);
@@ -370,7 +370,7 @@ class sef_osdownloads {
                             if (in_array($menu->query['view'], array('downloads', 'categories'))) {
                                 // Complete the path using the path from the menu
                                 $category = $this->container->helperSEF->getCategory($menu->query['id']);
-                                $tmpPath = $category->path;
+                                $tmpPath  = $category->path;
 
                                 if (!empty($tmpSegments)) {
                                     $tmpPath .= '/' . implode($tmpSegments);
@@ -430,7 +430,7 @@ class sef_osdownloads {
                         if (in_array($menu->query['view'], array('downloads', 'categories'))) {
                             // Complete the path using the path from the menu
                             $category = $this->container->helperSEF->getCategory($menu->query['id']);
-                            $tmpPath = $category->path;
+                            $tmpPath  = $category->path;
 
                             if (!empty($segments)) {
                                 $tmpPath .= '/' . implode($segments);
@@ -483,7 +483,7 @@ class sef_osdownloads {
                 if (in_array($menu->query['view'], array('downloads', 'categories'))) {
                     // Complete the path using the path from the menu
                     $category = $this->container->helperSEF->getCategory($menu->query['id']);
-                    $tmpPath = $category->path;
+                    $tmpPath  = $category->path;
 
                     if (!empty($tmpSegments)) {
                         $tmpPath .= '/' . implode($tmpSegments);
@@ -543,4 +543,5 @@ class sef_osdownloads {
         JError::raiseError(404, JText::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'));
     }
 }
+
 ?>

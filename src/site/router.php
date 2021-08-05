@@ -21,8 +21,8 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Alledia\OSDownloads\Free\Container;
-use Alledia\OSDownloads\Free\Factory as OSDFactory;
+use Alledia\OSDownloads\Container;
+use Alledia\OSDownloads\Factory as OSDFactory;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Component\Router\RouterBase;
 use Joomla\CMS\Language\Text;

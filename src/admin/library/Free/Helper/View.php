@@ -23,10 +23,9 @@
 
 namespace Alledia\OSDownloads\Free\Helper;
 
-use Alledia\OSDownloads\Free\Factory as OSDFactory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
-use JFactory;
 use JRoute;
+use Alledia\OSDownloads\Factory;
 
 defined('_JEXEC') or die();
 
@@ -45,8 +44,8 @@ class View
         $paths = array();
         $this->buildPath($paths, $categoryId);
 
-        $app       = JFactory::getApplication();
-        $container = OSDFactory::getPimpleContainer();
+        $app       = Factory::getApplication();
+        $container = Factory::getPimpleContainer();
 
         $pathway    = $app->getPathway();
         $itemID     = $app->input->getInt('Itemid');
@@ -81,7 +80,7 @@ class View
      */
     public function buildFileBreadcrumbs($file)
     {
-        $container = OSDFactory::getPimpleContainer();
+        $container = Factory::getPimpleContainer();
 
         // Check if the current file has a menu item
         $menu = $container->app->getMenu()->getActive();
@@ -95,8 +94,8 @@ class View
 
         $this->buildCategoryBreadcrumbs($file->cate_id);
 
-        $app       = JFactory::getApplication();
-        $container = OSDFactory::getPimpleContainer();
+        $app       = Factory::getApplication();
+        $container = Factory::getPimpleContainer();
 
         $pathway = $app->getPathway();
         $itemID  = $app->input->getInt('Itemid');
@@ -124,7 +123,7 @@ class View
             return;
         }
 
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
 
         $query = $db->getQuery(true)
             ->select('*')

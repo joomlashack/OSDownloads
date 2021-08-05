@@ -23,7 +23,7 @@
 
 defined('_JEXEC') or die();
 
-use Alledia\OSDownloads\Free\Factory;
+use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Joomla\Utilities\ArrayHelper;
 

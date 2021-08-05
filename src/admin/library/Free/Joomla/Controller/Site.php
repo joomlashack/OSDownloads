@@ -25,8 +25,8 @@ namespace Alledia\OSDownloads\Free\Joomla\Controller;
 
 defined('_JEXEC') or die();
 
-use Alledia\Framework\Factory;
 use Alledia\Framework\Joomla\Controller\Base as BaseController;
+use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Alledia\OSDownloads\Free\Helper\Helper;
 use Alledia\OSDownloads\Free\Joomla\Model\Email;
@@ -36,7 +36,7 @@ class Site extends BaseController
 {
     public function display($cachable = false, $urlparams = false)
     {
-        $app = \JFactory::getApplication();
+        $app = Factory::getApplication();
 
         $view = $app->input->getCmd('view', 'category');
         $app->input->set('view', $view);
@@ -88,7 +88,7 @@ class Site extends BaseController
     protected function processRequirements($item)
     {
         if ($item->require_agree == 1) {
-            $app = \JFactory::getApplication();
+            $app = Factory::getApplication();
 
             $agree = $app->input->getInt('require_agree');
 
@@ -137,7 +137,7 @@ class Site extends BaseController
      */
     public function download()
     {
-        $app = \JFactory::getApplication();
+        $app = Factory::getApplication();
 
         $app->input->set('view', 'download');
         $this->display();

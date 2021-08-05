@@ -24,7 +24,7 @@
 namespace Alledia\OSDownloads\Free\Joomla\View\Admin;
 
 use Alledia\Framework\Joomla\Extension\Licensed;
-use Alledia\Framework\Factory;
+use Alledia\OSDownloads\Factory;
 use JHtmlSidebar;
 use JPagination;
 use JToolBarHelper;

@@ -23,6 +23,7 @@
 
 namespace Alledia\OSDownloads\Free\Joomla\View\Site;
 
+use Alledia\OSDownloads\Factory;
 use Exception;
 use JViewLegacy;
 
@@ -51,9 +52,9 @@ class Base extends JViewLegacy
      */
     protected function prepareDocument()
     {
-        $app    = \JFactory::getApplication();
+        $app    = Factory::getApplication();
         $menus  = $app->getMenu();
-        $doc    = \JFactory::getDocument();
+        $doc    = Factory::getDocument();
         $params = $app->getParams();
         $title  = null;
 

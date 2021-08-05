@@ -23,10 +23,10 @@
 
 namespace Alledia\OSDownloads\Free;
 
+use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\MailingLists\Manager;
 use Pimple\Container as Pimple;
 use Pimple\ServiceProviderInterface;
-use JFactory;
 
 defined('_JEXEC') or die();
 
@@ -45,32 +45,32 @@ class Services implements ServiceProviderInterface
      * This method should only be used to configure services and parameters.
      * It should not get services.
      *
-     * @param Pimple $pimple An Container instance
+     * @param Pimple $pimple
      */
     public function register(Pimple $pimple)
     {
         // Services
-        $pimple['app'] = function (Container $c) {
-            return JFactory::getApplication();
+        $pimple['app'] = function () {
+            return Factory::getApplication();
         };
 
-        $pimple['db'] = function (Container $c) {
-            return JFactory::getDbo();
+        $pimple['db'] = function () {
+            return Factory::getDbo();
         };
 
-        $pimple['helperRoute'] = function (Container $c) {
+        $pimple['helperRoute'] = function () {
             return new Helper\Route();
         };
 
-        $pimple['helperSEF'] = function (Container $c) {
+        $pimple['helperSEF'] = function () {
             return new Helper\SEF();
         };
 
-        $pimple['helperView'] = function (Container $c) {
+        $pimple['helperView'] = function () {
             return new Helper\View();
         };
 
-        $pimple['mailingLists'] = function (Container $c) {
+        $pimple['mailingLists'] = function () {
             return new Manager();
         };
     }

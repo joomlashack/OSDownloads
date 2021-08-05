@@ -25,11 +25,10 @@ namespace Alledia\OSDownloads\Free\Joomla\Table;
 
 defined('_JEXEC') or die();
 
-use Alledia\Framework\Factory;
 use Alledia\Framework\Joomla\Table\Base;
 use JApplicationHelper;
 use JEventDispatcher;
-use JFactory;
+use Alledia\OSDownloads\Factory;
 use Joomla\Registry\Registry;
 use JPluginHelper;
 
@@ -52,8 +51,8 @@ class Item extends Base
 
     public function store($updateNulls = false)
     {
-        $date = JFactory::getDate();
-        $user = JFactory::getUser();
+        $date = Factory::getDate();
+        $user = Factory::getUser();
 
         $this->modified_time = $date->toSql();
 

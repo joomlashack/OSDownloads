@@ -26,7 +26,7 @@ namespace Alledia\OSDownloads\Free\Joomla\Model;
 defined('_JEXEC') or die();
 
 use Alledia\Framework\Joomla\Model\Base as BaseModel;
-use Alledia\OSDownloads\Free\Factory;
+use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Helper\Helper as FreeHelper;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeSite;
 

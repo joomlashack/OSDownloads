@@ -23,7 +23,7 @@
 
 defined('_JEXEC') or die();
 
-use Alledia\OSDownloads\Free\Factory;
+use Alledia\OSDownloads\Factory;
 
 JHtml::_('bootstrap.tooltip');
 JHtml::_('formbehavior.chosen', 'select');

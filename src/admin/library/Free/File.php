@@ -23,6 +23,7 @@
 
 namespace Alledia\OSDownloads\Free;
 
+use Alledia\OSDownloads\Factory;
 use Joomla\CMS\Router\Route;
 
 defined('_JEXEC') or die();

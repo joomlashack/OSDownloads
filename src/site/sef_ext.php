@@ -33,10 +33,9 @@
  * Comments: for SEF Advance > v3.6
  **/
 
+use Alledia\OSDownloads\Factory;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\Registry\Registry;
-use Alledia\Framework\Factory;
-use Alledia\OSDownloads\Free\Factory as OSDFactory;
 
 defined( '_JEXEC' ) or die();
 
@@ -84,7 +83,7 @@ class sef_osdownloads {
      */
     public function setContainer()
     {
-        $this->container = OSDFactory::getPimpleContainer();
+        $this->container = Factory::getPimpleContainer();
     }
 
     /**

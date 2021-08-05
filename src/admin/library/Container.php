@@ -21,7 +21,7 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Alledia\OSDownloads\Free;
+namespace Alledia\OSDownloads;
 
 use Alledia\OSDownloads\Free\Helper\Route;
 use Alledia\OSDownloads\Free\Helper\SEF;
@@ -46,20 +46,18 @@ class Container extends \Pimple\Container
     /**
      * @var Container
      */
-    protected static $instance;
+    protected static $instance = null;
 
     /**
-     * The constructor. Allow to set the initial value for services.
-     *
-     * @param array $values
+     * @inheritDoc
      */
-    public function __construct(array $values = array())
+    public function __construct(array $values = [])
     {
         $values = array_merge(
-            array(
+            [
                 'helperRoute'    => null,
                 'helperSanitize' => null,
-            ),
+            ],
             $values
         );
 
@@ -73,7 +71,7 @@ class Container extends \Pimple\Container
      *
      * @return mixed
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         if (isset($this[$name])) {
             return $this[$name];
@@ -87,14 +85,11 @@ class Container extends \Pimple\Container
      *
      * @return Container
      */
-    public static function getInstance()
+    public static function getInstance(): Container
     {
-        if (!empty(static::$instance)) {
-            return static::$instance;
+        if (static::$instance === null) {
+            static::$instance = new static();
         }
-
-        // Instantiate the container
-        static::$instance = new self;
 
         return static::$instance;
     }

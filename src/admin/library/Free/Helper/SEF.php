@@ -23,14 +23,13 @@
 
 namespace Alledia\OSDownloads\Free\Helper;
 
-use Alledia\Framework\Factory;
-use Alledia\OSDownloads\Free\Factory as OSDFactory;
 use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 use JFactory;
 use JLog;
 use JText;
 use SefAdvanceHelper;
+use Alledia\OSDownloads\Factory;
 
 defined('_JEXEC') or die();
 
@@ -51,7 +50,7 @@ class SEF
 
     public function __construct()
     {
-        $this->container = OSDFactory::getPimpleContainer();
+        $this->container = Factory::getPimpleContainer();
 
         $this->getMenuItems();
     }
@@ -65,7 +64,7 @@ class SEF
      */
     public function getCategoryIdFromFileId($fileId)
     {
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
 
         $query = $db->getQuery(true)
             ->select('cate_id')
@@ -172,7 +171,7 @@ class SEF
      */
     public function getFileAlias($id)
     {
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
 
         $query = $db->getQuery(true)
             ->select('alias')
@@ -205,7 +204,7 @@ class SEF
      */
     public function getFileFromAlias($alias, $path = null)
     {
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
 
         $query = $db->getQuery(true)
             ->select('*')
@@ -272,7 +271,7 @@ class SEF
      */
     public function getCategory($id)
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDbo();
 
         $query = $db->getQuery(true)
             ->select('*')
@@ -304,7 +303,7 @@ class SEF
      */
     public function getCategoriesFromAlias($alias)
     {
-        $db = JFactory::getDBO();
+        $db = Factory::getDbo();
 
         $query = $db->getQuery(true)
             ->select('*')
@@ -425,8 +424,8 @@ class SEF
     protected function getMenuItems()
     {
         // Get all relevant menu items.
-        $app   = JFactory::getApplication();
-        $menu  = $app->getMenu();
+        $app       = Factory::getApplication();
+        $menu      = $app->getMenu();
         $menuItems = $menu->getItems('component', 'com_osdownloads');
 
         static::$menuItemsById = array();

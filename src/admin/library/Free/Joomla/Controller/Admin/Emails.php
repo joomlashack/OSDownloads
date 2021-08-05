@@ -23,8 +23,7 @@
 
 namespace Alledia\OSDownloads\Free\Joomla\Controller\Admin;
 
-use Alledia\Framework\Factory;
-use Alledia\OSDownloads\Free\Factory as OSDFactory;
+use Alledia\OSDownloads\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 
@@ -35,7 +34,7 @@ class Emails extends BaseController
     public function delete()
     {
         $app       = Factory::getApplication();
-        $container = OSDFactory::getPimpleContainer();
+        $container = Factory::getPimpleContainer();
 
         $ids = array_filter(
             array_unique(

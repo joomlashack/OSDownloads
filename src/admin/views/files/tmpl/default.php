@@ -24,7 +24,7 @@
 
 defined('_JEXEC') or die();
 
-use Alledia\OSDownloads\Free\Factory;
+use Alledia\OSDownloads\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 
 $container = Factory::getPimpleContainer();

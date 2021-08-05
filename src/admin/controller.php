@@ -21,7 +21,7 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Alledia\OSDownloads\Free\Factory;
+use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Helper\Helper as FreeHelper;
 use Alledia\OSDownloads\Pro\Helper\Helper as ProHelper;
 use Joomla\CMS\MVC\Controller\BaseController;

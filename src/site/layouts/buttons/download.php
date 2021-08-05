@@ -22,7 +22,7 @@
  */
 
 use Alledia\Framework\Helper as AllediaHelper;
-use Alledia\OSDownloads\Free\Factory;
+use Alledia\OSDownloads\Factory;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\Utilities\ArrayHelper;
 use Alledia\OSDownloads\Free\DisplayData;

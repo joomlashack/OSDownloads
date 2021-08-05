@@ -23,7 +23,7 @@
 
 namespace Alledia\OSDownloads\Free;
 
-use Alledia\Framework\Factory;
+use Alledia\OSDownloads\Factory;
 use JForm;
 use JEventDispatcher;
 use Joomla\Registry\Registry;

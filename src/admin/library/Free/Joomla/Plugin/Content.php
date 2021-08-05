@@ -23,7 +23,7 @@
 
 namespace Alledia\OSDownloads\Free\Joomla\Plugin;
 
-use Alledia\OSDownloads\Free\Factory;
+use Alledia\OSDownloads\Factory;
 use Exception;
 
 defined('_JEXEC') or die();

@@ -25,8 +25,8 @@ defined('_JEXEC') or die();
 
 require_once JPATH_SITE . '/components/com_osdownloads/models/item.php';
 
+use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Joomla\View;
-use Alledia\OSDownloads\Free\Factory;
 use Alledia\OSDownloads\Free\Helper\View as HelperView;
 use Joomla\CMS\Application\SiteApplication;
 
@@ -70,8 +70,8 @@ class OSDownloadsViewDownloads extends View\Site\Base
     public function display($tpl = null)
     {
         /** @var SiteApplication $app */
-        $app                 = JFactory::getApplication();
-        $db                  = JFactory::getDbo();
+        $app                 = Factory::getApplication();
+        $db                  = Factory::getDbo();
         $params              = $app->getParams();
         $includeChildFiles   = (bool)$params->get('include_child_files', 0);
         $showChildCategories = (bool)$params->get('show_child_categories', 1);
@@ -142,7 +142,7 @@ class OSDownloadsViewDownloads extends View\Site\Base
             $item->description_3 = JHtml::_('content.prepare', $item->description_3);
         }
 
-        $user   = JFactory::getUser();
+        $user   = Factory::getUser();
         $groups = $user->getAuthorisedViewLevels();
 
         if (!isset($items) || (count($items) && !in_array($items[0]->cat_access, $groups))) {

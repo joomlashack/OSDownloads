@@ -25,8 +25,8 @@ namespace Alledia\OSDownloads\Free\Joomla\Module;
 
 defined('_JEXEC') or die();
 
-use Alledia\Framework\Factory;
 use Alledia\Framework\Joomla\Extension\AbstractFlexibleModule;
+use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Helper\Helper as FreeHelper;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Joomla\CMS\Form\Form;

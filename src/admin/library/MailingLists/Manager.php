@@ -23,11 +23,11 @@
 
 namespace Alledia\OSDownloads\MailingLists;
 
-use Alledia\Framework\Factory;
 use Alledia\Installer\Extension\Licensed;
 use JFolder;
 use JForm;
 use JTable;
+use Alledia\OSDownloads\Factory;
 use SimpleXMLElement;
 
 defined('_JEXEC') or die();
@@ -116,8 +116,9 @@ class Manager
                 $sourceName = static::$sourceNames[$formName];
 
                 // Special handling for configuration form
-                if ($sourceName == 'config'
-                    && \JFactory::getApplication()->input->getCmd('component') != 'com_osdownloads'
+                if (
+                    $sourceName == 'config'
+                    && Factory::getApplication()->input->getCmd('component') != 'com_osdownloads'
                 ) {
                     return;
                 }

@@ -26,8 +26,8 @@ namespace Alledia\OSDownloads\Free\Joomla\Table;
 defined('_JEXEC') or die();
 
 use Alledia\Framework\Joomla\Table\Base as BaseTable;
-use Alledia\OSDownloads\Free\Factory;
 use JEventDispatcher;
+use Alledia\OSDownloads\Factory;
 
 class Email extends BaseTable
 {

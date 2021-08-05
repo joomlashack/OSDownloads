@@ -21,8 +21,9 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Alledia\OSDownloads\Free;
+namespace Alledia\OSDownloads;
 
+use Alledia\OSDownloads\Free\Services as FreeServices;
 use Alledia\OSDownloads\Pro\Services as ProServices;
 
 defined('_JEXEC') or die();
@@ -57,7 +58,7 @@ abstract class Factory extends \Alledia\Framework\Factory
         if (static::$pimpleContainer === null) {
             $services = static::getExtension()->isPro()
                 ? new ProServices()
-                : new Services();
+                : new FreeServices();
 
             $container = new Container();
             $container->register($services);

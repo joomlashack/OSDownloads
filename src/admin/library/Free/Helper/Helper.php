@@ -23,11 +23,11 @@
 
 namespace Alledia\OSDownloads\Free\Helper;
 
+use Alledia\OSDownloads\Factory;
 use ContentHelperRoute;
 use Exception;
 use JHtmlSidebar;
 use Joomla\CMS\Access\Access;
-use Joomla\CMS\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;

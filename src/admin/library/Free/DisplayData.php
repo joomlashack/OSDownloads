@@ -25,7 +25,6 @@ namespace Alledia\OSDownloads\Free;
 
 use Alledia\OSDownloads\Factory;
 use JForm;
-use JEventDispatcher;
 use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die();

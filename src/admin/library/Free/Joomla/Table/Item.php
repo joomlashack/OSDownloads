@@ -27,7 +27,6 @@ defined('_JEXEC') or die();
 
 use Alledia\Framework\Joomla\Table\Base;
 use JApplicationHelper;
-use JEventDispatcher;
 use Alledia\OSDownloads\Factory;
 use Joomla\Registry\Registry;
 use JPluginHelper;

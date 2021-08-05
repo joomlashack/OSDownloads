@@ -26,7 +26,6 @@ namespace Alledia\OSDownloads\Free\Joomla\Table;
 defined('_JEXEC') or die();
 
 use Alledia\Framework\Joomla\Table\Base as BaseTable;
-use JEventDispatcher;
 use Alledia\OSDownloads\Factory;
 
 class Email extends BaseTable
@@ -40,15 +39,15 @@ class Email extends BaseTable
 
     public function store($updateNulls = false)
     {
-        // Trigger events to osdownloads plugins
-        $dispatcher = JEventDispatcher::getInstance();
-        $pluginResults = $dispatcher->trigger('onOSDownloadsBeforeSaveEmail', array(&$this));
+        $app = Factory::getApplication();
+
+        $pluginResults = $app->triggerEvent('onOSDownloadsBeforeSaveEmail', [$this]);
 
         $result = false;
-        if ($pluginResults !== false) {
+        if (!in_array(false, $pluginResults, true)) {
             $result = parent::store($updateNulls);
 
-            $dispatcher->trigger('onOSDownloadsAfterSaveEmail', array($result, &$this));
+            $app->triggerEvent('onOSDownloadsAfterSaveEmail', [$result, $this]);
         }
 
         return $result;
@@ -56,15 +55,15 @@ class Email extends BaseTable
 
     public function delete($pk = null)
     {
-        // Trigger events to osdownloads plugins
-        $dispatcher = JEventDispatcher::getInstance();
-        $pluginResults = $dispatcher->trigger('onOSDownloadsBeforeDeleteEmail', array(&$this, $pk));
+        $app = Factory::getApplication();
+
+        $pluginResults = $app->triggerEvent('onOSDownloadsBeforeDeleteEmail', [$this, $pk]);
 
         $result = false;
-        if ($pluginResults !== false) {
+        if (!in_array(false, $pluginResults, true)) {
             $result = parent::delete($pk);
 
-            $dispatcher->trigger('onOSDownloadsAfterDeleteEmail', array($result, $this->id, $pk));
+            $app->triggerEvent('onOSDownloadsAfterDeleteEmail', [$result, $this->get('id'), $pk]);
         }
 
         return $result;

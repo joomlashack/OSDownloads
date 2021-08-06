@@ -237,5 +237,3 @@ $saveOrder = $listOrder === 'doc.ordering';
             </div>
         </div>
     </form>
-<?php
-echo $this->extension->getFooterMarkup();

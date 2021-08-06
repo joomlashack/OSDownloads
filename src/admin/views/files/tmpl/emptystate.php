@@ -21,23 +21,25 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die;
-
-use Joomla\CMS\Factory;
+use Alledia\OSDownloads\Factory;
 use Joomla\CMS\Layout\LayoutHelper;
 
+defined('_JEXEC') or die;
+
 $displayData = [
-	'textPrefix' => 'COM_OSDOWNLOADS',
-	'formURL'    => 'index.php?option=com_osdownloads&view=files',
-	'helpURL'    => 'https://www.joomlashack.com/docs/osdownloads/start/',
-	'icon'       => 'icon-copy article',
+    'textPrefix' => 'COM_OSDOWNLOADS',
+    'formURL'    => 'index.php?option=com_osdownloads&view=files',
+    'helpURL'    => 'https://www.joomlashack.com/docs/osdownloads/start/',
+    'icon'       => 'icon-copy article',
 ];
 
 $user = Factory::getApplication()->getIdentity();
 
-if ($user->authorise('core.create', 'com_osdownloads') || count($user->getAuthorisedCategories('com_osdownloads', 'core.create')) > 0)
-{
-	$displayData['createURL'] = 'index.php?option=com_osdownloads&task=file.add';
+if (
+    $user->authorise('core.create', 'com_osdownloads')
+    || count($user->getAuthorisedCategories('com_osdownloads', 'core.create')) > 0
+) {
+    $displayData['createURL'] = 'index.php?option=com_osdownloads&task=file.add';
 }
 
 echo LayoutHelper::render('joomla.content.emptystate', $displayData);

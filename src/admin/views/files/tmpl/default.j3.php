@@ -179,8 +179,8 @@ endif;
                             endif;
                             ?>
                             <span class="<?php echo $class; ?>" title="<?php echo $title ?? ''; ?>">
-                            <i class="icon-menu"></i>
-                        </span>
+                                <i class="icon-menu"></i>
+                            </span>
                             <?php if ($saveOrder) : ?>
                                 <input type="text"
                                        style="display:none"

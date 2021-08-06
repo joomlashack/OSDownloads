@@ -24,6 +24,7 @@
 use Alledia\Framework\Joomla\View\Admin\AbstractList;
 use Alledia\OSDownloads\Factory;
 use Joomla\CMS\Helper\ContentHelper;
+use Joomla\CMS\HTML\Helpers\Sidebar;
 use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die();
@@ -45,7 +46,7 @@ class OSDownloadsViewFiles extends AbstractList
 
         $this->addToolbar();
 
-        $this->sidebar = JHtmlSidebar::render();
+        $this->sidebar = Sidebar::render();
 
         parent::display($tpl);
     }

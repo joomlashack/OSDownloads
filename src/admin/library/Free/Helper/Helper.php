@@ -29,6 +29,7 @@ use Exception;
 use JHtmlSidebar;
 use Joomla\CMS\Access\Access;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\HTML\Helpers\Sidebar;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -52,13 +53,13 @@ abstract class Helper
      */
     public static function addSubmenu($vName)
     {
-        JHtmlSidebar::addEntry(
+        Sidebar::addEntry(
             Text::_('COM_OSDOWNLOADS_SUBMENU_FILES'),
             'index.php?option=com_osdownloads&view=files',
             $vName == 'files'
         );
 
-        JHtmlSidebar::addEntry(
+        Sidebar::addEntry(
             Text::_('COM_OSDOWNLOADS_SUBMENU_CATEGORIES'),
             'index.php?option=com_categories&extension=com_osdownloads',
             $vName == 'categories'
@@ -73,7 +74,7 @@ abstract class Helper
             );
         }
 
-        JHtmlSidebar::addEntry(
+        Sidebar::addEntry(
             Text::_('COM_OSDOWNLOADS_SUBMENU_EMAILS'),
             'index.php?option=com_osdownloads&view=emails',
             $vName == 'emails'

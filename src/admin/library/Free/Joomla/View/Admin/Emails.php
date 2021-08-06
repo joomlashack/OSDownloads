@@ -25,10 +25,10 @@ namespace Alledia\OSDownloads\Free\Joomla\View\Admin;
 
 use Alledia\Framework\Joomla\Extension\Licensed;
 use Alledia\OSDownloads\Factory;
-use JHtmlSidebar;
-use JPagination;
-use JToolBarHelper;
-use JText;
+use Joomla\CMS\HTML\Helpers\Sidebar;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Pagination\Pagination;
+use JToolbarHelper;
 
 defined('_JEXEC') or die();
 
@@ -55,7 +55,7 @@ class Emails extends Base
     protected $items = null;
 
     /**
-     * @var JPagination
+     * @var Pagination
      */
     protected $pagination = null;
 
@@ -133,7 +133,7 @@ class Emails extends Base
         $db->setQuery($query)->execute();
         $total = $db->getNumRows();
 
-        $this->pagination = new JPagination($total, $limitstart, $limit);
+        $this->pagination = new Pagination($total, $limitstart, $limit);
         $db->setQuery($query, $this->pagination->limitstart, $this->pagination->limit);
         $this->items = (array)$db->loadObjectList();
 
@@ -150,21 +150,21 @@ class Emails extends Base
         $this->isPro = $this->extension->isPro();
 
         $this->addToolbar();
-        $this->sidebar = JHtmlSidebar::render();
+        $this->sidebar = Sidebar::render();
 
         parent::display($tpl);
     }
 
     protected function addToolbar()
     {
-        JToolBarHelper::title(JText::_('COM_OSDOWNLOADS') . ': ' . JText::_('COM_OSDOWNLOADS_EMAILS'), 'address');
+        JToolbarHelper::title(Text::_('COM_OSDOWNLOADS') . ': ' . Text::_('COM_OSDOWNLOADS_EMAILS'), 'address');
 
-        JToolBarHelper::deleteList('Are you sure?', 'emails.delete');
-        JToolBarHelper::divider();
-        JToolBarHelper::preferences('com_osdownloads', '450');
+        JToolbarHelper::deleteList('Are you sure?', 'emails.delete');
+        JToolbarHelper::divider();
+        JToolbarHelper::preferences('com_osdownloads', '450');
     }
 
-    protected function buildQuery(&$query)
+    protected function buildQuery($query)
     {
 
     }

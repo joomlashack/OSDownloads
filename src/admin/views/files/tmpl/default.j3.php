@@ -166,13 +166,19 @@ endif;
 
                     $item->checked_out = false;
                     $checked           = HTMLHelper::_('grid.checkedout', $item, $i);
-                    $iconClass         = ' inactive tip-top hasTooltip" title="'
-                        . HTMLHelper::tooltipText('JORDERINGDISABLED');
                     ?>
-                    <tr class="row<?php echo $i % 2; ?>"
+                    <tr class="<?php echo 'row' . ($i % 2); ?>"
                         sortable-group-id="<?php echo $item->cate_id; ?>">
                         <td class="order nowrap center hidden-phone">
-                                <span class="sortable-handler<?php echo $iconClass ?>">
+                            <?php
+                            $class = 'sortable-handler' . ($saveOrder ? '' : ' inactive');
+
+                            if (!$saveOrder) :
+                                $class .= ' tip-top hasTooltip';
+                                $title = HTMLHelper::tooltipText('JORDERINGDISABLED');
+                            endif;
+                            ?>
+                            <span class="<?php echo $class; ?>" title="<?php echo $title ?? ''; ?>">
                             <i class="icon-menu"></i>
                         </span>
                             <?php if ($saveOrder) : ?>

@@ -22,14 +22,16 @@
  */
 
 use Alledia\Framework\Extension;
-use Alledia\Installer\Extension\Licensed;
+use Alledia\Framework\Joomla\View\AbstractAdmin;
+use Alledia\OSDownloads\Factory;
+use Joomla\CMS\Helper\ContentHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Pagination\Pagination;
-use Alledia\OSDownloads\Free\Joomla\View\Admin\Base;
 
 defined('_JEXEC') or die();
 
-class OSDownloadsViewFiles extends Base
+class OSDownloadsViewFiles extends AbstractAdmin
 {
     /**
      * @var string
@@ -47,19 +49,9 @@ class OSDownloadsViewFiles extends Base
     protected $pagination = null;
 
     /**
-     * @var OSDownloadsModelFiles
-     */
-    protected $model = null;
-
-    /**
      * @var array
      */
-    protected $items = array();
-
-    /**
-     * @var Extension
-     */
-    protected $extension = null;
+    protected $items = [];
 
     /**
      * @var JForm
@@ -79,23 +71,13 @@ class OSDownloadsViewFiles extends Base
      */
     public function display($tpl = null)
     {
-        $this->model         = $this->getModel();
         $this->state         = $this->model->getState();
         $this->items         = $this->model->getItems();
         $this->filterForm    = $this->model->getFilterForm();
         $this->activeFilters = $this->model->getActiveFilters();
         $this->pagination    = $this->model->getPagination();
 
-        $this->extension = Alledia\Framework\Factory::getExtension('OSDownloads', 'component');
-        $this->extension->loadLibrary();
-
         $this->addToolbar();
-
-        // only on J4
-        if (!count($this->items) && $this->isEmptyState = $this->get('IsEmptyState') && IsJoomla4)
-        {
-            $this->setLayout('emptystate');
-        }
 
         $this->sidebar = JHtmlSidebar::render();
 
@@ -104,33 +86,33 @@ class OSDownloadsViewFiles extends Base
 
     protected function addToolbar()
     {
-        JToolBarHelper::title(
-            JText::_('COM_OSDOWNLOADS') . ': ' . JText::_('COM_OSDOWNLOADS_FILES'),
+        JToolbarHelper::title(
+            Text::_('COM_OSDOWNLOADS') . ': ' . Text::_('COM_OSDOWNLOADS_FILES'),
             'file-2 osdownloads-files'
         );
 
-        $user  = JFactory::getUser();
-        $canDo = JHelperContent::getActions('com_osdownloads', 'category', $this->state->get('filter.category_id'));
+        $user  = Factory::getUser();
+        $canDo = ContentHelper::getActions('com_osdownloads', 'category', $this->state->get('filter.category_id'));
 
         if ($canDo->get('core.create') || $user->getAuthorisedCategories('com_osdownloads', 'core.create')) {
-            JToolBarHelper::addNew('file');
+            JToolbarHelper::addNew('file');
         }
 
         if ($canDo->get('core.edit') || $canDo->get('edit.own')) {
-            JToolBarHelper::editList('file');
+            JToolbarHelper::editList('file');
         }
 
         if ($canDo->get('core.delete')) {
-            JToolBarHelper::deleteList('', 'files.delete');
+            JToolbarHelper::deleteList('', 'files.delete');
         }
 
         if ($canDo->get('core.edit.state')) {
-            JToolBarHelper::publishList('files.publish');
-            JToolBarHelper::unpublishList('files.unpublish');
+            JToolbarHelper::publishList('files.publish');
+            JToolbarHelper::unpublishList('files.unpublish');
         }
 
         if ($canDo->get('core.admin') || $canDo->get('core.options')) {
-            JToolBarHelper::preferences('com_osdownloads', '450');
+            JToolbarHelper::preferences('com_osdownloads', '450');
         }
     }
 
@@ -143,13 +125,13 @@ class OSDownloadsViewFiles extends Base
      */
     protected function getSortFields()
     {
-        return array(
-            'doc.ordering'   => JText::_('JGRID_HEADING_ORDERING'),
-            'doc.published'  => JText::_('COM_OSDOWNLOADS_PUBLISHED'),
-            'doc.name'       => JText::_('COM_OSDOWNLOADS_NAME'),
-            'doc.access'     => JText::_('COM_OSDOWNLOADS_ACCESS'),
-            'doc.downloaded' => JText::_('COM_OSDOWNLOADS_DOWNLOADED'),
-            'doc.id'         => JText::_('COM_OSDOWNLOADS_ID')
-        );
+        return [
+            'doc.ordering'   => Text::_('JGRID_HEADING_ORDERING'),
+            'doc.published'  => Text::_('COM_OSDOWNLOADS_PUBLISHED'),
+            'doc.name'       => Text::_('COM_OSDOWNLOADS_NAME'),
+            'doc.access'     => Text::_('COM_OSDOWNLOADS_ACCESS'),
+            'doc.downloaded' => Text::_('COM_OSDOWNLOADS_DOWNLOADED'),
+            'doc.id'         => Text::_('COM_OSDOWNLOADS_ID')
+        ];
     }
 }

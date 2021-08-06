@@ -27,6 +27,9 @@ namespace Alledia\OSDownloads\Free\Joomla\View\Admin;
 use Joomla\CMS\Version;
 use JViewLegacy;
 
+/**
+ * @deprecated
+ */
 class Base extends JViewLegacy
 {
     /**

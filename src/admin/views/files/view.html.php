@@ -21,48 +21,15 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Alledia\Framework\Extension;
-use Alledia\Framework\Joomla\View\AbstractAdmin;
+use Alledia\Framework\Joomla\View\Admin\AbstractList;
 use Alledia\OSDownloads\Factory;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Object\CMSObject;
-use Joomla\CMS\Pagination\Pagination;
 
 defined('_JEXEC') or die();
 
-class OSDownloadsViewFiles extends AbstractAdmin
+class OSDownloadsViewFiles extends AbstractList
 {
-    /**
-     * @var string
-     */
-    protected $sidebar = null;
-
-    /**
-     * @var CMSObject
-     */
-    protected $state = null;
-
-    /**
-     * @var Pagination
-     */
-    protected $pagination = null;
-
-    /**
-     * @var array
-     */
-    protected $items = [];
-
-    /**
-     * @var JForm
-     */
-    public $filterForm = null;
-
-    /**
-     * @var array
-     */
-    public $activeFilters = null;
-
     /**
      * @param string $tpl
      *
@@ -71,7 +38,6 @@ class OSDownloadsViewFiles extends AbstractAdmin
      */
     public function display($tpl = null)
     {
-        $this->state         = $this->model->getState();
         $this->items         = $this->model->getItems();
         $this->filterForm    = $this->model->getFilterForm();
         $this->activeFilters = $this->model->getActiveFilters();

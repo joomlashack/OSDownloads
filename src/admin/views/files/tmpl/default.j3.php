@@ -162,7 +162,7 @@ endif;
                 <tbody>
                 <?php
                 foreach ($this->items as $i => $item) :
-                    $link = 'index.php?option=com_osdownloads&view=file&id=' . $item->id;
+                    $link = 'index.php?option=com_osdownloads&task=file.edit&id=' . $item->id;
 
                     $item->checked_out = false;
                     $checked           = HTMLHelper::_('grid.checkedout', $item, $i);

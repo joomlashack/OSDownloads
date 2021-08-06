@@ -26,6 +26,7 @@ use Alledia\OSDownloads\Factory;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\HTML\Helpers\Sidebar;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
 defined('_JEXEC') or die();
 
@@ -53,7 +54,7 @@ class OSDownloadsViewFiles extends AbstractList
 
     protected function addToolbar()
     {
-        JToolbarHelper::title(
+        ToolbarHelper::title(
             Text::_('COM_OSDOWNLOADS') . ': ' . Text::_('COM_OSDOWNLOADS_FILES'),
             'file-2 osdownloads-files'
         );
@@ -62,24 +63,24 @@ class OSDownloadsViewFiles extends AbstractList
         $canDo = ContentHelper::getActions('com_osdownloads', 'category', $this->state->get('filter.category_id'));
 
         if ($canDo->get('core.create') || $user->getAuthorisedCategories('com_osdownloads', 'core.create')) {
-            JToolbarHelper::addNew('file');
+            ToolbarHelper::addNew('file.add');
         }
 
         if ($canDo->get('core.edit') || $canDo->get('edit.own')) {
-            JToolbarHelper::editList('file');
+            ToolbarHelper::editList('file.edit');
         }
 
         if ($canDo->get('core.delete')) {
-            JToolbarHelper::deleteList('', 'files.delete');
+            ToolbarHelper::deleteList('', 'files.delete');
         }
 
         if ($canDo->get('core.edit.state')) {
-            JToolbarHelper::publishList('files.publish');
-            JToolbarHelper::unpublishList('files.unpublish');
+            ToolbarHelper::publishList('files.publish');
+            ToolbarHelper::unpublishList('files.unpublish');
         }
 
         if ($canDo->get('core.admin') || $canDo->get('core.options')) {
-            JToolbarHelper::preferences('com_osdownloads', '450');
+            ToolbarHelper::preferences('com_osdownloads', '450');
         }
     }
 

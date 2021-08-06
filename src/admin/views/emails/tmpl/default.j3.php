@@ -22,38 +22,43 @@
  */
 
 use Alledia\OSDownloads\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Language;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die();
 
-JHtml::_('formbehavior.chosen', 'select');
+/**
+ * @var OSDownloadsViewEmails $this
+ * @var string                $template
+ * @var string                $layout
+ * @var string                $layoutTemplate
+ * @var Language              $lang
+ * @var string                $filetofind
+ */
+
+HTMLHelper::_('formbehavior.chosen', 'select');
 
 $container = Factory::getPimpleContainer();
 
-function category($name, $extension, $selected = null, $javascript = null, $order = null, $size = 1, $sel_cat = 1)
-{
-    // Deprecation warning.
-    JLog::add('JList::category is deprecated.', JLog::WARNING, 'deprecated');
+$buttonAction = join('', [
+    "doc.getElementById('search').value='';",
+    "this.form.getElementById('cate_id').value='';",
+    "this.form.submit();"
+]);
 
-    $categories = JHtml::_('category.options', $extension);
-    if ($sel_cat) {
-        array_unshift($categories, JHtml::_('select.option', '0', JText::_('JOPTION_SELECT_CATEGORY')));
-    }
-
-    $category = JHtml::_(
-        'select.genericlist',
-        $categories,
-        $name,
-        'class="inputbox chosen" size="' . $size . '" ' . $javascript,
-        'value',
-        'text',
-        $selected
-    );
-
-    return $category;
-}
+$categorySelect = $this->categorySelect(
+    'cate_id',
+    'com_osdownloads',
+    $this->flt->cate_id,
+    'this.form.submit();'
+);
 
 ?>
-<form action="<?php echo $container->helperRoute->getAdminEmailListRoute(); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo $container->helperRoute->getAdminEmailListRoute(); ?>"
+      method="post"
+      name="adminForm"
+      id="adminForm">
     <div id="j-sidebar-container" class="span2">
         <?php echo $this->sidebar; ?>
     </div>
@@ -65,18 +70,19 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                         <div class="clearfix">
                             <div class="btn-wrapper input-append">
                                 <input type="text" name="search" id="search"
-                                       placeholder="<?php echo JText::_('JSEARCH_FILTER'); ?>"
+                                       placeholder="<?php echo Text::_('JSEARCH_FILTER'); ?>"
                                        value="<?php echo htmlspecialchars($this->flt->search); ?>" class="text_area"
                                        onchange="doc.adminForm.submit();"/>
+
                                 <button class="btn hasTooltip" title="" type="submit" data-original-title="Search">
-                                    <?php echo JText::_('COM_OSDOWNLOADS_GO'); ?>
+                                    <?php echo Text::_('COM_OSDOWNLOADS_GO'); ?>
                                 </button>
                             </div>
                             <div class="btn-wrapper">
                                 <button
-                                    onclick="doc.getElementById('search').value='';this.form.getElementById('cate_id').value='';this.form.submit();"
+                                    onclick="<?php echo $buttonAction; ?>"
                                     class="btn hasTooltip js-stools-btn-clear">
-                                    <?php echo JText::_('COM_OSDOWNLOADS_RESET'); ?>
+                                    <?php echo Text::_('COM_OSDOWNLOADS_RESET'); ?>
                                 </button>
                             </div>
                         </div>
@@ -88,8 +94,7 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                             <?php echo $this->loadTemplate('pro_filters'); ?>
                         <?php endif; ?>
 
-                        <?php echo category('cate_id', 'com_osdownloads', $this->flt->cate_id,
-                            "onchange='this.form.submit();'", 'title', $size = 1, $sel_cat = 1); ?>
+                        <?php echo $categorySelect; ?>
                     </div>
                 </td>
             </tr>
@@ -100,27 +105,63 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                 <th class="hidden-phone"><input type="checkbox" onclick="Joomla.checkAll(this)" title="check All"
                                                 value=""
                                                 name="checkall-toggle"/></th>
-                <th class="has-context span6"><?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_EMAIL', 'email.email',
-                        @$this->lists['order_Dir'], @$this->lists['order']); ?> </th>
+                <th class="has-context span6">
+                    <?php echo HTMLHelper::_(
+                        'grid.sort',
+                        'COM_OSDOWNLOADS_EMAIL',
+                        'email.email',
+                        $this->lists['order_Dir'] ?? null,
+                        $this->lists['order'] ?? null
+                    ); ?>
+                </th>
                 <?php if ($this->isPro) : ?>
                     <?php echo $this->loadTemplate('pro_headers'); ?>
                 <?php endif; ?>
-                <th><?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_FILE', 'doc.name', @$this->lists['order_Dir'],
-                        @$this->lists['order']); ?> </th>
-                <th><?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_CATEGORY', 'cat.title',
-                        @$this->lists['order_Dir'],
-                        @$this->lists['order']); ?> </th>
-                <th><?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_DATE', 'email.downloaded_date',
-                        @$this->lists['order_Dir'], @$this->lists['order']); ?> </th>
-                <th class="hidden-phone center"><?php echo JHTML::_('grid.sort', 'COM_OSDOWNLOADS_ID', 'email.id',
-                        @$this->lists['order_Dir'], @$this->lists['order']); ?></th>
+                <th>
+                    <?php echo HTMLHelper::_(
+                        'grid.sort',
+                        'COM_OSDOWNLOADS_FILE',
+                        'doc.name',
+                        $this->lists['order_Dir'] ?? null,
+                        $this->lists['order'] ?? null
+                    ); ?>
+                </th>
+                <th>
+                    <?php echo HTMLHelper::_(
+                        'grid.sort',
+                        'COM_OSDOWNLOADS_CATEGORY',
+                        'cat.title',
+                        $this->lists['order_Dir'] ?? null,
+                        $this->lists['order'] ?? null
+                    ); ?>
+                </th>
+                <th>
+                    <?php echo HTMLHelper::_(
+                        'grid.sort',
+                        'COM_OSDOWNLOADS_DATE',
+                        'email.downloaded_date',
+                        $this->lists['order_Dir'] ?? null,
+                        $this->lists['order'] ?? null
+                    ); ?>
+                </th>
+                <th class="hidden-phone center">
+                    <?php echo HTMLHelper::_(
+                        'grid.sort',
+                        'COM_OSDOWNLOADS_ID',
+                        'email.id',
+                        $this->lists['order_Dir'] ?? null,
+                        $this->lists['order'] ?? null
+                    ); ?>
+                </th>
             </tr>
             </thead>
+
             <tbody>
-            <?php foreach ($this->items as $i => $item) :
-                ?>
+            <?php foreach ($this->items as $i => $item) : ?>
                 <tr class="row<?php echo $i % 2; ?>">
-                    <td class="hidden-phone" width="1%"><?php echo JHTML::_('grid.id', $i, $item->id); ?></td>
+                    <td class="hidden-phone" style="width: 1%;">
+                        <?php echo HTMLHelper::_('grid.id', $i, $item->id); ?>
+                    </td>
                     <td class="has-context span6"><?php echo($item->email); ?></td>
                     <?php if ($this->isPro) : ?>
                         <?php
@@ -130,7 +171,7 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
                     <?php endif; ?>
                     <td><?php echo($item->doc_name); ?></td>
                     <td class="small"><?php echo($item->cate_name); ?></td>
-                    <td class="small"><?php echo(JHTML::_("date", $item->downloaded_date, "d-m-Y H:m:s")); ?></td>
+                    <td class="small"><?php echo(HTMLHelper::_("date", $item->downloaded_date, "d-m-Y H:m:s")); ?></td>
                     <td class="hidden-phone center"><?php echo($item->id); ?></td>
                 </tr>
             <?php endforeach; ?>
@@ -148,8 +189,6 @@ function category($name, $extension, $selected = null, $javascript = null, $orde
         <input type="hidden" name="boxchecked" value="0"/>
         <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>"/>
         <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>"/>
-        <?php echo JHTML::_('form.token'); ?>
+        <?php echo HTMLHelper::_('form.token'); ?>
     </div>
 </form>
-
-<?php echo $this->extension->getFooterMarkup(); ?>

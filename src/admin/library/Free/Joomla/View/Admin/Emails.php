@@ -23,22 +23,19 @@
 
 namespace Alledia\OSDownloads\Free\Joomla\View\Admin;
 
-use Alledia\Framework\Joomla\Extension\Licensed;
+use Alledia\Framework\Joomla\View\Admin\AbstractList;
 use Alledia\OSDownloads\Factory;
 use Joomla\CMS\HTML\Helpers\Sidebar;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Pagination\Pagination;
 use JToolbarHelper;
 
 defined('_JEXEC') or die();
 
-class Emails extends Base
+class Emails extends AbstractList
 {
-    /**
-     * @var string
-     */
-    protected $sidebar = null;
-
     /**
      * @var object
      */
@@ -50,30 +47,21 @@ class Emails extends Base
     protected $lists = null;
 
     /**
-     * @var object[]
+     * @var object
      */
-    protected $items = null;
-
-    /**
-     * @var Pagination
-     */
-    protected $pagination = null;
+    protected $item = null;
 
     /**
      * @var bool
      */
     protected $isPro = false;
-    /**
-     * @var Licensed
-     */
-    protected $extension = null;
 
     public function display($tpl = null)
     {
-        $app = Factory::getApplication();
+        $app = $this->app;
 
         $this->flt = (object)[
-            'search'  => $app->getUserStateFromRequest('osdownloads.email.request.search', 'search', ""),
+            'search'  => $app->getUserStateFromRequest('osdownloads.email.request.search', 'search', ''),
             'cate_id' => $app->getUserStateFromRequest('osdownloads.email.request.cate_id', 'cate_id')
         ];
 
@@ -87,65 +75,69 @@ class Emails extends Base
         $limitstart = $app->getUserStateFromRequest('osdownloads.request.limitstart', 'limitstart', 0, 'int');
 
         $filter_order = $app->getUserStateFromRequest(
-            "osdownloads.email.filter_order",
+            'osdownloads.email.filter_order',
             'filter_order',
             'email.id',
             'cmd'
         );
 
         $filter_order_Dir = $app->getUserStateFromRequest(
-            "osdownloads.email.filter_order_Dir",
+            'osdownloads.email.filter_order_Dir',
             'filter_order_Dir',
             'DESC',
             'word'
         );
 
         $filter_confirmed = $app->getUserStateFromRequest(
-            "osdownloads.email.filter_confirmed",
+            'osdownloads.email.filter_confirmed',
             'filter_confirmed',
             '-1',
             'int'
         );
 
-        $db = Factory::getDBO();
+        $db = Factory::getDbo();
 
         $query = $db->getQuery(true)
-            ->select("email.*, doc.name AS doc_name, cat.title AS cate_name")
-            ->from("#__osdownloads_emails email")
-            ->leftJoin("#__osdownloads_documents doc ON (email.document_id = doc.id)")
-            ->leftJoin("#__categories cat ON (cat.id = doc.cate_id)");
+            ->select('email.*, doc.name AS doc_name, cat.title AS cate_name')
+            ->from('#__osdownloads_emails email')
+            ->leftJoin('#__osdownloads_documents doc ON (email.document_id = doc.id)')
+            ->leftJoin('#__categories cat ON (cat.id = doc.cate_id)');
 
         $this->buildQuery($query);
 
         if ($this->flt->search) {
-            $query->where("email.email LIKE '%{$this->flt->search}%' OR doc.name LIKE '%{$this->flt->search}%'");
+            $query->where(
+                sprintf(
+                    'email.email LIKE %s OR doc.name LIKE %s',
+                    $db->quote('%' . $this->flt->search . '%'),
+                    $db->quote('%' . $this->flt->search . '%')
+                )
+            );
         }
         if ($this->flt->cate_id) {
-            $query->where("cat.id = {$this->flt->cate_id}");
+            $query->where('cat.id = ' . (int)$this->flt->cate_id);
         }
 
         if ($filter_confirmed >= 0) {
             $query->where('confirmed = ' . $db->quote($filter_confirmed));
         }
 
-        $query->order(" $filter_order  $filter_order_Dir");
+        $query->order($filter_order . ' ' . $filter_order_Dir);
 
         $db->setQuery($query)->execute();
+
         $total = $db->getNumRows();
 
         $this->pagination = new Pagination($total, $limitstart, $limit);
         $db->setQuery($query, $this->pagination->limitstart, $this->pagination->limit);
-        $this->items = (array)$db->loadObjectList();
 
-        $this->lists = array(
+        $this->items = $db->loadObjectList();
+
+        $this->lists = [
             'order_Dir'        => $filter_order_Dir,
             'order'            => $filter_order,
             'filter_confirmed' => $filter_confirmed
-        );
-
-        // Load the extension
-        $this->extension = Factory::getExtension('OSDownloads', 'component');
-        $this->extension->loadLibrary();
+        ];
 
         $this->isPro = $this->extension->isPro();
 
@@ -167,5 +159,50 @@ class Emails extends Base
     protected function buildQuery($query)
     {
 
+    }
+
+    /**
+     * @param string  $name
+     * @param string  $extension
+     * @param ?string $selected
+     * @param ?string $javascript
+     * @param ?int    $size
+     * @param ?int    $category
+     *
+     * @return string
+     */
+    protected function categorySelect(
+        string $name,
+        string $extension,
+        ?string $selected = null,
+        ?string $javascript = null,
+        ?int $size = 1,
+        ?int $category = 1
+    ): string {
+        // Deprecation warning.
+        Log::add('JList::category is deprecated.', Log::WARNING, 'deprecated');
+
+        $categories = HTMLHelper::_('category.options', $extension);
+        if ($category) {
+            array_unshift($categories, HTMLHelper::_('select.option', '0', Text::_('JOPTION_SELECT_CATEGORY')));
+        }
+
+        $attributes = [
+            'class' => 'chosen',
+            'size'  => $size
+        ];
+        if ($javascript) {
+            $attributes['onclick'] = $javascript;
+        }
+
+        return HTMLHelper::_(
+            'select.genericlist',
+            $categories,
+            $name,
+            $attributes,
+            'value',
+            'text',
+            $selected
+        );
     }
 }

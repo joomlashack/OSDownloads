@@ -219,7 +219,7 @@ endif;
                                 ); ?>
                             </div>
                         </td>
-                        <td class="small">
+                        <td>
                             <?php echo($item->access_title); ?>
                         </td>
                         <td class="center nowrap"><?php echo($item->downloaded); ?></td>
@@ -234,19 +234,12 @@ endif;
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
-                <tfoot>
-                <tr>
-                    <?php
-                    $colspan = $this->extension->isPro() ? 9 : 7;
-                    ?>
-                    <td colspan="<?php echo $colspan; ?>">
-                        <?php echo $this->pagination->getListFooter(); ?>
-                    </td>
-                </tr>
-                </tfoot>
             </table>
-        <?php endif; ?>
+            <?php
+            echo $this->pagination->getListFooter();
+        endif; ?>
     </div>
+
     <input type="hidden" name="task" value=""/>
     <input type="hidden" name="boxchecked" value="0"/>
     <?php echo HTMLHelper::_('form.token'); ?>

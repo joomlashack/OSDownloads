@@ -25,6 +25,7 @@
 defined('_JEXEC') or die();
 
 use Alledia\OSDownloads\Factory;
+use Joomla\CMS\Button\PublishedButton;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
@@ -76,7 +77,10 @@ if ($saveOrder && $this->items) {
                     <table class="adminlist table table-striped" id="documentList" style="width: 100%; border: none;">
                         <thead>
                         <tr>
-                            <th style="width: 1%;" class="nowrap center hidden-phone">
+                            <th scope="col" class="w-1 text-center d-none d-md-table-cell">
+                                <?php echo HTMLHelper::_('grid.checkall'); ?>
+                            </th>
+                            <th scope="col" class="w-1 text-center d-none d-md-table-cell">
                                 <?php
                                 echo HTMLHelper::_(
                                     'searchtools.sort',
@@ -91,14 +95,7 @@ if ($saveOrder && $this->items) {
                                 );
                                 ?>
                             </th>
-                            <th style="width: 1%;" class="hidden-phone">
-                                <input type="checkbox"
-                                       onclick="Joomla.checkAll(this)"
-                                       title="<?php echo Text::_('COM_OSDOWNLOADS_CHECK_All'); ?>"
-                                       value=""
-                                       name="checkall-toggle"/>
-                            </th>
-                            <th style="width: 1%; min-width:55px;" class="nowrap center">
+                            <th scope="col" class="w-1 text-center">
                                 <?php
                                 echo HTMLHelper::_(
                                     'searchtools.sort',
@@ -109,7 +106,7 @@ if ($saveOrder && $this->items) {
                                 );
                                 ?>
                             </th>
-                            <th class="has-context span6">
+                            <th class="has-context w-50">
                                 <?php
                                 echo HTMLHelper::_(
                                     'searchtools.sort',
@@ -131,7 +128,7 @@ if ($saveOrder && $this->items) {
                                 );
                                 ?>
                             </th>
-                            <th class="center nowrap">
+                            <th class="text-center text-nowrap">
                                 <?php
                                 echo HTMLHelper::_(
                                     'searchtools.sort',
@@ -147,7 +144,7 @@ if ($saveOrder && $this->items) {
                                 echo $this->loadTemplate('pro_headers');
                             endif;
                             ?>
-                            <th class="hidden-phone center">
+                            <th class="text-center d-none d-md-table-cell">
                                 <?php
                                 echo HTMLHelper::_(
                                     'searchtools.sort',
@@ -165,18 +162,17 @@ if ($saveOrder && $this->items) {
                         <?php
                         foreach ($this->items as $i => $item) :
                             $link = 'index.php?option=com_osdownloads&task=file.edit&id=' . $item->id;
-
-                            $item->checked_out = false;
-                            $checked           = HTMLHelper::_('grid.checkedout', $item, $i);
                             ?>
                             <tr class="<?php echo 'row' . ($i % 2); ?>"
-                                data-sortable-group="<?php echo $item->cate_id; ?>">
-                                <td class="order nowrap center hidden-phone">
+                                data-draggable-group="<?php echo $item->cate_id; ?>">
+                                <td class="text-center d-none d-md-table-cell">
+                                    <?php echo HTMLHelper::_('grid.checkedout', $item, $i); ?>
+                                </td>
+                                <td class="text-center d-none d-md-table-cell">
                                     <?php
                                     $class = 'sortable-handler' . ($saveOrder ? '' : ' inactive');
 
                                     if (!$saveOrder) :
-                                        //$class .= ' tip-top hasTooltip';
                                         $title = HTMLHelper::tooltipText('JORDERINGDISABLED');
                                     endif;
                                     ?>
@@ -191,24 +187,23 @@ if ($saveOrder && $this->items) {
                                                class="width-20 text-area-order "/>
                                     <?php endif; ?>
                                 </td>
-                                <td class="hidden-phone"><?php echo $checked; ?></td>
-                                <td class="center">
-                                    <div class="btn-group">
-                                        <?php
-                                        echo HTMLHelper::_(
-                                            'jgrid.published',
-                                            $item->published,
-                                            $i,
-                                            'files.',
-                                            true,
-                                            'cb',
-                                            $item->publish_up ?? null,
-                                            $item->publish_down ?? null
-                                        );
-                                        ?>
-                                    </div>
+                                <td class="text-center">
+                                    <?php
+                                    $options = [
+                                        'task_prefix' => 'files.',
+                                        'id'          => 'state-' . $item->id
+                                    ];
+
+                                    echo (new PublishedButton())->render(
+                                        (int)$item->published,
+                                        $i,
+                                        $options,
+                                        $item->publish_up,
+                                        $item->publish_down
+                                    );
+                                    ?>
                                 </td>
-                                <td class="has-context span6">
+                                <td class="w-50 has-context">
                                     <?php echo HTMLHelper::_('link', $link, $item->name); ?>
                                     <span class="small">
                                         <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
@@ -217,33 +212,25 @@ if ($saveOrder && $this->items) {
                                         <?php echo Text::_('JCATEGORY') . ": " . $this->escape($item->cat_title); ?>
                                     </div>
                                 </td>
-                                <td class="small">
+                                <td>
                                     <?php echo($item->access_title); ?>
                                 </td>
-                                <td class="center nowrap"><?php echo($item->downloaded); ?></td>
-
+                                <td class="text-center text-nowrap"><?php echo($item->downloaded); ?></td>
                                 <?php
                                 if ($this->extension->isPro()) :
                                     $this->item = $item;
                                     echo $this->loadTemplate('pro_columns');
                                 endif;
                                 ?>
-                                <td class="hidden-phone center"><?php echo($item->id); ?></td>
+                                <td class="text-center d-none d-md-table-cell"><?php echo($item->id); ?></td>
                             </tr>
                         <?php endforeach; ?>
                         </tbody>
-                        <tfoot>
-                        <tr>
-                            <?php
-                            $colspan = $this->extension->isPro() ? 9 : 7;
-                            ?>
-                            <td colspan="<?php echo $colspan; ?>">
-                                <?php echo $this->pagination->getListFooter(); ?>
-                            </td>
-                        </tr>
-                        </tfoot>
                     </table>
-                <?php endif; ?>
+
+                    <?php
+                    echo $this->pagination->getListFooter();
+                endif; ?>
 
                 <input type="hidden" name="task" value="">
                 <input type="hidden" name="boxchecked" value="0">

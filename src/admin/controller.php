@@ -65,7 +65,7 @@ class OSDownloadsController extends BaseController
         }
 
         if ($view !== 'file') {
-            $extension = Factory::getExtension('com_osdownloads', 'component');
+            $extension = Factory::getExtension('OSDownloads', 'component');
             if ($extension->isPro()) {
                 ProHelper::addSubmenu($app->input->getCmd('view', $view));
             } else {

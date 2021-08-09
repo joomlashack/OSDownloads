@@ -48,7 +48,7 @@ class Emails extends ListModel
     /**
      * @inheritDoc
      */
-    public function populateState($ordering = 'id', $direction = 'desc')
+    public function populateState($ordering = 'email.id', $direction = 'desc')
     {
         parent::populateState($ordering, $direction);
     }

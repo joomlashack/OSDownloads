@@ -51,15 +51,17 @@ class AbstractScript extends \Alledia\Installer\AbstractScript
         try {
             parent::postFlight($type, $parent);
 
-            $this->checkParamStructure();
-            $this->checkAndCreateDefaultCategory();
-            $this->fixOrderingParamForMenus();
-            $this->fixDownloadsViewParams();
-            $this->fixItemViewParams();
-            $this->fixDatabase();
+            if ($type != 'uninstall') {
+                $this->checkParamStructure();
+                $this->checkAndCreateDefaultCategory();
+                $this->fixOrderingParamForMenus();
+                $this->fixDownloadsViewParams();
+                $this->fixItemViewParams();
+                $this->fixDatabase();
 
-            if ($type == 'update') {
-                $this->moveLayouts();
+                if ($type == 'update') {
+                    $this->moveLayouts();
+                }
             }
 
         } catch (\Throwable $error) {

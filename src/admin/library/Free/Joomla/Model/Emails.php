@@ -67,8 +67,7 @@ class Emails extends ListModel
             ->leftJoin('#__osdownloads_documents doc ON (email.document_id = doc.id)')
             ->leftJoin('#__categories cat ON (cat.id = doc.cate_id)');
 
-
-        $search = $this->get('filter.search');
+        $search = $this->getState('filter.search');
         if ($search) {
             $search = $db->quote('%' . $search . '%');
             $ors    = [

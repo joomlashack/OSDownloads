@@ -105,16 +105,16 @@
             <extension type="library"
                        element="allediaframework">ShackFramework</extension>
 
-            <extension type="module"
-                       element="osdownloadsfiles"
-                       uninstall="true"
-                       downgrade="true">OSDownloadsFiles</extension>
-
             <extension type="plugin"
                        group="system"
                        element="osmylicensesmanager"
                        publish="true"
                        ordering="last">ShackExtensionSupport</extension>
+
+            <extension type="module"
+                       element="osdownloadsfiles"
+                       uninstall="true"
+                       downgrade="true">OSDownloadsFiles</extension>
 
             <extension type="plugin"
                        group="content"

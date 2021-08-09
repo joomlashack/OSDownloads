@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="filter">
+        <field name="search"
+               type="text"/>
+
+        <field name="cate_id"
+               type="category"
+               extension="com_osdownloads"
+               onchange="this.form.submit();">
+            <option value="">COM_OSDOWNLOADS_OPTION_SELECT_CATEGORY</option>
+        </field>
+    </fields>
+
+    <fields name="list">
+        <field name="fullordering"
+               type="list"
+               onchange="this.form.submit();"
+               default="email.id DESC">
+            <option value="">JGLOBAL_SORT_BY</option>
+            <option value="email.email ASC">COM_OSDOWNLOADS_GRID_ORDERING_EMAIL_ASC</option>,
+            <option value="email.email DESC">COM_OSDOWNLOADS_GRID_ORDERING_EMAIL_DESC</option>,
+            <option value="doc.name ASC">COM_OSDOWNLOADS_GRID_ORDERING_FILE_ASC</option>
+            <option value="doc.name DESC">COM_OSDOWNLOADS_GRID_ORDERING_FILE_DESC</option>
+            <option value="cat.title ASC">COM_OSDOWNLOADS_GRID_ORDERING_ID_ASC</option>
+            <option value="cat.title DESC">COM_OSDOWNLOADS_GRID_ORDERING_ID_DESC</option>
+            <option value="email.downloaded_date ASC">COM_OSDOWNLOADS_GRID_ORDERING_DOWNLOADED_ASC</option>
+            <option value="email.downloaded_date DESC">COM_OSDOWNLOADS_GRID_ORDERING_DOWNLOADED_DESC</option>
+            <option value="email.id ASC">COM_OSDOWNLOADS_GRID_ORDERING_ID_ASC</option>
+            <option value="email.id DESC">COM_OSDOWNLOADS_GRID_ORDERING_ID_DESC</option>
+        </field>
+
+        <field name="limit"
+               type="limitbox"
+               class="inputbox input-mini"
+               default="25"
+               label="COM_SIMPLERENEW_LIST_LIMIT"
+               description="COM_SIMPLERENEW_LIST_LIMIT_DESC"
+               onchange="this.form.submit();"/>
+    </fields>
+</form>

@@ -24,7 +24,7 @@
 use Alledia\OSDownloads\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Language;
-use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
 
 defined('_JEXEC') or die();
 
@@ -39,20 +39,9 @@ defined('_JEXEC') or die();
 
 HTMLHelper::_('formbehavior.chosen', 'select');
 
-$container = Factory::getPimpleContainer();
-
-$buttonAction = join('', [
-    "doc.getElementById('search').value='';",
-    "this.form.getElementById('cate_id').value='';",
-    "this.form.submit();"
-]);
-
-$categorySelect = $this->categorySelect(
-    'cate_id',
-    'com_osdownloads',
-    $this->flt->cate_id,
-    'this.form.submit();'
-);
+$listOrder     = $this->state->get('list.ordering');
+$listDirection = $this->state->get('list.direction');
+$container     = Factory::getPimpleContainer();
 
 ?>
 <form action="<?php echo $container->helperRoute->getAdminEmailListRoute(); ?>"
@@ -63,94 +52,60 @@ $categorySelect = $this->categorySelect(
         <?php echo $this->sidebar; ?>
     </div>
     <div id="j-main-container" class="span10">
-        <table style="width: 100%">
-            <tr>
-                <td>
-                    <div class="js-stools clearfix">
-                        <div class="clearfix">
-                            <div class="btn-wrapper input-append">
-                                <input type="text" name="search" id="search"
-                                       placeholder="<?php echo Text::_('JSEARCH_FILTER'); ?>"
-                                       value="<?php echo htmlspecialchars($this->flt->search); ?>" class="text_area"
-                                       onchange="doc.adminForm.submit();"/>
+        <?php echo LayoutHelper::render('joomla.searchtools.default', ['view' => $this]); ?>
 
-                                <button class="btn hasTooltip" title="" type="submit" data-original-title="Search">
-                                    <?php echo Text::_('COM_OSDOWNLOADS_GO'); ?>
-                                </button>
-                            </div>
-                            <div class="btn-wrapper">
-                                <button
-                                    onclick="<?php echo $buttonAction; ?>"
-                                    class="btn hasTooltip js-stools-btn-clear">
-                                    <?php echo Text::_('COM_OSDOWNLOADS_RESET'); ?>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </td>
-                <td style="text-align: right;">
-                    <div class="js-stools clearfix">
-                        <?php if ($this->isPro) : ?>
-                            <?php echo $this->loadTemplate('pro_filters'); ?>
-                        <?php endif; ?>
-
-                        <?php echo $categorySelect; ?>
-                    </div>
-                </td>
-            </tr>
-        </table>
-        <table class="adminlist table table-striped" width="100%" border="0">
+        <table class="adminlist table table-striped" style="width: 100%; border: none;">
             <thead>
             <tr>
-                <th class="hidden-phone"><input type="checkbox" onclick="Joomla.checkAll(this)" title="check All"
-                                                value=""
-                                                name="checkall-toggle"/></th>
+                <th class="hidden-phone">
+                    <?php echo HTMLHelper::_('grid.checkall'); ?>
+                </th>
                 <th class="has-context span6">
                     <?php echo HTMLHelper::_(
-                        'grid.sort',
+                        'searchtools.sort',
                         'COM_OSDOWNLOADS_EMAIL',
                         'email.email',
-                        $this->lists['order_Dir'] ?? null,
-                        $this->lists['order'] ?? null
+                        $listDirection,
+                        $listOrder
                     ); ?>
                 </th>
-                <?php if ($this->isPro) : ?>
+                <?php if ($this->extension->isPro()) : ?>
                     <?php echo $this->loadTemplate('pro_headers'); ?>
                 <?php endif; ?>
                 <th>
                     <?php echo HTMLHelper::_(
-                        'grid.sort',
+                        'searchtools.sort',
                         'COM_OSDOWNLOADS_FILE',
                         'doc.name',
-                        $this->lists['order_Dir'] ?? null,
-                        $this->lists['order'] ?? null
+                        $listDirection,
+                        $listOrder
                     ); ?>
                 </th>
                 <th>
                     <?php echo HTMLHelper::_(
-                        'grid.sort',
+                        'searchtools.sort',
                         'COM_OSDOWNLOADS_CATEGORY',
                         'cat.title',
-                        $this->lists['order_Dir'] ?? null,
-                        $this->lists['order'] ?? null
+                        $listDirection,
+                        $listOrder
                     ); ?>
                 </th>
                 <th>
                     <?php echo HTMLHelper::_(
-                        'grid.sort',
+                        'searchtools.sort',
                         'COM_OSDOWNLOADS_DATE',
                         'email.downloaded_date',
-                        $this->lists['order_Dir'] ?? null,
-                        $this->lists['order'] ?? null
+                        $listDirection,
+                        $listOrder
                     ); ?>
                 </th>
                 <th class="hidden-phone center">
                     <?php echo HTMLHelper::_(
-                        'grid.sort',
+                        'searchtools.sort',
                         'COM_OSDOWNLOADS_ID',
                         'email.id',
-                        $this->lists['order_Dir'] ?? null,
-                        $this->lists['order'] ?? null
+                        $listDirection,
+                        $listOrder
                     ); ?>
                 </th>
             </tr>
@@ -163,32 +118,25 @@ $categorySelect = $this->categorySelect(
                         <?php echo HTMLHelper::_('grid.id', $i, $item->id); ?>
                     </td>
                     <td class="has-context span6"><?php echo($item->email); ?></td>
-                    <?php if ($this->isPro) : ?>
+                    <?php if ($this->extension->isPro()) : ?>
                         <?php
                         $this->item = $item;
                         echo $this->loadTemplate('pro_columns');
                         ?>
                     <?php endif; ?>
                     <td><?php echo($item->doc_name); ?></td>
-                    <td class="small"><?php echo($item->cate_name); ?></td>
-                    <td class="small"><?php echo(HTMLHelper::_("date", $item->downloaded_date, "d-m-Y H:m:s")); ?></td>
+                    <td><?php echo($item->cate_name); ?></td>
+                    <td><?php echo(HTMLHelper::_('date', $item->downloaded_date, 'd-m-Y H:m:s')); ?></td>
                     <td class="hidden-phone center"><?php echo($item->id); ?></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
-            <tfoot>
-            <tr>
-                <td colspan="<?php echo $this->isPro ? 8 : 6; ?>">
-                    <?php echo $this->pagination->getListFooter(); ?>
-                </td>
-            </tr>
-            </tfoot>
         </table>
-        <input type="hidden" name="option" value="com_osdownloads"/>
+
+        <?php echo $this->pagination->getListFooter(); ?>
+
         <input type="hidden" name="task" value=""/>
         <input type="hidden" name="boxchecked" value="0"/>
-        <input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>"/>
-        <input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>"/>
         <?php echo HTMLHelper::_('form.token'); ?>
     </div>
 </form>

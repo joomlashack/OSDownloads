@@ -136,9 +136,9 @@ $container     = Factory::getPimpleContainer();
                 </tbody>
             </table>
 
-            <?php echo $this->pagination->getListFooter(); ?>
+            <?php echo $this->pagination->getListFooter();
 
-        <?php else : ?>
+        else : ?>
             <div class="alert alert-no-items">
                 <?php
                 if ($this->activeFilters || $this->state->get('filter.search')) :

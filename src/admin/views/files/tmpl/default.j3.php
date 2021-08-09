@@ -90,11 +90,7 @@ endif;
                         ?>
                     </th>
                     <th style="width: 1%;" class="hidden-phone">
-                        <input type="checkbox"
-                               onclick="Joomla.checkAll(this)"
-                               title="<?php echo Text::_('COM_OSDOWNLOADS_CHECK_All'); ?>"
-                               value=""
-                               name="checkall-toggle"/>
+                        <?php echo HTMLHelper::_('grid.checkall'); ?>
                     </th>
                     <th style="width: 1%; min-width:55px" class="nowrap center">
                         <?php
@@ -165,7 +161,6 @@ endif;
                     $link = 'index.php?option=com_osdownloads&task=file.edit&id=' . $item->id;
 
                     $item->checked_out = false;
-                    $checked           = HTMLHelper::_('grid.checkedout', $item, $i);
                     ?>
                     <tr class="<?php echo 'row' . ($i % 2); ?>"
                         sortable-group-id="<?php echo $item->cate_id; ?>">
@@ -189,7 +184,9 @@ endif;
                                        class="width-20 text-area-order "/>
                             <?php endif; ?>
                         </td>
-                        <td class="hidden-phone"><?php echo $checked; ?></td>
+                        <td class="hidden-phone">
+                            <?php echo HTMLHelper::_('grid.checkedout', $item, $i); ?>
+                        </td>
                         <td class="center">
                             <div class="btn-group">
                                 <?php

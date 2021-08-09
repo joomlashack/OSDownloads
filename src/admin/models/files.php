@@ -29,6 +29,9 @@ defined('_JEXEC') or die();
 
 class OSDownloadsModelFiles extends ListModel
 {
+    /**
+     * @inheritDoc
+     */
     public function __construct($config = [])
     {
         $config['filter_fields'] = [
@@ -45,6 +48,9 @@ class OSDownloadsModelFiles extends ListModel
         parent::__construct($config);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getItems()
     {
         $items = parent::getItems();
@@ -122,10 +128,7 @@ class OSDownloadsModelFiles extends ListModel
     }
 
     /**
-     * @param string $ordering
-     * @param string $direction
-     *
-     * @throws Exception
+     * @inheritDoc
      */
     protected function populateState($ordering = 'doc.id', $direction = 'desc')
     {

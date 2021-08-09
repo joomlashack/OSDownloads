@@ -23,6 +23,7 @@
 
 use Alledia\OSDownloads\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 
 defined('_JEXEC') or die();
@@ -40,97 +41,111 @@ $listDirection = $this->state->get('list.direction');
             <div id="j-main-container" class="j-main-container">
                 <?php
                 echo LayoutHelper::render('joomla.searchtools.default', ['view' => $this]);
-                ?>
 
-                <table class="adminlist table table-striped" style="width: 100%; border: none;">
-                    <thead>
-                    <tr>
-                        <th scope="col" class="w-1 text-center d-none d-md-table-cell">
-                            <?php echo HTMLHelper::_('grid.checkall'); ?>
-                        </th>
-                        <th class="has-context w-50">
-                            <?php echo HTMLHelper::_(
-                                'searchtools.sort',
-                                'COM_OSDOWNLOADS_EMAIL',
-                                'email.email',
-                                $listDirection,
-                                $listOrder
-                            ); ?>
-                        </th>
-
-                        <?php if ($this->extension->isPro()) : ?>
-                            <?php echo $this->loadTemplate('pro_headers'); ?>
-                        <?php endif; ?>
-
-                        <th>
-                            <?php echo HTMLHelper::_(
-                                'searchtools.sort',
-                                'COM_OSDOWNLOADS_FILE',
-                                'doc.name',
-                                $listDirection,
-                                $listOrder
-                            ); ?>
-                        </th>
-                        <th>
-                            <?php echo HTMLHelper::_(
-                                'searchtools.sort',
-                                'COM_OSDOWNLOADS_CATEGORY',
-                                'cat.title',
-                                $listDirection,
-                                $listOrder
-                            ); ?>
-                        </th>
-                        <th>
-                            <?php echo HTMLHelper::_(
-                                'searchtools.sort',
-                                'COM_OSDOWNLOADS_DATE',
-                                'email.downloaded_date',
-                                $listDirection,
-                                $listOrder
-                            ); ?>
-                        </th>
-                        <th class="text-center d-none d-md-table-cell">
-                            <?php echo HTMLHelper::_(
-                                'searchtools.sort',
-                                'COM_OSDOWNLOADS_ID',
-                                'email.id',
-                                $listDirection,
-                                $listOrder
-                            ); ?>
-                        </th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-                    <?php foreach ($this->items as $i => $item) :
-                        ?>
-                        <tr class="row<?php echo $i % 2; ?>">
-                            <td class="w-1 d-none d-md-table-cell">
-                                <?php echo HTMLHelper::_('grid.checkedout', $item, $i); ?>
-                            </td>
-                            <td class="has-context w-50"><?php echo($item->email); ?></td>
-                            <?php if ($this->extension->isPro()) : ?>
-                                <?php
-                                $this->item = $item;
-                                echo $this->loadTemplate('pro_columns');
-                                ?>
-                            <?php endif; ?>
-                            <td><?php echo($item->doc_name); ?></td>
-                            <td><?php echo($item->cate_name); ?></td>
-                            <td>
+                if ($this->items) :
+                    ?>
+                    <table class="adminlist table table-striped" style="width: 100%; border: none;">
+                        <thead>
+                        <tr>
+                            <th scope="col" class="w-1 text-center d-none d-md-table-cell">
+                                <?php echo HTMLHelper::_('grid.checkall'); ?>
+                            </th>
+                            <th class="has-context w-50">
                                 <?php echo HTMLHelper::_(
-                                    'date',
-                                    $item->downloaded_date,
-                                    'd-m-Y H:m:s'
+                                    'searchtools.sort',
+                                    'COM_OSDOWNLOADS_EMAIL',
+                                    'email.email',
+                                    $listDirection,
+                                    $listOrder
                                 ); ?>
-                            </td>
-                            <td class="text-center d-none d-md-table-cell"><?php echo($item->id); ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                    </tbody>
-                </table>
+                            </th>
 
-                <?php echo $this->pagination->getListFooter(); ?>
+                            <?php if ($this->extension->isPro()) : ?>
+                                <?php echo $this->loadTemplate('pro_headers'); ?>
+                            <?php endif; ?>
+
+                            <th>
+                                <?php echo HTMLHelper::_(
+                                    'searchtools.sort',
+                                    'COM_OSDOWNLOADS_FILE',
+                                    'doc.name',
+                                    $listDirection,
+                                    $listOrder
+                                ); ?>
+                            </th>
+                            <th>
+                                <?php echo HTMLHelper::_(
+                                    'searchtools.sort',
+                                    'COM_OSDOWNLOADS_CATEGORY',
+                                    'cat.title',
+                                    $listDirection,
+                                    $listOrder
+                                ); ?>
+                            </th>
+                            <th>
+                                <?php echo HTMLHelper::_(
+                                    'searchtools.sort',
+                                    'COM_OSDOWNLOADS_DATE',
+                                    'email.downloaded_date',
+                                    $listDirection,
+                                    $listOrder
+                                ); ?>
+                            </th>
+                            <th class="text-center d-none d-md-table-cell">
+                                <?php echo HTMLHelper::_(
+                                    'searchtools.sort',
+                                    'COM_OSDOWNLOADS_ID',
+                                    'email.id',
+                                    $listDirection,
+                                    $listOrder
+                                ); ?>
+                            </th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <?php foreach ($this->items as $i => $item) :
+                            ?>
+                            <tr class="row<?php echo $i % 2; ?>">
+                                <td class="w-1 d-none d-md-table-cell">
+                                    <?php echo HTMLHelper::_('grid.checkedout', $item, $i); ?>
+                                </td>
+                                <td class="has-context w-50"><?php echo($item->email); ?></td>
+                                <?php if ($this->extension->isPro()) : ?>
+                                    <?php
+                                    $this->item = $item;
+                                    echo $this->loadTemplate('pro_columns');
+                                    ?>
+                                <?php endif; ?>
+                                <td><?php echo($item->doc_name); ?></td>
+                                <td><?php echo($item->cate_name); ?></td>
+                                <td>
+                                    <?php echo HTMLHelper::_(
+                                        'date',
+                                        $item->downloaded_date,
+                                        'd-m-Y H:m:s'
+                                    ); ?>
+                                </td>
+                                <td class="text-center d-none d-md-table-cell"><?php echo($item->id); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
+
+                    <?php
+                    echo $this->pagination->getListFooter();
+
+                else : ?>
+                    <div class="alert alert-no-items">
+                        <?php
+                        if ($this->activeFilters || $this->state->get('filter.search')) :
+                            echo Text::_('COM_OSDOWNLOADS_EMAILS_NO_RESULTS');
+                        else :
+                            echo Text::_('COM_OSDOWNLOADS_EMAILS_NONE');
+                        endif;
+                        ?>
+                    </div>
+                <?php endif; ?>
 
                 <input type="hidden" name="task" value=""/>
                 <input type="hidden" name="boxchecked" value="0"/>

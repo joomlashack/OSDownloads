@@ -67,13 +67,6 @@ if (defined('ALLEDIA_FRAMEWORK_LOADED') && !defined('OSDOWNLOADS_LOADED')) {
             Factory::getLanguage()->load('com_osdownloads', OSDOWNLOADS_ADMIN);
             break;
     }
-
-    define('IsJoomla4', version_compare(JVERSION, '4'));
-
-    if (IsJoomla4) {
-        require_once OSDOWNLOADS_LIBRARY . '/Free/Joomla/Legacy/JObservableInterface.php';
-        require_once OSDOWNLOADS_LIBRARY . '/Free/Joomla/Legacy/JObserverInterface.php';
-    }
 }
 
 return defined('OSDOWNLOADS_LOADED');

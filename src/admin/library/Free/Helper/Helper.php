@@ -197,21 +197,21 @@ abstract class Helper
 
         Factory::getApplication()->triggerEvent(
             'onContentPrepare',
-            ['com_osdownloads.file', $item, $item->params, null]
+            ['com_osdownloads.file', &$item, &$item->params, null]
         );
 
         $prepareEvent = [
             'afterDisplayTitle'    => Factory::getApplication()->triggerEvent(
                 'onContentAfterTitle',
-                ['com_osdownloads.file', $item, $item->params, null]
+                ['com_osdownloads.file', &$item, &$item->params, null]
             ),
             'beforeDisplayContent' => Factory::getApplication()->triggerEvent(
                 'onContentBeforeDisplay',
-                ['com_osdownloads.file', $item, $item->params, null]
+                ['com_osdownloads.file', &$item, &$item->params, null]
             ),
             'afterDisplayContent'  => Factory::getApplication()->triggerEvent(
                 'onContentAfterDisplay',
-                ['com_osdownloads.file', $item, $item->params, null]
+                ['com_osdownloads.file', &$item, &$item->params, null]
             )
         ];
 

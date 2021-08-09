@@ -39,7 +39,8 @@ class Emails extends ListModel
             'doc.name',
             'cat.title',
             'email.downloaded_date',
-            'email.id'
+            'email.id',
+            'cate_id'
         ];
 
         parent::__construct($config);

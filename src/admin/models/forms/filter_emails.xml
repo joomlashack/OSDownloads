@@ -22,8 +22,8 @@
             <option value="email.email DESC">COM_OSDOWNLOADS_GRID_ORDERING_EMAIL_DESC</option>,
             <option value="doc.name ASC">COM_OSDOWNLOADS_GRID_ORDERING_FILE_ASC</option>
             <option value="doc.name DESC">COM_OSDOWNLOADS_GRID_ORDERING_FILE_DESC</option>
-            <option value="cat.title ASC">COM_OSDOWNLOADS_GRID_ORDERING_ID_ASC</option>
-            <option value="cat.title DESC">COM_OSDOWNLOADS_GRID_ORDERING_ID_DESC</option>
+            <option value="cat.title ASC">COM_OSDOWNLOADS_GRID_ORDERING_CATEGORY_ASC</option>
+            <option value="cat.title DESC">COM_OSDOWNLOADS_GRID_ORDERING_CATEGORY_DESC</option>
             <option value="email.downloaded_date ASC">COM_OSDOWNLOADS_GRID_ORDERING_DOWNLOADED_ASC</option>
             <option value="email.downloaded_date DESC">COM_OSDOWNLOADS_GRID_ORDERING_DOWNLOADED_DESC</option>
             <option value="email.id ASC">COM_OSDOWNLOADS_GRID_ORDERING_ID_ASC</option>

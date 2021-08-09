@@ -21,11 +21,10 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Alledia\Framework\Helper as AllediaHelper;
+use Alledia\Framework\Helper as FrameworkHelper;
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\DisplayData;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
@@ -99,7 +98,7 @@ endif;
 </a>
 
 <div id="<?php echo $elementsId . '_popup'; ?>"
-     class="reveal-modal osdownloads-modal <?php echo AllediaHelper::getJoomlaVersionCssClass(); ?>"
+     class="reveal-modal osdownloads-modal <?php echo FrameworkHelper::getJoomlaVersionCssClass(); ?>"
      data-prefix="<?php echo $elementsId; ?>">
     <?php
     if (
@@ -154,7 +153,7 @@ endif;
                     $displayData->tab_name = $elementsId . '-tab-' . $displayData->item->id;
                     echo HTMLHelper::_('bootstrap.startTabSet', $displayData->tab_name, ['active' => false]);
 
-                    $displayData->form = new Form('com_osdownloads.download');
+                    $displayData->form = FrameworkHelper::createForm('com_osdownloads.download');
 
                     Factory::getApplication()->triggerEvent(
                         'onContentPrepareForm',

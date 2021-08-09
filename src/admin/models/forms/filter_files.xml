@@ -44,8 +44,8 @@
                type="limitbox"
                class="inputbox input-mini"
                default="25"
-               label="COM_SIMPLERENEW_LIST_LIMIT"
-               description="COM_SIMPLERENEW_LIST_LIMIT_DESC"
+               label="COM_OSDOWNLOADS_LIST_LIMIT"
+               description="COM_OSDOWNLOADS_LIST_LIMIT_DESC"
                onchange="this.form.submit();"/>
     </fields>
 </form>

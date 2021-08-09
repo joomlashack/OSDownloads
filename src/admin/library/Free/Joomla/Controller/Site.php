@@ -27,13 +27,17 @@ defined('_JEXEC') or die();
 
 use Alledia\Framework\Joomla\Controller\Base as BaseController;
 use Alledia\OSDownloads\Factory;
-use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Alledia\OSDownloads\Free\Helper\Helper;
-use Alledia\OSDownloads\Free\Joomla\Model\Email;
+use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
+use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Language\Text;
 
 
 class Site extends BaseController
 {
+    /**
+     * @inheritDoc
+     */
     public function display($cachable = false, $urlparams = false)
     {
         $app = Factory::getApplication();
@@ -51,7 +55,7 @@ class Site extends BaseController
      */
     protected function processEmailRequirement($item)
     {
-        /** @var \JApplicationSite $app */
+        /** @var SiteApplication $app */
         $app       = Factory::getApplication();
         $component = FreeComponentSite::getInstance();
 
@@ -119,7 +123,7 @@ class Site extends BaseController
         $item  = $model->getItem($id);
 
         if (empty($item)) {
-            throw new \Exception(\JText::_('COM_OSDOWNLOADS_ERROR_DOWNLOAD_NOT_AVAILABLE'), 404);
+            throw new \Exception(Text::_('COM_OSDOWNLOADS_ERROR_DOWNLOAD_NOT_AVAILABLE'), 404);
         }
 
         if ($this->processRequirements($item)) {

@@ -27,6 +27,8 @@ use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\MailingLists\AbstractClient;
 use JEventDispatcher;
 use Joomla\CMS\Table\Table;
+use Joomla\Event\Dispatcher;
+use Joomla\Event\Event;
 
 defined('_JEXEC') or die();
 
@@ -51,6 +53,9 @@ class MailChimp extends AbstractClient
 
         if ($dispatcher instanceof JEventDispatcher) {
             $dispatcher->register('onOSDownloadsAfterSaveEmail', [$this, 'onAfterStore']);
+
+        } elseif ($dispatcher instanceof Dispatcher) {
+            $dispatcher->addListener('onOSDownloadsAfterSaveEmail', [$this, 'onTableAfterStore']);
         }
     }
 
@@ -90,6 +95,19 @@ class MailChimp extends AbstractClient
             } catch (\Exception $e) {
                 $this->logError($e->getMessage());
             }
+        }
+    }
+
+    /**
+     * @param Event $event
+     */
+    public function onTableAfterStore(Event $event)
+    {
+        if ($event->count() == 2) {
+            $result = $event->getArgument(0);
+            $table  = $event->getArgument(1);
+
+            $this->onAfterStore($result, $table);
         }
     }
 

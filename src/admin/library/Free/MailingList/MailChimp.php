@@ -25,7 +25,6 @@ namespace Alledia\OSDownloads\Free\MailingList;
 
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\MailingLists\AbstractClient;
-use Exception;
 use JEventDispatcher;
 use Joomla\CMS\Table\Table;
 
@@ -43,6 +42,9 @@ class MailChimp extends AbstractClient
      */
     protected static $apiManager = null;
 
+    /**
+     * @inheritDoc
+     */
     protected function registerObservers()
     {
         $dispatcher = Factory::getDispatcher();
@@ -72,7 +74,7 @@ class MailChimp extends AbstractClient
                         $member = $mc->get("lists/{$listId}/members/" . md5(strtolower($email)));
                         $member = $member->toArray();
 
-                    } catch (Exception $e) {
+                    } catch (\Exception $e) {
                         $member = ['status' => 'unsubscribed'];
                     }
 
@@ -85,7 +87,7 @@ class MailChimp extends AbstractClient
                     }
                 }
 
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $this->logError($e->getMessage());
             }
         }
@@ -105,7 +107,7 @@ class MailChimp extends AbstractClient
                     static::$apiManager = new \Mailchimp\Mailchimp($apiKey);
                 }
 
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // Just ignore this
             }
         }

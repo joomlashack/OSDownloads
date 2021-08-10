@@ -27,6 +27,7 @@ use Alledia\Framework\Factory;
 use Alledia\Framework\Joomla\Table\Base;
 use Alledia\OSDownloads\Free;
 use CategoriesTableCategory;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Table\Category;
 use Joomla\CMS\Table\Table;
@@ -64,6 +65,9 @@ abstract class AbstractClient
         $this->registerObservers();
     }
 
+    /**
+     * @return void
+     */
     abstract protected function registerObservers();
 
     /**
@@ -158,7 +162,7 @@ abstract class AbstractClient
     protected function getParams(): Registry
     {
         if (static::$params === null) {
-            static::$params = \JComponentHelper::getParams('com_osdownloads');
+            static::$params = ComponentHelper::getParams('com_osdownloads');
         }
 
         return static::$params;

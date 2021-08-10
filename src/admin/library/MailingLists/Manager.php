@@ -27,6 +27,7 @@ use Alledia\Installer\Extension\Licensed;
 use Alledia\OSDownloads\Factory;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Form\Form;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
 use SimpleXMLElement;
 
@@ -34,6 +35,11 @@ defined('_JEXEC') or die();
 
 class Manager
 {
+    /**
+     * @var AbstractClient[]
+     */
+    protected $observers = null;
+
     /**
      * @var Licensed
      */
@@ -73,18 +79,19 @@ class Manager
      *
      * @param Table $table
      *
-     * @return void
+     * @return $this
      */
-    public function loadObservers(Table $table)
+    public function registerObservers(Table $table): self
     {
         $plugins = $this->getPluginFiles('php');
 
         foreach ($plugins as $pluginPath) {
-            /** @var \JObserverInterface $pluginClass */
             $pluginClass = $this->convertPathToClass($pluginPath);
 
-            $pluginClass::createObserver($table);
+            $this->observers[$pluginClass] = new $pluginClass($table);
         }
+
+        return $this;
     }
 
     /**
@@ -133,7 +140,7 @@ class Manager
      *
      * @return string[]
      */
-    protected function getPluginFiles($type)
+    protected function getPluginFiles($type): array
     {
         $baseFolder = '/MailingList';
         $regex      = sprintf('\.%s$', $type);
@@ -173,7 +180,7 @@ class Manager
      *
      * @return array
      */
-    protected function getFormSources($files, $name)
+    protected function getFormSources(array $files, string $name): array
     {
         $sources = [];
         foreach ($files as $file) {
@@ -208,7 +215,7 @@ class Manager
      *
      * @return void
      */
-    protected function addFields($files, Form $form, $sourceName)
+    protected function addFields(array $files, Form $form, string $sourceName)
     {
         $formXml = $form->getXml();
 
@@ -222,7 +229,7 @@ class Manager
                 if ($fieldset = $formXml->xpath(static::$xpathFieldset)) {
                     $fieldset = array_shift($fieldset);
 
-                    $fieldset['description'] = \JText::_('COM_OSDOWNLOADS_ML_NO_PLUGINS');
+                    $fieldset['description'] = Text::_('COM_OSDOWNLOADS_ML_NO_PLUGINS');
                 }
 
             } else {
@@ -257,10 +264,10 @@ class Manager
     /**
      * @return Licensed
      */
-    protected function getExtension()
+    protected function getExtension(): Licensed
     {
         if (static::$extension === null) {
-            static::$extension = Factory::getExtension('OSDownloads', 'component');
+            static::$extension = Factory::getExtension('OSDownloads');
         }
 
         return static::$extension;
@@ -271,7 +278,7 @@ class Manager
      *
      * @return string
      */
-    protected function getBasePath()
+    protected function getBasePath(): string
     {
         if (static::$basePath === null) {
             static::$basePath = $this->getExtension()->getLibraryPath();
@@ -287,7 +294,7 @@ class Manager
      *
      * @return string
      */
-    protected function convertPathToClass($filePath)
+    protected function convertPathToClass(string $filePath): string
     {
         $basePath  = str_replace('/', '\\', $this->getBasePath());
         $filePath  = str_replace('/', '\\', $filePath);
@@ -296,7 +303,13 @@ class Manager
         return static::$baseClass . preg_replace('/\.(php|xml)$/', '', $classPath);
     }
 
-    protected function pluginEnabled($file, $formName)
+    /**
+     * @param string $file
+     * @param string $formName
+     *
+     * @return bool
+     */
+    protected function pluginEnabled(string $file, string $formName): bool
     {
         $enabled = true;
 

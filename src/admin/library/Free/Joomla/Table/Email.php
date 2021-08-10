@@ -27,17 +27,24 @@ defined('_JEXEC') or die();
 
 use Alledia\Framework\Joomla\Table\Base as BaseTable;
 use Alledia\OSDownloads\Factory;
+use Alledia\OSDownloads\MailingLists\AbstractClient;
 
 class Email extends BaseTable
 {
     /**
+     * @var AbstractClient[]
+     */
+    protected $_mailinglists = null;
+
+    /**
      * @inheritDoc
+     * @param \JDatabaseDriver $db
      */
     public function __construct($db)
     {
         parent::__construct('#__osdownloads_emails', 'id', $db);
 
-        Factory::getPimpleContainer()->mailingLists->loadObservers($this);
+        $this->_mailinglists = Factory::getPimpleContainer()->mailingLists->registerObservers($this);
     }
 
     /**
@@ -53,9 +60,9 @@ class Email extends BaseTable
         $result = false;
         if (!in_array(false, $pluginResults, true)) {
             $result = parent::store($updateNulls);
-
-            $app->triggerEvent('onOSDownloadsAfterSaveEmail', [$result, $this]);
         }
+
+        $app->triggerEvent('onOSDownloadsAfterSaveEmail', [$result, $this]);
 
         return $result;
     }

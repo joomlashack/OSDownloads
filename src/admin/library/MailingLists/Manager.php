@@ -23,7 +23,7 @@
 
 namespace Alledia\OSDownloads\MailingLists;
 
-use Alledia\Installer\Extension\Licensed;
+use Alledia\Framework\Joomla\Extension\Licensed;
 use Alledia\OSDownloads\Factory;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Form\Form;

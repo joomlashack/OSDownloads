@@ -557,9 +557,9 @@ class SEF
      *
      * @param array $query
      *
-     * @return object|bool
+     * @return ?object
      */
-    public function getMenuItemByQuery($query)
+    public function getMenuItemByQuery(array $query): ?object
     {
         if (!empty(static::$menuItemsById)) {
             foreach (static::$menuItemsById as $menuItem) {
@@ -569,6 +569,6 @@ class SEF
             }
         }
 
-        return false;
+        return null;
     }
 }

@@ -26,9 +26,10 @@ defined('_JEXEC') or die();
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Alledia\OSDownloads\Free\File;
 use Alledia\OSDownloads\Free\Helper\Helper;
+use Joomla\CMS\MVC\View\HtmlView;
 
 
-class OSDownloadsViewDownload extends JViewLegacy
+class OSDownloadsViewDownload extends HtmlView
 {
     /**
      * @var string

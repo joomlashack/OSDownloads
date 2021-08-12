@@ -25,7 +25,10 @@ namespace Alledia\OSDownloads;
 
 use Alledia\OSDownloads\Free\Helper\Route;
 use Alledia\OSDownloads\Free\Helper\SEF;
+use Alledia\OSDownloads\Free\Helper\View;
 use Alledia\OSDownloads\MailingLists\Manager;
+use Joomla\CMS\Application\CMSApplication;
+use Joomla\Database\DatabaseDriver;
 
 defined('_JEXEC') or die();
 
@@ -34,12 +37,19 @@ defined('_JEXEC') or die();
  *
  * @package OSDownloads
  *
- * @property Route   helperRoute
- * @property SEF     helperSEF
- * @property Manager mailingLists
+ * @property-read CMSApplication $app
+ * @property-read DatabaseDriver $db
+ * @property-read Manager        $mailingLists
+ * @property-read Route          $helperRoute
+ * @property-read SEF            $helperSEF
+ * @property-read View           $helperView
  *
- * @method Route  getHelperRoute()
- * @method SEF    helperSEF()
+ * @method CMSApplication app()
+ * @method DatabaseDriver db()
+ * @method Manager        mailingLists()
+ * @method Route          getHelperRoute()
+ * @method SEF            helperSEF()
+ * @method View           helperView()
  */
 class Container extends \Pimple\Container
 {

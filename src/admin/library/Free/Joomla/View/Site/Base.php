@@ -29,6 +29,9 @@ use Joomla\CMS\MVC\View\HtmlView;
 
 defined('_JEXEC') or die();
 
+/**
+ * @deprecated: use Alledia\Framework\Joomla\View\Site\AbstractBase
+ */
 class Base extends HtmlView
 {
     /**
@@ -83,11 +86,11 @@ class Base extends HtmlView
         }
 
         if ($params->get('menu-meta_keywords')) {
-            $doc->setMetadata('keywords', $params->get('menu-meta_keywords'));
+            $doc->setMetaData('keywords', $params->get('menu-meta_keywords'));
         }
 
         if ($params->get('robots')) {
-            $doc->setMetadata('robots', $params->get('robots'));
+            $doc->setMetaData('robots', $params->get('robots'));
         }
     }
 }

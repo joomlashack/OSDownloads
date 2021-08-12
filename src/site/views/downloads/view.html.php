@@ -90,12 +90,8 @@ class OSDownloadsViewDownloads extends View\Site\Base
         $extension = Alledia\Framework\Factory::getExtension('OSDownloads', 'component');
         $extension->loadLibrary();
 
-        $id = $app->input->getInt('id', 1);
-
-        // If empty, we assume id = 1 to hit the Root category
-        if (empty($id)) {
-            $id = 1;
-        }
+        // Default is 1 to start from root category
+        $id = $app->input->getInt('id') ?: 1;
 
         /** @var OSDownloadsModelItem $model */
         $model = BaseDatabaseModel::getInstance('OSDownloadsModelItem');

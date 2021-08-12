@@ -129,7 +129,6 @@ class OSDownloadsViewDownloads extends View\Site\Base
         /*----------  Files  ----------*/
         $db->setQuery($query, $pagination->limitstart, $pagination->limit);
 
-        JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
         $items = $db->loadObjectList();
         foreach ($items as $item) {
             $item->agreementLink = '';

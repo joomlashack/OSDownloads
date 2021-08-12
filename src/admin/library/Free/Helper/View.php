@@ -86,12 +86,11 @@ class View
     {
         $container = Factory::getPimpleContainer();
 
-        // Check if the current file has a menu item
-        $menu = $container->app->getMenu()->getActive();
-
-        if (is_object($menu)) {
-            if ('item' === $menu->query['view'] && $menu->query['id'] === $file->id) {
-                // Yes, so do nothing
+        if ($activeMenu = $container->app->getMenu()->getActive()) {
+            $view = $activeMenu->query['view'] ?? null;
+            $id = $activeMenu->query['id'] ?? null;
+            if ($view == 'item' && $id == $file->id) {
+                // Current menu is for this file
                 return;
             }
         }

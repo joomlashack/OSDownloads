@@ -171,8 +171,7 @@ class OSDownloadsViewDownloads extends View\Site\Base
         // Category filter
         $showCategoryFilter = $params->get('show_category_filter', false);
 
-        $container = Factory::getPimpleContainer();
-        $container->helperView->buildCategoryBreadcrumbs($id);
+        Factory::getPimpleContainer()->helperView->buildCategoryBreadcrumbs($id);
 
         $this->params             = $params;
         $this->categories         = $categories;

@@ -46,11 +46,6 @@ class Item extends Base
     public $itemId = null;
 
     /**
-     * @var object[]
-     */
-    protected $paths = null;
-
-    /**
      * @var Registry
      */
     public $params = null;
@@ -87,9 +82,8 @@ class Item extends Base
         $this->params = $app->getParams();
         $this->itemId = $app->input->getInt('Itemid');
 
-        $menu = $app->getMenu()->getActive();
-        if ($menu) {
-            $this->params->def('page_heading', $this->params->get('page_title', $menu->title));
+        if ($activeMenu = $app->getMenu()->getActive()) {
+            $this->params->def('page_heading', $this->params->get('page_title', $activeMenu->title));
         }
 
         $id = $app->input->getInt('id') ?: (int)$this->params->get('document_id');
@@ -114,14 +108,6 @@ class Item extends Base
         $this->item->description_1 = HTMLHelper::_('content.prepare', $this->item->description_1);
         $this->item->description_2 = HTMLHelper::_('content.prepare', $this->item->description_2);
         $this->item->description_3 = HTMLHelper::_('content.prepare', $this->item->description_3);
-
-        /**
-         * Temporary backward compatibility for user's template overrides.
-         *
-         * @var array
-         * @deprecated  1.9.9  Use JPathway and the breadcrumb module instead to display the breadcrumbs
-         */
-        $this->paths = [];
 
         parent::display($tpl);
     }

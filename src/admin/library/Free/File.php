@@ -93,7 +93,7 @@ class File
      *
      * @return string The content type
      */
-    public static function getContentTypeFromFileName($path)
+    public static function getContentTypeFromFileName(string $path): string
     {
         // Try from filename/extension
         if ($mimeType = static::getMimeType($path)) {
@@ -117,7 +117,7 @@ class File
      *
      * @return string[]
      */
-    public static function getHeaders($url)
+    public static function getHeaders(string $url): array
     {
         $key = md5($url);
         if (!isset(static::$headers[$key])) {
@@ -153,9 +153,9 @@ class File
      *
      * @param string $filename
      *
-     * @return null|string
+     * @return ?string
      */
-    public static function getMimeType($filename)
+    public static function getMimeType(string $filename): ?string
     {
         // Existing local file
         if (is_file($filename) && function_exists('mime_content_type')) {
@@ -182,10 +182,10 @@ class File
      *
      * @return string
      */
-    public static function getDownloadUrl($fileId)
+    public static function getDownloadUrl(int $fileId): string
     {
-        $container = Factory::getPimpleContainer();
+        $link = Factory::getPimpleContainer()->helperRoute->getFileDownloadRoute($fileId);
 
-        return Route::_($container->helperRoute->getFileDownloadRoute($fileId));
+        return Route::_($link);
     }
 }

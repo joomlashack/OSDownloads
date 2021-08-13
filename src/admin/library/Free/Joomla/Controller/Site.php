@@ -32,7 +32,6 @@ use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Language\Text;
 
-
 class Site extends BaseController
 {
     /**

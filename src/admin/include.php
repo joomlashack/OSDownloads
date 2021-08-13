@@ -21,17 +21,18 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Alledia\Framework\Joomla\Extension;
-use Alledia\OSDownloads\Free\Factory;
+use Alledia\Framework\Joomla\Extension\Helper;
+use Alledia\OSDownloads\Factory;
+use Joomla\CMS\Version;
 
 defined('_JEXEC') or die();
 
-// Alledia Framework
 if (!defined('ALLEDIA_FRAMEWORK_LOADED')) {
     $allediaFrameworkPath = JPATH_SITE . '/libraries/allediaframework/include.php';
 
-    if (file_exists($allediaFrameworkPath)) {
+    if (is_file($allediaFrameworkPath)) {
         require_once $allediaFrameworkPath;
+
     } else {
         $app = Factory::getApplication();
 
@@ -49,10 +50,14 @@ if (defined('ALLEDIA_FRAMEWORK_LOADED') && !defined('OSDOWNLOADS_LOADED')) {
     define('OSDOWNLOADS_LIBRARY', OSDOWNLOADS_ADMIN . '/library');
     define('OSDOWNLOADS_MEDIA', JPATH_SITE . '/media/com_osdownloads');
 
-    Extension\Helper::loadLibrary('com_osdownloads');
-
     require_once OSDOWNLOADS_ADMIN . '/vendor/autoload.php';
-    JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
+
+    Helper::loadLibrary('com_osdownloads');
+
+    if (version_compare(Version::MAJOR_VERSION, '4', 'lt')) {
+        // Joomla 3 shims
+        JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
+    }
 
     switch (Factory::getApplication()->getName()) {
         case 'site':
@@ -61,16 +66,8 @@ if (defined('ALLEDIA_FRAMEWORK_LOADED') && !defined('OSDOWNLOADS_LOADED')) {
 
         case 'administrator':
             Factory::getLanguage()->load('com_osdownloads', OSDOWNLOADS_ADMIN);
-
-            JLoader::register('TraitModelUploads', OSDOWNLOADS_ADMIN . '/models/TraitModelUploads.php');
             break;
-    }
-
-    define('IsJoomla4', version_compare(JVERSION, '4'));
-
-    if (IsJoomla4) {
-        require_once OSDOWNLOADS_LIBRARY . '/Free/Joomla/Legacy/JObservableInterface.php';
-        require_once OSDOWNLOADS_LIBRARY . '/Free/Joomla/Legacy/JObserverInterface.php';
     }
 }
 
+return defined('OSDOWNLOADS_LOADED');

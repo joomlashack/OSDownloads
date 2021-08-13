@@ -21,13 +21,24 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Alledia\OSDownloads\Factory;
+use Alledia\OSDownloads\Free\Helper\Helper as FreeHelper;
+use Alledia\OSDownloads\Pro\Helper\Helper as ProHelper;
+use Joomla\CMS\MVC\Controller\BaseController;
+
 defined('_JEXEC') or die();
 
-class OSDownloadsController extends JControllerLegacy
+class OSDownloadsController extends BaseController
 {
-    protected $default_view = "files";
+    /**
+     * @inheritdoc
+     */
+    protected $default_view = 'files';
 
-    public function __construct($default = array())
+    /**
+     * @inheritDoc
+     */
+    public function __construct($default = [])
     {
         parent::__construct($default);
 
@@ -36,33 +47,29 @@ class OSDownloadsController extends JControllerLegacy
     }
 
     /**
-     * @param bool  $cachable
-     * @param array $urlparams
-     *
-     * @return JControllerLegacy
+     * @inheritDoc
      * @throws Exception
      */
-    public function display($cachable = false, $urlparams = array())
+    public function display($cachable = false, $urlparams = [])
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
 
         $view = $app->input->getCmd('view', 'files');
         $app->input->set('view', $view);
 
         switch ($this->getTask()) {
-            case "file":
+            case 'file':
                 $app->input->set('view', 'file');
                 $view = 'file';
                 break;
         }
 
         if ($view !== 'file') {
-            require_once JPATH_COMPONENT . '/helpers/osdownloads.php';
-
-            if (class_exists('\\Alledia\\OSDownloads\\Pro\\Helper\\Helper')) {
-                Alledia\OSDownloads\Pro\Helper\Helper::addSubmenu($app->input->getCmd('view', $view));
+            $extension = Factory::getExtension('OSDownloads', 'component');
+            if ($extension->isPro()) {
+                ProHelper::addSubmenu($app->input->getCmd('view', $view));
             } else {
-                Alledia\OSDownloads\Free\Helper\Helper::addSubmenu($app->input->getCmd('view', $view));
+                FreeHelper::addSubmenu($app->input->getCmd('view', $view));
             }
         }
 

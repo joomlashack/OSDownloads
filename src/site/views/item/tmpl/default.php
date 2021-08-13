@@ -23,17 +23,28 @@
 
 defined('_JEXEC') or die();
 
-use Alledia\OSDownloads\Free\Factory;
+use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Router\Route;
 
-$lang      = JFactory::getLanguage();
+$lang      = Factory::getLanguage();
 $container = Factory::getPimpleContainer();
 $component = FreeComponentSite::getInstance();
 
-JHtml::_('jquery.framework');
+HTMLHelper::_('jquery.framework');
 
-$options = array('version' => $component->getMediaVersion(), 'relative' => true);
-JHtml::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', $options, array());
+$options = [];
+HTMLHelper::_(
+    'script',
+    'com_osdownloads/jquery.osdownloads.bundle.min.js',
+    [
+        'version'  => $component->getMediaVersion(),
+        'relative' => true
+    ]
+);
 
 if (!$this->isPro) {
     $this->item->require_share = false;
@@ -42,7 +53,8 @@ if (!$this->isPro) {
 ?>
 <div class="contentopen osdownloads-container item_<?php echo $this->item->id; ?>">
     <?php
-    if ($this->params->get('show_page_heading')
+    if (
+        $this->params->get('show_page_heading')
         && ($heading = $this->params->get('page_heading'))
     ) :
         ?>
@@ -61,8 +73,8 @@ if (!$this->isPro) {
     if ($this->params->get('show_category', 0) && is_object($this->category)) :
         ?>
         <div class="cate_info">
-            <?php echo JText::_('COM_OSDOWNLOADS_CATEGORY') . ':'; ?>
-            <a href="<?php echo JRoute::_($container->helperRoute->getFileListRoute($this->category->id)); ?>">
+            <?php echo Text::_('COM_OSDOWNLOADS_CATEGORY') . ':'; ?>
+            <a href="<?php echo Route::_($container->helperRoute->getFileListRoute($this->category->id)); ?>">
                 <?php echo $this->category->title; ?>
             </a>
         </div>
@@ -70,18 +82,18 @@ if (!$this->isPro) {
 
     if ($this->params->get('show_download_count', 0)) :
         ?>
-        <div><?php echo(JText::_('COM_OSDOWNLOADS_DOWNLOADED')); ?>: <?php echo($this->item->downloaded); ?></div>
+        <div>
+            <?php echo(Text::_('COM_OSDOWNLOADS_DOWNLOADED')); ?>: <?php echo($this->item->downloaded); ?>
+        </div>
     <?php endif;
 
     echo $this->item->event->beforeDisplayContent;
     ?>
     <div class="reference">
-        <?php
-        if ($this->item->documentation_link) :
-            ?>
+        <?php if ($this->item->documentation_link) : ?>
             <div class="osdownloads-readmore readmore">
                 <a href="<?php echo($this->item->documentation_link); ?>">
-                    <?php echo(JText::_('COM_OSDOWNLOADS_DOCUMENTATION')); ?>
+                    <?php echo(Text::_('COM_OSDOWNLOADS_DOCUMENTATION')); ?>
                 </a>
             </div>
         <?php endif;
@@ -89,52 +101,47 @@ if (!$this->isPro) {
         if ($this->item->demo_link) :
             ?>
             <div class="osdownloads-readmore readmore">
-                <a href="<?php echo($this->item->demo_link); ?>">
-                    <?php echo(JText::_('COM_OSDOWNLOADS_DEMO')); ?>
-                </a>
+                <?php HTMLHelper::_('link', $this->item->demo_link, Text::_('COM_OSDOWNLOADS_DEMO')); ?>
             </div>
         <?php endif;
 
-        if ($this->item->support_link) :
-            ?>
+        if ($this->item->support_link) : ?>
             <div class="osdownloads-readmore readmore">
-                <a href="<?php echo($this->item->support_link); ?>">
-                    <?php echo(JText::_('COM_OSDOWNLOADS_SUPPORT')); ?>
-                </a>
+                <?php echo HTMLHelper::_('link', $this->item->support_link, Text::_('COM_OSDOWNLOADS_SUPPORT')); ?>
             </div>
         <?php endif;
 
         if ($this->item->other_link) :
             ?>
             <div class="osdownloads-readmore readmore">
-                <a href="<?php echo($this->item->other_link); ?>">
-                    <?php echo($this->item->other_name); ?>
-                </a>
+                <?php HTMLHelper::_('link', $this->item->other_link, $this->item->other_name); ?>
             </div>
         <?php endif; ?>
         <div class="clr"></div>
     </div>
     <?php
-    if ($this->item->brief || $this->item->description_1) :
-        ?>
-        <div class="description1"><?php echo($this->item->brief . $this->item->description_1); ?></div>
+    if ($this->item->brief || $this->item->description_1) : ?>
+        <div class="description1">
+            <?php echo($this->item->brief . $this->item->description_1); ?>
+        </div>
     <?php endif;
 
-    if ($this->item->description_2) :
-        ?>
-        <div class="description2"><?php echo($this->item->description_2); ?></div>
+    if ($this->item->description_2) : ?>
+        <div class="description2">
+            <?php echo($this->item->description_2); ?>
+        </div>
     <?php endif; ?>
+
     <div class="osdownloadsactions">
         <div class="btn_download">
-            <?php echo JLayoutHelper::render('buttons.download', $this); ?>
+            <?php echo LayoutHelper::render('buttons.download', $this); ?>
         </div>
     </div>
 
     <?php
     if ($this->item->description_3) :
-        ?>
-        <div><?php echo($this->item->description_3); ?></div>
-    <?php endif;
+        echo sprintf('<div>%s</div>', $this->item->description_3);
+    endif;
 
     echo $this->item->event->afterDisplayContent;
     ?>

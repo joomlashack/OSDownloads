@@ -24,10 +24,13 @@
 
 namespace Alledia\OSDownloads\Free\Joomla\View\Admin;
 
+use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Version;
-use JViewLegacy;
 
-class Base extends JViewLegacy
+/**
+ * @deprecated: use Alledia\Framework\Joomla\View\Admin\AbstractBase
+ */
+class Base extends HtmlView
 {
     /**
      * Load different layout depending on Joomla 2.5 vs 3.x

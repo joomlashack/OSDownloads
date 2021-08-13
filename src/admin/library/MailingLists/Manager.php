@@ -23,17 +23,23 @@
 
 namespace Alledia\OSDownloads\MailingLists;
 
-use Alledia\Framework\Factory;
-use Alledia\Installer\Extension\Licensed;
-use JFolder;
-use JForm;
-use JTable;
+use Alledia\Framework\Joomla\Extension\Licensed;
+use Alledia\OSDownloads\Factory;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Table\Table;
 use SimpleXMLElement;
 
 defined('_JEXEC') or die();
 
 class Manager
 {
+    /**
+     * @var AbstractClient[]
+     */
+    protected $observers = null;
+
     /**
      * @var Licensed
      */
@@ -52,11 +58,11 @@ class Manager
     /**
      * @var string[]
      */
-    protected static $sourceNames = array(
+    protected static $sourceNames = [
         'com_config.component'                   => 'config',
         'com_categories.categorycom_osdownloads' => 'category',
         'com_osdownloads.file'                   => 'file'
-    );
+    ];
 
     /**
      * @var string
@@ -71,20 +77,21 @@ class Manager
     /**
      * Find all Mailing List plugins and attach as Table observers
      *
-     * @param JTable $table
+     * @param Table $table
      *
-     * @return void
+     * @return $this
      */
-    public function loadObservers(JTable $table)
+    public function registerObservers(Table $table): self
     {
         $plugins = $this->getPluginFiles('php');
 
         foreach ($plugins as $pluginPath) {
-            /** @var \JObserverInterface $pluginClass */
             $pluginClass = $this->convertPathToClass($pluginPath);
 
-            $pluginClass::createObserver($table);
+            $this->observers[$pluginClass] = new $pluginClass($table);
         }
+
+        return $this;
     }
 
     /**
@@ -103,11 +110,11 @@ class Manager
      * PluginGroupName : The field group name for the added fields in the form
      * FormName        : A form name listed in static::$sourceNames
      *
-     * @param JForm $form
+     * @param Form $form
      *
      * @throws \Exception
      */
-    public function loadForms(JForm $form)
+    public function loadForms(Form $form)
     {
         if ($formFiles = $this->getPluginFiles('xml')) {
             $formName = $form->getName();
@@ -116,8 +123,9 @@ class Manager
                 $sourceName = static::$sourceNames[$formName];
 
                 // Special handling for configuration form
-                if ($sourceName == 'config'
-                    && \JFactory::getApplication()->input->getCmd('component') != 'com_osdownloads'
+                if (
+                    $sourceName == 'config'
+                    && Factory::getApplication()->input->getCmd('component') != 'com_osdownloads'
                 ) {
                     return;
                 }
@@ -132,20 +140,20 @@ class Manager
      *
      * @return string[]
      */
-    protected function getPluginFiles($type)
+    protected function getPluginFiles($type): array
     {
         $baseFolder = '/MailingList';
         $regex      = sprintf('\.%s$', $type);
         $extension  = $this->getExtension();
 
-        $configFiles = array();
+        $configFiles = [];
 
         // Collect Pro configuration files first
         if ($extension->isPro()) {
             $proPath = $extension->getProLibraryPath() . $baseFolder;
 
             if (is_dir($proPath)) {
-                $proFiles = JFolder::files($proPath, $regex, false, true);
+                $proFiles = Folder::files($proPath, $regex, false, true);
                 foreach ($proFiles as $proFile) {
                     $key               = strtolower(basename($proFile, '.' . $type));
                     $configFiles[$key] = $proFile;
@@ -155,7 +163,7 @@ class Manager
 
         // Collect free files but don't override pro versions
         $freePath  = $extension->getLibraryPath() . '/Free' . $baseFolder;
-        $freeFiles = JFolder::files($freePath, $regex, false, true);
+        $freeFiles = Folder::files($freePath, $regex, false, true);
         foreach ($freeFiles as $freeFile) {
             $key = strtolower(basename($freeFile, '.' . $type));
             if (empty($configFiles[$key])) {
@@ -172,9 +180,9 @@ class Manager
      *
      * @return array
      */
-    protected function getFormSources($files, $name)
+    protected function getFormSources(array $files, string $name): array
     {
-        $sources = array();
+        $sources = [];
         foreach ($files as $file) {
             if ($this->pluginEnabled($file, $name)) {
                 $source  = simplexml_load_file($file);
@@ -202,12 +210,12 @@ class Manager
      * Add plugin fields for the selected form
      *
      * @param string[] $files
-     * @param JForm    $form
+     * @param Form     $form
      * @param string   $sourceName
      *
      * @return void
      */
-    protected function addFields($files, JForm $form, $sourceName)
+    protected function addFields(array $files, Form $form, string $sourceName)
     {
         $formXml = $form->getXml();
 
@@ -221,12 +229,12 @@ class Manager
                 if ($fieldset = $formXml->xpath(static::$xpathFieldset)) {
                     $fieldset = array_shift($fieldset);
 
-                    $fieldset['description'] = \JText::_('COM_OSDOWNLOADS_ML_NO_PLUGINS');
+                    $fieldset['description'] = Text::_('COM_OSDOWNLOADS_ML_NO_PLUGINS');
                 }
 
             } else {
                 $parents        = $target->xpath('ancestor::fields[@name]/@name');
-                $parentGroups   = array_map('strval', $parents ?: array());
+                $parentGroups   = array_map('strval', $parents ?: []);
                 $parentGroups[] = (string)$target['name'];
                 $parentGroup    = join('.', $parentGroups) . '.';
 
@@ -256,10 +264,10 @@ class Manager
     /**
      * @return Licensed
      */
-    protected function getExtension()
+    protected function getExtension(): Licensed
     {
         if (static::$extension === null) {
-            static::$extension = Factory::getExtension('OSDownloads', 'component');
+            static::$extension = Factory::getExtension('OSDownloads');
         }
 
         return static::$extension;
@@ -270,7 +278,7 @@ class Manager
      *
      * @return string
      */
-    protected function getBasePath()
+    protected function getBasePath(): string
     {
         if (static::$basePath === null) {
             static::$basePath = $this->getExtension()->getLibraryPath();
@@ -286,28 +294,32 @@ class Manager
      *
      * @return string
      */
-    protected function convertPathToClass($filePath)
+    protected function convertPathToClass(string $filePath): string
     {
-        $basePath = str_replace('/', '\\', $this->getBasePath());
-        $filePath = str_replace('/', '\\', $filePath);
+        $basePath  = str_replace('/', '\\', $this->getBasePath());
+        $filePath  = str_replace('/', '\\', $filePath);
         $classPath = str_replace($basePath, '', $filePath);
 
-        $className = static::$baseClass . preg_replace('/\.(php|xml)$/', '', $classPath);
-
-        return $className;
+        return static::$baseClass . preg_replace('/\.(php|xml)$/', '', $classPath);
     }
 
-    protected function pluginEnabled($file, $formName)
+    /**
+     * @param string $file
+     * @param string $formName
+     *
+     * @return bool
+     */
+    protected function pluginEnabled(string $file, string $formName): bool
     {
         $enabled = true;
 
         $className = $this->convertPathToClass($file);
         if (class_exists($className)) {
-            $checkDependencies  = array($className, 'checkDependencies');
-            $enabled = !is_callable($checkDependencies) || call_user_func($checkDependencies);
+            $checkDependencies = [$className, 'checkDependencies'];
+            $enabled           = !is_callable($checkDependencies) || call_user_func($checkDependencies);
             if ($enabled && $formName != 'config') {
-                $isEnabled = array($className, 'isEnabled');
-                $enabled = !is_callable($isEnabled) || call_user_func($isEnabled);
+                $isEnabled = [$className, 'isEnabled'];
+                $enabled   = !is_callable($isEnabled) || call_user_func($isEnabled);
             }
         }
 

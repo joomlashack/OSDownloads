@@ -24,7 +24,7 @@
 defined('_JEXEC') or die();
 
 use Alledia\Framework\Helper as AllediaHelper;
-use Alledia\OSDownloads\Free\Factory;
+use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 
 $this->app                    = Factory::getApplication();

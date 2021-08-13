@@ -7,7 +7,8 @@
         <field name="published"
                type="status"
                onchange="this.form.submit();"
-               filter="0,1">
+               filter="0,1"
+               optionsFilter="0,1">
             <option value="">COM_OSDOWNLOADS_OPTION_SELECT_PUBLISHED</option>
         </field>
 
@@ -43,8 +44,8 @@
                type="limitbox"
                class="inputbox input-mini"
                default="25"
-               label="COM_SIMPLERENEW_LIST_LIMIT"
-               description="COM_SIMPLERENEW_LIST_LIMIT_DESC"
+               label="COM_OSDOWNLOADS_LIST_LIMIT"
+               description="COM_OSDOWNLOADS_LIST_LIMIT_DESC"
                onchange="this.form.submit();"/>
     </fields>
 </form>

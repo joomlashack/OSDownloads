@@ -23,6 +23,8 @@
 
 namespace Alledia\OSDownloads\Free\Helper;
 
+use Alledia\OSDownloads\Factory;
+
 defined('_JEXEC') or die();
 
 /**
@@ -33,190 +35,172 @@ class Route
     /**
      * Get the file download route.
      *
-     * @param   integer $id The id of the file
+     * @param int $id The id of the file
      *
-     * @return  string  The file download route.
+     * @return string  The file download route.
      */
-    public function getFileDownloadRoute($id)
+    public function getFileDownloadRoute(int $id): string
     {
-        $id = abs((int)$id);
+        $query = [
+            'option' => 'com_osdownloads',
+            'task'   => 'download',
+            'tmpl'   => 'component',
+            'id'     => $id
+        ];
 
-        // Create the link
-        $link = 'index.php?option=com_osdownloads&task=download&tmpl=component&id=' . $id;
+        if ($menu = Factory::getPimpleContainer()->helperSEF->getMenuItemForFile($id)) {
+            $query['Itemid'] = $menu->id;
+        }
 
-        return $link;
+        return 'index.php?' . http_build_query($query);
     }
 
     /**
      * Get the file list route
      *
-     * @param   integer $id     The id of the category
-     * @param   integer $itemId The menu item id
+     * @param ?int $id     The id of the category
+     * @param ?int $itemId The menu item id
      *
-     * @return  string  The file route
+     * @return string  The file route
      */
-    public function getFileListRoute($id = null, $itemId = 0)
+    public function getFileListRoute(?int $id = null, ?int $itemId = null): string
     {
+        $query = [
+            'option' => 'com_osdownloads',
+            'view'   => 'downloads'
+        ];
 
-        // Create the link
-        $link = 'index.php?option=com_osdownloads&view=downloads';
-
-        if (!is_null($id)) {
-            $id = (int) $id;
-            $link .= '&id=' . $id;
+        if ($id !== null) {
+            $query['id'] = $id;
         }
 
-        // Should we add the item id?
-        if (!empty($itemId)) {
-            $itemId = abs((int)$itemId);
-
-            $link .= '&Itemid=' . $itemId;
+        if ($itemId) {
+            $query['Itemid'] = $itemId;
         }
 
-        return $link;
+        return 'index.php?' . http_build_query($query);
     }
 
     /**
      * Get the category list route
      *
-     * @param   integer $id     The id of the category
-     * @param   integer $itemId The menu item id
+     * @param ?int $id     The id of the category
+     * @param ?int $itemId The menu item id
      *
-     * @return  string  The file route
+     * @return string  The file route
      */
-    public function getCategoryListRoute($id = null, $itemId = 0)
+    public function getCategoryListRoute(?int $id = null, ?int $itemId = null): string
     {
+        $query = [
+            'option' => 'com_osdownloads',
+            'view'   => 'categories'
+        ];
 
-        // Create the link
-        $link = 'index.php?option=com_osdownloads&view=categories';
-
-        if (!is_null($id)) {
-            $id = (int) $id;
-            $link .= '&id=' . $id;
+        if ($id !== null) {
+            $query['id'] = $id;
         }
 
-        // Should we add the item id?
-        if (!empty($itemId)) {
-            $itemId = abs((int)$itemId);
-
-            $link .= '&Itemid=' . $itemId;
+        if ($itemId) {
+            $query['Itemid'] = $itemId;
         }
 
-        return $link;
+        return 'index.php?' . http_build_query($query);
     }
 
     /**
      * Get the view item route
      *
-     * @param   integer $id     The id of the file
-     * @param   integer $itemId The menu item id
+     * @param int  $id     The id of the file
+     * @param ?int $itemId The menu item id
      *
-     * @return  string  The file route
+     * @return string  The file route
      */
-    public function getViewItemRoute($id, $itemId = 0)
+    public function getViewItemRoute(int $id, ?int $itemId = null): string
     {
-        $id = abs((int)$id);
+        $query = [
+            'option' => 'com_osdownloads',
+            'view'   => 'item',
+            'id'     => $id
+        ];
 
-        // Create the link
-        $link = 'index.php?option=com_osdownloads&view=item&id=' . $id;
-
-        // Should we add the item id?
-        if (!empty($itemId)) {
-            $itemId = abs((int)$itemId);
-
-            $link .= '&Itemid=' . $itemId;
+        if ($itemId) {
+            $query['Itemid'] = $itemId;
         }
 
-        return $link;
+        return 'index.php?' . http_build_query($query);
     }
 
     /**
      * Get the file download content route
      *
-     * @param   integer $id     The id of the file
-     * @param   integer $itemId The menu item id
+     * @param int  $id     The id of the file
+     * @param ?int $itemId The menu item id
      *
-     * @return  string  The file route
+     * @return string  The file route
      */
-    public function getFileDownloadContentRoute($id, $itemId = 0)
+    public function getFileDownloadContentRoute(int $id, ?int $itemId = null): string
     {
-        $id = abs((int)$id);
+        $query = [
+            'option' => 'com_osdownloads',
+            'task'   => 'routedownload',
+            'tmpl'   => 'component',
+            'id'     => $id
+        ];
 
-        // Create the link
-        $link = 'index.php?option=com_osdownloads&task=routedownload&tmpl=component&id=' . $id;
-
-        // Should we add the item id?
-        if (!empty($itemId)) {
-            $itemId = abs((int)$itemId);
-
-            $link .= '&Itemid=' . $itemId;
+        if ($itemId) {
+            $query['Itemid'] = $itemId;
         }
 
-        return $link;
+        return 'index.php?' . http_build_query($query);
     }
 
     /**
      * Get the route for the file list in the admin
      *
-     * @return  string  The files list route
+     * @return string  The files list route
      */
-    public function getAdminFileListRoute()
+    public function getAdminFileListRoute(): string
     {
-        // Create the link
-        $link = 'index.php?option=com_osdownloads&view=files';
-
-        return $link;
+        return 'index.php?option=com_osdownloads&view=files';
     }
 
     /**
      * Get the route for the categories list in the admin
      *
-     * @return  string  The category list route
+     * @return string  The category list route
      */
-    public function getAdminCategoryListRoute()
+    public function getAdminCategoryListRoute(): string
     {
-        // Create the link
-        $link = 'index.php?option=com_categories&extension=com_osdownloads';
-
-        return $link;
+        return 'index.php?option=com_categories&extension=com_osdownloads';
     }
 
     /**
      * Get the route for the emails list in the admin
      *
-     * @return  string  The emails list route
+     * @return string  The emails list route
      */
-    public function getAdminEmailListRoute()
+    public function getAdminEmailListRoute(): string
     {
-        // Create the link
-        $link = 'index.php?option=com_osdownloads&view=emails';
-
-        return $link;
+        return 'index.php?option=com_osdownloads&view=emails';
     }
 
     /**
      * Get the route for the main admin view
      *
-     * @return  string  The main view route
+     * @return string  The main view route
      */
-    public function getAdminMainViewRoute()
+    public function getAdminMainViewRoute(): string
     {
-        // Create the link
-        $link = 'index.php?option=com_osdownloads';
-
-        return $link;
+        return 'index.php?option=com_osdownloads';
     }
 
     /**
      * Get the route for the admin save ordering URL.
      *
-     * @return  string  The save ordering route
+     * @return string  The save ordering route
      */
-    public function getAdminSaveOrderingRoute()
+    public function getAdminSaveOrderingRoute(): string
     {
-        // Create the link
-        $link = 'index.php?option=com_osdownloads&task=files.saveOrderAjax&tmpl=component';
-
-        return $link;
+        return 'index.php?option=com_osdownloads&task=files.saveOrderAjax&tmpl=component';
     }
 }

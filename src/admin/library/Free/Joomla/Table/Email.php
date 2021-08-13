@@ -26,45 +26,62 @@ namespace Alledia\OSDownloads\Free\Joomla\Table;
 defined('_JEXEC') or die();
 
 use Alledia\Framework\Joomla\Table\Base as BaseTable;
-use Alledia\OSDownloads\Free\Factory;
-use JEventDispatcher;
+use Alledia\OSDownloads\Factory;
+use Alledia\OSDownloads\MailingLists\AbstractClient;
 
 class Email extends BaseTable
 {
-    public function __construct(&$db)
+    /**
+     * @var AbstractClient[]
+     */
+    protected $_mailinglists = null;
+
+    /**
+     * @inheritDoc
+     * @param \JDatabaseDriver $db
+     */
+    public function __construct($db)
     {
         parent::__construct('#__osdownloads_emails', 'id', $db);
 
-        Factory::getPimpleContainer()->mailingLists->loadObservers($this);
+        $this->_mailinglists = Factory::getPimpleContainer()->mailingLists->registerObservers($this);
     }
 
+    /**
+     * @inheritDoc
+     * @throws \Exception
+     */
     public function store($updateNulls = false)
     {
-        // Trigger events to osdownloads plugins
-        $dispatcher = JEventDispatcher::getInstance();
-        $pluginResults = $dispatcher->trigger('onOSDownloadsBeforeSaveEmail', array(&$this));
+        $app = Factory::getApplication();
+
+        $pluginResults = $app->triggerEvent('onOSDownloadsBeforeSaveEmail', [$this]);
 
         $result = false;
-        if ($pluginResults !== false) {
+        if (!in_array(false, $pluginResults, true)) {
             $result = parent::store($updateNulls);
-
-            $dispatcher->trigger('onOSDownloadsAfterSaveEmail', array($result, &$this));
         }
+
+        $app->triggerEvent('onOSDownloadsAfterSaveEmail', [$result, $this]);
 
         return $result;
     }
 
+    /**
+     * @inheritDoc
+     * @throws \Exception
+     */
     public function delete($pk = null)
     {
-        // Trigger events to osdownloads plugins
-        $dispatcher = JEventDispatcher::getInstance();
-        $pluginResults = $dispatcher->trigger('onOSDownloadsBeforeDeleteEmail', array(&$this, $pk));
+        $app = Factory::getApplication();
+
+        $pluginResults = $app->triggerEvent('onOSDownloadsBeforeDeleteEmail', [$this, $pk]);
 
         $result = false;
-        if ($pluginResults !== false) {
+        if (!in_array(false, $pluginResults, true)) {
             $result = parent::delete($pk);
 
-            $dispatcher->trigger('onOSDownloadsAfterDeleteEmail', array($result, $this->id, $pk));
+            $app->triggerEvent('onOSDownloadsAfterDeleteEmail', [$result, $this->get('id'), $pk]);
         }
 
         return $result;

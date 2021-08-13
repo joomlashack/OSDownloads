@@ -23,8 +23,12 @@
 
 namespace Alledia\OSDownloads\Free\MailingList;
 
+use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\MailingLists\AbstractClient;
-use Exception;
+use JEventDispatcher;
+use Joomla\CMS\Table\Table;
+use Joomla\Event\Dispatcher;
+use Joomla\Event\Event;
 
 defined('_JEXEC') or die();
 
@@ -41,58 +45,87 @@ class MailChimp extends AbstractClient
     protected static $apiManager = null;
 
     /**
-     * @param $result
+     * @inheritDoc
+     */
+    protected function registerObservers()
+    {
+        $dispatcher = Factory::getDispatcher();
+
+        if ($dispatcher instanceof JEventDispatcher) {
+            $dispatcher->register('onOSDownloadsAfterSaveEmail', [$this, 'onAfterStore']);
+
+        } elseif ($dispatcher instanceof Dispatcher) {
+            $dispatcher->addListener('onOSDownloadsAfterSaveEmail', [$this, 'onTableAfterStore']);
+        }
+    }
+
+    /**
+     * @param bool  $result
+     * @param Table $table
      *
      * @return void
      */
-    public function onAfterStore($result)
+    public function onAfterStore(bool $result, Table $table)
     {
         if ($result && static::isEnabled()) {
             try {
-                $email  = empty($this->table->email) ? null : $this->table->email;
-                $mc     = static::getMailChimp();
-                $listId = static::getParams()->get("mailinglist.mailchimp.list_id", 0);
+                $email  = $table->email ?? null;
+                $mc     = $this->getMailChimp();
+                $listId = $this->getParams()->get('mailinglist.mailchimp.list_id', 0);
 
                 if ($email && $mc && $listId) {
                     // Check if the email already exists
                     try {
-                        $result = $mc->get("lists/{$listId}/members/" . md5(strtolower($email)));
-                        $result = $result->toArray();
+                        $member = $mc->get("lists/{$listId}/members/" . md5(strtolower($email)));
+                        $member = $member->toArray();
 
-                    } catch (Exception $e) {
-                        $result = array('status' => 'unsubscribed');
+                    } catch (\Exception $e) {
+                        $member = ['status' => 'unsubscribed'];
                     }
 
-                    if ($result['status'] !== 'subscribed') {
+                    if ($member['status'] !== 'subscribed') {
                         // The email is not subscribed. Let's subscribe it.
-                        $mc->post("lists/{$listId}/members/", array(
+                        $mc->post("lists/{$listId}/members/", [
                             'email_address' => $email,
                             'status'        => 'subscribed'
-                        ));
+                        ]);
                     }
                 }
 
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $this->logError($e->getMessage());
             }
         }
     }
 
     /**
-     * @return \Mailchimp\Mailchimp
+     * @param Event $event
      */
-    public static function getMailChimp()
+    public function onTableAfterStore(Event $event)
+    {
+        if ($event->count() == 2) {
+            $result = $event->getArgument(0);
+            $table  = $event->getArgument(1);
+
+            $this->onAfterStore($result, $table);
+        }
+    }
+
+    /**
+     * @return ?\Mailchimp\Mailchimp
+     */
+    public function getMailChimp(): ?\Mailchimp\Mailchimp
     {
         if (static::$apiManager === null) {
             static::$apiManager = false;
             try {
-                $params = static::getParams();
-                $apiKey = $params->get("mailinglist.mailchimp.api", 0);
+                $params = $this->getParams();
+                $apiKey = $params->get('mailinglist.mailchimp.api', 0);
                 if ($apiKey) {
                     static::$apiManager = new \Mailchimp\Mailchimp($apiKey);
                 }
 
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 // Just ignore this
             }
         }
@@ -100,8 +133,11 @@ class MailChimp extends AbstractClient
         return static::$apiManager ?: null;
     }
 
-    public static function isEnabled()
+    /**
+     * @inheritDoc
+     */
+    public function isEnabled(): bool
     {
-        return static::getParams()->get('mailinglist.mailchimp.enable');
+        return $this->getParams()->get('mailinglist.mailchimp.enable');
     }
 }

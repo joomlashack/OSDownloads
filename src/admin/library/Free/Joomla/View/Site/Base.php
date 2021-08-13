@@ -23,12 +23,16 @@
 
 namespace Alledia\OSDownloads\Free\Joomla\View\Site;
 
+use Alledia\OSDownloads\Factory;
 use Exception;
-use JViewLegacy;
+use Joomla\CMS\MVC\View\HtmlView;
 
 defined('_JEXEC') or die();
 
-class Base extends JViewLegacy
+/**
+ * @deprecated: use Alledia\Framework\Joomla\View\Site\AbstractBase
+ */
+class Base extends HtmlView
 {
     /**
      * @param string $tpl
@@ -51,11 +55,10 @@ class Base extends JViewLegacy
      */
     protected function prepareDocument()
     {
-        $app    = \JFactory::getApplication();
+        $app    = Factory::getApplication();
         $menus  = $app->getMenu();
-        $doc    = \JFactory::getDocument();
+        $doc    = Factory::getDocument();
         $params = $app->getParams();
-        $title  = null;
 
         // Because the application sets a default page title, we need to get it from the menu item itself
         $menu = $menus->getActive();
@@ -83,11 +86,11 @@ class Base extends JViewLegacy
         }
 
         if ($params->get('menu-meta_keywords')) {
-            $doc->setMetadata('keywords', $params->get('menu-meta_keywords'));
+            $doc->setMetaData('keywords', $params->get('menu-meta_keywords'));
         }
 
         if ($params->get('robots')) {
-            $doc->setMetadata('robots', $params->get('robots'));
+            $doc->setMetaData('robots', $params->get('robots'));
         }
     }
 }

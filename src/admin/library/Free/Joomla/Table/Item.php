@@ -25,25 +25,18 @@ namespace Alledia\OSDownloads\Free\Joomla\Table;
 
 defined('_JEXEC') or die();
 
-use Alledia\Framework\Factory;
 use Alledia\Framework\Joomla\Table\Base;
-use JApplicationHelper;
-use JEventDispatcher;
-use JFactory;
+use Alledia\OSDownloads\Factory;
+use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Registry\Registry;
-use JPluginHelper;
 
 class Item extends Base
 {
-    protected $_columnAlias = array(
+    protected $_columnAlias = [
         'title' => 'name',
         'catid' => 'cate_id'
-    );
-
-    /**
-     * @var JEventDispatcher
-     */
-    protected $_dispatcher = null;
+    ];
 
     public function __construct(&$_db)
     {
@@ -52,8 +45,8 @@ class Item extends Base
 
     public function store($updateNulls = false)
     {
-        $date = JFactory::getDate();
-        $user = JFactory::getUser();
+        $date = Factory::getDate();
+        $user = Factory::getUser();
 
         $this->modified_time = $date->toSql();
 
@@ -71,7 +64,7 @@ class Item extends Base
         if (empty($this->alias)) {
             $this->alias = $this->name;
         }
-        $this->alias = JApplicationHelper::stringURLSafe($this->alias);
+        $this->alias = ApplicationHelper::stringURLSafe($this->alias);
 
         if ($this->params instanceof Registry) {
             $params = $this->params->toString();
@@ -107,7 +100,8 @@ class Item extends Base
 
     protected function trigger($event, array $arguments)
     {
-        JPluginHelper::importPlugin('osdownloads');
+        PluginHelper::importPlugin('osdownloads');
+
         return Factory::getApplication()->triggerEvent($event, $arguments);
     }
 

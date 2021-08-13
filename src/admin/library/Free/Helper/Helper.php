@@ -23,18 +23,25 @@
 
 namespace Alledia\OSDownloads\Free\Helper;
 
-use Alledia\OSDownloads\Free\MailingList\MailChimp;
+use Alledia\OSDownloads\Factory;
+use ContentHelperRoute;
 use Exception;
 use JHtmlSidebar;
 use Joomla\CMS\Access\Access;
-use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\HTML\Helpers\Sidebar;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die();
+
+if (!require_once JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php') {
+    return;
+}
 
 abstract class Helper
 {
@@ -46,13 +53,13 @@ abstract class Helper
      */
     public static function addSubmenu($vName)
     {
-        JHtmlSidebar::addEntry(
+        Sidebar::addEntry(
             Text::_('COM_OSDOWNLOADS_SUBMENU_FILES'),
             'index.php?option=com_osdownloads&view=files',
             $vName == 'files'
         );
 
-        JHtmlSidebar::addEntry(
+        Sidebar::addEntry(
             Text::_('COM_OSDOWNLOADS_SUBMENU_CATEGORIES'),
             'index.php?option=com_categories&extension=com_osdownloads',
             $vName == 'categories'
@@ -67,7 +74,7 @@ abstract class Helper
             );
         }
 
-        JHtmlSidebar::addEntry(
+        Sidebar::addEntry(
             Text::_('COM_OSDOWNLOADS_SUBMENU_EMAILS'),
             'index.php?option=com_osdownloads&view=emails',
             $vName == 'emails'
@@ -121,13 +128,12 @@ abstract class Helper
      */
     public static function isLocalPath($path)
     {
-        // Is an external URL or empty path?
-        if (empty($path) || preg_match('#(?:^//|[a-z0-9]+?://)#i', $path)) {
+        if (empty($path) || preg_match('#^//|[a-z0-9]+?://#i', $path)) {
             return false;
         }
 
         // If the file exists, it is a local path
-        return \JFile::exists(realpath(JPATH_SITE . '/' . ltrim($path, '/')));
+        return File::exists(realpath(JPATH_SITE . '/' . ltrim($path, '/')));
     }
 
     /**
@@ -167,23 +173,24 @@ abstract class Helper
      * @param object $item
      *
      * @return void
+     * @throws Exception
      */
-    public static function prepareItem(&$item)
+    public static function prepareItem($item)
     {
-        \JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
-
         if (!($item->params instanceof Registry)) {
             $item->params = new Registry($item->params);
         }
+        $item->require_agree = (bool)$item->require_agree;
+        $item->agreement_article_id = (int)$item->agreement_article_id;
 
-        if ((bool)$item->require_agree && (int)$item->agreement_article_id) {
-            $item->agreementLink = \JRoute::_(\ContentHelperRoute::getArticleRoute($item->agreement_article_id));
+        if ($item->require_agree && $item->agreement_article_id) {
+            $item->agreementLink = Route::_(ContentHelperRoute::getArticleRoute($item->agreement_article_id));
 
         } else {
             $item->agreementLink = '';
         }
 
-        \JPluginHelper::importPlugin('content');
+        PluginHelper::importPlugin('content');
 
         // Make compatible with content plugins
         $item->text = null;
@@ -207,6 +214,7 @@ abstract class Helper
                 ['com_osdownloads.file', &$item, &$item->params, null]
             )
         ];
+
         foreach ($prepareEvent as &$results) {
             $results = trim(join("\n", $results));
         }

@@ -24,19 +24,20 @@
 namespace Alledia\OSDownloads\MailingLists;
 
 use Alledia\Framework\Factory;
+use Alledia\Framework\Joomla\Table\Base;
 use Alledia\OSDownloads\Free;
 use CategoriesTableCategory;
-use JLog;
-use JObservableInterface;
-use JObserverInterface;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\Table\Category;
+use Joomla\CMS\Table\Table;
 use Joomla\CMS\User\User;
 use Joomla\Registry\Registry;
-use JTable;
 use OsdownloadsTableDocument;
 
 defined('_JEXEC') or die();
 
-abstract class AbstractClient implements JObserverInterface
+abstract class AbstractClient
 {
     /**
      * @var Free\Joomla\Table\Email
@@ -51,31 +52,23 @@ abstract class AbstractClient implements JObserverInterface
     /**
      * @var OsdownloadsTableDocument[]
      */
-    protected static $documents = array();
+    protected static $documents = [];
 
     /**
-     * @var CategoriesTableCategory[]
+     * @var CategoriesTableCategory[]|Category[]
      */
-    protected static $categories = array();
+    protected static $categories = [];
 
-    public function __construct(JObservableInterface $table)
+    public function __construct(Base $table)
     {
-        $table->attachObserver($this);
         $this->table = $table;
+        $this->registerObservers();
     }
 
     /**
-     * @param JObservableInterface $observableObject The observable subject object
-     * @param array                $params           Params for this observer
-     *
-     * @return  JObserverInterface
+     * @return void
      */
-    public static function createObserver(JObservableInterface $observableObject, $params = array())
-    {
-        $observer = new static($observableObject);
-
-        return $observer;
-    }
+    abstract protected function registerObservers();
 
     /**
      * For customizing in subclasses. Prevents any access to a particular mailing list
@@ -83,7 +76,7 @@ abstract class AbstractClient implements JObserverInterface
      *
      * @return bool
      */
-    public static function checkDependencies()
+    public static function checkDependencies(): bool
     {
         return true;
     }
@@ -94,25 +87,25 @@ abstract class AbstractClient implements JObserverInterface
      *
      * @return bool
      */
-    public static function isEnabled()
+    public function isEnabled(): bool
     {
         return true;
     }
 
     /**
-     * @param int $documentId
+     * @param ?int $documentId
      *
      * @return OsdownloadsTableDocument
      */
-    protected function getDocument($documentId = null)
+    protected function getDocument(?int $documentId = null)
     {
-        $documentId = (int)($documentId ?: $this->table->document_id);
+        $documentId = (int)($documentId ?: $this->table->get('document_id'));
         if (!isset(static::$documents[$documentId])) {
             /** @var OsdownloadsTableDocument $document */
-            $document = JTable::getInstance('Document', 'OsdownloadsTable');
+            $document = Table::getInstance('Document', 'OsdownloadsTable');
             $document->load($documentId);
 
-            static::$documents[$documentId] = $document->id ? $document : false;
+            static::$documents[$documentId] = $document->get('id') ? $document : false;
         }
 
         return static::$documents[$documentId] ?: null;
@@ -121,9 +114,9 @@ abstract class AbstractClient implements JObserverInterface
     /**
      * @param string $email
      *
-     * @return User
+     * @return ?User
      */
-    protected function getUserByEmail($email)
+    protected function getUserByEmail(string $email): ?User
     {
         $db    = Factory::getDbo();
         $query = $db->getQuery(true)
@@ -141,18 +134,17 @@ abstract class AbstractClient implements JObserverInterface
     /**
      * @param int $categoryId
      *
-     * @return CategoriesTableCategory
+     * @return CategoriesTableCategory|Category
      */
-    protected function getCategory($categoryId)
+    protected function getCategory(int $categoryId)
     {
-        $categoryId = (int)$categoryId;
         if ($categoryId && empty(static::$categories[$categoryId])) {
-            /** @var CategoriesTableCategory $category */
-            $category = JTable::getInstance('Category', 'JTable');
+            /** @var CategoriesTableCategory|Category $category */
+            $category = Table::getInstance('Category');
             $category->load($categoryId);
 
-            if (!$category->params instanceof Registry) {
-                $category->params = new Registry($category->params);
+            if (!$category->get('params') instanceof Registry) {
+                $category->set('params', new Registry($category->get('params')));
             }
             static::$categories[$categoryId] = $category;
         }
@@ -167,10 +159,10 @@ abstract class AbstractClient implements JObserverInterface
     /**
      * @return Registry
      */
-    protected static function getParams()
+    protected function getParams(): Registry
     {
         if (static::$params === null) {
-            static::$params = \JComponentHelper::getParams('com_osdownloads');
+            static::$params = ComponentHelper::getParams('com_osdownloads');
         }
 
         return static::$params;
@@ -182,18 +174,18 @@ abstract class AbstractClient implements JObserverInterface
      *
      * @param int    $documentId
      * @param string $key
-     * @param mixed $default
+     * @param mixed  $default
      *
      * @return mixed
      */
-    protected function getDocumentParam($documentId, $key, $default = null)
+    protected function getDocumentParam(int $documentId, string $key, $default = null)
     {
         $document = $this->getDocument($documentId);
         $value    = $document->params->get($key);
 
         if (empty($value)) {
             // Try category lookup
-            $category = $this->getCategory($document->cate_id);
+            $category = $this->getCategory($document->get('cate_id'));
             $value    = $category->params->get($key);
 
             if (empty($value)) {
@@ -206,20 +198,20 @@ abstract class AbstractClient implements JObserverInterface
     }
 
     /**
-     * @param string $message
-     * @param int    $level
-     * @param string $category
+     * @param string  $message
+     * @param int     $level
+     * @param ?string $category
      *
      * @return void
      */
-    protected function logError($message, $level = JLog::ALERT, $category = null)
+    protected function logError(string $message, int $level = Log::ALERT, ?string $category = null)
     {
         if (!$category) {
             $classParts = explode('\\', get_class($this));
             $category   = array_pop($classParts);
         }
 
-        JLog::addLogger(array('text_file' => 'osdownloads.log.php'), JLog::ALL, $category);
-        JLog::add($message, $level, $category);
+        Log::addLogger(['text_file' => 'osdownloads.log.php'], Log::ALL, $category);
+        Log::add($message, $level, $category);
     }
 }

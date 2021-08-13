@@ -25,9 +25,71 @@ namespace Alledia\OSDownloads\Free\Joomla\Model;
 
 defined('_JEXEC') or die();
 
-use JModelList;
+use Joomla\CMS\MVC\Model\ListModel;
 
-class Emails extends JModelList
+class Emails extends ListModel
 {
+    /**
+     * @inheritDoc
+     */
+    public function __construct($config = [])
+    {
+        $config['filter_fields'] = [
+            'email.email',
+            'doc.name',
+            'cat.title',
+            'email.downloaded_date',
+            'email.id',
+            'cate_id'
+        ];
 
+        parent::__construct($config);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function populateState($ordering = 'email.id', $direction = 'desc')
+    {
+        parent::populateState($ordering, $direction);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getListQuery()
+    {
+        $db = $this->getDbo();
+
+        $query = $db->getQuery(true)
+            ->select('email.*, doc.name AS doc_name, cat.title AS cate_name')
+            ->from('#__osdownloads_emails email')
+            ->leftJoin('#__osdownloads_documents doc ON (email.document_id = doc.id)')
+            ->leftJoin('#__categories cat ON (cat.id = doc.cate_id)');
+
+        $search = $this->getState('filter.search');
+        if ($search) {
+            $search = $db->quote('%' . $search . '%');
+            $ors    = [
+                'email.email LIKE ' . $search,
+                'doc.name LIKE' . $search
+            ];
+            $query->where(sprintf('(%)', join(' OR ', $ors)));
+        }
+        if ($categoryId = (int)$this->getState('filter.cate_id')) {
+            $query->where('cat.id = ' . $categoryId);
+        }
+
+        $confirmed = $this->getState('filter.confirmed');
+        if ($confirmed != '') {
+            $query->where('confirmed = ' . $db->quote($confirmed));
+        }
+
+        $ordering  = $this->getState('list.ordering');
+        $direction = $this->getState('list.direction');
+
+        $query->order($ordering . ' ' . $direction);
+
+        return $query;
+    }
 }

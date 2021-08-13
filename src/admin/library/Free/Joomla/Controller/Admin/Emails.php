@@ -23,8 +23,7 @@
 
 namespace Alledia\OSDownloads\Free\Joomla\Controller\Admin;
 
-use Alledia\Framework\Factory;
-use Alledia\OSDownloads\Free\Factory as OSDFactory;
+use Alledia\OSDownloads\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 
@@ -32,10 +31,14 @@ defined('_JEXEC') or die();
 
 class Emails extends BaseController
 {
+    /**
+     * @return void
+     * @throws \Exception
+     */
     public function delete()
     {
         $app       = Factory::getApplication();
-        $container = OSDFactory::getPimpleContainer();
+        $container = Factory::getPimpleContainer();
 
         $ids = array_filter(
             array_unique(
@@ -52,7 +55,7 @@ class Emails extends BaseController
 
         $this->setRedirect(
             $container->helperRoute->getAdminEmailListRoute(),
-            Text::_("COM_OSDOWNLOADS_EMAIL_IS_DELETED")
+            Text::_('COM_OSDOWNLOADS_EMAIL_IS_DELETED')
         );
     }
 }

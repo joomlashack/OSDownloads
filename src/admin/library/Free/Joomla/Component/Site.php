@@ -26,8 +26,7 @@ namespace Alledia\OSDownloads\Free\Joomla\Component;
 defined('_JEXEC') or die();
 
 use Alledia\Framework\Joomla\Extension\AbstractComponent;
-use Alledia\Framework\Factory;
-use JHtml;
+use Joomla\CMS\HTML\HTMLHelper;
 
 class Site extends AbstractComponent
 {
@@ -42,9 +41,9 @@ class Site extends AbstractComponent
 
     public function init()
     {
-        $options = array('version' => $this->getMediaVersion(), 'relative' => true);
+        $options = ['version' => $this->getMediaVersion(), 'relative' => true];
 
-        JHtml::_('stylesheet', 'com_osdownloads/frontend.css', $options, array());
+        HTMLHelper::_('stylesheet', 'com_osdownloads/frontend.css', $options, []);
 
         parent::init();
     }

@@ -2,8 +2,8 @@
 /**
  * @package   OSDownloads
  * @contact   www.joomlashack.com, help@joomlashack.com
- * @copyright 2005-2021 Joomlashack.com. All rights reserved
- * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
+ * @copyright 2021 Joomlashack.com. All rights reserved
+ * @license   https://www.gnu.org/licenses/gpl.html GNU/GPL
  *
  * This file is part of OSDownloads.
  *
@@ -18,32 +18,27 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
+ * along with OSDownloads.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-use Alledia\OSDownloads\Free;
-use Alledia\OSDownloads\Pro;
+use Alledia\OSDownloads\Factory;
+use Alledia\OSDownloads\Free\Helper\Helper as FreeHelper;
+use Alledia\OSDownloads\Pro\Helper\Helper as ProHelper;
 
 defined('_JEXEC') or die();
 
-/**
- * Backward compatibility for the helper. We moved it to improve inheritance between
- * Free and Pro versions. Some plugins still call this class, including com_files.
- *
+/*
+ * Joomla 3 category view requires this file/class to exist.
  */
+if (require_once realpath(__DIR__ . '/../include.php')) {
+    if (Factory::getExtension()->isPro()) {
+        class OsdownloadsHelper extends ProHelper
+        {
+        }
 
-if (!defined('OSDOWNLOADS_LOADED')) {
-    require_once dirname(__DIR__) . '/include.php';
-}
-
-if (class_exists('\\Alledia\\OSDownloads\\Pro\\Helper\\Helper')) {
-    class OSDownloadsHelper extends Pro\Helper\Helper
-    {
-
-    }
-} else {
-    class OSDownloadsHelper extends Free\Helper\Helper
-    {
-
+    } else {
+        class OsdownloadsHelper extends FreeHelper
+        {
+        }
     }
 }

@@ -51,14 +51,17 @@ class AbstractScript extends \Alledia\Installer\AbstractScript
         try {
             parent::postFlight($type, $parent);
 
-            $this->checkParamStructure();
-            $this->checkAndCreateDefaultCategory();
-            $this->fixOrderingParamForMenus();
-            $this->fixDownloadsViewParams();
-            $this->fixItemViewParams();
+            if ($type != 'uninstall') {
+                $this->checkParamStructure();
+                $this->checkAndCreateDefaultCategory();
+                $this->fixOrderingParamForMenus();
+                $this->fixDownloadsViewParams();
+                $this->fixItemViewParams();
+                $this->fixDatabase();
 
-            if ($type == 'update') {
-                $this->moveLayouts();
+                if ($type == 'update') {
+                    $this->moveLayouts();
+                }
             }
 
         } catch (\Throwable $error) {
@@ -293,7 +296,7 @@ class AbstractScript extends \Alledia\Installer\AbstractScript
         $table = Table::getInstance('Extension');
         $table->load(['element' => 'com_osdownloads', 'type' => 'component']);
 
-        $params  = new Registry($table->params);
+        $params  = new Registry($table->get('params'));
         $current = $params->toObject();
 
         $parameterMap = $this->getParameterChangeMap();
@@ -329,7 +332,7 @@ class AbstractScript extends \Alledia\Installer\AbstractScript
      *
      * @since v1.13.14
      */
-    public function moveLayouts()
+    protected function moveLayouts()
     {
         $renames = [
             'download_button' => 'download',
@@ -363,6 +366,27 @@ class AbstractScript extends \Alledia\Installer\AbstractScript
                     File::move($file, $newPath);
                     break;
             }
+        }
+    }
+
+    /**
+     * Apply any needed database fixes
+     */
+    protected function fixDatabase()
+    {
+        /*
+         * There is an odd issue in Joomla 4 that reports database errors
+         * when there aren't any. Stupid.
+         */
+        $oldUpdates = Folder::files(
+            JPATH_ADMINISTRATOR . '/components/com_osdownloads/sql/updates',
+            '1\.4\.9\.sql',
+            true,
+            true
+        );
+
+        foreach ($oldUpdates as $oldUpdate) {
+            File::delete($oldUpdate);
         }
     }
 }

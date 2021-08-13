@@ -23,10 +23,8 @@
 
 namespace Alledia\OSDownloads\Free\Helper;
 
-use Alledia\OSDownloads\Free\Factory as OSDFactory;
-use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
-use JFactory;
-use JRoute;
+use Alledia\OSDownloads\Factory;
+use Joomla\CMS\Router\Route;
 
 defined('_JEXEC') or die();
 
@@ -38,26 +36,28 @@ class View
     /**
      * Build a list of category breadcrumbs.
      *
-     * @param  int     $categoryId
+     * @param int $categoryId
+     *
+     * @return void
+     * @throws \Exception
      */
     public function buildCategoryBreadcrumbs($categoryId)
     {
-        $paths = array();
+        $paths = [];
         $this->buildPath($paths, $categoryId);
 
-        $app       = JFactory::getApplication();
-        $container = OSDFactory::getPimpleContainer();
+        $app       = Factory::getApplication();
+        $container = Factory::getPimpleContainer();
 
         $pathway    = $app->getPathway();
         $itemID     = $app->input->getInt('Itemid');
         $countPaths = count($paths) - 1;
-        $component  = FreeComponentSite::getInstance();
 
         $pathwayList = $pathway->getPathway();
 
         for ($i = $countPaths; $i >= 0; $i--) {
             $link   = $container->helperRoute->getFileListRoute($paths[$i]->id, $itemID);
-            $route  = JRoute::_($link);
+            $route  = Route::_($link);
             $exists = false;
 
             // Check if the current category is already in the pathway, to ignore
@@ -77,46 +77,42 @@ class View
     /**
      * Build a list of file breadcrumbs.
      *
-     * @param  object  $file
+     * @param object $file
+     *
+     * @return void
+     * @throws \Exception
      */
     public function buildFileBreadcrumbs($file)
     {
-        $container = OSDFactory::getPimpleContainer();
+        $container = Factory::getPimpleContainer();
 
-        // Check if the current file has a menu item
-        $menu = $container->app->getMenu()->getActive();
-
-        if (is_object($menu)) {
-            if ('item' === $menu->query['view'] && $menu->query['id'] === $file->id) {
-                // Yes, so do nothing
+        if ($activeMenu = $container->app->getMenu()->getActive()) {
+            $view = $activeMenu->query['view'] ?? null;
+            $id = $activeMenu->query['id'] ?? null;
+            if ($view == 'item' && $id == $file->id) {
+                // Current menu is for this file
                 return;
             }
         }
 
         $this->buildCategoryBreadcrumbs($file->cate_id);
 
-        $app       = JFactory::getApplication();
-        $container = OSDFactory::getPimpleContainer();
+        $app       = Factory::getApplication();
+        $container = Factory::getPimpleContainer();
 
         $pathway = $app->getPathway();
         $itemID  = $app->input->getInt('Itemid');
 
-        $pathwayList = $pathway->getPathway();
+        $link = $container->helperRoute->getViewItemRoute($file->id, $itemID);
 
-        $link   = $container->helperRoute->getViewItemRoute($file->id, $itemID);
-        $route  = JRoute::_($link);
-        $exists = false;
-
-        if (!$exists) {
-            $pathway->addItem($file->name, $link);
-        }
+        $pathway->addItem($file->name, $link);
     }
 
     /**
      * Build an inverse recurcive list of paths for categories' breadcrumbs.
      *
-     * @param  array &$paths
-     * @param  int   $categoryId
+     * @param array &$paths
+     * @param int    $categoryId
      */
     protected function buildPath(&$paths, $categoryId)
     {
@@ -124,17 +120,15 @@ class View
             return;
         }
 
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
 
-        $query = $db->getQuery(true)
+        $query    = $db->getQuery(true)
             ->select('*')
             ->from('#__categories')
-            ->where(
-                array(
-                    'extension = ' . $db->quote('com_osdownloads'),
-                    'id = ' . $db->quote((int) $categoryId)
-                )
-            );
+            ->where([
+                'extension = ' . $db->quote('com_osdownloads'),
+                'id = ' . $db->quote((int)$categoryId)
+            ]);
         $category = $db->setQuery($query)->loadObject();
 
         if (!empty($category)) {

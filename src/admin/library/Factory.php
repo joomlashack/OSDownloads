@@ -21,7 +21,10 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Alledia\OSDownloads\Free;
+namespace Alledia\OSDownloads;
+
+use Alledia\OSDownloads\Free\Services as FreeServices;
+use Alledia\OSDownloads\Pro\Services as ProServices;
 
 defined('_JEXEC') or die();
 
@@ -30,37 +33,38 @@ defined('_JEXEC') or die();
  *
  * @package OSDownloads
  */
-abstract class Factory extends \JFactory
+abstract class Factory extends \Alledia\Framework\Factory
 {
     /**
      * @var Container
      */
-    protected static $pimpleContainer;
+    protected static $pimpleContainer = null;
+
+    /**
+     * @inheritDoc
+     */
+    public static function getExtension($namespace = 'osdownloads', $type = 'component', $folder = null)
+    {
+        return parent::getExtension($namespace, $type, $folder);
+    }
 
     /**
      * Get the current container instance. Creates if not set yet.
      *
      * @return Container
      */
-    public static function getPimpleContainer()
+    public static function getPimpleContainer(): Container
     {
-        if (!empty(static::$pimpleContainer)) {
-            return static::$pimpleContainer;
+        if (static::$pimpleContainer === null) {
+            $services = static::getExtension()->isPro()
+                ? new ProServices()
+                : new FreeServices();
+
+            $container = new Container();
+            $container->register($services);
+
+            static::$pimpleContainer = $container;
         }
-
-        // Instantiate the container and services
-        $container = new Container;
-
-        // Decide what services to load. Free or Pro?
-        if (class_exists('\\Alledia\\OSDownloads\\Pro\\Services')) {
-            $services = new \Alledia\OSDownloads\Pro\Services;
-        } else {
-            $services = new Services;
-        }
-
-        $container->register($services);
-
-        static::$pimpleContainer = $container;
 
         return static::$pimpleContainer;
     }

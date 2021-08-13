@@ -23,10 +23,13 @@
 
 defined('_JEXEC') or die();
 
-use Alledia\OSDownloads\Free\Factory;
+use Alledia\OSDownloads\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
 
-JHtml::_('bootstrap.tooltip');
-JHtml::_('formbehavior.chosen', 'select');
+HTMLHelper::_('bootstrap.tooltip');
+HTMLHelper::_('formbehavior.chosen', 'select');
 
 $listOrder = $this->state->get('list.ordering');
 $listDirn  = $this->state->get('list.direction');
@@ -34,7 +37,7 @@ $saveOrder = $listOrder === 'doc.ordering';
 $container = Factory::getPimpleContainer();
 
 if ($saveOrder) :
-    JHtml::_(
+    HTMLHelper::_(
         'sortablelist.sortable',
         'documentList',
         'adminForm',
@@ -46,212 +49,196 @@ if ($saveOrder) :
 endif;
 
 ?>
-    <form action="<?php echo $container->helperRoute->getAdminMainViewRoute(); ?>" method="post" name="adminForm"
-          id="adminForm">
-        <div id="j-sidebar-container" class="span2">
-            <?php echo $this->sidebar; ?>
-        </div>
-        <div id="j-main-container" class="span10">
-            <?php
-            echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+<form action="<?php echo $container->helperRoute->getAdminMainViewRoute(); ?>"
+      method="post"
+      name="adminForm"
+      id="adminForm">
+    <div id="j-sidebar-container" class="span2">
+        <?php echo $this->sidebar; ?>
+    </div>
+    <div id="j-main-container" class="span10">
+        <?php
+        echo LayoutHelper::render('joomla.searchtools.default', ['view' => $this]);
 
-            if (!$this->items) : ?>
-                <div class="alert alert-no-items">
+        if (!$this->items) : ?>
+            <div class="alert alert-no-items">
+                <?php
+                if ($this->activeFilters || $this->state->get('filter.search')) :
+                    echo Text::_('COM_OSDOWNLOADS_FILES_NO_RESULTS');
+                else :
+                    echo Text::_('COM_OSDOWNLOADS_FILES_CREATE');
+                endif;
+                ?>
+            </div>
+        <?php else : ?>
+            <table class="adminlist table table-striped" id="documentList" style="width:100%; border: none;">
+                <thead>
+                <tr>
+                    <th style="width: 1%;" class="nowrap center hidden-phone">
+                        <?php
+                        echo HTMLHelper::_(
+                            'searchtools.sort',
+                            '',
+                            'doc.ordering',
+                            $listDirn,
+                            $listOrder,
+                            null,
+                            'asc',
+                            'JGRID_HEADING_ORDERING',
+                            'icon-menu-2'
+                        );
+                        ?>
+                    </th>
+                    <th style="width: 1%;" class="hidden-phone">
+                        <?php echo HTMLHelper::_('grid.checkall'); ?>
+                    </th>
+                    <th style="width: 1%; min-width:55px" class="nowrap center">
+                        <?php
+                        echo HTMLHelper::_(
+                            'searchtools.sort',
+                            'COM_OSDOWNLOADS_PUBLISHED',
+                            'doc.published',
+                            $listDirn,
+                            $listOrder
+                        );
+                        ?>
+                    </th>
+                    <th class="has-context span6">
+                        <?php
+                        echo HTMLHelper::_(
+                            'searchtools.sort',
+                            'COM_OSDOWNLOADS_NAME',
+                            'doc.name',
+                            $listDirn,
+                            $listOrder
+                        );
+                        ?>
+                    </th>
+                    <th>
+                        <?php
+                        echo HTMLHelper::_(
+                            'searchtools.sort',
+                            'COM_OSDOWNLOADS_ACCESS',
+                            'doc.access',
+                            $listDirn,
+                            $listOrder
+                        );
+                        ?>
+                    </th>
+                    <th class="center nowrap">
+                        <?php
+                        echo HTMLHelper::_(
+                            'searchtools.sort',
+                            'COM_OSDOWNLOADS_DOWNLOADED',
+                            'doc.downloaded',
+                            $listDirn,
+                            $listOrder
+                        );
+                        ?>
+                    </th>
                     <?php
-                    if ($this->activeFilters || $this->state->get('filter.search')) :
-                        echo JText::_('COM_OSDOWNLOADS_FILES_NO_RESULTS');
-                    else :
-                        echo JText::_('COM_OSDOWNLOADS_FILES_CREATE');
+                    if ($this->extension->isPro()) :
+                        echo $this->loadTemplate('pro_headers');
                     endif;
                     ?>
-                </div>
-            <?php else : ?>
-                <table class="adminlist table table-striped" id="documentList" width="100%" border="0">
-                    <thead>
-                    <tr>
-                        <th width="1%" class="nowrap center hidden-phone">
-                            <?php
-                            echo JHtml::_(
-                                'searchtools.sort',
-                                '',
-                                'doc.ordering',
-                                $listDirn,
-                                $listOrder,
-                                null,
-                                'asc',
-                                'JGRID_HEADING_ORDERING',
-                                'icon-menu-2'
-                            );
-                            ?>
-                        </th>
-                        <th width="1%" class="hidden-phone">
-                            <input type="checkbox"
-                                   onclick="Joomla.checkAll(this)"
-                                   title="<?php echo JText::_('COM_OSDOWNLOADS_CHECK_All'); ?>"
-                                   value=""
-                                   name="checkall-toggle"/>
-                        </th>
-                        <th width="1%" style="min-width:55px" class="nowrap center">
-                            <?php
-                            echo JHtml::_(
-                                'searchtools.sort',
-                                'COM_OSDOWNLOADS_PUBLISHED',
-                                'doc.published',
-                                $listDirn,
-                                $listOrder
-                            );
-                            ?>
-                        </th>
-                        <th class="has-context span6">
-                            <?php
-                            echo JHtml::_(
-                                'searchtools.sort',
-                                'COM_OSDOWNLOADS_NAME',
-                                'doc.name',
-                                $listDirn,
-                                $listOrder
-                            );
-                            ?>
-                        </th>
-                        <th class="">
-                            <?php
-                            echo JHtml::_(
-                                'searchtools.sort',
-                                'COM_OSDOWNLOADS_ACCESS',
-                                'doc.access',
-                                $listDirn,
-                                $listOrder
-                            );
-                            ?>
-                        </th>
-                        <th class="center nowrap">
-                            <?php
-                            echo JHtml::_(
-                                'searchtools.sort',
-                                'COM_OSDOWNLOADS_DOWNLOADED',
-                                'doc.downloaded',
-                                $listDirn,
-                                $listOrder
-                            );
-                            ?>
-                        </th>
+                    <th class="hidden-phone center">
                         <?php
-                        if ($this->extension->isPro()) :
-                            echo $this->loadTemplate('pro_headers');
-                        endif;
+                        echo HTMLHelper::_(
+                            'searchtools.sort',
+                            'COM_OSDOWNLOADS_ID',
+                            'doc.id',
+                            $listDirn,
+                            $listOrder
+                        );
                         ?>
-                        <th class="hidden-phone center">
+                    </th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <?php
+                foreach ($this->items as $i => $item) :
+                    $link = 'index.php?option=com_osdownloads&task=file.edit&id=' . $item->id;
+
+                    $item->checked_out = false;
+                    ?>
+                    <tr class="<?php echo 'row' . ($i % 2); ?>"
+                        sortable-group-id="<?php echo $item->cate_id; ?>">
+                        <td class="order nowrap center hidden-phone">
                             <?php
-                            echo JHtml::_(
-                                'searchtools.sort',
-                                'COM_OSDOWNLOADS_ID',
-                                'doc.id',
-                                $listDirn,
-                                $listOrder
-                            );
-                            ?>
-                        </th>
-                    </tr>
-                    </thead>
+                            $class = 'sortable-handler' . ($saveOrder ? '' : ' inactive');
 
-                    <tbody>
-                    <?php
-                    foreach ($this->items as $i => $item) :
-                        $link = 'index.php?option=com_osdownloads&view=file&id=' . $item->id;
-
-                        $item->checked_out = false;
-                        $checked           = JHtml::_('grid.checkedout', $item, $i);
-                        $canChange         = true;
-                        ?>
-                        <tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->cate_id; ?>">
-                            <td class="order nowrap center hidden-phone">
-                                <?php
-                                $iconClass = '';
-                                if (!$canChange) {
-                                    $iconClass = ' inactive';
-                                } elseif (!$saveOrder) {
-                                    $iconClass = ' inactive tip-top hasTooltip" title="' . JHtml::tooltipText('JORDERINGDISABLED');
-                                }
-                                ?>
-                                <span class="sortable-handler<?php echo $iconClass ?>">
-                            <i class="icon-menu"></i>
-                        </span>
-                                <?php
-                                if ($canChange && $saveOrder) :
-                                    ?>
-                                    <input type="text"
-                                           style="display:none"
-                                           name="order[]"
-                                           size="5"
-                                           value="<?php echo $item->ordering; ?>"
-                                           class="width-20 text-area-order "/>
-                                <?php
-                                endif;
-                                ?>
-                            </td>
-                            <td class="hidden-phone"><?php echo $checked; ?></td>
-                            <td class="center">
-                                <div class="btn-group">
-                                    <?php
-                                    echo JHtml::_(
-                                        'jgrid.published',
-                                        $item->published,
-                                        $i,
-                                        'files.',
-                                        $canChange,
-                                        'cb',
-                                        @$item->publish_up,
-                                        @$item->publish_down
-                                    );
-                                    ?>
-                                </div>
-                            </td>
-                            <td class="has-context span6">
-                                <?php echo JHtml::_('link', $link, $item->name); ?>
-                                <span class="small">
-                                <?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
-                            </span>
-                                <div class="small">
-                                    <?php echo JText::_('JCATEGORY') . ": " . $this->escape($item->cat_title); ?>
-                                </div>
-                            </td>
-                            <td class="small">
-                                <?php echo($item->access_title); ?>
-                            </td>
-                            <td class="center nowrap"><?php echo($item->downloaded); ?></td>
-
-                            <?php
-                            if ($this->extension->isPro()) :
-                                $this->item = $item;
-                                echo $this->loadTemplate('pro_columns');
+                            if (!$saveOrder) :
+                                $class .= ' tip-top hasTooltip';
+                                $title = HTMLHelper::tooltipText('JORDERINGDISABLED');
                             endif;
                             ?>
-                            <td class="hidden-phone center"><?php echo($item->id); ?></td>
-                        </tr>
-                    <?php
-                    endforeach;
-                    ?>
-                    </tbody>
-                    <tfoot>
-                    <tr>
+                            <span class="<?php echo $class; ?>" title="<?php echo $title ?? ''; ?>">
+                                <i class="icon-menu"></i>
+                            </span>
+                            <?php if ($saveOrder) : ?>
+                                <input type="text"
+                                       style="display:none"
+                                       name="order[]"
+                                       value="<?php echo $item->ordering; ?>"
+                                       class="width-20 text-area-order "/>
+                            <?php endif; ?>
+                        </td>
+                        <td class="hidden-phone">
+                            <?php echo HTMLHelper::_('grid.checkedout', $item, $i); ?>
+                        </td>
+                        <td class="center">
+                            <div class="btn-group">
+                                <?php
+                                echo HTMLHelper::_(
+                                    'jgrid.published',
+                                    $item->published,
+                                    $i,
+                                    'files.',
+                                    true,
+                                    'cb',
+                                    $item->publish_up ?? null,
+                                    $item->publish_down ?? null
+                                );
+                                ?>
+                            </div>
+                        </td>
+                        <td class="has-context span6">
+                            <?php echo HTMLHelper::_('link', $link, $item->name); ?>
+                            <span class="small">
+                                <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
+                            </span>
+                            <div class="small">
+                                <?php echo sprintf(
+                                    '%s: %s',
+                                    Text::_('JCATEGORY'),
+                                    $this->escape($item->cat_title)
+                                ); ?>
+                            </div>
+                        </td>
+                        <td>
+                            <?php echo($item->access_title); ?>
+                        </td>
+                        <td class="center nowrap"><?php echo($item->downloaded); ?></td>
+
                         <?php
-                        $colspan = 7;
                         if ($this->extension->isPro()) :
-                            $colspan += 2;
+                            $this->item = $item;
+                            echo $this->loadTemplate('pro_columns');
                         endif;
                         ?>
-                        <td colspan="<?php echo $colspan; ?>">
-                            <?php echo $this->pagination->getListFooter(); ?>
-                        </td>
+                        <td class="hidden-phone center"><?php echo($item->id); ?></td>
                     </tr>
-                    </tfoot>
-                </table>
-            <?php endif; ?>
-        </div>
-        <input type="hidden" name="task" value=""/>
-        <input type="hidden" name="boxchecked" value="0"/>
-        <?php echo JHtml::_('form.token'); ?>
-    </form>
-<?php
-echo $this->extension->getFooterMarkup();
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+            <?php
+            echo $this->pagination->getListFooter();
+        endif; ?>
+    </div>
+
+    <input type="hidden" name="task" value=""/>
+    <input type="hidden" name="boxchecked" value="0"/>
+    <?php echo HTMLHelper::_('form.token'); ?>
+</form>
 

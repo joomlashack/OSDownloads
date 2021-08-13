@@ -23,42 +23,18 @@
 
 defined('_JEXEC') or die();
 
-use Alledia\Framework\Factory;
-use Alledia\Installer\Extension\Licensed;
-use Joomla\CMS\Form\Form;
-use Alledia\OSDownloads\Free\Joomla\View\Admin\Base;
+use Alledia\Framework\Joomla\View\Admin\AbstractForm;
+use Joomla\CMS\Helper\ContentHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
-class OSDownloadsViewFile extends Base
+class OSDownloadsViewFile extends AbstractForm
 {
     /**
-     * @var Form
-     */
-    protected $form = null;
-
-    /**
-     * @var OSDownloadsModelFile
-     */
-    protected $model;
-
-    /**
-     * @var Licensed
-     */
-    protected $extension = null;
-
-    /**
-     * @param string $tpl
-     *
-     * @return void
-     * @throws Exception
+     * @inheritDoc
      */
     public function display($tpl = null)
     {
-        $this->model = $this->getModel();
-        $this->form  = $this->model->getForm();
-
-        $this->extension = Factory::getExtension('OSDownloads', 'component');
-        $this->extension->loadLibrary();
-
         $this->item = $this->model->getItem();
 
         $this->addToolbar();
@@ -72,33 +48,31 @@ class OSDownloadsViewFile extends Base
      */
     protected function addToolbar()
     {
-        JFactory::getApplication()->input->set('hidemainmenu', true);
+        $this->app->input->set('hidemainmenu', true);
 
         $isNew = ($this->item->id == 0);
-        $canDo = JHelperContent::getActions('com_osdownloads');
+        $canDo = ContentHelper::getActions('com_osdownloads');
 
-        JToolbarHelper::title(
-            JText::_('COM_OSDOWNLOADS') . ': '
-            . ($isNew ? JText::_('COM_OSDOWNLOADS_FILE_NEW') : JText::_('COM_OSDOWNLOADS_FILE_EDIT')),
-            'file-2 osdownloads-files'
-        );
+        $subTitle = 'COM_OSDOWNLOADS_FILE_' . ($isNew ? 'NEW' : 'EDIT');
+        ToolbarHelper::title(Text::_('COM_OSDOWNLOADS') . ': ' . Text::_($subTitle), 'file-2 osdownloads-files');
 
-        if ((!$isNew && $canDo->get('core.edit'))
+        if (
+            (!$isNew && $canDo->get('core.edit'))
             || ($isNew && $canDo->get('core.create'))
         ) {
-            JToolbarHelper::apply('file.apply', 'JTOOLBAR_APPLY');
-            JToolbarHelper::save('file.save', 'JTOOLBAR_SAVE');
+            ToolbarHelper::apply('file.apply', 'JTOOLBAR_APPLY');
+            ToolbarHelper::save('file.save', 'JTOOLBAR_SAVE');
         }
 
         if ($canDo->get('core.create')) {
-            JToolbarHelper::save2new('file.save2new');
+            ToolbarHelper::save2new('file.save2new');
         }
 
         // If an existing item, can save to a copy.
         if (!$isNew && $canDo->get('core.create')) {
-            JToolbarHelper::save2copy('file.save2copy');
+            ToolbarHelper::save2copy('file.save2copy');
         }
 
-        JToolbarHelper::cancel('cancel', 'JTOOLBAR_CANCEL');
+        ToolbarHelper::cancel();
     }
 }

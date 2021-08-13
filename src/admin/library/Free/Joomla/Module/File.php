@@ -26,38 +26,50 @@ namespace Alledia\OSDownloads\Free\Joomla\Module;
 defined('_JEXEC') or die();
 
 use Alledia\Framework\Joomla\Extension\AbstractFlexibleModule;
-use Alledia\Framework\Factory;
+use Alledia\OSDownloads\Factory;
+use Alledia\OSDownloads\Free\Helper\Helper as FreeHelper;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
-use JRoute;
-use JFactory;
-use JForm;
-use JLoader;
-use ContentHelperRoute;
-use SplPriorityQueue;
-use Exception;
-use JEventDispatcher;
-use Joomla\Utilities\ArrayHelper;
-
-\JLoader::register('OSDownloadsHelper', JPATH_ADMINISTRATOR . '/components/com_osdownloads/helpers/osdownloads.php');
+use Joomla\CMS\Form\Form;
 
 class File extends AbstractFlexibleModule
 {
-    public $hiddenFieldsets = array(
-        'general',
-        'info',
+    /**
+     * @var string[]
+     */
+    public $hiddenFieldsets = [
+        'advanced',
+        'basic',
         'detail',
-        'jmetadata',
-        'item_associations',
         'file',
         'file-vertical',
-        'requirements',
-        'options',
-        'advanced',
+        'general',
+        'info',
+        'item_associations',
+        'jmetadata',
         'mailchimp',
-        'basic'
-    );
+        'options',
+        'requirements',
+    ];
 
+    /**
+     * @var object[]
+     */
+    protected $list = null;
 
+    /**
+     * @var string
+     */
+    protected $popupAnimation = null;
+
+    /**
+     * @var bool
+     */
+    protected $isPro = null;
+
+    /**
+     * @inheritDoc
+     * @throws \Exception
+     */
     public function init()
     {
         // Load the OSDownloads extension
@@ -73,27 +85,27 @@ class File extends AbstractFlexibleModule
         parent::init();
     }
 
-    public function getList()
+    /**
+     * @return object[]
+     * @throws \Exception
+     */
+    public function getList(): array
     {
         $db  = Factory::getDbo();
         $app = Factory::getApplication();
 
-        $app->setUserState("com_osdownloads.files.filter_order", $this->params->get('ordering', 'ordering'));
-        $app->setUserState("com_osdownloads.files.filter_order_Dir", $this->params->get('ordering_dir', 'asc'));
+        $app->setUserState('com_osdownloads.files.filter_order', $this->params->get('ordering', 'ordering'));
+        $app->setUserState('com_osdownloads.files.filter_order_Dir', $this->params->get('ordering_dir', 'asc'));
 
         $osdownloads = FreeComponentSite::getInstance();
         $model       = $osdownloads->getModel('Item');
         $query       = $model->getItemQuery();
-        $query->where("cate_id = " . $db->quote($this->params->get('category', 0)));
+        $query->where('cate_id = ' . $db->quote($this->params->get('category', 0)));
         $db->setQuery($query);
 
-        $rows = $db->loadObjectList();
-
-        if (!empty($rows)) {
-            JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
-
+        if ($rows = $db->loadObjectList()) {
             foreach ($rows as $row) {
-                \OSDownloadsHelper::prepareItem($row);
+                FreeHelper::prepareItem($row);
             }
         }
 
@@ -103,37 +115,38 @@ class File extends AbstractFlexibleModule
     /**
      * Method to get the row form.
      *
-     * @param   array   $data     Data for the form.
-     * @param   boolean $loadData True if the form is to load its own data (default case), false if not.
+     * @param object|array $data
      *
-     * @return  mixed    A JForm object on success, false on failure
-     *
-     * @since   1.6
+     * @return  ?Form
+     * @throws \Exception
      */
-    public function getForm($data = array(), $loadData = true)
+    public function getForm($data = []): ?Form
     {
-        // Get the form.
-        $form = new JForm('com_osdownloads.download');
+        if ($form = new Form('com_osdownloads.download')) {
+            $data = (object)$data;
 
-        Factory::getApplication()->triggerEvent(
-            'onContentPrepareForm',
-            array(
-                $form,
-                array(
-                    'catid' => @$data->cate_id,
-                )
-            )
-        );
+            Factory::getApplication()->triggerEvent(
+                'onContentPrepareForm',
+                [$form, ['catid' => empty($data->cate_id) ? null : $data->cate_id]]
+            );
 
-        return $form;
-    }
-
-    public function get($attribute)
-    {
-        if (isset($this->$attribute)) {
-            return $this->$attribute;
+            return $form;
         }
 
         return null;
+    }
+
+    /**
+     * @param string $property
+     *
+     * @return mixed
+     */
+    public function get(string $property)
+    {
+        if (empty($this->{$property})) {
+            return null;
+        }
+
+        return $this->{$property};
     }
 }

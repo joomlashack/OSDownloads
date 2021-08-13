@@ -26,18 +26,16 @@ namespace Alledia\OSDownloads\Free\Joomla\Model;
 defined('_JEXEC') or die();
 
 use Alledia\Framework\Joomla\Model\Base as BaseModel;
-use Alledia\Framework\Factory;
-use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
-use JFactory;
-
-\JLoader::register('OSDownloadsHelper', JPATH_ADMINISTRATOR . '/components/com_osdownloads/helpers/osdownloads.php');
+use Alledia\OSDownloads\Factory;
+use Alledia\OSDownloads\Free\Helper\Helper as FreeHelper;
+use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeSite;
 
 class Item extends BaseModel
 {
     /**
      * Get document's data from db
      *
-     * @param  int $documentId
+     * @param int $documentId
      *
      * @return object
      * @throws \Exception
@@ -50,7 +48,7 @@ class Item extends BaseModel
         $db->setQuery($query);
 
         if ($item = $db->loadObject()) {
-            \OSDownloadsHelper::prepareItem($item);
+            FreeHelper::prepareItem($item);
         }
 
         return $item;
@@ -59,18 +57,18 @@ class Item extends BaseModel
     /**
      * Get the document's query
      *
-     * @param  int $documentId
+     * @param int $documentId
      *
      * @return \JDatabaseQuery
      * @throws \Exception
      */
     public function getItemQuery($documentId = null)
     {
-        $app       = JFactory::getApplication();
+        $app       = Factory::getApplication();
         $db        = $this->getDbo();
         $user      = Factory::getUser();
         $groups    = $user->getAuthorisedViewLevels();
-        $component = FreeComponentSite::getInstance();
+        $component = FreeSite::getInstance();
 
         $filterOrder    = $app->getUserStateFromRequest(
             'com_osdownloads.files.filter_order',
@@ -94,16 +92,12 @@ class Item extends BaseModel
                 '#__categories AS cat'
                 . ' ON (doc.cate_id = cat.id AND cat.extension = ' . $db->quote('com_osdownloads') . ')'
             )
-            ->where(
-                array(
-                    // It must be published
-                    'cat.published = 1',
-                    'doc.published = 1',
-                    // The user needs to have access to it
-                    'doc.access IN (' . implode(',', $groups) . ')',
-                    'cat.access IN (' . implode(',', $groups) . ')'
-                )
-            )
+            ->where([
+                'cat.published = 1',
+                'doc.published = 1',
+                'doc.access IN (' . implode(',', $groups) . ')',
+                'cat.access IN (' . implode(',', $groups) . ')'
+            ])
             ->order($db->quoteName($filterOrder) . ' ' . $filterOrderDir);
 
         if (!empty($documentId)) {
@@ -111,7 +105,7 @@ class Item extends BaseModel
         }
 
         if ($component->isFree()) {
-            $query->select("doc.require_email as require_user_email");
+            $query->select('doc.require_email as require_user_email');
         }
 
         return $query;

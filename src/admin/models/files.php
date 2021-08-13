@@ -21,15 +21,20 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Joomla\CMS\Application\AdministratorApplication;
+use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Table\Table;
 
 defined('_JEXEC') or die();
 
-class OSDownloadsModelFiles extends JModelList
+class OSDownloadsModelFiles extends ListModel
 {
-    public function __construct($config = array())
+    /**
+     * @inheritDoc
+     */
+    public function __construct($config = [])
     {
-        $config['filter_fields'] = array(
+        $config['filter_fields'] = [
             'doc.ordering',
             'doc.published',
             'doc.name',
@@ -38,19 +43,22 @@ class OSDownloadsModelFiles extends JModelList
             'doc.id',
             'cate_id',
             'published'
-        );
+        ];
 
         parent::__construct($config);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getItems()
     {
         $items = parent::getItems();
         if (!empty($items[0]) && !isset($items[0]->agreementLink)) {
             foreach ($items as $item) {
                 $item->agreementLink = '';
-                if ((bool)$item->require_agree && $item->agreement_article_id) {
-                    $item->agreementLink = JRoute::_(ContentHelperRoute::getArticleRoute($item->agreement_article_id));
+                if ($item->require_agree && $item->agreement_article_id) {
+                    $item->agreementLink = Route::_(ContentHelperRoute::getArticleRoute($item->agreement_article_id));
                 }
             }
         }
@@ -59,27 +67,19 @@ class OSDownloadsModelFiles extends JModelList
     }
 
     /**
-     * Get the documents list query
-     *
-     * @param int $documentId
-     *
-     * @return JDatabaseQuery
-     * @throws Throwable
+     * @inheritDoc
      */
-    public function getListQuery()
+    protected function getListQuery()
     {
-        $app = JFactory::getApplication();
-        $db  = $this->getDBO();
+        $db = $this->getDbo();
 
         $query = $db->getQuery(true)
-            ->select(
-                array(
-                    'doc.*',
-                    'cat.access AS cat_access',
-                    'cat.title AS cat_title',
-                    'vl.title AS access_title'
-                )
-            )
+            ->select([
+                'doc.*',
+                'cat.access AS cat_access',
+                'cat.title AS cat_title',
+                'vl.title AS access_title'
+            ])
             ->from('#__osdownloads_documents AS doc')
             ->leftJoin(
                 '#__categories AS cat'
@@ -117,29 +117,18 @@ class OSDownloadsModelFiles extends JModelList
     }
 
     /**
-     * Method to get a table object, load it if necessary.
-     *
-     * @param string $name    The table name. Optional.
-     * @param string $prefix  The class prefix. Optional.
-     * @param array  $options Configuration array for model. Optional.
-     *
-     * @return OsdownloadsTableDocument
-     *
-     * @throws  Exception
+     * @inheritDoc
      */
-    public function getTable($name = 'Document', $prefix = 'OsdownloadsTable', $options = array())
+    public function getTable($name = 'Document', $prefix = 'OsdownloadsTable', $options = [])
     {
         /** @var OsdownloadsTableDocument $table */
-        $table = JTable::getInstance('Document', 'OsdownloadsTable', $options);
+        $table = Table::getInstance('Document', 'OsdownloadsTable', $options);
 
         return $table;
     }
 
     /**
-     * @param string $ordering
-     * @param string $direction
-     *
-     * @throws Exception
+     * @inheritDoc
      */
     protected function populateState($ordering = 'doc.id', $direction = 'desc')
     {

@@ -23,6 +23,8 @@
 
 namespace Alledia\OSDownloads\Free\Helper;
 
+use Alledia\OSDownloads\Factory;
+
 defined('_JEXEC') or die();
 
 /**
@@ -33,18 +35,24 @@ class Route
     /**
      * Get the file download route.
      *
-     * @param   integer $id The id of the file
+     * @param int $id The id of the file
      *
-     * @return  string  The file download route.
+     * @return string  The file download route.
      */
-    public function getFileDownloadRoute($id)
+    public function getFileDownloadRoute(int $id): string
     {
-        $id = abs((int)$id);
+        $query = [
+            'option' => 'com_osdownloads',
+            'task'   => 'download',
+            'tmpl'   => 'component',
+            'id'     => $id
+        ];
 
-        // Create the link
-        $link = 'index.php?option=com_osdownloads&task=download&tmpl=component&id=' . $id;
+        if ($menu = Factory::getPimpleContainer()->helperSEF->getMenuItemForFile($id)) {
+            $query['Itemid'] = $menu->id;
+        }
 
-        return $link;
+        return 'index.php?' . http_build_query($query);
     }
 
     /**

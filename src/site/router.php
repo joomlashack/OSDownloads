@@ -35,34 +35,6 @@ if (!defined('OSDOWNLOADS_LOADED')) {
     require_once JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
 }
 
-/**
- * @param array $query
- *
- * @return array
- */
-function OsdownloadsBuildRoute(&$query)
-{
-    $router = new OsdownloadsRouter();
-
-    return $router->build($query);
-}
-
-/**
- * @param array $segments
- *
- * @return array
- * @throws Exception
- */
-function OsdownloadsParseRoute($segments)
-{
-    $router = new OsdownloadsRouter();
-
-    return $router->parse($segments);
-}
-
-/**
- * Routing class from com_osdownloads
- */
 class OsdownloadsRouter extends RouterBase
 {
     /**

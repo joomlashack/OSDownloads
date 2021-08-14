@@ -88,7 +88,7 @@
     </update>
 
     <updateservers>
-        <server type="extension" priority="1" name="OSDownloads"><![CDATA[https://deploy.ostraining.com/client/update/free/stable/com_osdownloads]]></server>
+        <server type="extension" priority="1" name="OSDownloads Free"><![CDATA[https://deploy.ostraining.com/client/update/free/stable/com_osdownloads]]></server>
     </updateservers>
 
     <alledia>
@@ -98,8 +98,6 @@
         <targetplatform>3.9</targetplatform>
         <phpminimum>7.2.5</phpminimum>
         <previousminimum>1.7.2</previousminimum>
-
-        <include>ShackDefaultFiles</include>
 
         <relatedExtensions>
             <extension type="library"
@@ -123,6 +121,8 @@
                        downgrade="true"
                        uninstall="true">plg_content_osdownloads</extension>
         </relatedExtensions>
+
+        <include>ShackDefaultFiles</include>
 
         <minify suffix=".min">
             <scripts destination="media/js/jquery.osdownloads.bundle.js">

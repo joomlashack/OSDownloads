@@ -62,7 +62,7 @@ class Content extends CMSPlugin
     /**
      * @return bool
      */
-    protected function isEnabled()
+    protected function isEnabled(): bool
     {
         if ($this->enabled === null) {
             if (!defined('OSDOWNLOADS_LOADED')) {

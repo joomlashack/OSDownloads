@@ -52,7 +52,7 @@ class Site extends BaseController
      * @return bool
      * @throws \Exception
      */
-    protected function processEmailRequirement($item)
+    protected function processEmailRequirement(object $item): bool
     {
         /** @var SiteApplication $app */
         $app       = Factory::getApplication();

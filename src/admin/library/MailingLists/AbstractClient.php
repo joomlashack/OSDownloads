@@ -87,7 +87,7 @@ abstract class AbstractClient
      *
      * @return bool
      */
-    public function isEnabled(): bool
+    public static function isEnabled(): bool
     {
         return true;
     }

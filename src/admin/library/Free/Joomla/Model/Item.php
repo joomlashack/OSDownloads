@@ -29,6 +29,8 @@ use Alledia\Framework\Joomla\Model\Base as BaseModel;
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Helper\Helper as FreeHelper;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeSite;
+use JDatabaseQuery;
+use Joomla\Database\QueryInterface;
 
 class Item extends BaseModel
 {
@@ -57,12 +59,12 @@ class Item extends BaseModel
     /**
      * Get the document's query
      *
-     * @param int $documentId
+     * @param ?int $documentId
      *
-     * @return \JDatabaseQuery
+     * @return JDatabaseQuery|QueryInterface
      * @throws \Exception
      */
-    public function getItemQuery($documentId = null)
+    public function getItemQuery(?int $documentId = null)
     {
         $app       = Factory::getApplication();
         $db        = $this->getDbo();
@@ -112,18 +114,18 @@ class Item extends BaseModel
     }
 
     /**
-     * @param $itemId
+     * @param int $id
      *
      * @return void
      */
-    public function incrementDownloadCount($itemId)
+    public function incrementDownloadCount(int $id)
     {
         $db = Factory::getDbo();
 
         $query = $db->getQuery(true)
             ->update('#__osdownloads_documents')
             ->set('downloaded = downloaded + 1')
-            ->where('id = ' . $db->quote($itemId));
+            ->where('id = ' . $id);
         $db->setQuery($query);
         $db->execute();
     }

@@ -33,7 +33,12 @@ use OsdownloadsTableEmail;
 
 class Email extends BaseModel
 {
-    protected function prepareRow(&$row)
+    /**
+     * @param object $row
+     *
+     * @return void
+     */
+    protected function prepareRow(object $row)
     {
         // Method to allow inheritance
     }

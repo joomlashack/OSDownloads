@@ -33,6 +33,10 @@ class OSDownloadsControllerFile extends JControllerForm
      */
     protected $extension;
 
+    /**
+     * @inheritDoc
+     * @throws Exception
+     */
     public function __construct($default = [])
     {
         parent::__construct($default);

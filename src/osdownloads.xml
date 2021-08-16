@@ -36,17 +36,9 @@
     <administration>
         <menu>COM_OSDOWNLOADS</menu>
         <submenu>
-            <menu view="files"
-                  alt="OSDownloads/Files">COM_OSDOWNLOADS_FILES
-            </menu>
-
-            <menu link="option=com_categories&amp;extension=com_osdownloads"
-                  alt="OSDownloads/Categories">COM_OSDOWNLOADS_CATEGORIES
-            </menu>
-
-            <menu view="emails"
-                  alt="OSDownloads/Emails">COM_OSDOWNLOADS_EMAILS
-            </menu>
+            <menu view="files">COM_OSDOWNLOADS_FILES</menu>
+            <menu link="option=com_categories&amp;extension=com_osdownloads">COM_OSDOWNLOADS_CATEGORIES</menu>
+            <menu view="emails">COM_OSDOWNLOADS_EMAILS</menu>
         </submenu>
 
         <files folder="admin">

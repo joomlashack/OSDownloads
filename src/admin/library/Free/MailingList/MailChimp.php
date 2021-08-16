@@ -70,8 +70,8 @@ class MailChimp extends AbstractClient
         if ($result && static::isEnabled()) {
             try {
                 $email  = $table->email ?? null;
-                $mc     = $this->getMailChimp();
-                $listId = $this->getParams()->get('mailinglist.mailchimp.list_id', 0);
+                $mc     = static::getMailChimp();
+                $listId = static::getParams()->get('mailinglist.mailchimp.list_id', 0);
 
                 if ($email && $mc && $listId) {
                     // Check if the email already exists
@@ -114,18 +114,18 @@ class MailChimp extends AbstractClient
     /**
      * @return ?\Mailchimp\Mailchimp
      */
-    public function getMailChimp(): ?\Mailchimp\Mailchimp
+    public static function getMailChimp(): ?\Mailchimp\Mailchimp
     {
         if (static::$apiManager === null) {
             static::$apiManager = false;
             try {
-                $params = $this->getParams();
+                $params = static::getParams();
                 $apiKey = $params->get('mailinglist.mailchimp.api', 0);
                 if ($apiKey) {
                     static::$apiManager = new \Mailchimp\Mailchimp($apiKey);
                 }
 
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 // Just ignore this
             }
         }
@@ -138,6 +138,6 @@ class MailChimp extends AbstractClient
      */
     public function isEnabled(): bool
     {
-        return $this->getParams()->get('mailinglist.mailchimp.enable');
+        return static::getParams()->get('mailinglist.mailchimp.enable');
     }
 }

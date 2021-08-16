@@ -159,7 +159,7 @@ abstract class AbstractClient
     /**
      * @return Registry
      */
-    protected function getParams(): Registry
+    protected static function getParams(): Registry
     {
         if (static::$params === null) {
             static::$params = ComponentHelper::getParams('com_osdownloads');

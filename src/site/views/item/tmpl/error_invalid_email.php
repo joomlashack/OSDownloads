@@ -21,20 +21,22 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Joomla\CMS\Language\Text;
+
 defined('_JEXEC') or die();
 ?>
 <style>
-    body,
-    div#all,
-    div#main {
-        background: none transparent !important;
-    }
+  body,
+  div#all,
+  div#main {
+    background: none transparent !important;
+  }
 
-    div#main {
-        min-height: 0 !important;
-    }
+  div#main {
+    min-height: 0 !important;
+  }
 </style>
 
-<h2><?php echo JText::_('COM_OSDOWNLOADS_ERROR'); ?></h2>
-<strong><?php echo JText::_('COM_OSDOWNLOADS_INVALID_EMAIL'); ?></strong>
-<p><?php echo JText::_('COM_OSDOWNLOADS_ERROR_DOWNLOAD_DENIED'); ?></p>
+<h2><?php echo Text::_('COM_OSDOWNLOADS_ERROR'); ?></h2>
+<strong><?php echo Text::_('COM_OSDOWNLOADS_INVALID_EMAIL'); ?></strong>
+<p><?php echo Text::_('COM_OSDOWNLOADS_ERROR_DOWNLOAD_DENIED'); ?></p>

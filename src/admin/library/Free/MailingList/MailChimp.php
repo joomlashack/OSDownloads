@@ -92,7 +92,7 @@ class MailChimp extends AbstractClient
                     }
                 }
 
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 $this->logError($e->getMessage());
             }
         }

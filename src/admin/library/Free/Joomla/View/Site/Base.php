@@ -25,12 +25,13 @@ namespace Alledia\OSDownloads\Free\Joomla\View\Site;
 
 use Alledia\OSDownloads\Factory;
 use Exception;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView;
 
 defined('_JEXEC') or die();
 
 /**
- * @deprecated: use Alledia\Framework\Joomla\View\Site\AbstractBase
+ * @deprecated 2.0.0 use Alledia\Framework\Joomla\View\Site\AbstractBase
  */
 class Base extends HtmlView
 {
@@ -74,9 +75,9 @@ class Base extends HtmlView
         if (empty($title)) {
             $title = $app->get('sitename');
         } elseif ($app->get('sitename_pagetitles', 0) == 1) {
-            $title = \JText::sprintf('JPAGETITLE', $app->get('sitename'), $title);
+            $title = Text::sprintf('JPAGETITLE', $app->get('sitename'), $title);
         } elseif ($app->get('sitename_pagetitles', 0) == 2) {
-            $title = \JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
+            $title = Text::sprintf('JPAGETITLE', $title, $app->get('sitename'));
         }
 
         $doc->setTitle($title);

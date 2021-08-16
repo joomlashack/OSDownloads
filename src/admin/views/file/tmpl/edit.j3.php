@@ -23,21 +23,24 @@
 
 use Alledia\Framework\Joomla\Extension\Licensed;
 use Alledia\OSDownloads\Factory;
+use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
+use Joomla\CMS\Filter\OutputFilter;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Router\Route;
 
 defined('_JEXEC') or die();
 
-use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
+HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
-// Include the component HTML helpers.
-JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+HTMLHelper::_('behavior.formvalidation');
+HTMLHelper::_('behavior.keepalive');
+HTMLHelper::_('behavior.tabstate');
+HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('formbehavior.chosen', 'select');
 
-JHtml::_('behavior.formvalidation');
-JHtml::_('behavior.keepalive');
-JHtml::_('behavior.tabstate');
-JHtml::_('behavior.tooltip');
-JHtml::_('formbehavior.chosen', 'select');
-
-JFilterOutput::objectHTMLSafe($this->item);
+OutputFilter::objectHtmlSafe($this->item);
 
 $container = Factory::getPimpleContainer();
 ?>
@@ -51,18 +54,18 @@ $container = Factory::getPimpleContainer();
 
     <form name="adminForm"
           id="adminForm"
-          action="<?php echo JRoute::_($container->helperRoute->getAdminMainViewRoute()); ?>"
+          action="<?php echo Route::_($container->helperRoute->getAdminMainViewRoute()); ?>"
           method="post"
           enctype="multipart/form-data"
           class="form-validate">
 
-        <?php echo JLayoutHelper::render('joomla.edit.title_alias', $this); ?>
+        <?php echo LayoutHelper::render('joomla.edit.title_alias', $this); ?>
 
         <div class="form-horizontal">
             <?php
-            echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'general'));
+            echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', ['active' => 'general']);
 
-            echo JHtml::_('bootstrap.addTab', 'myTab', 'general', JText::_('COM_OSDOWNLOADS_FILE', true));
+            echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'general', Text::_('COM_OSDOWNLOADS_FILE', true));
             ?>
             <div class="row-fluid">
                 <div class="span9">
@@ -70,47 +73,47 @@ $container = Factory::getPimpleContainer();
 
                     <div class="control-group">
                         <div class="control-label">
-                            <?php echo JText::_('COM_OSDOWNLOADS_DESCRIPTIONS'); ?>
+                            <?php echo Text::_('COM_OSDOWNLOADS_DESCRIPTIONS'); ?>
                         </div>
                         <div class="controls">
                             <?php
-                            echo JHtml::_(
+                            echo HTMLHelper::_(
                                 'bootstrap.startTabSet',
                                 'myTabDescriptions',
-                                array('active' => 'description1')
+                                ['active' => 'description1']
                             );
 
                             // Main Description
-                            echo JHtml::_(
+                            echo HTMLHelper::_(
                                 'bootstrap.addTab',
                                 'myTabDescriptions',
                                 'description1',
-                                JText::_('COM_OSDOWNLOADS_DESCRIPTION_1H', true)
+                                Text::_('COM_OSDOWNLOADS_DESCRIPTION_1H', true)
                             );
                             echo $this->form->getField('description_1')->input;
-                            echo JHtml::_('bootstrap.endTab');
+                            echo HTMLHelper::_('bootstrap.endTab');
 
                             // Before Button text
-                            echo JHtml::_(
+                            echo HTMLHelper::_(
                                 'bootstrap.addTab',
                                 'myTabDescriptions',
                                 'description2',
-                                JText::_('COM_OSDOWNLOADS_DESCRIPTION_2H', true)
+                                Text::_('COM_OSDOWNLOADS_DESCRIPTION_2H', true)
                             );
                             echo $this->form->getField('description_2')->input;
-                            echo JHtml::_('bootstrap.endTab');
+                            echo HTMLHelper::_('bootstrap.endTab');
 
                             // After button text
-                            echo JHtml::_(
+                            echo HTMLHelper::_(
                                 'bootstrap.addTab',
                                 'myTabDescriptions',
                                 'description3',
-                                JText::_('COM_OSDOWNLOADS_DESCRIPTION_3H', true)
+                                Text::_('COM_OSDOWNLOADS_DESCRIPTION_3H', true)
                             );
                             echo $this->form->getField('description_3')->input;
-                            echo JHtml::_('bootstrap.endTab');
+                            echo HTMLHelper::_('bootstrap.endTab');
 
-                            echo JHtml::_('bootstrap.endTabSet');
+                            echo HTMLHelper::_('bootstrap.endTabSet');
                             ?>
                         </div>
                     </div>
@@ -123,37 +126,33 @@ $container = Factory::getPimpleContainer();
                 </div>
             </div>
             <?php
-            echo JHtml::_('bootstrap.endTab');
+            echo HTMLHelper::_('bootstrap.endTab');
 
-            /*************************************
-             *          Pro parameters           *
-             *************************************/
             /** @var Licensed $component */
             $component = FreeComponentSite::getInstance();
-
             if ($component->isPro()) :
                 echo $this->loadTemplate('custom_fields');
             endif;
 
             // Requirements tab
-            echo JHtml::_(
+            echo HTMLHelper::_(
                 'bootstrap.addTab',
                 'myTab',
                 'requirements',
-                JText::_('COM_OSDOWNLOADS_REQUIREMENTS_TO_DOWNLOAD', true)
+                Text::_('COM_OSDOWNLOADS_REQUIREMENTS_TO_DOWNLOAD', true)
             );
 
             echo $this->form->renderFieldset('requirements');
 
-            echo JHtml::_('bootstrap.endTab');
+            echo HTMLHelper::_('bootstrap.endTab');
 
             // Advanced tab
-            echo JHtml::_('bootstrap.addTab', 'myTab', 'advanced', JText::_('COM_OSDOWNLOADS_ADVANCED', true));
+            echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'advanced', Text::_('COM_OSDOWNLOADS_ADVANCED', true));
 
             echo $this->form->renderFieldset('advanced');
 
-            echo JHtml::_('bootstrap.endTab');
-            echo JHtml::_('bootstrap.endTabSet');
+            echo HTMLHelper::_('bootstrap.endTab');
+            echo HTMLHelper::_('bootstrap.endTabSet');
             ?>
         </div>
 
@@ -161,7 +160,7 @@ $container = Factory::getPimpleContainer();
         <input type="hidden" name="option" value="com_osdownloads"/>
         <input type="hidden" name="id" value="<?php echo $this->item->id; ?>"/>
         <input type="hidden" name="cid[]" value="<?php echo $this->item->id; ?>"/>
-        <?php echo JHTML::_('form.token'); ?>
+        <?php echo HTMLHelper::_('form.token'); ?>
     </form>
 <?php
 echo $this->extension->getFooterMarkup();

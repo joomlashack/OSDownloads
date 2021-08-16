@@ -21,22 +21,30 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\Utilities\ArrayHelper;
+
 defined('_JEXEC') or die();
 
-JFormHelper::loadFieldClass('Hidden');
-JFormHelper::loadFieldClass('File');
+FormHelper::loadFieldClass('Hidden');
+FormHelper::loadFieldClass('File');
 
-class OsdownloadsFormFieldUpload extends JFormField
+class OsdownloadsFormFieldUpload extends FormField
 {
-    protected $baseAttribs = array(
+    protected $baseAttribs = [
         'name'        => null,
         'label'       => null,
         'description' => null
-    );
+    ];
 
-    public function setup(\SimpleXMLElement $element, $value, $group = null)
+    /**
+     * @inheritDoc
+     */
+    public function setup(SimpleXMLElement $element, $value, $group = null)
     {
-        $this->baseAttribs = array();
+        $this->baseAttribs = [];
         foreach ($element->attributes() as $name => $attribute) {
             $this->baseAttribs[$name] = (string)$attribute;
         }
@@ -47,24 +55,25 @@ class OsdownloadsFormFieldUpload extends JFormField
     }
 
     /**
-     * This will display the currently uploaded file as just text
-     *
-     * @return string
+     * @inheritDoc
      */
     protected function getInput()
     {
         $parts = explode('_', $this->value, 2);
 
         if ($fileName = array_pop($parts)) {
-            $text = JText::sprintf('COM_OSDOWNLOADS_CURRENT_FILE', $fileName);
+            $text = Text::sprintf('COM_OSDOWNLOADS_CURRENT_FILE', $fileName);
         } else {
-            $text = JText::_('COM_OSDOWNLOADS_CURRENT_FILE_NONE');
+            $text = Text::_('COM_OSDOWNLOADS_CURRENT_FILE_NONE');
         }
 
         return sprintf('<span class="btn alert-info">%s</span>', $text);
     }
 
-    public function renderField($options = array())
+    /**
+     * @inheritDoc
+     */
+    public function renderField($options = [])
     {
         $hiddenField = $this->renderHiddenField();
         $uploadField = $this->renderUploader();
@@ -72,19 +81,21 @@ class OsdownloadsFormFieldUpload extends JFormField
         return $hiddenField . $uploadField . parent::renderField();
     }
 
-    protected function renderHiddenField()
+    /**
+     * @return string
+     */
+    protected function renderHiddenField(): string
     {
-        $hiddenField = $this->renderSubfield(
-            array(
-                'name' => $this->baseAttribs['name'],
-                'type' => 'hidden'
-            )
-        );
-
-        return $hiddenField;
+        return $this->renderSubfield([
+            'name' => $this->baseAttribs['name'],
+            'type' => 'hidden'
+        ]);
     }
 
-    protected function renderUploader()
+    /**
+     * @return string
+     */
+    protected function renderUploader(): string
     {
         $attribs                = $this->baseAttribs;
         $attribs['name']        .= '_upload';
@@ -92,24 +103,31 @@ class OsdownloadsFormFieldUpload extends JFormField
         $attribs['label']       = 'COM_OSDOWNLOADS_UPLOAD_FILE';
         $attribs['description'] = 'COM_OSDOWNLOADS_UPLOAD_FILE_DESC';
 
-        $uploadField = $this->renderSubfield($attribs);
-
-        return $uploadField;
+        return $this->renderSubfield($attribs);
     }
 
-    protected function renderSubfield($attribs)
+    /**
+     * @param string[] $attribs
+     *
+     * @return string
+     */
+    protected function renderSubfield(array $attribs): string
     {
-        $name = empty($attribs['name']) ? null : $attribs['name'];
+        $name = $attribs['name'] ?? null;
 
         if ($name) {
-            $fieldXml = sprintf('<field %s/>', \Joomla\Utilities\ArrayHelper::toString($attribs));
-            $field    = new SimpleXMLElement($fieldXml);
+            try {
+                $fieldXml = sprintf('<field %s/>', ArrayHelper::toString($attribs));
+                $field    = new SimpleXMLElement($fieldXml);
 
-            $this->form->setField($field, $this->group);
+                $this->form->setField($field, $this->group);
 
-            $renderedField = $this->form->renderField($name, $this->group);
+                $renderedField = $this->form->renderField($name, $this->group);
+            } catch (Throwable $error) {
+                // fail silently
+            }
         }
 
-        return empty($renderedField) ? null : $renderedField;
+        return $renderedField ?? '';
     }
 }

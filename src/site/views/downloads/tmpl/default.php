@@ -23,15 +23,17 @@
 
 defined('_JEXEC') or die();
 
-use Alledia\Framework\Helper as AllediaHelper;
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 
 $this->app                    = Factory::getApplication();
 $this->lang                   = Factory::getLanguage();
 $this->container              = Factory::getPimpleContainer();
 $this->params                 = $this->app->getParams();
-$this->numberOfColumns        = (int)$this->params->get("number_of_column", 1);
+$this->numberOfColumns        = (int)$this->params->get('number_of_column', 1);
 $this->authorizedAccessLevels = Factory::getUser()->getAuthorisedViewLevels();
 $this->itemId                 = $this->app->input->getInt('Itemid');
 $this->id                     = $this->app->input->getInt('id');
@@ -40,24 +42,24 @@ $this->component              = FreeComponentSite::getInstance();
 $this->isPro                  = $this->component->isPro();
 $this->version                = $this->component->getMediaVersion();
 
-JHtml::_('jquery.framework');
+HTMLHelper::_('jquery.framework');
 
-$options = array('version' => $this->version, 'relative' => true);
+$options = ['version' => $this->version, 'relative' => true];
 
-JHtml::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', $options, array());
+HTMLHelper::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', $options, []);
 
 ?>
 <div class="contentopen osdownloads-container">
     <?php
-    if ($this->params->get('show_page_heading')
+    if (
+        $this->params->get('show_page_heading')
         && ($heading = $this->params->get('page_heading'))
     ) :
         ?>
         <div class="page-header">
             <h1> <?php echo $this->escape($this->params->get('page_heading')); ?> </h1>
         </div>
-        <?php
-    endif;
+    <?php endif;
 
     if ($this->showCategoryFilter && !empty($this->categories)) :
         ?>
@@ -68,19 +70,19 @@ JHtml::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', $options,
                 $column = $i % $this->numberOfColumns;
 
                 if (in_array($category->access, $this->authorizedAccessLevels)) :
-                    $classes = array(
+                    $classes = [
                         'column',
                         'column-' . $column,
                         'item' . $column,
                         'cate_' . $category->id
-                    );
+                    ];
                     ?>
                     <div class="<?php echo join(' ', $classes); ?>">
                         <h3>
                             <?php
-                            echo JHtml::_(
+                            echo HTMLHelper::_(
                                 'link',
-                                JRoute::_(
+                                Route::_(
                                     $this->container->helperRoute->getFileListRoute($category->id, $this->itemId)
                                 ),
                                 $category->title
@@ -92,19 +94,16 @@ JHtml::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', $options,
                         </div>
                     </div>
                     <?php
-                    if ($this->numberOfColumns && $column == $this->numberOfColumns - 1) :
-                        ?>
+                    if ($this->numberOfColumns && $column == $this->numberOfColumns - 1) : ?>
                         <div class="clr"></div>
-                        <?php
-                    endif;
+                    <?php endif;
                     $i++;
                 endif;
             endforeach;
             ?>
             <div class="clr"></div>
         </div>
-    <?php
-    endif;
+    <?php endif;
 
     if (!empty($this->items)) :
         ?>
@@ -114,19 +113,19 @@ JHtml::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', $options,
             foreach ($this->items as $file) :
                 $column = $i % $this->numberOfColumns;
                 $this->item = $file;
-                $classes    = array(
+                $classes    = [
                     'column',
                     'column-' . $column,
                     'item' . $column,
                     'file_' . $this->item->id
-                );
+                ];
                 ?>
 
                 <div class="<?php echo join(' ', $classes); ?>">
                     <?php
                     $this->requireEmail = $this->item->require_user_email;
                     $this->requireAgree = (bool)$this->item->require_agree;
-                    $this->requireShare = (bool)@$this->item->require_share;
+                    $this->requireShare = (bool)($this->item->require_share ?? false);
 
                     if (!$this->showModal) :
                         $this->showModal = $this->requireEmail || $this->requireAgree || $this->requireShare;
@@ -139,23 +138,18 @@ JHtml::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', $options,
                 </div>
 
                 <?php
-                if ($this->numberOfColumns && $column == $this->numberOfColumns - 1) :
-                    ?>
+                if ($this->numberOfColumns && $column == $this->numberOfColumns - 1) : ?>
                     <div class="clr"></div>
-                    <?php
-                endif;
+                <?php endif;
             endforeach;
             ?>
         </div>
-        <?php
-    else :
-        ?>
+
+    <?php else : ?>
         <div class="osd-alert">
-            <?php echo JText::_('COM_OSDOWNLOADS_NO_DOWNLOADS'); ?>
+            <?php echo Text::_('COM_OSDOWNLOADS_NO_DOWNLOADS'); ?>
         </div>
-        <?php
-    endif;
-    ?>
+    <?php endif; ?>
     <div class="clr"></div>
     <div class="osdownloads-pages-counter"><?php echo $this->pagination->getPagesCounter(); ?></div>
     <div class="osdownloads-pagination"><?php echo $this->pagination->getPagesLinks(); ?></div>

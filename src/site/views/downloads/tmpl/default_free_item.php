@@ -21,14 +21,23 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Router\Route;
+
 defined('_JEXEC') or die();
 ?>
 
 <div class="item_<?php echo $this->item->id; ?>">
     <h3>
-        <a href="<?php echo JRoute::_($this->container->helperRoute->getViewItemRoute($this->item->id, $this->itemId)); ?>">
-            <?php echo $this->item->name; ?>
-        </a>
+        <?php
+        echo HTMLHelper::_(
+            'link',
+            Route::_($this->container->helperRoute->getViewItemRoute($this->item->id, $this->itemId)),
+            $this->item->name
+        );
+        ?>
     </h3>
 
     <div class="item_content"><?php echo $this->item->brief; ?></div>
@@ -36,7 +45,7 @@ defined('_JEXEC') or die();
     <?php if ($this->params->get('show_download_button', 0)) : ?>
         <div class="osdownloadsactions">
             <div class="btn_download">
-                <?php echo JLayoutHelper::render('buttons.download', $this); ?>
+                <?php echo LayoutHelper::render('buttons.download', $this); ?>
             </div>
         </div>
     <?php endif; ?>
@@ -44,9 +53,13 @@ defined('_JEXEC') or die();
     <?php if ($this->params->get('show_readmore_button', 1)) : ?>
         <div class="osdownloads-readmore-wrapper readmore_wrapper">
             <div class="osdownloads-readmore readmore">
-                <a href="<?php echo JRoute::_($this->container->helperRoute->getViewItemRoute($this->item->id, $this->itemId)); ?>">
-                    <?php echo JText::_("COM_OSDOWNLOADS_READ_MORE"); ?>
-                </a>
+                <?php
+                HTMLHelper::_(
+                    'link',
+                    Route::_($this->container->helperRoute->getViewItemRoute($this->item->id, $this->itemId)),
+                    Text::_('COM_OSDOWNLOADS_READ_MORE')
+                );
+                ?>
             </div>
             <div class="clr"></div>
         </div>

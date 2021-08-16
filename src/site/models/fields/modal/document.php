@@ -21,20 +21,28 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('JPATH_BASE') or die();
+use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormHelper;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
-JFormHelper::loadFieldClass('list');
+defined('_JEXEC') or die();
+
+FormHelper::loadFieldClass('list');
 
 class JFormFieldModal_Document extends JFormFieldList
 {
     protected $type = 'Modal_Document';
 
+    /**
+     * @inheritDoc
+     */
     protected function getOptions()
     {
         // Initialize variables.
-        $options = array();
+        $options = [];
 
-        $db = JFactory::getDBO();
+        $db = Factory::getDbo();
 
         $query = $db->getQuery(true)
             ->select('*')
@@ -45,10 +53,10 @@ class JFormFieldModal_Document extends JFormFieldList
         $rows = $db->loadObjectList();
 
         foreach ($rows as $item) {
-            $options[] = JHtml::_(
+            $options[] = HTMLHelper::_(
                 'select.option',
                 (string)$item->id,
-                JText::alt(
+                Text::alt(
                     trim((string)$item->name),
                     preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)
                 ),

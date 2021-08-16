@@ -95,9 +95,9 @@ abstract class AbstractClient
     /**
      * @param ?int $documentId
      *
-     * @return OsdownloadsTableDocument
+     * @return ?OsdownloadsTableDocument
      */
-    protected function getDocument(?int $documentId = null)
+    protected function getDocument(?int $documentId = null): ?OsdownloadsTableDocument
     {
         $documentId = (int)($documentId ?: $this->table->get('document_id'));
         if (!isset(static::$documents[$documentId])) {
@@ -180,17 +180,19 @@ abstract class AbstractClient
      */
     protected function getDocumentParam(int $documentId, string $key, $default = null)
     {
-        $document = $this->getDocument($documentId);
-        $value    = $document->params->get($key);
+        if ($document = $this->getDocument($documentId)) {
+            $value = $document->get('params')->get($key);
+        }
 
         if (empty($value)) {
             // Try category lookup
-            $category = $this->getCategory($document->get('cate_id'));
-            $value    = $category->params->get($key);
+            if ($category = $this->getCategory($document->get('cate_id'))) {
+                $value = $category->get('params')->get($key);
+            }
 
             if (empty($value)) {
                 // Try global
-                $value = $this->getParams()->get($key);
+                $value = static::getParams()->get($key);
             }
         }
 

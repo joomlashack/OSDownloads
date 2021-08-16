@@ -23,10 +23,13 @@
 
 defined('_JEXEC') or die();
 
-use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
+use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\File;
 use Alledia\OSDownloads\Free\Helper\Helper;
+use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\Plugin\PluginHelper;
 
 
 class OSDownloadsViewDownload extends HtmlView
@@ -62,10 +65,7 @@ class OSDownloadsViewDownload extends HtmlView
     protected $isLocal = true;
 
     /**
-     * @param string $tpl
-     *
-     * @return void
-     * @throws Exception
+     * @inheritDoc
      */
     public function display($tpl = null)
     {
@@ -77,7 +77,7 @@ class OSDownloadsViewDownload extends HtmlView
         $item      = $model->getItem($id);
 
         if (empty($item)) {
-            $this->displayError(JText::_('COM_OSDOWNLOADS_ERROR_DOWNLOAD_DENIED'));
+            $this->displayError(Text::_('COM_OSDOWNLOADS_ERROR_DOWNLOAD_DENIED'));
             return;
         }
 
@@ -96,16 +96,16 @@ class OSDownloadsViewDownload extends HtmlView
                 $this->isLocal = false;
 
                 // Triggers the onOSDownloadsGetExternalDownloadLink event
-                JPluginHelper::importPlugin('osdownloads');
+                PluginHelper::importPlugin('osdownloads');
 
-                $app->triggerEvent('onOSDownloadsGetExternalDownloadLink', array(&$item));
+                $app->triggerEvent('onOSDownloadsGetExternalDownloadLink', [&$item]);
 
                 $fileFullPath = $item->file_url;
 
                 $this->headers = File::getHeaders($fileFullPath);
                 if (!empty($this->headers['http_code']) && $this->headers['http_code'] >= 400) {
                     $this->displayError(
-                        JText::sprintf('COM_OSDOWNLOADS_ERROR_DOWNLOAD_SERVER_ERROR', $this->headers['http_code'])
+                        Text::sprintf('COM_OSDOWNLOADS_ERROR_DOWNLOAD_SERVER_ERROR', $this->headers['http_code'])
                     );
                     return;
                 }
@@ -122,13 +122,13 @@ class OSDownloadsViewDownload extends HtmlView
             }
 
         } else {
-            $fileFullPath   = realpath(JPATH_SITE . "/media/com_osdownloads/files/" . $item->file_path);
-            $this->realName = substr($item->file_path, strpos($item->file_path, "_") + 1);
+            $fileFullPath   = realpath(JPATH_SITE . '/media/com_osdownloads/files/' . $item->file_path);
+            $this->realName = substr($item->file_path, strpos($item->file_path, '_') + 1);
             $this->fileSize = filesize($fileFullPath);
         }
 
         if (empty($fileFullPath)) {
-            $this->displayError(JText::_('COM_OSDOWNLOADS_ERROR_DOWNLOAD_NOT_AVAILABLE'));
+            $this->displayError(Text::_('COM_OSDOWNLOADS_ERROR_DOWNLOAD_NOT_AVAILABLE'));
             return;
         }
 
@@ -142,12 +142,18 @@ class OSDownloadsViewDownload extends HtmlView
             return;
         }
 
-        $this->displayError(JText::_('COM_OSDOWNLOADS_ERROR_DOWNLOAD_TOO_BIG'));
+        $this->displayError(Text::_('COM_OSDOWNLOADS_ERROR_DOWNLOAD_TOO_BIG'));
     }
 
+    /**
+     * @param string $message
+     *
+     * @return void
+     * @throws Exception
+     */
     protected function displayError($message)
     {
-        JFactory::getApplication()->enqueueMessage($message, 'error');
+        Factory::getApplication()->enqueueMessage($message, 'error');
 
         $this->setLayout('error');
         parent::display();
@@ -161,7 +167,7 @@ class OSDownloadsViewDownload extends HtmlView
      *
      * @return bool
      */
-    protected function checkMemory()
+    protected function checkMemory(): bool
     {
         if ($this->fileSize) {
             $memoryLimit = ini_get('memory_limit');

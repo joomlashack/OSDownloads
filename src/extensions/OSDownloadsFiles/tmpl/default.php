@@ -25,14 +25,18 @@ defined('_JEXEC') or die();
 
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Router\Route;
 use Joomla\Utilities\ArrayHelper;
 
-$app       = JFactory::getApplication();
-$doc       = JFactory::getDocument();
-$lang      = JFactory::getLanguage();
+$app       = Factory::getApplication();
+$doc       = Factory::getDocument();
+$lang      = Factory::getLanguage();
 $container = Factory::getPimpleContainer();
 
-$this->itemId = (int)$app->input->getInt('Itemid');
+$this->itemId = $app->input->getInt('Itemid');
 
 $moduleTag = $this->params->get('module_tag', 'div');
 $headerTag = $this->params->get('header_tag', 'h3');
@@ -46,19 +50,19 @@ $showModal    = false;
 
 // Module body
 $component = FreeComponentSite::getInstance();
-$options   = array('version' => $component->getMediaVersion(), 'relative' => true);
+$options   = ['version' => $component->getMediaVersion(), 'relative' => true];
 
-JHtml::_('stylesheet', 'com_osdownloads/frontend.css', $options, array());
+HTMLHelper::_('stylesheet', 'com_osdownloads/frontend.css', $options, []);
 
 if ($linkTo === 'download') :
-    JHtml::_('jquery.framework');
-    JHtml::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', $options, array());
+    HTMLHelper::_('jquery.framework');
+    HTMLHelper::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', $options, []);
 endif;
 
-$moduleAttribs = array(
+$moduleAttribs = [
     'class' => 'mod_osdownloadsfiles' . $this->params->get('moduleclass_sfx'),
     'id'    => 'mod_osdownloads_' . $this->id
-);
+];
 
 echo sprintf('<%s %s>', $moduleTag, ArrayHelper::toString($moduleAttribs));
 ?>
@@ -67,7 +71,7 @@ echo sprintf('<%s %s>', $moduleTag, ArrayHelper::toString($moduleAttribs));
         foreach ($this->list as $file) :
             $requireEmail = $file->require_user_email;
             $requireAgree = (bool)$file->require_agree;
-            $requireShare = (bool)@$file->require_share;
+            $requireShare = (bool)($file->require_share ?? false);
 
             if (!$showModal) :
                 $showModal = $requireEmail || $requireAgree || $requireShare;
@@ -84,35 +88,31 @@ echo sprintf('<%s %s>', $moduleTag, ArrayHelper::toString($moduleAttribs));
                         <div class="btn_download">
                             <?php
                             $this->item = $file;
-                            echo JLayoutHelper::render(
+                            echo LayoutHelper::render(
                                 'buttons.download',
                                 $this,
                                 null,
-                                array('component' => 'com_osdownloads')
+                                ['component' => 'com_osdownloads']
                             );
                             ?>
                         </div>
                     </div>
-                <?php
-                else :
-                    echo JHtml::_(
+                <?php else :
+                    echo HTMLHelper::_(
                         'link',
-                        JRoute::_($container->helperRoute->getViewItemRoute($file->id, $this->itemId)),
-                        $this->params->get('link_label', JText::_('COM_OSDOWNLOADS_FILES_READ_MORE')),
+                        Route::_($container->helperRoute->getViewItemRoute($file->id, $this->itemId)),
+                        $this->params->get('link_label', Text::_('COM_OSDOWNLOADS_FILES_READ_MORE')),
                         sprintf(
                             'class="modosdownloadsDownloadButton osdownloads-readmore readmore" data-direct-page="%s"',
                             $file->direct_page
                         )
                     );
                     ?>
-                    <br clear="all"/>
-                <?php
-                endif;
+                    <div style="clear: both;"></div>
+                <?php endif;
                 ?>
             </li>
-        <?php
-        endforeach;
-        ?>
+        <?php endforeach; ?>
     </ul>
 <?php
 echo sprintf('</%s>', $moduleTag);

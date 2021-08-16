@@ -26,7 +26,6 @@ namespace Alledia\OSDownloads\Free\Helper;
 use Alledia\OSDownloads\Factory;
 use ContentHelperRoute;
 use Exception;
-use JHtmlSidebar;
 use Joomla\CMS\Access\Access;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\HTML\Helpers\Sidebar;
@@ -180,7 +179,7 @@ abstract class Helper
         if (!($item->params instanceof Registry)) {
             $item->params = new Registry($item->params);
         }
-        $item->require_agree = (bool)$item->require_agree;
+        $item->require_agree        = (bool)$item->require_agree;
         $item->agreement_article_id = (int)$item->agreement_article_id;
 
         if ($item->require_agree && $item->agreement_article_id) {
@@ -219,5 +218,13 @@ abstract class Helper
             $results = trim(join("\n", $results));
         }
         $item->event = (object)$prepareEvent;
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getContexts(): array
+    {
+        return [];
     }
 }

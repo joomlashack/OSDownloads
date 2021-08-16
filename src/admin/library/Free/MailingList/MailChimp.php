@@ -138,6 +138,6 @@ class MailChimp extends AbstractClient
      */
     public function isEnabled(): bool
     {
-        return static::getParams()->get('mailinglist.mailchimp.enable');
+        return static::getParams()->get('mailinglist.mailchimp.enable', true);
     }
 }

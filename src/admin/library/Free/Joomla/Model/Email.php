@@ -27,8 +27,9 @@ defined('_JEXEC') or die();
 
 use Alledia\Framework\Joomla\Model\Base as BaseModel;
 use Alledia\OSDownloads\Factory;
-use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Alledia\OSDownloads\Free\Helper\Helper;
+use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
+use Joomla\CMS\Table\Table;
 use OsdownloadsTableEmail;
 
 class Email extends BaseModel
@@ -52,11 +53,9 @@ class Email extends BaseModel
     public function insert($email, $documentId)
     {
         /**
-         * @var FreeComponentSite      $component
          * @var OsdownloadsTableEmail $row
          */
-        $component = FreeComponentSite::getInstance();
-        $row       = $component->getTable('Email');
+        $row = Table::getInstance('Email', 'OsdownloadsTable');
 
         if (Helper::validateEmail($email)) {
             $row->email = $email;

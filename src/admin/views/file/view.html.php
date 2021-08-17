@@ -73,6 +73,6 @@ class OSDownloadsViewFile extends AbstractForm
             ToolbarHelper::save2copy('file.save2copy');
         }
 
-        ToolbarHelper::cancel();
+        ToolbarHelper::cancel('file.cancel');
     }
 }

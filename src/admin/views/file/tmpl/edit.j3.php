@@ -36,7 +36,6 @@ HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
 HTMLHelper::_('behavior.formvalidation');
 HTMLHelper::_('behavior.keepalive');
-HTMLHelper::_('behavior.tabstate');
 HTMLHelper::_('behavior.tooltip');
 HTMLHelper::_('formbehavior.chosen', 'select');
 

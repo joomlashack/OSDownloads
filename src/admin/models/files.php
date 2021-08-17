@@ -35,14 +35,14 @@ class OSDownloadsModelFiles extends ListModel
     public function __construct($config = [])
     {
         $config['filter_fields'] = [
-            'doc.ordering',
-            'doc.published',
-            'doc.name',
+            'cate_id',
             'doc.access',
             'doc.downloaded',
             'doc.id',
-            'cate_id',
-            'published'
+            'doc.name',
+            'doc.ordering',
+            'doc.published',
+            'published',
         ];
 
         parent::__construct($config);

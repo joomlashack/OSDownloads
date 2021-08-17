@@ -5,7 +5,6 @@
                type="text"
                label="COM_OSDOWNLOADS_NAME"
                description="COM_OSDOWNLOADS_NAME_DESC"
-               class="input-xxlarge input-large-text"
                required="true"/>
 
         <field name="alias"
@@ -97,8 +96,7 @@
                 type="hidden"
                 label="JFIELD_ORDERING_LABEL"
                 size="6"
-                default="0"
-        />
+                default="0"/>
     </fieldset>
 
     <fieldset name="requirements" addfieldpath="/administrator/components/com_content/models/fields">

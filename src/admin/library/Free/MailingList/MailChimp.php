@@ -25,7 +25,6 @@ namespace Alledia\OSDownloads\Free\MailingList;
 
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\MailingLists\AbstractClient;
-use JEventDispatcher;
 use Joomla\CMS\Table\Table;
 use Joomla\Event\Dispatcher;
 use Joomla\Event\Event;
@@ -51,7 +50,7 @@ class MailChimp extends AbstractClient
     {
         $dispatcher = Factory::getDispatcher();
 
-        if ($dispatcher instanceof JEventDispatcher) {
+        if ($dispatcher instanceof \JEventDispatcher) {
             $dispatcher->register('onOSDownloadsAfterSaveEmail', [$this, 'onAfterStore']);
 
         } elseif ($dispatcher instanceof Dispatcher) {

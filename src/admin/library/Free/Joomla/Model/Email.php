@@ -56,7 +56,6 @@ class Email extends BaseModel
          * @var OsdownloadsTableEmail $row
          */
         $row = Table::getInstance('Email', 'OsdownloadsTable');
-
         if (Helper::validateEmail($email)) {
             $row->email = $email;
 

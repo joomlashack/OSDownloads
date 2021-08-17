@@ -113,9 +113,6 @@ $wa->useScript('keepalive')
         <?php
         echo HTMLHelper::_('uitab.endTab');
 
-        /*************************************
-         *          Pro parameters           *
-         *************************************/
         /** @var Licensed $component */
         $component = FreeComponentSite::getInstance();
 
@@ -123,8 +120,13 @@ $wa->useScript('keepalive')
             echo $this->loadTemplate('custom_fields');
         endif;
 
-        echo HTMLHelper::_('uitab.addTab', 'myTab', 'requirements',
-            Text::_('COM_OSDOWNLOADS_REQUIREMENTS_TO_DOWNLOAD', true));
+        echo HTMLHelper::_(
+            'uitab.addTab',
+            'myTab',
+            'requirements',
+            Text::_('COM_OSDOWNLOADS_REQUIREMENTS_TO_DOWNLOAD', true)
+        );
+
         echo $this->form->renderFieldset('requirements');
         echo HTMLHelper::_('uitab.endTab');
 

@@ -47,7 +47,7 @@ $formAction = Route::_('index.php?option=com_osdownloads&view=file&layout=edit&i
 ?>
     <script type="text/javascript">
         Joomla.submitbutton = function(task) {
-            if (task === 'cancel' || document.formvalidator.isValid(document.id('adminForm'))) {
+            if (task === 'file.cancel' || document.formvalidator.isValid(document.id('adminForm'))) {
                 Joomla.submitform(task, document.getElementById('adminForm'));
             }
         }

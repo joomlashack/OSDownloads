@@ -42,7 +42,8 @@ HTMLHelper::_('formbehavior.chosen', 'select');
 
 OutputFilter::objectHtmlSafe($this->item);
 
-$container = Factory::getPimpleContainer();
+$container  = Factory::getPimpleContainer();
+$formAction = Route::_('index.php?option=com_osdownloads&view=file&layout=edit&id=' . (int)$this->item->id);
 ?>
     <script type="text/javascript">
         Joomla.submitbutton = function(task) {
@@ -54,7 +55,7 @@ $container = Factory::getPimpleContainer();
 
     <form name="adminForm"
           id="adminForm"
-          action="<?php echo Route::_($container->helperRoute->getAdminMainViewRoute()); ?>"
+          action="<?php echo $formAction; ?>"
           method="post"
           enctype="multipart/form-data"
           class="form-validate">
@@ -157,9 +158,6 @@ $container = Factory::getPimpleContainer();
         </div>
 
         <input type="hidden" name="task" value=""/>
-        <input type="hidden" name="option" value="com_osdownloads"/>
-        <input type="hidden" name="id" value="<?php echo $this->item->id; ?>"/>
-        <input type="hidden" name="cid[]" value="<?php echo $this->item->id; ?>"/>
         <?php echo HTMLHelper::_('form.token'); ?>
     </form>
 <?php

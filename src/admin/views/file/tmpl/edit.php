@@ -37,10 +37,12 @@ $container = Factory::getPimpleContainer();
 $wa = $this->document->getWebAssetManager();
 $wa->useScript('keepalive')
     ->useScript('form.validate');
+
+$formAction = Route::_('index.php?option=com_osdownloads&view=file&layout=edit&id=' . (int)$this->item->id);
 ?>
 <form name="adminForm"
       id="adminForm"
-      action="<?php echo Route::_($container->helperRoute->getAdminMainViewRoute()); ?>"
+      action="<?php echo $formAction; ?>"
       method="post"
       enctype="multipart/form-data"
       class="form-validate">
@@ -141,8 +143,6 @@ $wa->useScript('keepalive')
 
 
     <input type="hidden" name="task" value=""/>
-    <input type="hidden" name="option" value="com_osdownloads"/>
-    <input type="hidden" name="id" value="<?php echo $this->item->id; ?>"/>
-    <input type="hidden" name="cid[]" value="<?php echo $this->item->id; ?>"/>
+    <!--input type="hidden" name="return" value=""/-->
     <?php echo HTMLHelper::_('form.token'); ?>
 </form>

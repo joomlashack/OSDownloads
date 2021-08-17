@@ -41,6 +41,8 @@ class OSDownloadsModelFiles extends ListModel
             'doc.id',
             'doc.name',
             'doc.ordering',
+            'doc.publish_down',
+            'doc.publish_up',
             'doc.published',
             'published',
         ];

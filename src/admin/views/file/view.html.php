@@ -60,8 +60,8 @@ class OSDownloadsViewFile extends AbstractForm
             (!$isNew && $canDo->get('core.edit'))
             || ($isNew && $canDo->get('core.create'))
         ) {
-            ToolbarHelper::apply('file.apply', 'JTOOLBAR_APPLY');
-            ToolbarHelper::save('file.save', 'JTOOLBAR_SAVE');
+            ToolbarHelper::apply('file.apply');
+            ToolbarHelper::save('file.save');
         }
 
         if ($canDo->get('core.create')) {

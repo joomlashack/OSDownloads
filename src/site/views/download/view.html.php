@@ -69,7 +69,7 @@ class OSDownloadsViewDownload extends HtmlView
      */
     public function display($tpl = null)
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $id  = $app->input->getInt('id');
 
         $component = FreeComponentSite::getInstance();

@@ -23,7 +23,7 @@
 
 defined('_JEXEC') or die();
 
-use Alledia\Framework\Factory;
+use Alledia\OSDownloads\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\Path;
@@ -39,29 +39,25 @@ class OSDownloadsModelFile extends AdminModel
 {
     protected $uploadDir = OSDOWNLOADS_MEDIA . '/files';
 
-    protected $uploadErrors = array(
+    protected $uploadErrors = [
         UPLOAD_ERR_CANT_WRITE => 'COM_OSDOWNLOADS_UPLOAD_ERR_CANT_WRITE',
         UPLOAD_ERR_EXTENSION  => 'COM_OSDOWNLOADS_UPLOAD_ERR_EXTENSION',
         UPLOAD_ERR_FORM_SIZE  => 'COM_OSDOWNLOADS_UPLOAD_ERR_FORM_SIZE',
         UPLOAD_ERR_INI_SIZE   => 'COM_OSDOWNLOADS_UPLOAD_ERR_INI_SIZE',
         UPLOAD_ERR_NO_TMP_DIR => 'COM_OSDOWNLOADS_UPLOAD_ERR_NO_TMP_DIR',
         UPLOAD_ERR_PARTIAL    => 'COM_OSDOWNLOADS_UPLOAD_ERR_PARTIAL'
-    );
+    ];
 
     /**
-     * @param array $data
-     * @param bool  $loadData
-     *
-     * @return Form
-     * @throws Exception
+     * @inheritDoc
      */
-    public function getForm($data = array(), $loadData = true)
+    public function getForm($data = [], $loadData = true)
     {
         // Get the form.
-        $form = $this->loadForm('com_osdownloads.file', 'file', array('control' => 'jform', 'load_data' => $loadData));
+        $form = $this->loadForm('com_osdownloads.file', 'file', ['control' => 'jform', 'load_data' => $loadData]);
 
         // Load the extension
-        $extension = Factory::getExtension('OSDownloads', 'component');
+        $extension = Factory::getExtension();
         $extension->loadLibrary();
 
         if (empty($form)) {
@@ -78,7 +74,10 @@ class OSDownloadsModelFile extends AdminModel
         return $form;
     }
 
-    public function getTable($type = 'Document', $prefix = 'OSDownloadsTable', $config = array())
+    /**
+     * @inheritDoc
+     */
+    public function getTable($type = 'Document', $prefix = 'OSDownloadsTable', $config = [])
     {
         return Table::getInstance($type, $prefix, $config);
     }
@@ -89,7 +88,7 @@ class OSDownloadsModelFile extends AdminModel
      */
     protected function loadFormData()
     {
-        $data = Factory::getApplication()->getUserState("com_osdownloads.edit.file.data", array());
+        $data = Factory::getApplication()->getUserState("com_osdownloads.edit.file.data", []);
 
         if (empty($data)) {
             $data = $this->getItem();
@@ -101,10 +100,7 @@ class OSDownloadsModelFile extends AdminModel
     }
 
     /**
-     * @param int $pk
-     *
-     * @return CMSObject
-     * @throws Exception
+     * @inheritDoc
      */
     public function getItem($pk = null)
     {
@@ -131,6 +127,9 @@ class OSDownloadsModelFile extends AdminModel
         return $item;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function save($data)
     {
         try {
@@ -158,10 +157,10 @@ class OSDownloadsModelFile extends AdminModel
             }
 
             $mainText = $data['description_1'];
-            if (preg_match('#<hr\s+id=("|\')system-readmore("|\')\s*\/*>#i', $mainText, $match)) {
+            if (preg_match('#<hr\s+id=["|\']system-readmore["|\']\s*/*>#i', $mainText, $match)) {
                 $splitText = explode($match[0], $mainText, 2);
             } else {
-                $splitText = array($mainText, '');
+                $splitText = [$mainText, ''];
             }
 
             $data['description_1'] = array_pop($splitText);
@@ -192,12 +191,7 @@ class OSDownloadsModelFile extends AdminModel
                     throw new Exception(Text::sprintf('COM_OSDOWNLOADS_ERROR_FILE_TYPE_UNKNOWN', $type));
             }
 
-        } catch (Exception $e) {
-            $this->setError($e->getMessage());
-            return false;
-
         } catch (Throwable $e) {
-            $this->setError($e->getMessage());
             return false;
         }
 
@@ -210,6 +204,9 @@ class OSDownloadsModelFile extends AdminModel
         return false;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function delete(&$pks)
     {
         if (parent::delete($pks)) {

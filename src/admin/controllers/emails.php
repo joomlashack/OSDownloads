@@ -21,12 +21,12 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Alledia\OSDownloads\Free\Joomla\Controller\Admin\Emails as EmailsController;
+use Alledia\OSDownloads\Free\Joomla\Controller\Admin\Emails;
 
 defined('_JEXEC') or die();
 
 
-class OSDownloadsControllerEmails extends EmailsController
+class OSDownloadsControllerEmails extends Emails
 {
 
 }

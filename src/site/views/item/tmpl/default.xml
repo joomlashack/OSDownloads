@@ -20,7 +20,6 @@
             <field name="show_download_count"
                    type="radio"
                    class="btn-group btn-group-yesno"
-                   layout="joomla.form.field.radio.switcher"
                    label="COM_OSDOWNLOADS_SHOW_DOWNLOAD_COUNT"
                    default="0">
                 <option value="0">JNO</option>
@@ -30,7 +29,6 @@
             <field name="show_category"
                    type="radio"
                    class="btn-group btn-group-yesno"
-                   layout="joomla.form.field.radio.switcher"
                    label="COM_OSDOWNLOADS_SHOW_CATEGORY"
                    default="0">
                 <option value="0">JNO</option>

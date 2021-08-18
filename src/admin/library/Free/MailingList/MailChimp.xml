@@ -4,7 +4,6 @@
         <field name="enable"
                type="radio"
                class="btn-group btn-group-yesno"
-               layout="joomla.form.field.radio.switcher"
                label="COM_OSDOWNLOADS_ML_MAILCHIMP_ENABLE"
                labelclass="alert alert-info span12"
                default="0">

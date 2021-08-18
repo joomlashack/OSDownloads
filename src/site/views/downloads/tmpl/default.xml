@@ -25,7 +25,6 @@
             <field name="include_child_files"
                    type="radio"
                    class="btn-group btn-group-yesno"
-                   layout="joomla.form.field.radio.switcher"
                    label="COM_OSDOWNLOADS_INCLUDE_FILES_CHILD_CATEGORIES_LABEL"
                    description="COM_OSDOWNLOADS_INCLUDE_FILES_CHILD_CATEGORIES_DESC"
                    default="0">
@@ -36,7 +35,6 @@
             <field name="show_child_categories"
                    type="radio"
                    class="btn-group btn-group-yesno"
-                   layout="joomla.form.field.radio.switcher"
                    label="COM_OSDOWNLOADS_CHILD_CATEGORIES_LABEL"
                    description="COM_OSDOWNLOADS_CHILD_CATEGORIES_DESC"
                    default="1">
@@ -53,7 +51,6 @@
             <field name="show_download_count"
                    type="radio"
                    class="btn-group btn-group-yesno"
-                   layout="joomla.form.field.radio.switcher"
                    label="COM_OSDOWNLOADS_SHOW_DOWNLOAD_COUNT"
                    default="0">
                 <option value="0">JNO</option>
@@ -63,7 +60,6 @@
             <field name="show_category"
                    type="radio"
                    class="btn-group btn-group-yesno"
-                   layout="joomla.form.field.radio.switcher"
                    label="COM_OSDOWNLOADS_SHOW_CATEGORY"
                    default="0">
                 <option value="0">JNO</option>
@@ -73,7 +69,6 @@
             <field name="show_category_filter"
                    type="radio"
                    class="btn-group btn-group-yesno"
-                   layout="joomla.form.field.radio.switcher"
                    label="COM_OSDOWNLOADS_SHOW_CATEGORY_FILTER"
                    default="0">
                 <option value="0">JNO</option>

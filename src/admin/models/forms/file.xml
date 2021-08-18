@@ -114,7 +114,6 @@
         <field name="require_agree"
                type="radio"
                class="btn-group btn-group-yesno"
-               layout="joomla.form.field.radio.switcher"
                label="COM_OSDOWNLOADS_REQUIRE_AGREEMENT"
                description="COM_OSDOWNLOADS_AGREEMENT_TIP"
                default="0">

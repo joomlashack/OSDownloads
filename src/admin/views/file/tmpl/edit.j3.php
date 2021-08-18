@@ -36,7 +36,7 @@ HTMLHelper::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 
 HTMLHelper::_('behavior.formvalidation');
 HTMLHelper::_('behavior.keepalive');
-HTMLHelper::_('behavior.tooltip');
+HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('formbehavior.chosen', 'select');
 
 OutputFilter::objectHtmlSafe($this->item);

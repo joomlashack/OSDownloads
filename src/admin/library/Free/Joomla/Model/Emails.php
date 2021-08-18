@@ -34,14 +34,17 @@ class Emails extends ListModel
      */
     public function __construct($config = [])
     {
-        $config['filter_fields'] = [
-            'email.email',
-            'doc.name',
-            'cat.title',
-            'email.downloaded_date',
-            'email.id',
-            'cate_id'
-        ];
+        $config['filter_fields'] = array_merge(
+            $config['filter_fields'] ?? [],
+            [
+                'email.email',
+                'doc.name',
+                'cat.title',
+                'email.downloaded_date',
+                'email.id',
+                'cate_id'
+            ]
+        );
 
         parent::__construct($config);
     }

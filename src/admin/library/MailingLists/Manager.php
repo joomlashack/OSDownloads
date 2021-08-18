@@ -317,9 +317,10 @@ class Manager
         if (class_exists($className)) {
             $checkDependencies = [$className, 'checkDependencies'];
             $enabled           = !is_callable($checkDependencies) || call_user_func($checkDependencies);
+
             if ($enabled && $formName != 'config') {
                 $isEnabled = [$className, 'isEnabled'];
-                $enabled   = !is_callable($isEnabled) || call_user_func($isEnabled);
+                $enabled   = is_callable($isEnabled) ? call_user_func($isEnabled) : false;
             }
         }
 

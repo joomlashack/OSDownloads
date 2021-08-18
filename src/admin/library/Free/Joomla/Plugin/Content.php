@@ -44,8 +44,8 @@ class Content extends CMSPlugin
     protected $enabled = null;
 
     /**
-     * @param Form|\JForm $form
-     * @param object      $data
+     * @param Form   $form
+     * @param object $data
      *
      * @return bool
      * @throws Exception

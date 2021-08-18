@@ -102,7 +102,7 @@
     <fieldset name="requirements" addfieldpath="/administrator/components/com_content/models/fields">
         <field name="require_email"
                type="list"
-               class="chzn-color chzn-color-state"
+               class="chzn-color chzn-color-state form-select-color-state"
                default="0"
                label="COM_OSDOWNLOADS_REQUIRE_EMAIL"
                description="COM_OSDOWNLOADS_REQUIRE_EMAIL_DESC">

@@ -96,7 +96,6 @@
             <field name="ordering_dir"
                    type="radio"
                    class="btn-group"
-                   layout="joomla.form.field.radio.buttons"
                    label="COM_OSDOWNLOADS_FILES_FIELD_ORDERING_DIR_LABEL"
                    description="COM_OSDOWNLOADS_FILES_FIELD_ORDERING_DIR_DESC"
                    default="asc">

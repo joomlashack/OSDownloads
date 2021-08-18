@@ -92,11 +92,11 @@
                readonly="true"/>
 
         <field
-                name="ordering"
-                type="hidden"
-                label="JFIELD_ORDERING_LABEL"
-                size="6"
-                default="0"/>
+            name="ordering"
+            type="hidden"
+            label="JFIELD_ORDERING_LABEL"
+            size="6"
+            default="0"/>
     </fieldset>
 
     <fieldset name="requirements" addfieldpath="/administrator/components/com_content/models/fields">
@@ -115,9 +115,9 @@
                type="radio"
                class="btn-group btn-group-yesno"
                layout="joomla.form.field.radio.switcher"
-               default="0"
                label="COM_OSDOWNLOADS_REQUIRE_AGREEMENT"
-               description="COM_OSDOWNLOADS_AGREEMENT_TIP">
+               description="COM_OSDOWNLOADS_AGREEMENT_TIP"
+               default="0">
             <option value="0">JNO</option>
             <option value="1">JYES</option>
         </field>
@@ -127,7 +127,8 @@
                label="COM_OSDOWNLOADS_AGREEMENT_ARTICLE_LABEL"
                edit="true"
                clear="true"
-               description="COM_OSDOWNLOADS_AGREEMENT_ARTICLE_DESC"/>
+               description="COM_OSDOWNLOADS_AGREEMENT_ARTICLE_DESC"
+               showon="require_agree:1"/>
     </fieldset>
 
     <fieldset name="advanced">

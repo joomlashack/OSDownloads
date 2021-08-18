@@ -26,37 +26,33 @@
     <config>
         <fields name="params">
             <fieldset name="basic" addfieldpath="/administrator/components/com_osdownloads/form/fields">
-                <field
-                    name="category"
-                    type="category"
-                    label="COM_OSDOWNLOADS_FILES_FIELD_CATEGORY"
-                    extension="com_osdownloads"
-                    description="COM_OSDOWNLOADS_FILES_FIELD_CATEGORY_DESC" />
+                <field name="category"
+                       type="category"
+                       label="COM_OSDOWNLOADS_FILES_FIELD_CATEGORY"
+                       extension="com_osdownloads"
+                       description="COM_OSDOWNLOADS_FILES_FIELD_CATEGORY_DESC"/>
 
-                <field
-                    name="link_to"
-                    type="radio"
-                    class="btn-group"
-                    default="download"
-                    label="COM_OSDOWNLOADS_FILES_FIELD_LINK_TO"
-                    description="COM_OSDOWNLOADS_FILES_FIELD_LINK_TO_DESC">
-                        <option value="download">COM_OSDOWNLOADS_FILES_LINK_FILE_DOWNLOAD</option>
-                        <option value="details">COM_OSDOWNLOADS_FILES_LINK_TO_FILE_DESCRIPTION</option>
+                <field name="link_to"
+                       type="radio"
+                       class="btn-group"
+                       layout="joomla.form.field.radio.buttons"
+                       label="COM_OSDOWNLOADS_FILES_FIELD_LINK_TO"
+                       description="COM_OSDOWNLOADS_FILES_FIELD_LINK_TO_DESC"
+                       default="download">
+                    <option value="download">COM_OSDOWNLOADS_FILES_LINK_FILE_DOWNLOAD</option>
+                    <option value="details">COM_OSDOWNLOADS_FILES_LINK_TO_FILE_DESCRIPTION</option>
                 </field>
 
-                <field
-                    name="link_label"
-                    type="text"
-                    label="COM_OSDOWNLOADS_FILES_FIELD_LINK_LABEL"
-                    description="COM_OSDOWNLOADS_FILES_FIELD_LINK_DESC" />
+                <field name="link_label"
+                       type="text"
+                       label="COM_OSDOWNLOADS_FILES_FIELD_LINK_LABEL"
+                       description="COM_OSDOWNLOADS_FILES_FIELD_LINK_DESC"/>
 
-                <field
-                    name="ordering"
-                    type="list"
-                    default="ordering"
-                    label="COM_OSDOWNLOADS_FILES_FIELD_ORDERING_LABEL"
-                    description="COM_OSDOWNLOADS_FILES_FIELD_ORDERING_DESC">
-
+                <field name="ordering"
+                       type="list"
+                       default="ordering"
+                       label="COM_OSDOWNLOADS_FILES_FIELD_ORDERING_LABEL"
+                       description="COM_OSDOWNLOADS_FILES_FIELD_ORDERING_DESC">
                     <option value="ordering">COM_OSDOWNLOADS_FILES_ORDERING</option>
                     <option value="name">COM_OSDOWNLOADS_FILES_NAME</option>
                     <option value="downloaded">COM_OSDOWNLOADS_FILES_DOWNLOAD_COUNTER</option>
@@ -64,37 +60,33 @@
                     <option value="modified_time">COM_OSDOWNLOADS_FILES_MODIFIED_TIME</option>
                 </field>
 
-                <field
-                    name="ordering_dir"
-                    type="list"
-                    default="asc"
-                    label="COM_OSDOWNLOADS_FILES_FIELD_ORDERING_DIR_LABEL"
-                    description="COM_OSDOWNLOADS_FILES_FIELD_ORDERING_DIR_DESC">
-
+                <field name="ordering_dir"
+                       type="radio"
+                       class="btn-group"
+                       layout="joomla.form.field.radio.buttons"
+                       label="COM_OSDOWNLOADS_FILES_FIELD_ORDERING_DIR_LABEL"
+                       description="COM_OSDOWNLOADS_FILES_FIELD_ORDERING_DIR_DESC"
+                       default="asc">
                     <option value="asc">COM_OSDOWNLOADS_FILES_ASC</option>
                     <option value="desc">COM_OSDOWNLOADS_FILES_DESC</option>
                 </field>
 
-                <field
-                    name="moduleclass_sfx"
-                    type="text"
-                    label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
-                    description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
-
-                <field
-                    type="customfooter"
-                    name="customfooter"
-                    media="com_osdownloads"
-                    jedurl="https://extensions.joomla.org/extension/osdownloads/" />
+                <field type="customfooter"
+                       name="customfooter"
+                       media="com_osdownloads"
+                       jedurl="https://extensions.joomla.org/extension/osdownloads/"/>
             </fieldset>
 
-            <fieldset
-                name="advanced">
-                <field
-                    name="layout"
-                    type="modulelayout"
-                    label="JFIELD_ALT_LAYOUT_LABEL"
-                    description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+            <fieldset name="advanced">
+                <field name="layout"
+                       type="modulelayout"
+                       class="form-select"
+                       label="JFIELD_ALT_LAYOUT_LABEL"
+                       description="JFIELD_ALT_MODULE_LAYOUT_DESC"/>
+
+                <field name="moduleclass_sfx"
+                       type="textarea"
+                       label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"/>
             </fieldset>
         </fields>
     </config>

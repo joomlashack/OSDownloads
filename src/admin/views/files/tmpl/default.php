@@ -24,15 +24,12 @@
 
 defined('_JEXEC') or die();
 
-use Alledia\OSDownloads\Factory;
 use Joomla\CMS\Button\PublishedButton;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Session\Session;
 use Joomla\Utilities\ArrayHelper;
-
-$container = Factory::getPimpleContainer();
 
 $listOrder = $this->state->get('list.ordering');
 $listDirn  = $this->state->get('list.direction');
@@ -56,7 +53,7 @@ if ($saveOrder && $this->items) {
     ]);
 }
 ?>
-<form action="<?php echo $container->helperRoute->getAdminMainViewRoute(); ?>"
+<form action="index.php?option=com_osdownloads&view=files"
       method="post"
       name="adminForm"
       id="adminForm">

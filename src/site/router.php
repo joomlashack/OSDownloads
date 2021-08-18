@@ -21,7 +21,6 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Alledia\Framework\Joomla\Extension\Licensed;
 use Alledia\OSDownloads\Container;
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Helper\SEF;
@@ -74,11 +73,6 @@ class OsdownloadsRouter extends RouterBase
     protected $helper = null;
 
     /**
-     * @var Licensed
-     */
-    protected $extension = null;
-
-    /**
      * @inheritDoc
      */
     public function __construct($app = null, $menu = null)
@@ -92,7 +86,6 @@ class OsdownloadsRouter extends RouterBase
         );
 
         $this->container = Factory::getPimpleContainer();
-        $this->extension = new Licensed('OSDownloads', 'component');
         $this->helper    = $this->container->helperSEF;
 
         $router = $this->app::getRouter();
@@ -602,7 +595,7 @@ class OsdownloadsRouter extends RouterBase
         $category = $this->helper->getCategoryFromAlias($firstSegment, $path);
 
         if (is_object($category)) {
-            $vars['view'] = $this->extension->isPro() ? 'categories' : 'downloads';
+            $vars['view'] = 'downloads';
             $vars['id']   = $category->id;
 
             return $vars;

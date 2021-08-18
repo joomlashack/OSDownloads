@@ -23,7 +23,7 @@
 
 defined('_JEXEC') or die();
 
-if (class_exists('Alledia\\OSDownloads\\Pro\\Joomla\\Model\\Emails')) {
+if (class_exists('\\Alledia\\OSDownloads\\Pro\\Joomla\\Model\\Emails')) {
     class OsdownloadsModelEmails extends Alledia\OSDownloads\Pro\Joomla\Model\Emails
     {
 

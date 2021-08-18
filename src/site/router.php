@@ -247,7 +247,6 @@ class OsdownloadsRouter extends RouterBase
 
             if (is_object($viewMenu)) {
                 if ($viewMenu->query['id'] == $id) {
-                    //$query['Itemid'] = $viewMenu->id;
                     $query = [
                         'option' => $query['option'],
                         'Itemid' => $viewMenu->id
@@ -327,7 +326,6 @@ class OsdownloadsRouter extends RouterBase
                         $endPath,
                         $query
                     );
-
                     break;
 
                 case 'downloads':

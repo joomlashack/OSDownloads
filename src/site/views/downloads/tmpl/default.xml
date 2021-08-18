@@ -46,7 +46,6 @@
 
             <field name="number_of_column"
                    type="number"
-                   size="2"
                    min="1"
                    max="8"
                    label="COM_OSDOWNLOADS_NUMBER_OF_COLUMN"/>

@@ -83,11 +83,6 @@ class Emails extends ListModel
             $query->where('cat.id = ' . $categoryId);
         }
 
-        $confirmed = $this->getState('filter.confirmed');
-        if ($confirmed != '') {
-            $query->where('confirmed = ' . $db->quote($confirmed));
-        }
-
         $ordering  = $this->getState('list.ordering');
         $direction = $this->getState('list.direction');
 

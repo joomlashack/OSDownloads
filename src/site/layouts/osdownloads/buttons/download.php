@@ -151,7 +151,6 @@ endif;
                 <div class="osdownloads-custom-fields-container">
                     <?php
                     $displayData->tab_name = $elementsId . '-tab-' . $displayData->item->id;
-                    echo HTMLHelper::_('bootstrap.startTabSet', $displayData->tab_name, ['active' => false]);
 
                     $displayData->form = FrameworkHelper::createForm('com_osdownloads.download');
 
@@ -163,9 +162,7 @@ endif;
                         ]
                     );
 
-                    echo LayoutHelper::render('joomla.edit.params', $displayData);
-
-                    echo HTMLHelper::_('bootstrap.endTabSet');
+                    echo LayoutHelper::render('joomla.edit.fieldset', $displayData);
                     ?>
                 </div>
             <?php endif; ?>

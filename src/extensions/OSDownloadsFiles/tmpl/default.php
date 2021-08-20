@@ -89,7 +89,7 @@ echo sprintf('<%s %s>', $moduleTag, ArrayHelper::toString($moduleAttribs));
                             <?php
                             $this->item = $file;
                             echo LayoutHelper::render(
-                                'buttons.download',
+                                'osdownloads.buttons.download',
                                 $this,
                                 null,
                                 ['component' => 'com_osdownloads']

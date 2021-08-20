@@ -45,7 +45,7 @@ defined('_JEXEC') or die();
     <?php if ($this->params->get('show_download_button', 0)) : ?>
         <div class="osdownloadsactions">
             <div class="btn_download">
-                <?php echo LayoutHelper::render('buttons.download', $this); ?>
+                <?php echo LayoutHelper::render('osdownloads.buttons.download', $this); ?>
             </div>
         </div>
     <?php endif; ?>

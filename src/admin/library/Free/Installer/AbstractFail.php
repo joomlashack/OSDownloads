@@ -24,6 +24,7 @@
 namespace Alledia\OSDownloads\Free\Installer;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die();
 
@@ -31,11 +32,10 @@ class AbstractFail
 {
     /**
      * @return false
-     * @throws \Exception
      */
-    public function preFlight()
+    public function preFlight($type, $parent)
     {
-        Factory::getApplication()->enqueueMessage('Required libraries are missing', 'error');
+        Factory::getApplication()->enqueueMessage(Text::_('LIB_SHACKINSTALLER_ABORT'), 'error');
 
         return false;
     }

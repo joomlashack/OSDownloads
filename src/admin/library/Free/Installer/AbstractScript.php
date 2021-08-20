@@ -34,10 +34,9 @@ use Joomla\Registry\Registry;
 defined('_JEXEC') or die();
 
 $includePath = realpath(__DIR__ . '/../../../library/Installer/include.php');
-if ($includePath) {
-    require_once $includePath;
 
-} else {
+$initSuccess = $includePath && require_once $includePath;
+if (!$initSuccess) {
     require_once __DIR__ . '/AbstractFail.php';
 }
 

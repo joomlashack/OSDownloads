@@ -1,58 +1,52 @@
 /* OSDOWNLOADS */
-.seperator
-{
-    border-bottom:1px dotted #999999;
-    margin-bottom:10px;
-    margin-top:5px;
+.seperator {
+  border-bottom: 1px dotted #999999;
+  margin-bottom: 10px;
+  margin-top: 5px;
 }
 
 .category_filter {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
-.category_filter .seperator
-{
-    border:none;
+.category_filter .seperator {
+  border: none;
 }
 
-.sub_title
-{
-    padding-bottom:20px;
+.sub_title {
+  padding-bottom: 20px;
 }
 
 .osdownloads-container .item_content ul {
-	margin: 0 0 15px 0;
+  margin: 0 0 15px 0;
 }
 
-.osdownloads-readmore
-{
-    float:right;
+.osdownloads-readmore {
+  float: right;
 }
 
-.clr
-{
-    clear:both;
+.clr {
+  clear: both;
 }
 
-.reference .osdownloads-readmore
-{
-    float:left;
-    margin-right:10px;
+.reference .osdownloads-readmore {
+  float: left;
+  margin-right: 10px;
 }
 
 .btn_download {
-    margin: 10px 0;
+  margin: 10px 0;
 }
 
 .btn_download > a,
 a.modosdownloadsDownloadButton {
-    color: #fff;
-    padding: 6px 10px;
-    background: #336699;
-    border-radius: 4px;
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
-    text-decoration: none;
+  color: #fff;
+  padding: 6px 10px;
+  background: #336699;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  text-decoration: none;
 }
 
 .btn_download > a:hover,
@@ -61,54 +55,53 @@ a.modosdownloadsDownloadButton {
 a.modosdownloadsDownloadButton:hover,
 a.modosdownloadsDownloadButton:focus,
 a.modosdownloadsDownloadButton:active {
-    color: #fff;
-    text-decoration: none;
+  color: #fff;
+  text-decoration: none;
 }
 
-.btn_download .osdownloads-readmore
-{
-    float:none;
+.btn_download .osdownloads-readmore {
+  float: none;
 }
 
 .osdownloads-pages-counter {
-    display: inline-block;
-    float: left;
+  display: inline-block;
+  float: left;
 }
 
 .osdownloads-pagination {
-    display: inline-block;
-    float: right;
+  display: inline-block;
+  float: right;
 }
 
 .osdownloads-pagination > ul {
-    list-style: none;
-    margin: 10px 0;
+  list-style: none;
+  margin: 10px 0;
 }
 
 .osdownloads-pagination > ul li {
-    display: inline;
-    margin: 0 5px;
-    float: left;
+  display: inline;
+  margin: 0 5px;
+  float: left;
 }
 
 .osdownloads-pagination > ul li.disabled {
-    display: none;
+  display: none;
 }
 
 .osdownloads-pagination > ul > li:before {
-    content: none !important; /* Overrides enthusiastic templates */
+  content: none !important; /* Overrides enthusiastic templates */
 }
 
 /* module */
 .mod_osdownloadsfiles ul {
-    margin: 0;
-    list-style: none;
+  margin: 0;
+  list-style: none;
 }
 
 .mod_osdownloadsfiles ul li {
-    padding: 5px 0;
-    margin: 0;
-    border-bottom: 1px dotted #999999;
+  padding: 5px 0;
+  margin: 0;
+  border-bottom: 1px dotted #999999;
 }
 
 /*===============================
@@ -122,50 +115,49 @@ a.modosdownloadsDownloadButton:active {
 .osdownloads-container .columns-6 div.column,
 .osdownloads-container .columns-7 div.column,
 .osdownloads-container .columns-8 div.column {
-    display: block;
-    float: left;
-    padding-right: 10px;
-    box-sizing: border-box;
+  display: block;
+  float: left;
+  padding-right: 10px;
+  box-sizing: border-box;
 }
 
 .osdownloads-container .columns-2 div.column {
-    width: 50%;
+  width: 50%;
 }
 
 .osdownloads-container .columns-3 div.column {
-    width: 33.3333%;
+  width: 33.3333%;
 }
 
 .osdownloads-container .columns-4 div.column {
-    width: 25%;
+  width: 25%;
 }
 
 .osdownloads-container .columns-5 div.column {
-    width: 20%;
+  width: 20%;
 }
 
 .osdownloads-container .columns-6 div.column {
-    width: 16.6666666667%;
+  width: 16.6666666667%;
 }
 
 .osdownloads-container .columns-7 div.column {
-    width: 14.2857142857%;
+  width: 14.2857142857%;
 }
 
 .osdownloads-container .columns-8 div.column {
-    width: 12.5%;
+  width: 12.5%;
 }
 
 
 /*=====  End of COLUMNS  ======*/
 
 
-
 .osd-alert {
-    background: #fff1f0;
-    border: 1px solid rgba(216,80,48, 0.2);
-    color: #d85030;
-    padding: 15px;
+  background: #fff1f0;
+  border: 1px solid rgba(216, 80, 48, 0.2);
+  color: #d85030;
+  padding: 15px;
 }
 
 /*  --------------------------------------------------
@@ -173,50 +165,67 @@ Reveal Modals
 -------------------------------------------------- */
 
 .reveal-modal-bg {
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    background: #000;
-    z-index: 999998;
-    display: none;
-    top: 0;
-    left: 0;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background: #000;
+  z-index: 999998;
+  display: none;
+  top: 0;
+  left: 0;
 }
 
 .osdownloads-modal {
-    visibility: hidden;
-    top: 100px;
-    left: 50%;
-    margin-left: -300px;
-    width: 520px;
-    background: #eee url(../images/reveal-modal-gloss.png) no-repeat -200px -80px;
-    position: absolute;
-    z-index: 999999;
-    padding: 30px 40px 34px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    -moz-box-shadow: 0 0 10px rgba(0,0,0,.4);
-    -webkit-box-shadow: 0 0 10px rgba(0,0,0,.4);
-    box-shadow: 0 0 10px rgba(0,0,0,.4);
-    }
+  visibility: hidden;
+  top: 100px;
+  left: 50%;
+  margin-left: -300px;
+  width: 520px;
+  background: #eee url(../images/reveal-modal-gloss.png) no-repeat -200px -80px;
+  position: absolute;
+  z-index: 999999;
+  padding: 30px 40px 34px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  -moz-box-shadow: 0 0 10px rgba(0, 0, 0, .4);
+  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, .4);
+  box-shadow: 0 0 10px rgba(0, 0, 0, .4);
+}
 
-.osdownloads-modal.small         { width: 200px; margin-left: -140px;}
-.osdownloads-modal.medium        { width: 400px; margin-left: -240px;}
-.osdownloads-modal.large         { width: 600px; margin-left: -340px;}
-.osdownloads-modal.xlarge        { width: 800px; margin-left: -440px;}
+.osdownloads-modal.small {
+  width: 200px;
+  margin-left: -140px;
+}
+
+.osdownloads-modal.medium {
+  width: 400px;
+  margin-left: -240px;
+}
+
+.osdownloads-modal.large {
+  width: 600px;
+  margin-left: -340px;
+}
+
+.osdownloads-modal.xlarge {
+  width: 800px;
+  margin-left: -440px;
+}
 
 .osdownloads-modal .close-reveal-modal {
-    font-size: 22px;
-    line-height: .5;
-    position: absolute;
-    top: 8px;
-    right: 11px;
-    color: #aaa;
-    text-shadow: 0 -1px 1px rbga(0,0,0,.6);
-    font-weight: bold;
-    cursor: pointer;
-    }
+  text-align: left;
+  font-size: 22px;
+  line-height: .5;
+  position: absolute;
+  top: 8px;
+  right: 11px;
+  color: #aaa;
+  text-shadow: 0 -1px 1px rbga(0, 0, 0, .6);
+  font-weight: bold;
+  cursor: pointer;
+}
+
 /*
 
 NOTES
@@ -233,117 +242,114 @@ Example markup
 </div>
 
 */
-.osdownloads-modal {
-    text-align: left;
-}
 
 .osdownloads-modal iframe {
-    border: 0;
-    width: 100%;
+  border: 0;
+  width: 100%;
 }
 
 .osdownloads-modal .error {
-    margin-bottom: 20px;
-    font-style: italic;
+  margin-bottom: 20px;
+  font-style: italic;
 }
 
 .osdownloads-modal label {
-    width: 100%;
+  width: 100%;
 }
 
 .osdownloads-modal input[type="email"] {
-    width: 97%;
+  width: 97%;
 }
 
 .osdownloads-modal h2 {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
 .osdownloads-modal input[type="checkbox"] {
-    margin-right: 5px;
-    margin-top: -2px;
+  margin-right: 5px;
+  margin-top: -2px;
 }
 
 @media screen and (max-width: 320px) {
-    .osdownloads-modal {
-        width: 280px !important;
-        margin-left: -120px !important;
-    }
+  .osdownloads-modal {
+    width: 280px !important;
+    margin-left: -120px !important;
+  }
 }
 
 @media screen and (max-width: 768px) {
-    .osdownloads-modal {
-        width: 480px !important;
-        margin-left: -280px !important;
-    }
+  .osdownloads-modal {
+    width: 480px !important;
+    margin-left: -280px !important;
+  }
 }
 
 @media screen and (max-width: 580px) {
-    .osdownloads-modal {
-        width: 380px !important;
-        margin-left: -230px !important;
-    }
+  .osdownloads-modal {
+    width: 380px !important;
+    margin-left: -230px !important;
+  }
 }
 
 @media screen and (max-width: 480px) {
-    .osdownloads-modal {
-        width: 280px !important;
-        margin-left: -180px !important;
-    }
+  .osdownloads-modal {
+    width: 280px !important;
+    margin-left: -180px !important;
+  }
 }
 
 /* SHARE BUTTONS */
 #osdownloadsRequirementsPopup .fb-like {
-    margin-left: 3px;
+  margin-left: 3px;
 }
 
 #osdownloadsRequirementsPopup .fb-like iframe {
-    top: -5px;
+  top: -5px;
 }
 
 #osdownloadsRequirementsPopup .fb_iframe_widget > span,
 #osdownloadsRequirementsPopup .fb-like-box iframe {
-    width: 450px !important;
+  width: 450px !important;
 }
 
 #osdownloadsShareGroup .fb_iframe_widget > span {
-    vertical-align: baseline !important;
-    margin-left: 5px;
+  vertical-align: baseline !important;
+  margin-left: 5px;
 }
 
 /* DOWNLOAD CUSTOM FIELDS */
 .osdownloads-custom-fields-container .tab-pane {
-    display: block !important;
+  display: block !important;
 }
 
 .osdownloads-custom-fields-container .nav-tabs {
-    font-size: 15px;
-    font-weight: bold;
-    padding: 8px 0;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 8px 0;
 }
 
 #osdownloadsAgreeGroup {
-    margin-top: 30px;
+  margin-top: 30px;
 }
 
 .osdownloads-fieldset-title {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .osdownloads-title-download a {
-    float: none;
+  float: none;
 }
 
 @media (max-width: 767px) {
-	.osdownloads-container .columns-2 div.column,
-	.osdownloads-container .columns-3 div.column,
-	.osdownloads-container .columns-4 div.column,
-	.osdownloads-container .columns-5 div.column,
-	.osdownloads-container .columns-6 div.column,
-	.osdownloads-container .columns-7 div.column,
-	.osdownloads-container .columns-8 div.column {
-		width: 100%;
-		float: none;
-		padding-right: 0;
-	}
+  .osdownloads-container .columns-2 div.column,
+  .osdownloads-container .columns-3 div.column,
+  .osdownloads-container .columns-4 div.column,
+  .osdownloads-container .columns-5 div.column,
+  .osdownloads-container .columns-6 div.column,
+  .osdownloads-container .columns-7 div.column,
+  .osdownloads-container .columns-8 div.column {
+    width: 100%;
+    float: none;
+    padding-right: 0;
+  }
 }

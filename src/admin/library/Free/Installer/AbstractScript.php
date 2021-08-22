@@ -23,6 +23,7 @@
 
 namespace Alledia\OSDownloads\Free\Installer;
 
+use Alledia\Installer\TraitInstallerCheck;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Language\Text;
@@ -35,13 +36,30 @@ defined('_JEXEC') or die();
 
 $includePath = realpath(__DIR__ . '/../../../library/Installer/include.php');
 
-$initSuccess = $includePath && require_once $includePath;
-if (!$initSuccess) {
-    require_once __DIR__ . '/AbstractFail.php';
-}
+require_once $includePath;
 
 class AbstractScript extends \Alledia\Installer\AbstractScript
 {
+    use TraitInstallerCheck;
+
+    /**
+     * @inheritDoc
+     */
+    public function __construct($parent)
+    {
+        if ($this->checkInheritance($parent)) {
+            parent::__construct($parent);
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function preFlight($type, $parent)
+    {
+        return !$this->cancelInstallation;
+    }
+
     /**
      * @inheritDoc
      */

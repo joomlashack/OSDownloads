@@ -22,7 +22,7 @@
  */
 
 use Alledia\Framework\Joomla\Extension\Helper;
-use Alledia\OSDownloads\Factory;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Version;
 
 defined('_JEXEC') or die();

@@ -130,14 +130,19 @@
             <folder>administrator/components/com_osdownloads/vendor/symfony/contracts</folder>
             <folder>components/components/com_osdownloads/layouts/buttons</folder>
 
+            <file>administrator/components/com_osdownloads/form/fields/AbstractMailChimp.php</file>
             <file>administrator/components/com_osdownloads/form/fields/AbstractMailChimpList.php</file>
             <file>administrator/components/com_osdownloads/form/fields/constantcontactlistslist.php</file>
             <file>administrator/components/com_osdownloads/form/fields/mailchimpgroupslist.php</file>
             <file>administrator/components/com_osdownloads/form/fields/mailchimplistslist.php</file>
+            <file>administrator/components/com_osdownloads/form/fields/MailinglistFieldTraits.php</file>
             <file>administrator/components/com_osdownloads/helpers/category.php</file>
             <file>administrator/components/com_osdownloads/helpers/category.php</file>
             <file>administrator/components/com_osdownloads/helpers/file.php</file>
             <file>administrator/components/com_osdownloads/helpers/file.php</file>
+            <file>administrator/components/com_osdownloads/library/Ctct/Util/CurlResponse.php</file>
+            <file>administrator/components/com_osdownloads/library/Ctct/Util/RestClient.php</file>
+            <file>administrator/components/com_osdownloads/library/Ctct/Util/RestClientInterface.php</file>
             <file>administrator/components/com_osdownloads/library/Free/Container.php</file>
             <file>administrator/components/com_osdownloads/library/Free/Factory.php</file>
             <file>administrator/components/com_osdownloads/library/Free/Joomla/View/Legacy.php</file>

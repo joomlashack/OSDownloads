@@ -75,6 +75,7 @@ class AbstractScript extends \Alledia\Installer\AbstractScript
                 $this->fixDownloadsViewParams();
                 $this->fixItemViewParams();
                 $this->fixDatabase();
+                $this->clearProData();
 
                 if ($type == 'update') {
                     $this->moveLayouts();
@@ -405,5 +406,44 @@ class AbstractScript extends \Alledia\Installer\AbstractScript
         foreach ($oldUpdates as $oldUpdate) {
             File::delete($oldUpdate);
         }
+    }
+
+    /**
+     * Clear out any pro data that may have hung around after a pro install
+     *
+     * @return void
+     */
+    protected function clearProData()
+    {
+        if ($this->getLicense()->isPro()) {
+            // only do this with Free installs
+            return;
+        }
+
+        $db = $this->dbo;
+
+        $context = $db->quoteName('context') . ' LIKE ' . $db->quote('com_osdownloads.%');
+
+        $query = $db->getQuery(true)
+            ->delete('#__fields')
+            ->where($context);
+        $db->setQuery($query)->execute();
+
+        $query = $db->getQuery(true)
+            ->delete('#__fields_groups')
+            ->where($context);
+        $db->setQuery($query)->execute();
+
+        $fieldId = 'field_id NOT IN (SELECT id FROM jos_fields)';
+
+        $db->getQuery(true)
+            ->delete('#__fields_values')
+            ->where($fieldId);
+        $db->setQuery($query)->execute();
+
+        $db->getQuery(true)
+            ->delete('#__fields_categories')
+            ->where($fieldId);
+        $db->setQuery($query)->execute();
     }
 }

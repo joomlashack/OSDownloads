@@ -92,6 +92,9 @@
         <previousminimum>1.7.2</previousminimum>
 
         <relatedExtensions>
+            <extension type="library"
+                       element="allediaframework">ShackFramework</extension>
+
             <extension type="plugin"
                        group="system"
                        element="osmylicensesmanager"

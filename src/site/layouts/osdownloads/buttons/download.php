@@ -31,7 +31,6 @@ use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
-use Joomla\Utilities\ArrayHelper;
 
 defined('_JEXEC') or die();
 
@@ -88,15 +87,14 @@ if ($displayData->isPro && ($displayData->item->require_share ?? false)) :
         $displayData->item->twitter_text ?? null
     );
 endif;
-?>
-<a <?php echo ArrayHelper::toString($attribs); ?>>
-    <span>
-        <?php
-        echo $displayData->item->download_text ?: Text::_('COM_OSDOWNLOADS_DOWNLOAD');
-        ?>
-    </span>
-</a>
 
+echo HTMLHelper::_(
+    'link',
+    $actionUrl,
+    sprintf('<span>%s</span>', $displayData->item->download_text ?: Text::_('COM_OSDOWNLOADS_DOWNLOAD')),
+    $attribs
+);
+?>
 <div id="<?php echo $elementsId . '_popup'; ?>"
      class="reveal-modal osdownloads-modal <?php echo FrameworkHelper::getJoomlaVersionCssClass(); ?>"
      data-prefix="<?php echo $elementsId; ?>">

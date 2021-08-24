@@ -64,7 +64,7 @@ class File extends AbstractFlexibleModule
     /**
      * @var bool
      */
-    protected $isPro = null;
+    public $isPro = null;
 
     /**
      * @inheritDoc

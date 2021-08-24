@@ -22,15 +22,22 @@
  */
 
 use Alledia\OSDownloads\Factory;
+use Alledia\OSDownloads\Free\Joomla\Plugin\Content as FreePlugin;
+use Alledia\OSDownloads\Pro\Joomla\Plugin\Content as ProPlugin;
 
 defined('_JEXEC') or die();
 
 $includePath = JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
 if (is_file($includePath) && include $includePath) {
-    $pluginClass = sprintf(
-        '\\Alledia\\OSDownloads\\%s\\Joomla\\Plugin\\Content',
-        Factory::getExtension()->isPro() ? 'Pro' : 'Free'
-    );
+    if (Factory::getExtension()->isPro()) {
+        class PlgContentOsdownloads extends ProPlugin
+        {
 
-    class_alias($pluginClass, 'PlgContentOsdownloads');
+        }
+    } else {
+        class PlgContentOsdownloads extends FreePlugin
+        {
+
+        }
+    }
 }

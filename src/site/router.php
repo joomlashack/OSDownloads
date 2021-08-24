@@ -34,7 +34,7 @@ use Joomla\CMS\Uri\Uri;
 defined('_JEXEC') or die();
 
 $includePath = JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
-if (is_file($includePath) && require_once $includePath) {
+if (is_file($includePath) && include $includePath) {
     class OsdownloadsRouter extends RouterBase
     {
         /**

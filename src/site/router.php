@@ -370,33 +370,60 @@ if (is_file($includePath) && include $includePath) {
         public function preprocess($query)
         {
             $view   = $query['view'] ?? null;
+            $task   = $query['task'] ?? null;
             $id     = $query['id'] ?? null;
             $itemId = $query['Itemid'] ?? null;
 
             $parts = $query;
             if ($itemId) {
-                if ($view && $menu = $this->menu->getItem($itemId)) {
-                    if ($menu->query['view'] != $view) {
+                $menu = $this->menu->getItem($itemId);
+                if ($menu) {
+                    $menuView = $menu->query['view'] ?? null;
+                    $menuTask = $menu->query['task'] ?? null;
+
+                    if ($view && $view != $menuView) {
                         switch ($view) {
                             case 'item':
                                 if ($id && ($viewMenu = $this->helper->getMenuItemForFile($id))) {
-                                    $parts['Itemid'] = $viewMenu->id;
+                                    $itemId = $viewMenu->id;
                                 }
                                 break;
                         }
+
+                    } elseif ($task && $task != $menuTask && $id) {
+                        if ($itemMenu = $this->helper->getMenuItemForFile($id)) {
+                            $itemId = $itemMenu->id;
+
+                        } elseif ($categoryId = $this->helper->getCategoryIdFromFileId($id)) {
+                            $categoryMenu = $this->helper->getMenuItemForListOfFiles($categoryId)
+                                ?: $this->helper->getMenuItemForListOfFiles(0);
+
+                            if ($categoryMenu) {
+                                $itemId = $categoryMenu->id;
+
+                            } else {
+                                $itemId = null;
+                                unset($parts['Itemid']);
+                            }
+                        }
                     }
                 }
-            } else {
+
+            } elseif ($view) {
                 switch ($view) {
                     case 'downloads':
                         $listMenu = $this->helper->getMenuItemForListOfFiles($id)
                             ?: $this->helper->getMenuItemForListOfFiles(0);
 
                         if ($listMenu) {
-                            $parts['Itemid'] = $listMenu->id;
+                            $itemId = $listMenu->id;
                         }
                         break;
                 }
+            }
+
+            if ($itemId) {
+                $parts['Itemid'] = $itemId;
             }
 
             return $parts;

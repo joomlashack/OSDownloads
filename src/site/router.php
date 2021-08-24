@@ -442,7 +442,6 @@ if (is_file($includePath) && include $includePath) {
                         array_shift($tmpSegments);
                     }
 
-
                     if (empty($tmpSegments)) {
                         // Look for the file id on the menu item
                         if ($activeMenu) {

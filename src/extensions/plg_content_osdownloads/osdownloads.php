@@ -25,14 +25,8 @@ use Alledia\OSDownloads\Factory;
 
 defined('_JEXEC') or die();
 
-if (!defined('OSDOWNLOADS_LOADED')) {
-    $includePath = JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
-    if (is_file($includePath)) {
-        require_once $includePath;
-    }
-}
-
-if (defined('OSDOWNLOADS_LOADED')) {
+$includePath = JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
+if (is_file($includePath) && include $includePath) {
     $pluginClass = sprintf(
         '\\Alledia\\OSDownloads\\%s\\Joomla\\Plugin\\Content',
         Factory::getExtension()->isPro() ? 'Pro' : 'Free'

@@ -29,11 +29,7 @@ defined('_JEXEC') or die();
 
 if (!defined('ALLEDIA_FRAMEWORK_LOADED')) {
     $allediaFrameworkPath = JPATH_SITE . '/libraries/allediaframework/include.php';
-
-    if (is_file($allediaFrameworkPath)) {
-        require_once $allediaFrameworkPath;
-
-    } else {
+    if (!(is_file($allediaFrameworkPath) && include $allediaFrameworkPath)) {
         $app = Factory::getApplication();
 
         if ($app->isClient('administrator')) {
@@ -44,7 +40,6 @@ if (!defined('ALLEDIA_FRAMEWORK_LOADED')) {
 
 if (defined('ALLEDIA_FRAMEWORK_LOADED') && !defined('OSDOWNLOADS_LOADED')) {
     define('OSDOWNLOADS_LOADED', 1);
-
     define('OSDOWNLOADS_ADMIN', JPATH_ADMINISTRATOR . '/components/com_osdownloads');
     define('OSDOWNLOADS_SITE', JPATH_SITE . '/components/com_osdownloads');
     define('OSDOWNLOADS_LIBRARY', OSDOWNLOADS_ADMIN . '/library');
@@ -70,4 +65,4 @@ if (defined('ALLEDIA_FRAMEWORK_LOADED') && !defined('OSDOWNLOADS_LOADED')) {
     }
 }
 
-return defined('OSDOWNLOADS_LOADED');
+return defined('ALLEDIA_FRAMEWORK_LOADED') && defined('OSDOWNLOADS_LOADED');

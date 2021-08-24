@@ -28,10 +28,8 @@ use Alledia\Framework\Joomla\Extension\Helper as ExtensionHelper;
 
 defined('_JEXEC') or die();
 
-include_once JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
-
-if (defined('OSDOWNLOADS_LOADED')) {
-    // Load the OSDownloads extension
+$includePath = JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
+if (is_file($includePath) && include $includePath) {
     ExtensionHelper::loadLibrary('com_osdownloads');
 
     $osdownloads = FreeComponentSite::getInstance();

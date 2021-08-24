@@ -25,11 +25,16 @@ defined('_JEXEC') or die();
 
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
+use Alledia\OSDownloads\Free\Joomla\Module\File as ModuleFile;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\Utilities\ArrayHelper;
+
+/**
+ * @var ModuleFile $this
+ */
 
 $app       = Factory::getApplication();
 $doc       = Factory::getDocument();
@@ -46,7 +51,6 @@ $requireEmail = false;
 $requireAgree = false;
 $requireShare = false;
 $showModal    = false;
-
 
 // Module body
 $component = FreeComponentSite::getInstance();

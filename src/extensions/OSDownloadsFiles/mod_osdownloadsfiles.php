@@ -21,12 +21,31 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Alledia\Framework\Joomla\Extension\Helper as ExtensionHelper;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Alledia\OSDownloads\Free\Joomla\Module\File as FreeFileModule;
 use Alledia\OSDownloads\Pro\Joomla\Module\File as ProFileModule;
-use Alledia\Framework\Joomla\Extension\Helper as ExtensionHelper;
+use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Language\Language;
+use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die();
+
+/**
+ * @var stdClass        $module
+ * @var string[]        $attribs
+ * @var string[]        $chrome
+ * @var SiteApplication $app
+ * @var string          $scope
+ * @var Registry        $params
+ * @var string          $template
+ * @var string          $path
+ * @var Language        $lang
+ * @var string          $coreLanguageDirectory
+ * @var string          $extensionLanguageDirectory
+ * @var string[]        $langPaths
+ * @var string          $content
+ */
 
 $includePath = JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
 if (is_file($includePath) && include $includePath) {

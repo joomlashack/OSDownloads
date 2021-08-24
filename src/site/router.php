@@ -386,6 +386,19 @@ if (is_file($includePath) && include $includePath) {
                             case 'item':
                                 if ($id && ($viewMenu = $this->helper->getMenuItemForFile($id))) {
                                     $itemId = $viewMenu->id;
+
+                                } else {
+                                    $categoryId = $this->helper->getCategoryIdFromFileId($id);
+
+                                    $categoryMenu = $this->helper->getMenuItemForListOfFiles($categoryId)
+                                        ?: $this->helper->getMenuItemForListOfFiles(0);
+                                    if ($categoryMenu) {
+                                        $itemId = $categoryMenu->id;
+
+                                    } else {
+                                        $itemId = null;
+                                        unset($parts['Itemid']);
+                                    }
                                 }
                                 break;
                         }

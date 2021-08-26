@@ -1,6 +1,6 @@
 {
     "name"             : "joomlashack/osdownloads",
-    "description"      : "OSDownloads",
+    "description"      : "OSDownloads Free",
     "minimum-stability": "stable",
     "license"          : "GPL-2.0-or-later",
     "type"             : "joomla-component",
@@ -28,6 +28,7 @@
         "ext-fileinfo"            : "*",
         "ext-simplexml"           : "*",
         "ext-json"                : "*",
+        "ext-openssl"             : "*",
         "pimple/pimple"           : "^3.2",
         "pacely/mailchimp-apiv3"  : "^1.0",
         "php-http/guzzle5-adapter": "^2"

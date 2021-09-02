@@ -7,8 +7,8 @@
     <copyright>Copyright 2005-2021 Joomlashack.com</copyright>
     <license>GNU GPL; see LICENSE file</license>
     <description>COM_OSDOWNLOADS_DESCRIPTION</description>
-    <version>2.0.1</version>
-    <creationDate>August 24 2021</creationDate>
+    <version>2.0.2</version>
+    <creationDate>September 02 2021</creationDate>
     <variant>FREE</variant>
 
     <scriptfile>script.installer.php</scriptfile>
@@ -80,7 +80,7 @@
     </update>
 
     <updateservers>
-        <server type="extension" priority="1" name="OSDownloads Free"><![CDATA[https://deploy.ostraining.com/client/update/free/stable/com_osdownloads]]></server>
+        <server type="extension" priority="1" name="OSDownloads"><![CDATA[https://deploy.ostraining.com/client/update/free/stable/com_osdownloads]]></server>
     </updateservers>
 
     <alledia>

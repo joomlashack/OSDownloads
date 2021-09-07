@@ -22,16 +22,21 @@
  */
 
 use Alledia\OSDownloads\Factory;
+use Alledia\OSDownloads\Free\Helper\Helper as FreeHelper;
+use Alledia\OSDownloads\Pro\Helper\Helper as ProHelper;
 
 defined('_JEXEC') or die();
 
-/*
- * Joomla 3 category view requires this file/class to exist.
- */
-if (require_once realpath(__DIR__ . '/../include.php')) {
-    $className = sprintf(
-        '\\Alledia\\OSDownloads\\%s\\Helper\\Helper',
-        Factory::getExtension()->isPro() ? 'Pro' : 'Free'
-    );
-    class_alias($className, 'OsdownloadsHelper');
+$include = JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
+if (is_file($include) && include $include) {
+    if (Factory::getExtension()->isPro()) {
+        class OsdownloadsHelper extends ProHelper
+        {
+        }
+
+    } else {
+        class OsdownloadsHelper extends FreeHelper
+        {
+        }
+    }
 }

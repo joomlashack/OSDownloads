@@ -32,7 +32,7 @@ if (!Factory::getUser()->authorise('core.manage', 'com_osdownloads')) {
     throw new NotAllowed(Text::_('JERROR_ALERTNOAUTHOR'), 403);
 }
 
-if (require_once 'include.php') {
+if (include 'include.php') {
     $controller = BaseController::getInstance('osdownloads');
 
     $controller->execute(Factory::getApplication()->input->get('task'));

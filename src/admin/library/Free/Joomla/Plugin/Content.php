@@ -65,14 +65,8 @@ class Content extends CMSPlugin
     protected function isEnabled(): bool
     {
         if ($this->enabled === null) {
-            if (!defined('OSDOWNLOADS_LOADED')) {
-                $includePath = JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
-                if (is_file($includePath)) {
-                    require_once $includePath;
-                }
-            }
-
-            $this->enabled = defined('OSDOWNLOADS_LOADED');
+            $include       = JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
+            $this->enabled = is_file($include) && include $include;
         }
 
         return $this->enabled;

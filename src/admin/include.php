@@ -27,15 +27,14 @@ use Joomla\CMS\Version;
 
 defined('_JEXEC') or die();
 
-if (!defined('ALLEDIA_FRAMEWORK_LOADED')) {
-    $allediaFrameworkPath = JPATH_SITE . '/libraries/allediaframework/include.php';
-    if (!(is_file($allediaFrameworkPath) && include $allediaFrameworkPath)) {
-        $app = Factory::getApplication();
+$frameworkPath = JPATH_SITE . '/libraries/allediaframework/include.php';
+if (!(is_file($frameworkPath) && include $frameworkPath)) {
+    $app = Factory::getApplication();
 
-        if ($app->isClient('administrator')) {
-            $app->enqueueMessage('[OSDownloads] Joomlashack framework not found', 'error');
-        }
+    if ($app->isClient('administrator')) {
+        $app->enqueueMessage('[OSDownloads] Joomlashack framework not found', 'error');
     }
+    return false;
 }
 
 if (defined('ALLEDIA_FRAMEWORK_LOADED') && !defined('OSDOWNLOADS_LOADED')) {

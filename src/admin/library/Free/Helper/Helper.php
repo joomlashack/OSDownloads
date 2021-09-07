@@ -38,10 +38,6 @@ use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die();
 
-if (!require_once JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php') {
-    return;
-}
-
 abstract class Helper
 {
     /**

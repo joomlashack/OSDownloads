@@ -62,7 +62,7 @@ class OSDownloadsViewDownload extends HtmlView
     /**
      * @var bool
      */
-    protected $isLocal = true;
+    protected $isLocal = null;
 
     /**
      * @inheritDoc
@@ -82,9 +82,12 @@ class OSDownloadsViewDownload extends HtmlView
         }
 
         if ($item->file_url) {
-            $this->realName = basename($item->file_url);
+            $url = explode('?', $item->file_url);
 
-            if (Helper::isLocalPath($item->file_url)) {
+            $this->realName = basename(reset($url));
+            $this->isLocal = Helper::isLocalPath($item->file_url);
+
+            if ($this->isLocal) {
                 $fileFullPath = realpath(JPATH_SITE . '/' . ltrim($item->file_url, '/'));
                 if (is_file($fileFullPath)) {
                     $this->fileSize = filesize($fileFullPath);
@@ -93,8 +96,6 @@ class OSDownloadsViewDownload extends HtmlView
                 }
 
             } else {
-                $this->isLocal = false;
-
                 // Triggers the onOSDownloadsGetExternalDownloadLink event
                 PluginHelper::importPlugin('osdownloads');
 
@@ -122,10 +123,11 @@ class OSDownloadsViewDownload extends HtmlView
             }
 
         } else {
+            $this->isLocal = true;
             $fileFullPath   = realpath(JPATH_SITE . '/media/com_osdownloads/files/' . $item->file_path);
             $this->realName = substr($item->file_path, strpos($item->file_path, '_') + 1);
             $this->fileSize = filesize($fileFullPath);
-        }
+    }
 
         if (empty($fileFullPath)) {
             $this->displayError(Text::_('COM_OSDOWNLOADS_ERROR_DOWNLOAD_NOT_AVAILABLE'));

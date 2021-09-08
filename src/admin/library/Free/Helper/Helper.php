@@ -83,7 +83,6 @@ abstract class Helper
 
     /**
      * @return void
-     * @throws Exception
      */
     public static function displayAdminMessages()
     {

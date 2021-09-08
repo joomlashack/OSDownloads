@@ -178,7 +178,6 @@
             <file>administrator/language/fr-FR/fr-FR.plg_system_osdownloadssystem.sys.ini</file>
             <file>administrator/manifests/packages/pkg_osdownloads.xml</file>
             <file>components/com_osdownloads/layouts/download_button.php</file>
-            <file>components/com_osdownloads/layouts/osdownloads/buttons/social.php</file>
             <file>components/com_osdownloads/layouts/social_download.php</file>
             <file>components/com_osdownloads/sef_ext.php</file>
             <file>components/com_osdownloads/views/download/tmpl/error_not_available.php</file>

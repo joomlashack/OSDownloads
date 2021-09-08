@@ -33,9 +33,7 @@
         <field name="limit"
                type="limitbox"
                class="inputbox input-mini"
-               default="25"
-               label="COM_SIMPLERENEW_LIST_LIMIT"
-               description="COM_SIMPLERENEW_LIST_LIMIT_DESC"
+               showall="true"
                onchange="this.form.submit();"/>
     </fields>
 </form>

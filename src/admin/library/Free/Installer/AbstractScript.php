@@ -355,7 +355,6 @@ class AbstractScript extends \Alledia\Installer\AbstractScript
     {
         $renames = [
             'download_button' => 'download',
-            'social_download' => 'social'
         ];
 
         $files = Folder::files(
@@ -374,17 +373,7 @@ class AbstractScript extends \Alledia\Installer\AbstractScript
                 Folder::create($dir);
             }
 
-            switch ($layout) {
-                case 'download_button':
-                    $script = file_get_contents($file);
-                    $script = str_replace("'social_download'", "'buttons.social'", $script);
-                    File::write($file, $script);
-                // Fall through
-
-                default:
-                    File::move($file, $newPath);
-                    break;
-            }
+            File::move($file, $newPath);
         }
     }
 

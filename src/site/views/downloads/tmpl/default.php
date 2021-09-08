@@ -125,10 +125,9 @@ HTMLHelper::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', $opt
                     <?php
                     $this->requireEmail = $this->item->require_user_email;
                     $this->requireAgree = (bool)$this->item->require_agree;
-                    $this->requireShare = (bool)($this->item->require_share ?? false);
 
                     if (!$this->showModal) :
-                        $this->showModal = $this->requireEmail || $this->requireAgree || $this->requireShare;
+                        $this->showModal = $this->requireEmail || $this->requireAgree;
                     endif;
 
                     if (in_array($this->item->access, $this->authorizedAccessLevels)) :

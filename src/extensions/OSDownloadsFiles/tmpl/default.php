@@ -49,7 +49,6 @@ $linkTo    = $this->params->get('link_to', 'download');
 
 $requireEmail = false;
 $requireAgree = false;
-$requireShare = false;
 $showModal    = false;
 
 // Module body
@@ -75,10 +74,9 @@ echo sprintf('<%s %s>', $moduleTag, ArrayHelper::toString($moduleAttribs));
         foreach ($this->list as $file) :
             $requireEmail = $file->require_user_email;
             $requireAgree = (bool)$file->require_agree;
-            $requireShare = (bool)($file->require_share ?? false);
 
             if (!$showModal) :
-                $showModal = $requireEmail || $requireAgree || $requireShare;
+                $showModal = $requireEmail || $requireAgree;
             endif;
 
             ?>

@@ -298,25 +298,6 @@ Example markup
   }
 }
 
-/* SHARE BUTTONS */
-#osdownloadsRequirementsPopup .fb-like {
-  margin-left: 3px;
-}
-
-#osdownloadsRequirementsPopup .fb-like iframe {
-  top: -5px;
-}
-
-#osdownloadsRequirementsPopup .fb_iframe_widget > span,
-#osdownloadsRequirementsPopup .fb-like-box iframe {
-  width: 450px !important;
-}
-
-#osdownloadsShareGroup .fb_iframe_widget > span {
-  vertical-align: baseline !important;
-  margin-left: 5px;
-}
-
 /* DOWNLOAD CUSTOM FIELDS */
 .osdownloads-custom-fields-container .tab-pane {
   display: block !important;

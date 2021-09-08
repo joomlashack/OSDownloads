@@ -46,10 +46,6 @@ HTMLHelper::_(
     ]
 );
 
-if (!$this->isPro) {
-    $this->item->require_share = false;
-}
-
 ?>
 <div class="contentopen osdownloads-container item_<?php echo $this->item->id; ?>">
     <?php

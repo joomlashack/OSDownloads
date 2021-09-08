@@ -68,7 +68,6 @@ $attribs = [
     'data-direct-page'       => $displayData->item->direct_page,
     'data-require-email'     => $displayData->item->require_user_email,
     'data-require-agree'     => $displayData->item->require_agree,
-    'data-require-share'     => $displayData->item->require_share,
     'data-url'               => Uri::current(),
     'data-lang'              => $lang->getTag(),
     'data-name'              => $displayData->item->name,
@@ -77,16 +76,6 @@ $attribs = [
     'data-animation'         => $displayData->params->get('popup_animation', 'fade'),
     'data-fields-layout'     => $compParams->get('download_form_fields_layout', 'block')
 ];
-
-if ($displayData->isPro && ($displayData->item->require_share ?? false)) :
-    $attribs['data-hashtags'] = str_replace('#', '', $displayData->item->twitter_hashtags ?? null);
-    $attribs['data-via']      = str_replace('@', '', $displayData->item->twitter_via ?? null);
-    $attribs['data-text']     = str_replace(
-        '{name}',
-        $displayData->item->name,
-        $displayData->item->twitter_text ?? null
-    );
-endif;
 
 echo HTMLHelper::_(
     'link',
@@ -99,11 +88,7 @@ echo HTMLHelper::_(
      class="reveal-modal osdownloads-modal <?php echo FrameworkHelper::getJoomlaVersionCssClass(); ?>"
      data-prefix="<?php echo $elementsId; ?>">
     <?php
-    if (
-        $displayData->item->require_user_email
-        || $displayData->item->require_agree
-        || $displayData->item->require_share
-    ) :
+    if ($displayData->item->require_user_email || $displayData->item->require_agree) :
         ?>
         <h2 class="title">
             <?php
@@ -184,16 +169,6 @@ echo HTMLHelper::_(
                 </div>
             </div>
         </form>
-        <?php
-        if ($displayData->isPro) :
-            echo LayoutHelper::render(
-                'buttons.social',
-                $displayData,
-                null,
-                ['component' => 'com_osdownloads']
-            );
-        endif;
-        ?>
 
         <a href="#" id="<?php echo $elementsId; ?>DownloadContinue"
            class="osdownloads-readmore readmore osdownloads-continue-button">

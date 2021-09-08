@@ -428,28 +428,23 @@
                     return;
                 }
 
-                var $this                 = $(this),
-                    prefix                = $this.data('prefix'),
-                    animation             = $this.data('animation'),
-                    fieldsLayout          = $this.data('fields-layout'),
-                    popupElementId        = prefix + '_popup',
-                    $popup                = $('#' + popupElementId),
-                    $btnContinue          = $popup.find('.osdownloads-continue-button'),
-                    $errorAgreeTerms      = $popup.find('.osdownloads-error-agree'),
-                    $errorInvalidEmail    = $popup.find('.osdownloads-error-email'),
-                    $errorShare           = $popup.find('.osdownloads-error-share'),
-                    $fieldAgree           = $popup.find('.osdownloads-field-agree'),
-                    $fieldEmail           = $popup.find('.osdownloads-field-email'),
-                    $groupEmail           = $popup.find('.osdownloads-email-group'),
-                    $groupAgree           = $popup.find('.osdownloads-group-agree'),
-                    $groupShare           = $popup.find('.osdownloads-group-share'),
-                    directPage            = $this.data('direct-page'),
-                    requireEmail          = $this.data('require-email'),
-                    requireAgree          = $this.data('require-agree') == 1,
-                    requireShare          = $this.data('require-share') == 1,
-                    prefix                = $this.data('prefix'),
-                    socialShared          = false,
-                    $form                 = $popup.find('form');
+                var $this              = $(this),
+                    prefix             = $this.data('prefix'),
+                    animation          = $this.data('animation'),
+                    fieldsLayout       = $this.data('fields-layout'),
+                    popupElementId     = prefix + '_popup',
+                    $popup             = $('#' + popupElementId),
+                    $btnContinue       = $popup.find('.osdownloads-continue-button'),
+                    $errorAgreeTerms   = $popup.find('.osdownloads-error-agree'),
+                    $errorInvalidEmail = $popup.find('.osdownloads-error-email'),
+                    $fieldAgree        = $popup.find('.osdownloads-field-agree'),
+                    $fieldEmail        = $popup.find('.osdownloads-field-email'),
+                    $groupEmail        = $popup.find('.osdownloads-email-group'),
+                    $groupAgree        = $popup.find('.osdownloads-group-agree'),
+                    directPage         = $this.data('direct-page'),
+                    requireEmail       = $this.data('require-email'),
+                    requireAgree       = $this.data('require-agree') === 1,
+                    $form              = $popup.find('form');
 
                 // Move the popup containers to the body
                 $popup.appendTo($('body'));
@@ -466,7 +461,7 @@
                 if ($tabs.length > 0) {
                     $.each($tabs, function(index, elem) {
                         var $tab          = $(elem),
-                            panelSelector = $tab.attr('href');
+                            panelSelector = $tab.attr('href'),
                             $panel        = $popup.find(panelSelector),
                             uniqueId      = $form.attr('id') + '-' + $panel.attr('id');
 
@@ -481,13 +476,12 @@
 
                     if ($tabs.length > 0) {
                         $.each($tabs, function(index, elem) {
-                            var $elem = $(elem),
+                            var $elem  = $(elem),
                                 $panel = $($elem.attr('href'));
 
                             $title = $('<h3>')
                                 .addClass('osdownloads-fieldset-title')
                                 .text($elem.text());
-
 
                             $panel.before($title);
                             $panel.addClass('active');
@@ -497,14 +491,13 @@
                     $popup.find('.osdownloads-custom-fields-container ul.nav').remove();
                 }
 
-                var isValidForm = function () {
-                    var emailRegex = /^([A-Za-z0-9_\-\.\+])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,25})$/,
+                var isValidForm = function() {
+                    var emailRegex   = /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,25})$/,
                         errorElement = null,
-                        hasError = false,
-                        requireShare = $this.data('require-share') == 1;
+                        hasError     = false;
 
                     if (requireAgree) {
-                        if (! $fieldAgree.is(':checked')) {
+                        if (!$fieldAgree.is(':checked')) {
                             hasError = true;
                             $errorAgreeTerms.show();
                         } else {
@@ -512,35 +505,29 @@
                         }
                     }
 
-                    if (requireEmail == 1) {
-                        var email = $fieldEmail.val().trim();
-
-                        if (email === '' || ! emailRegex.test(email)) {
-                            hasError = true;
-                            $errorInvalidEmail.show();
-                        } else {
-                            $errorInvalidEmail.hide();
-                        }
-                    } else {
-                        if (requireEmail == 2) {
-                            var email = $fieldEmail.val().trim();
-
-                            if (email != '' && ! emailRegex.test(email)) {
+                    let email = $fieldEmail.val().trim();
+                    switch (requireEmail) {
+                        case 1:
+                            // email required
+                            if (email === '' || !emailRegex.test(email)) {
                                 hasError = true;
                                 $errorInvalidEmail.show();
+
                             } else {
                                 $errorInvalidEmail.hide();
                             }
-                        }
-                    }
+                            break;
 
-                    if (requireShare) {
-                        if (!socialShared) {
-                            hasError = true;
-                            $errorShare.show();
-                        } else {
-                            $errorShare.hide();
-                        }
+                        case 2:
+                            // email optional
+                            if (email !== '' && !emailRegex.test(email)) {
+                                hasError = true;
+                                $errorInvalidEmail.show();
+
+                            } else {
+                                $errorInvalidEmail.hide();
+                            }
+                            break;
                     }
 
                     if (hasError) {
@@ -558,24 +545,24 @@
 
                 };
 
-                var showPopup = function (selector) {
+                var showPopup = function(selector) {
                     $(selector).reveal({
-                        animation: animation,
-                        animationspeed: 200,
+                        animation             : animation,
+                        animationspeed        : 200,
                         closeonbackgroundclick: true,
-                        dismissmodalclass: 'close-reveal-modal',
+                        dismissmodalclass     : 'close-reveal-modal',
                     });
 
                     // Force to show the first tab of custom fields, if exists
                     window.setTimeout(
-                        function () {
+                        function() {
                             $popup.find('.osdownloads-custom-fields-container ul.nav li').first().find('a').trigger('click');
                         },
                         300
                     );
                 };
 
-                var download = function () {
+                var download = function() {
                     var url = $this.attr('href');
                     $form.attr('target', 'osdownloads-tmp-iframe-' + $form.attr('id'));
 
@@ -615,10 +602,8 @@
                     event.preventDefault();
                     event.stopPropagation();
 
-                    var requireShare = $(this).data('require-share');
-
-                    if (requireEmail || requireAgree || requireShare) {
-                        if (requireEmail != 0) {
+                    if (requireEmail || requireAgree) {
+                        if (requireEmail !== 0) {
                             $groupEmail.show();
                         } else {
                             $groupEmail.hide();
@@ -632,44 +617,6 @@
                             $groupAgree.hide();
                         }
 
-                        if (requireShare) {
-                            $groupShare.show();
-                            socialShared = false;
-
-                            // Create the tweet button
-                            var $btn = $('<a>')
-                                .addClass('twitter-share-button')
-                                .attr('href', 'https://twitter.com/share')
-                                .attr('data-lang', $(this).data('lang'))
-                                .attr('data-url', $(this).data('url'))
-                                .attr('data-count', 'none')
-                                .attr('data-hashtags', $(this).data('hashtags'))
-                                .attr('data-via', $(this).data('via'))
-                                .attr('data-text', $(this).data('text'))
-                                .text('Tweet');
-                            $errorShare.before($btn);
-                            twttr.widgets.load();
-
-                            // Create the facebook button
-                            $btn = $('<div>')
-                                .addClass('fb-like')
-                                .attr('data-href', $(this).data('url'))
-                                .attr('data-layout', 'button')
-                                .attr('data-action', 'like')
-                                .attr('data-show-faces', 'false')
-                                .attr('data-share', 'false');
-                            $errorShare.before($btn);
-
-                            FB.init({
-                                status : true,
-                                cookie : true,
-                                xfbml  : true
-                            });
-
-                        } else {
-                            $groupShare.hide();
-                        }
-
                         $btnContinue.attr('href', $this.attr('href'));
 
                         showPopup('#' + popupElementId);
@@ -681,8 +628,6 @@
                                 $fieldEmail.val('');
                                 $fieldAgree.attr('checked', false);
                                 $('.osdownloads-modal .error').hide();
-                                $groupShare.children('.twitter-share-button').remove();
-                                $groupShare.children('.fb-like').remove();
                             }
                         );
 
@@ -698,60 +643,6 @@
                         download();
                     }
                 });
-
-                // Add the social buttons
-                if (requireShare) {
-                    window.twttr = (function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.getElementById(id)){return}js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);return window.twttr||(t={_e:[],ready:function(f){t._e.push(f)}})}(document,"script","twitter-wjs"));
-
-                    var twttrInterval;
-                    twttrInterval = setInterval(function() {
-                        if (window.twttr) {
-                            clearInterval(twttrInterval);
-                            twttrInterval = null;
-
-                            twttr.ready(function(twttr) {
-                                window.twttr.events.bind('tweet',
-                                    function (event) {
-                                        socialShared = true;
-                                        $errorShare.hide();
-                                    }
-                                );
-                            });
-                        }
-                    }, 300);
-
-                    // Add the Facebook button
-                    window.fbAsyncInit = function() {
-                        FB.init({
-                            status : true,
-                            cookie : true,
-                            xfbml  : true
-                        });
-                        // Like
-                        FB.Event.subscribe('edge.create', function(response) {
-                            socialShared = true;
-                            $errorShare.hide();
-                        });
-                        // Unlike
-                        FB.Event.subscribe('edge.remove', function(url, elem) {
-                            socialShared = false;
-                            $errorShare.show();
-                        });
-                        // Comment
-                        FB.Event.subscribe('comment.create', function(response) {
-                            socialShared = true;
-                            $errorShare.hide();
-                        });
-                    };
-
-                    if (!document.getElementById('facebook-jssdk')) {
-                        var js, fjs = document.getElementsByTagName('script')[0];
-                        js = document.createElement('script');
-                        js.id = 'facebook-jssdk';
-                        js.src = "//connect.facebook.net/en_US/all.js";
-                        fjs.parentNode.insertBefore(js, fjs);
-                    }
-                }
 
                 $this.data('osdownloads-loaded', 1);
             });

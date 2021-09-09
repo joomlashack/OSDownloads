@@ -70,20 +70,10 @@ if (empty($thankyoupage)) {
 
 // Replace found tags in the thank you message by the respective information
 $thankyoupage = str_replace('{{download_url}}', $downloadUrl, $thankyoupage);
+
+Factory::getDocument()->addStyleDeclaration('* { background: none transparent !important; }');
+
 ?>
-
-<style>
-  body,
-  div#all,
-  div#main {
-    background: none transparent !important;
-  }
-
-  div#main {
-    min-height: 0 !important;
-  }
-</style>
-
 <div id="osdownloads-thankyou">
     <div class="contentopen thank">
         <?php echo $thankyoupage; ?>

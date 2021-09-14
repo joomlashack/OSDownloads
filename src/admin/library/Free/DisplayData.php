@@ -24,7 +24,6 @@
 namespace Alledia\OSDownloads\Free;
 
 use Alledia\OSDownloads\Factory;
-use JForm;
 use Joomla\CMS\Form\Form;
 use Joomla\Registry\Registry;
 
@@ -74,31 +73,17 @@ class DisplayData
     }
 
     /**
-     * Method to get the row form.
-     *
-     * @param array   $data     Data for the form.
-     * @param boolean $loadData True if the form is to load its own data (default case), false if not.
-     *
-     * @return  ?Form
-     *
-     * @since   1.6
+     * @return  Form
      */
-    public function getForm($data = [], $loadData = true)
+    public function getForm(): Form
     {
-        // Get the form.
-        $form = new JForm('com_osdownloads.download');
+        if ($this->form === null) {
+            $this->form = new Form('com_osdownloads.download');
 
-        Factory::getApplication()->triggerEvent(
-            'onContentPrepareForm',
-            [
-                $form,
-                [
-                    'catid' => $data->cate_id ?? null
-                ]
-            ]
-        );
+            $this->form->load('<?xml version="1.0" encoding="utf-8"?><form><fieldset/></form>');
+        }
 
-        return $form;
+        return $this->form;
     }
 
     /**

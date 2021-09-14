@@ -135,17 +135,20 @@ echo HTMLHelper::_(
                     <?php
                     $displayData->tab_name = $elementsId . '-tab-' . $displayData->item->id;
 
-                    $displayData->form = FrameworkHelper::createForm('com_osdownloads.download');
-
+                    $form = $displayData->getForm();
                     Factory::getApplication()->triggerEvent(
                         'onContentPrepareForm',
                         [
-                            $displayData->form,
-                            ['catid' => $displayData->item->cate_id]
+                            $form,
+                            [
+                                'catid' => $displayData->item->cate_id ?? null
+                            ]
                         ]
                     );
 
-                    echo LayoutHelper::render('joomla.edit.fieldset', $displayData);
+                    if ($form->getFieldsets()) :
+                        echo LayoutHelper::render('joomla.edit.fieldset', $displayData);
+                    endif;
                     ?>
                 </div>
             <?php endif; ?>

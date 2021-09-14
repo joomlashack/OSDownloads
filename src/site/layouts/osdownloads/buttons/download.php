@@ -135,19 +135,20 @@ echo HTMLHelper::_(
                     <?php
                     $displayData->tab_name = $elementsId . '-tab-' . $displayData->item->id;
 
-                    $form = $displayData->getForm();
-                    Factory::getApplication()->triggerEvent(
-                        'onContentPrepareForm',
-                        [
-                            $form,
+                    if ($form = $displayData->getForm()) :
+                        Factory::getApplication()->triggerEvent(
+                            'onContentPrepareForm',
                             [
-                                'catid' => $displayData->item->cate_id ?? null
+                                $form,
+                                [
+                                    'catid' => $displayData->item->cate_id ?? null
+                                ]
                             ]
-                        ]
-                    );
+                        );
 
-                    if ($form->getFieldsets()) :
-                        echo LayoutHelper::render('joomla.edit.fieldset', $displayData);
+                        if ($form->getFieldsets()) :
+                            echo LayoutHelper::render('joomla.edit.fieldset', $displayData);
+                        endif;
                     endif;
                     ?>
                 </div>

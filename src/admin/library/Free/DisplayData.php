@@ -32,19 +32,39 @@ defined('_JEXEC') or die();
 
 class DisplayData
 {
-    public $item;
+    /**
+     * @var Form
+     */
+    protected $form = null;
 
-    public $hiddenFieldsets = array('dummy');
+    /**
+     * @var object
+     */
+    public $item = null;
 
-    public $isPro;
+    /**
+     * @var bool
+     */
+    public $isPro = null;
 
-    public $params;
+    /**
+     * @var Registry
+     */
+    public $params = null;
 
-    public $itemId;
+    /**
+     * @var int
+     */
+    public $itemId = null;
 
-    public function __construct($params = null)
+    /**
+     * @param ?Registry $params
+     *
+     * @return void
+     */
+    public function __construct(?Registry $params = null)
     {
-        $extension   = Factory::getExtension('OSDownloads', 'component');
+        $extension   = Factory::getExtension('OSDownloads');
         $this->isPro = $extension->isPro();
 
         if (empty($params)) {
@@ -81,10 +101,15 @@ class DisplayData
         return $form;
     }
 
-    public function get($attribute)
+    /**
+     * @param string $attribute
+     *
+     * @return mixed
+     */
+    public function get(string $attribute)
     {
-        if (isset($this->$attribute)) {
-            return $this->$attribute;
+        if (isset($this->{$attribute})) {
+            return $this->{$attribute};
         }
 
         return null;

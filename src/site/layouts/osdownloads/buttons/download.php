@@ -138,7 +138,6 @@ echo HTMLHelper::_(
 
                     $form = new Form('com_osdownloads.download');
                     $form->load('<?xml version="1.0" encoding="utf-8"?><form><fieldset/></form>');
-                    $displayData->setForm($form);
 
                     Factory::getApplication()->triggerEvent(
                         'onContentPrepareForm',
@@ -150,7 +149,14 @@ echo HTMLHelper::_(
                         ]
                     );
 
+                    $displayData->setForm($form);
+
                     if ($form->getFieldsets()) :
+                        // Add IDs to avoid ID crashing when multiple buttons on the page
+                        $fields = $form->getXml()->xpath('//field');
+                        foreach ($fields as $field) :
+                            $field['id'] = $field['name'] . '_' . $elementsId;
+                        endforeach;
                         echo LayoutHelper::render('joomla.edit.fieldset', $displayData);
                     endif;
                     ?>

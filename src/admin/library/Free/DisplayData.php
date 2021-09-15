@@ -73,6 +73,14 @@ class DisplayData
     }
 
     /**
+     * @return ?Form
+     */
+    public function getForm(): ?Form
+    {
+        return $this->form instanceof Form ? $this->form : null;
+    }
+
+    /**
      * @param Form $form
      *
      * @return void
@@ -87,12 +95,12 @@ class DisplayData
      *
      * @return mixed
      */
-    public function get(string $attribute)
+    public function get(string $attribute, $default = null)
     {
         if (isset($this->{$attribute})) {
             return $this->{$attribute};
         }
 
-        return null;
+        return $default;
     }
 }

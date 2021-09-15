@@ -73,17 +73,13 @@ class DisplayData
     }
 
     /**
-     * @return  Form
+     * @param Form $form
+     *
+     * @return void
      */
-    public function getForm(): Form
+    public function setForm(Form $form)
     {
-        if ($this->form === null) {
-            $this->form = new Form('com_osdownloads.download');
-
-            $this->form->load('<?xml version="1.0" encoding="utf-8"?><form><fieldset/></form>');
-        }
-
-        return $this->form;
+        $this->form = $form;
     }
 
     /**

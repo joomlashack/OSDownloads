@@ -433,6 +433,15 @@ if (is_file($includePath) && include $includePath) {
                         }
                         break;
                 }
+            } elseif ($task) {
+                if ($fileMenu = $this->helper->getMenuItemForFile($id)) {
+                    $itemId = $fileMenu->id;
+
+                } elseif ($categoryId = $this->helper->getCategoryIdFromFileId($id)) {
+                    if ($categoryMenu = $this->helper->getMenuItemForCategoryTreeRecursively($categoryId)) {
+                        $itemId = $categoryMenu->id;
+                    }
+                }
             }
 
             if ($itemId) {

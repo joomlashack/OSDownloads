@@ -26,6 +26,7 @@ namespace Alledia\OSDownloads\Free\Joomla\View\Site;
 use Alledia\Framework\Joomla\View\Site\AbstractBase;
 use Alledia\OSDownloads\Factory;
 use Exception;
+use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die();
@@ -90,5 +91,15 @@ class Base extends AbstractBase
         if ($params->get('robots')) {
             $doc->setMetaData('robots', $params->get('robots'));
         }
+    }
+
+    /**
+     * @param Form $form
+     *
+     * @return void
+     */
+    public function setForm(Form $form)
+    {
+        $this->form = $form;
     }
 }

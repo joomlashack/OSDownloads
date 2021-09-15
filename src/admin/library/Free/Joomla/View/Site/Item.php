@@ -25,7 +25,6 @@ namespace Alledia\OSDownloads\Free\Joomla\View\Site;
 
 defined('_JEXEC') or die();
 
-use Alledia\Framework\Joomla\AbstractView;
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Joomla\CMS\Application\SiteApplication;
@@ -34,7 +33,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
 
-class Item extends AbstractView
+class Item extends Base
 {
     /**
      * @var object
@@ -106,15 +105,5 @@ class Item extends AbstractView
         $this->item->description_3 = HTMLHelper::_('content.prepare', $this->item->description_3);
 
         parent::display($tpl);
-    }
-
-    /**
-     * @param Form $form
-     *
-     * @return void
-     */
-    public function setForm(Form $form)
-    {
-        $this->form = $form;
     }
 }

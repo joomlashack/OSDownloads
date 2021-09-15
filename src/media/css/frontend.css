@@ -296,22 +296,8 @@ Example markup
 }
 
 /* DOWNLOAD CUSTOM FIELDS */
-.osdownloads-custom-fields-container .tab-pane {
-  display: block !important;
-}
-
-.osdownloads-custom-fields-container .nav-tabs {
-  font-size: 15px;
-  font-weight: bold;
-  padding: 8px 0;
-}
-
 #osdownloadsAgreeGroup {
   margin-top: 30px;
-}
-
-.osdownloads-fieldset-title {
-  font-size: 14px;
 }
 
 .osdownloads-title-download a {

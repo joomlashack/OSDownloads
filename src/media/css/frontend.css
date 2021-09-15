@@ -160,10 +160,9 @@ a.modosdownloadsDownloadButton:active {
   padding: 15px;
 }
 
-/*  --------------------------------------------------
+/************
 Reveal Modals
--------------------------------------------------- */
-
+*************/
 .reveal-modal-bg {
   position: fixed;
   height: 100%;
@@ -227,7 +226,6 @@ Reveal Modals
 }
 
 /*
-
 NOTES
 
 Close button entity is &#215;
@@ -240,7 +238,6 @@ Example markup
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ultrices aliquet placerat. Duis pulvinar orci et nisi euismod vitae tempus lorem consectetur. Duis at magna quis turpis mattis venenatis eget id diam. </p>
     <a class="close-reveal-modal">&#215;</a>
 </div>
-
 */
 
 .osdownloads-modal iframe {

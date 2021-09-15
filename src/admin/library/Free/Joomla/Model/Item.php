@@ -25,14 +25,14 @@ namespace Alledia\OSDownloads\Free\Joomla\Model;
 
 defined('_JEXEC') or die();
 
-use Alledia\Framework\Joomla\Model\Base as BaseModel;
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Helper\Helper as FreeHelper;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeSite;
 use JDatabaseQuery;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Database\QueryInterface;
 
-class Item extends BaseModel
+class Item extends BaseDatabaseModel
 {
     /**
      * Get document's data from db

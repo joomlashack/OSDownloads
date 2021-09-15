@@ -23,17 +23,14 @@
 
 namespace Alledia\OSDownloads\Free\Joomla\View\Site;
 
+use Alledia\Framework\Joomla\View\Site\AbstractBase;
 use Alledia\OSDownloads\Factory;
 use Exception;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\MVC\View\HtmlView;
 
 defined('_JEXEC') or die();
 
-/**
- * @deprecated 2.0.0 use Alledia\Framework\Joomla\View\Site\AbstractBase
- */
-class Base extends HtmlView
+class Base extends AbstractBase
 {
     /**
      * @param string $tpl

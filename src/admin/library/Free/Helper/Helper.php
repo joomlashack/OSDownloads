@@ -56,7 +56,7 @@ abstract class Helper
 
         Sidebar::addEntry(
             Text::_('COM_OSDOWNLOADS_SUBMENU_CATEGORIES'),
-            'index.php?option=com_categories&extension=com_osdownloads',
+            'index.php?option=com_categories&view=categories&extension=com_osdownloads',
             $vName == 'categories'
         );
         if ($vName == 'categories') {

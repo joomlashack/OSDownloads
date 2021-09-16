@@ -37,7 +37,7 @@
         <menu>COM_OSDOWNLOADS</menu>
         <submenu>
             <menu view="files">COM_OSDOWNLOADS_FILES</menu>
-            <menu link="option=com_categories&amp;extension=com_osdownloads">COM_OSDOWNLOADS_CATEGORIES</menu>
+            <menu link="option=com_categories&amp;view=categories&amp;extension=com_osdownloads">COM_OSDOWNLOADS_CATEGORIES</menu>
             <menu view="emails">COM_OSDOWNLOADS_EMAILS</menu>
         </submenu>
 

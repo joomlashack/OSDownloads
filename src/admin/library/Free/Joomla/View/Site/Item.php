@@ -28,10 +28,10 @@ defined('_JEXEC') or die();
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Joomla\CMS\Application\SiteApplication;
+use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
-use OSDownloadsModelItem;
 
 class Item extends Base
 {
@@ -54,11 +54,6 @@ class Item extends Base
      * @var bool
      */
     public $isPro = null;
-
-    /**
-     * @var OSDownloadsModelItem
-     */
-    protected $model = null;
 
     /**
      * @var object

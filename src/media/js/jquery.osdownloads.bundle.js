@@ -418,20 +418,17 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-(function osdownloadsClosure($) {
-
+;(function osdownloadsClosure($) {
     $.fn.osdownloads = function osdownloads(options) {
         if (this.length) {
             return this.each(function osdownloadsEachElement() {
-
-                if ($(this).data('osdownloads-loaded') == 1) {
+                if ($(this).data('osdownloads-loaded') === 1) {
                     return;
                 }
 
-                var $this              = $(this),
+                let $this              = $(this),
                     prefix             = $this.data('prefix'),
                     animation          = $this.data('animation'),
-                    fieldsLayout       = $this.data('fields-layout'),
                     popupElementId     = prefix + '_popup',
                     $popup             = $('#' + popupElementId),
                     $btnContinue       = $popup.find('.osdownloads-continue-button'),
@@ -441,7 +438,6 @@
                     $fieldEmail        = $popup.find('.osdownloads-field-email'),
                     $groupEmail        = $popup.find('.osdownloads-email-group'),
                     $groupAgree        = $popup.find('.osdownloads-group-agree'),
-                    directPage         = $this.data('direct-page'),
                     requireEmail       = $this.data('require-email'),
                     requireAgree       = $this.data('require-agree') === 1,
                     $form              = $popup.find('form');
@@ -449,63 +445,21 @@
                 // Move the popup containers to the body
                 $popup.appendTo($('body'));
 
-                /*
-                  Fix the click event on tabs, for supporting multiple popup boxes on the same page.
-                  Without this fix, if 2 files have the same fieldset (represented by tabs), the
-                  click event only work on the first popup, since the id of the elements will be
-                  duplicated.
-                 */
-                // Find tabs and respective content containers, to update the ID for a unique value
-                $tabs = $popup.find('.osdownloads-custom-fields-container ul.nav li a');
-
-                if ($tabs.length > 0) {
-                    $.each($tabs, function(index, elem) {
-                        var $tab          = $(elem),
-                            panelSelector = $tab.attr('href'),
-                            $panel        = $popup.find(panelSelector),
-                            uniqueId      = $form.attr('id') + '-' + $panel.attr('id');
-
-                        $tab.attr('href', '#' + uniqueId);
-                        $panel.attr('id', uniqueId);
-                    });
-                }
-
-                // Apply the correct layout for fields
-                if ('block' === fieldsLayout) {
-                    $tabs = $popup.find('.osdownloads-custom-fields-container ul.nav li a');
-
-                    if ($tabs.length > 0) {
-                        $.each($tabs, function(index, elem) {
-                            var $elem  = $(elem),
-                                $panel = $($elem.attr('href'));
-
-                            $title = $('<h3>')
-                                .addClass('osdownloads-fieldset-title')
-                                .text($elem.text());
-
-                            $panel.before($title);
-                            $panel.addClass('active');
-                        });
-                    }
-
-                    $popup.find('.osdownloads-custom-fields-container ul.nav').remove();
-                }
-
-                var isValidForm = function() {
-                    var emailRegex   = /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,25})$/,
-                        errorElement = null,
-                        hasError     = false;
+                let isValidForm = function() {
+                    let email      = $fieldEmail.val().trim(),
+                        emailRegex = /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,25})$/,
+                        hasError   = false;
 
                     if (requireAgree) {
-                        if (!$fieldAgree.is(':checked')) {
+                        if ($fieldAgree.is(':checked')) {
+                            $errorAgreeTerms.hide();
+
+                        } else {
                             hasError = true;
                             $errorAgreeTerms.show();
-                        } else {
-                            $errorAgreeTerms.hide();
                         }
                     }
 
-                    let email = $fieldEmail.val().trim();
                     switch (requireEmail) {
                         case 1:
                             // email required
@@ -539,31 +493,22 @@
                         $form.attr('target', 'osdownloads-tmp-iframe-' + $form.attr('id'));
 
                         return document.formvalidator.isValid($form[0]);
+
                     } else {
                         return true;
                     }
-
                 };
 
-                var showPopup = function(selector) {
+                let showPopup = function(selector) {
                     $(selector).reveal({
                         animation             : animation,
                         animationspeed        : 200,
                         closeonbackgroundclick: true,
                         dismissmodalclass     : 'close-reveal-modal',
                     });
-
-                    // Force to show the first tab of custom fields, if exists
-                    window.setTimeout(
-                        function() {
-                            $popup.find('.osdownloads-custom-fields-container ul.nav li').first().find('a').trigger('click');
-                        },
-                        300
-                    );
                 };
 
-                var download = function() {
-                    var url = $this.attr('href');
+                let download = function() {
                     $form.attr('target', 'osdownloads-tmp-iframe-' + $form.attr('id'));
 
                     // Create the popup element
@@ -605,14 +550,15 @@
                     if (requireEmail || requireAgree) {
                         if (requireEmail !== 0) {
                             $groupEmail.show();
+
                         } else {
                             $groupEmail.hide();
                         }
 
                         if (requireAgree) {
-                            // Update the requirement article url
                             $groupAgree.find('.agreement-article').attr('href', $this.data('agreement-article'));
                             $groupAgree.show();
+
                         } else {
                             $groupAgree.hide();
                         }

@@ -25,6 +25,7 @@ use Alledia\Framework\Helper as FrameworkHelper;
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\DisplayData;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
@@ -135,17 +136,29 @@ echo HTMLHelper::_(
                     <?php
                     $displayData->tab_name = $elementsId . '-tab-' . $displayData->item->id;
 
-                    $displayData->form = FrameworkHelper::createForm('com_osdownloads.download');
+                    $form = new Form('com_osdownloads.download');
+                    $form->load('<?xml version="1.0" encoding="utf-8"?><form><fieldset/></form>');
 
                     Factory::getApplication()->triggerEvent(
                         'onContentPrepareForm',
                         [
-                            $displayData->form,
-                            ['catid' => $displayData->item->cate_id]
+                            $form,
+                            [
+                                'catid' => $displayData->item->cate_id ?? null
+                            ]
                         ]
                     );
 
-                    echo LayoutHelper::render('joomla.edit.fieldset', $displayData);
+                    $displayData->setForm($form);
+
+                    if ($form->getFieldsets()) :
+                        // Add IDs to avoid ID crashing when multiple buttons on the page
+                        $fields = $form->getXml()->xpath('//field');
+                        foreach ($fields as $field) :
+                            $field['id'] = $field['name'] . '_' . $elementsId;
+                        endforeach;
+                        echo LayoutHelper::render('joomla.edit.fieldset', $displayData);
+                    endif;
                     ?>
                 </div>
             <?php endif; ?>

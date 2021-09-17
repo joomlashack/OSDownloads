@@ -24,7 +24,6 @@
 namespace Alledia\OSDownloads\Free;
 
 use Alledia\OSDownloads\Factory;
-use JForm;
 use Joomla\CMS\Form\Form;
 use Joomla\Registry\Registry;
 
@@ -32,19 +31,39 @@ defined('_JEXEC') or die();
 
 class DisplayData
 {
-    public $item;
+    /**
+     * @var Form
+     */
+    protected $form = null;
 
-    public $hiddenFieldsets = array('dummy');
+    /**
+     * @var object
+     */
+    public $item = null;
 
-    public $isPro;
+    /**
+     * @var bool
+     */
+    public $isPro = null;
 
-    public $params;
+    /**
+     * @var Registry
+     */
+    public $params = null;
 
-    public $itemId;
+    /**
+     * @var int
+     */
+    public $itemId = null;
 
-    public function __construct($params = null)
+    /**
+     * @param ?Registry $params
+     *
+     * @return void
+     */
+    public function __construct(?Registry $params = null)
     {
-        $extension   = Factory::getExtension('OSDownloads', 'component');
+        $extension   = Factory::getExtension('OSDownloads');
         $this->isPro = $extension->isPro();
 
         if (empty($params)) {
@@ -54,39 +73,34 @@ class DisplayData
     }
 
     /**
-     * Method to get the row form.
-     *
-     * @param array   $data     Data for the form.
-     * @param boolean $loadData True if the form is to load its own data (default case), false if not.
-     *
-     * @return  ?Form
-     *
-     * @since   1.6
+     * @return ?Form
      */
-    public function getForm($data = [], $loadData = true)
+    public function getForm(): ?Form
     {
-        // Get the form.
-        $form = new JForm('com_osdownloads.download');
-
-        Factory::getApplication()->triggerEvent(
-            'onContentPrepareForm',
-            [
-                $form,
-                [
-                    'catid' => $data->cate_id ?? null
-                ]
-            ]
-        );
-
-        return $form;
+        return $this->form instanceof Form ? $this->form : null;
     }
 
-    public function get($attribute)
+    /**
+     * @param Form $form
+     *
+     * @return void
+     */
+    public function setForm(Form $form)
     {
-        if (isset($this->$attribute)) {
-            return $this->$attribute;
+        $this->form = $form;
+    }
+
+    /**
+     * @param string $attribute
+     *
+     * @return mixed
+     */
+    public function get(string $attribute, $default = null)
+    {
+        if (isset($this->{$attribute})) {
+            return $this->{$attribute};
         }
 
-        return null;
+        return $default;
     }
 }

@@ -160,10 +160,9 @@ a.modosdownloadsDownloadButton:active {
   padding: 15px;
 }
 
-/*  --------------------------------------------------
+/************
 Reveal Modals
--------------------------------------------------- */
-
+*************/
 .reveal-modal-bg {
   position: fixed;
   height: 100%;
@@ -227,7 +226,6 @@ Reveal Modals
 }
 
 /*
-
 NOTES
 
 Close button entity is &#215;
@@ -240,7 +238,6 @@ Example markup
     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ultrices aliquet placerat. Duis pulvinar orci et nisi euismod vitae tempus lorem consectetur. Duis at magna quis turpis mattis venenatis eget id diam. </p>
     <a class="close-reveal-modal">&#215;</a>
 </div>
-
 */
 
 .osdownloads-modal iframe {
@@ -251,6 +248,7 @@ Example markup
 .osdownloads-modal .error {
   margin-bottom: 20px;
   font-style: italic;
+  color: #d85030;
 }
 
 .osdownloads-modal label {
@@ -299,22 +297,8 @@ Example markup
 }
 
 /* DOWNLOAD CUSTOM FIELDS */
-.osdownloads-custom-fields-container .tab-pane {
-  display: block !important;
-}
-
-.osdownloads-custom-fields-container .nav-tabs {
-  font-size: 15px;
-  font-weight: bold;
-  padding: 8px 0;
-}
-
 #osdownloadsAgreeGroup {
   margin-top: 30px;
-}
-
-.osdownloads-fieldset-title {
-  font-size: 14px;
 }
 
 .osdownloads-title-download a {

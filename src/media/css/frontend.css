@@ -268,6 +268,10 @@ Example markup
   margin-top: -2px;
 }
 
+.osdownloads-modal .osdownloads-header {
+  padding-bottom: 18px;
+}
+
 @media screen and (max-width: 320px) {
   .osdownloads-modal {
     width: 280px !important;

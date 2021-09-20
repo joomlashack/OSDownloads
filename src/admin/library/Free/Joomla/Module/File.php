@@ -67,6 +67,11 @@ class File extends AbstractFlexibleModule
     public $isPro = null;
 
     /**
+     * @var Form
+     */
+    protected $form = null;
+
+    /**
      * @inheritDoc
      * @throws \Exception
      */
@@ -113,27 +118,26 @@ class File extends AbstractFlexibleModule
     }
 
     /**
-     * Method to get the row form.
-     *
-     * @param object|array $data
+     * Duplicates the method from DisplayData class
      *
      * @return  ?Form
-     * @throws \Exception
      */
-    public function getForm($data = []): ?Form
+    /**
+     * @return ?Form
+     */
+    public function getForm(): ?Form
     {
-        if ($form = new Form('com_osdownloads.download')) {
-            $data = (object)$data;
+        return $this->form instanceof Form ? $this->form : null;
+    }
 
-            Factory::getApplication()->triggerEvent(
-                'onContentPrepareForm',
-                [$form, ['catid' => empty($data->cate_id) ? null : $data->cate_id]]
-            );
-
-            return $form;
-        }
-
-        return null;
+    /**
+     * @param Form $form
+     *
+     * @return void
+     */
+    public function setForm(Form $form)
+    {
+        $this->form = $form;
     }
 
     /**

@@ -24,6 +24,7 @@
 use Alledia\Framework\Helper as FrameworkHelper;
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\DisplayData;
+use Alledia\OSDownloads\Free\Joomla\Module\File as FileModule;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -32,12 +33,13 @@ use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
+use OSDownloadsViewItem as ViewItem;
 
 defined('_JEXEC') or die();
 
 /**
  * @var FileLayout                      $this
- * @var OSDownloadsViewItem|DisplayData $displayData
+ * @var ViewItem|DisplayData|FileModule $displayData
  * @var string                          $layoutOutput
  * @var string                          $path
  */

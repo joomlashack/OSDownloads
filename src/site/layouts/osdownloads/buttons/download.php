@@ -88,11 +88,8 @@ echo HTMLHelper::_(
 );
 
 if ($compParams->get('download_form_translate')) :
-    $header = $compParams->get('download_form_header_translate');
-    $footer = $compParams->get('download_form_footer_translate');
-
-    $header = $header ? Text::_($header) : '';
-    $footer = $footer ? Text::_($footer) : '';
+    $header = Text::_('COM_OSDOWNLOADS_DOWNLOAD_HEADER');
+    $footer = Text::_('COM_OSDOWNLOADS_DOWNLOAD_FOOTER');
 
 else :
     $header = $compParams->get('download_form_header');

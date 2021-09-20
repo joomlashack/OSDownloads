@@ -198,6 +198,10 @@
             <extension type="plugin"
                        group="content"
                        element="osdownloadsshortcodes"/>
+
+            <extension type="plugin"
+                       group="search"
+                       element="osdownloads"/>
         </obsolete>
     </alledia>
 </extension>

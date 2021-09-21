@@ -86,6 +86,16 @@ echo HTMLHelper::_(
     sprintf('<span>%s</span>', $displayData->item->download_text ?: Text::_('COM_OSDOWNLOADS_DOWNLOAD')),
     $attribs
 );
+
+if ($compParams->get('download_form_translate')) :
+    $header = Text::_('COM_OSDOWNLOADS_DOWNLOAD_FORM_HEADER');
+    $footer = Text::_('COM_OSDOWNLOADS_DOWNLOAD_FORM_FOOTER');
+
+else :
+    $header = $compParams->get('download_form_header');
+    $footer = $compParams->get('download_form_footer');
+endif;
+
 ?>
 <div id="<?php echo $elementsId . '_popup'; ?>"
      class="reveal-modal osdownloads-modal <?php echo FrameworkHelper::getJoomlaVersionCssClass(); ?>"
@@ -98,14 +108,11 @@ echo HTMLHelper::_(
             echo Text::_($compParams->get('download_form_title', 'COM_OSDOWNLOADS_BEFORE_DOWNLOAD'));
             ?>
         </h2>
-
         <?php
-        $header = $compParams->get('download_form_header');
-        if (!empty($header)) :
-            echo $header;
+        if ($header) :
+            echo sprintf('<div class="osdownloads-header">%s</div>', $header);
         endif;
         ?>
-
         <form action="<?php echo $actionUrl; ?>"
               id="<?php echo $elementsId . '_form'; ?>"
               name="<?php echo $elementsId . '_form'; ?>"
@@ -193,9 +200,8 @@ echo HTMLHelper::_(
         </a>
 
         <?php
-        $footer = $compParams->get('download_form_footer');
-        if (!empty($footer)) :
-            echo $footer;
+        if ($footer) :
+            echo sprintf('<div class="osdownloads-footer">%s</div>', $footer);
         endif;
         ?>
 

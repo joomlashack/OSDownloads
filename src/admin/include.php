@@ -48,7 +48,7 @@ if (defined('ALLEDIA_FRAMEWORK_LOADED') && !defined('OSDOWNLOADS_LOADED')) {
 
     Helper::loadLibrary('com_osdownloads');
 
-    if (version_compare(Version::MAJOR_VERSION, '4', 'lt')) {
+    if (Version::MAJOR_VERSION < 4) {
         // Joomla 3 shims
         JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
     }

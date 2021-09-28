@@ -43,9 +43,10 @@ class Base extends HtmlView
     public function getLayout()
     {
         $layout = parent::getLayout();
-        if (version_compare(JVERSION, '4.0', 'lt')) {
+        if (Version::MAJOR_VERSION < 4) {
             $layout .= '.j' . Version::MAJOR_VERSION;
         }
+
         return $layout;
     }
 }

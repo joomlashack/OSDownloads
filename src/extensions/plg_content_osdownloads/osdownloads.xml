@@ -7,8 +7,8 @@
     <copyright>Copyright 2005-2021 Joomlashack.com</copyright>
     <license>GNU GPL; see LICENSE file</license>
     <description>PLG_CONTENT_OSDOWNLOADS_DESC</description>
-    <version>2.1.0b2</version>
-    <creationDate>September 20 2021</creationDate>
+    <version>2.1.0</version>
+    <creationDate>October 04 2021</creationDate>
 
     <alledia>
         <element>oSDownloadsContent</element>

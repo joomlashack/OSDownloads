@@ -83,27 +83,33 @@ class Item extends Base
         }
         $this->params = $params ?? null;
 
-        $result = $this->trigger('onOSDownloadsBeforeSaveFile', array(&$this, $isNew)) !== false;
-        if ($result) {
+        $result = $this->trigger('onOSDownloadsBeforeSaveFile', [&$this, $isNew]);
+        if (!in_array(false, $result, true)) {
             $result = parent::store($updateNulls);
 
-            $this->trigger('onOSDownloadsAfterSaveFile', array($result, &$this));
+            $this->trigger('onOSDownloadsAfterSaveFile', [$result, &$this]);
+
+            return true;
         }
 
-        return $result;
+        return false;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function delete($pk = null)
     {
-        // Trigger events to osdownloads plugins
-        $result = $this->trigger('onOSDownloadsBeforeDeleteFile', array(&$this, $pk)) !== false;
-        if ($result) {
+        $result = $this->trigger('onOSDownloadsBeforeDeleteFile', [&$this, $pk]);
+        if (in_array(false, $result, true) == false) {
             $result = parent::delete($pk['id']);
 
-            $this->trigger('onOSDownloadsAfterDeleteFile', array($result, $this->id, $pk));
+            $this->trigger('onOSDownloadsAfterDeleteFile', [$result, $this->get('id'), $pk]);
+
+            return true;
         }
 
-        return $result;
+        return false;
     }
 
     /**

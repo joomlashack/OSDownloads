@@ -27,10 +27,8 @@ use Alledia\OSDownloads\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\Path;
-use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
-use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Table\Table;
 use Joomla\Registry\Registry;
@@ -77,18 +75,18 @@ class OSDownloadsModelFile extends AdminModel
     /**
      * @inheritDoc
      */
-    public function getTable($type = 'Document', $prefix = 'OSDownloadsTable', $config = [])
+    public function getTable($name = 'Document', $prefix = 'OSDownloadsTable', $options = [])
     {
-        return Table::getInstance($type, $prefix, $config);
+        return Table::getInstance($name, $prefix, $options);
     }
 
     /**
-     * @return array|bool|CMSObject|object
+     * @inheritDoc
      * @throws Exception
      */
     protected function loadFormData()
     {
-        $data = Factory::getApplication()->getUserState("com_osdownloads.edit.file.data", []);
+        $data = Factory::getApplication()->getUserState('com_osdownloads.edit.file.data', []);
 
         if (empty($data)) {
             $data = $this->getItem();
@@ -121,7 +119,7 @@ class OSDownloadsModelFile extends AdminModel
                 ? Route::_(ContentHelperRoute::getArticleRoute($agreementId))
                 : '';
 
-            $item->type = $item->file_url ? 'url' : 'upload';
+            $item->type = empty($item->file_url) ? 'upload' : 'url';
         }
 
         return $item;
@@ -134,7 +132,6 @@ class OSDownloadsModelFile extends AdminModel
     {
         try {
             $app = Factory::getApplication();
-            $db = Factory::getDbo();
 
             if ($app->input->getCmd('task') == 'save2copy') {
                 $original = clone $this->getTable();
@@ -146,10 +143,8 @@ class OSDownloadsModelFile extends AdminModel
                     $data['name']  = $name;
                     $data['alias'] = $alias;
 
-                } else {
-                    if ($data['alias'] == $original->alias) {
-                        $data['alias'] = '';
-                    }
+                } elseif ($data['alias'] == $original->alias) {
+                    $data['alias'] = '';
                 }
 
                 $data['published']  = 0;
@@ -166,8 +161,8 @@ class OSDownloadsModelFile extends AdminModel
             $data['description_1'] = array_pop($splitText);
             $data['brief']         = array_pop($splitText);
 
-            $data['require_email'] = (int)$data['require_email'];
-            $data['require_agree'] = (int)$data['require_agree'];
+            $data['require_email']        = (int)$data['require_email'];
+            $data['require_agree']        = (int)$data['require_agree'];
             $data['agreement_article_id'] = (int)$data['agreement_article_id'];
             if (empty($data['publish_up'])) {
                 $data['publish_up'] = $db->getNullDate();
@@ -235,7 +230,7 @@ class OSDownloadsModelFile extends AdminModel
 
         $unlinkedFiles = array_diff($uploadedFiles, $files);
         foreach ($unlinkedFiles as $file) {
-            @unlink($this->uploadDir . '/' . $file);
+            File::delete($this->uploadDir . '/' . $file);
         }
     }
 
@@ -250,7 +245,7 @@ class OSDownloadsModelFile extends AdminModel
     protected function uploadFile(&$data)
     {
         $app   = Factory::getApplication();
-        $files = $app->input->files->get('jform', array(), 'raw');
+        $files = $app->input->files->get('jform', [], 'raw');
 
         if (empty($files['file_path_upload'])) {
             return;
@@ -281,11 +276,11 @@ class OSDownloadsModelFile extends AdminModel
 
                 Folder::create($this->uploadDir);
 
-                $accessFile = array(
+                $accessFile = [
                     'Order Deny,Allow',
                     'Deny from all',
                     ''
-                );
+                ];
                 file_put_contents($this->uploadDir . '/.htaccess', join("\n", $accessFile));
             }
 
@@ -295,14 +290,14 @@ class OSDownloadsModelFile extends AdminModel
             $tempPath = $upload->get('tmp_name');
 
             // Disable file extension and tag checks
-            $safeFileOptions = array(
-                'forbidden_extensions'       => array(),
+            $safeFileOptions = [
+                'forbidden_extensions'       => [],
                 'php_tag_in_content'         => false,
                 'shorttag_in_content'        => false,
-                'shorttag_extensions'        => array(),
+                'shorttag_extensions'        => [],
                 'fobidden_ext_in_content'    => false,
-                'php_ext_content_extensions' => array(),
-            );
+                'php_ext_content_extensions' => [],
+            ];
 
             if (!File::upload($tempPath, $filePath, false, false, $safeFileOptions)) {
                 if ($messages = $app->getMessageQueue(true)) {

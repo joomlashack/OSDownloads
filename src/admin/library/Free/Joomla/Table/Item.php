@@ -27,18 +27,26 @@ defined('_JEXEC') or die();
 
 use Alledia\Framework\Joomla\Table\Base;
 use Alledia\OSDownloads\Factory;
+use JDatabaseDriver;
 use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Registry\Registry;
 
 class Item extends Base
 {
+    /**
+     * @inheritdoc
+     */
     protected $_columnAlias = [
         'title' => 'name',
         'catid' => 'cate_id'
     ];
 
-    public function __construct(&$_db)
+    /**
+     * @inheritDoc
+     */
+    public function __construct(JDatabaseDriver $_db)
     {
         parent::__construct('#__osdownloads_documents', 'id', $_db);
     }
@@ -62,7 +70,7 @@ class Item extends Base
         }
 
         if (empty($this->alias)) {
-            $this->alias = $this->name;
+            $this->alias = $this->get('name');
         }
         $this->alias = ApplicationHelper::stringURLSafe($this->alias);
 
@@ -73,7 +81,7 @@ class Item extends Base
             $params = new Registry($this->params);
             $params = $params->toString();
         }
-        $this->params = $params;
+        $this->params = $params ?? null;
 
         $result = $this->trigger('onOSDownloadsBeforeSaveFile', array(&$this, $isNew)) !== false;
         if ($result) {
@@ -98,17 +106,31 @@ class Item extends Base
         return $result;
     }
 
-    protected function trigger($event, array $arguments)
+    /**
+     * @param string $event
+     * @param array  $arguments
+     *
+     * @return array
+     */
+    protected function trigger(string $event, array $arguments): array
     {
-        PluginHelper::importPlugin('osdownloads');
+        try {
+            PluginHelper::importPlugin('osdownloads');
 
-        return Factory::getApplication()->triggerEvent($event, $arguments);
+            return Factory::getApplication()->triggerEvent($event, $arguments);
+
+        } catch (\Throwable $error) {
+            return [];
+        }
     }
 
+    /**
+     * @inheritDoc
+     */
     public function load($keys = null, $reset = true)
     {
         if (parent::load($keys, $reset)) {
-            $this->params = new Registry($this->params);
+            $this->params = new Registry($this->get('params'));
 
             return true;
         }

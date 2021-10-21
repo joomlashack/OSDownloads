@@ -194,8 +194,8 @@ if ($saveOrder && $this->items) {
                                         (int)$item->published,
                                         $i,
                                         $options,
-                                        $item->publish_up,
-                                        $item->publish_down
+                                        $item->publish_up ?? null,
+                                        $item->publish_down ?? null
                                     );
                                     ?>
                                 </td>

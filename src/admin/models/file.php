@@ -164,12 +164,6 @@ class OSDownloadsModelFile extends AdminModel
             $data['require_email']        = (int)$data['require_email'];
             $data['require_agree']        = (int)$data['require_agree'];
             $data['agreement_article_id'] = (int)$data['agreement_article_id'];
-            if (empty($data['publish_up'])) {
-                $data['publish_up'] = $db->getNullDate();
-            }
-            if (empty($data['publish_down'])) {
-                $data['publish_down'] = $db->getNullDate();
-            }
 
             $type = empty($data['type']) ? null : $data['type'];
             switch ($type) {

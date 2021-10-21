@@ -51,7 +51,10 @@ class Item extends Base
         parent::__construct('#__osdownloads_documents', 'id', $_db);
     }
 
-    public function store($updateNulls = false)
+    /**
+     * @inheritDoc
+     */
+    public function store($updateNulls = true)
     {
         $date = Factory::getDate();
         $user = Factory::getUser();
@@ -82,6 +85,16 @@ class Item extends Base
             $params = $params->toString();
         }
         $this->params = $params ?? null;
+
+        // check publishing dates
+        $this->publish_up   = $this->get('publish_up') ?: null;
+        $this->publish_down = $this->get('publish_down') ?: null;
+
+        if ($this->publish_down && $this->publish_up && $this->publish_down < $this->publish_up) {
+            $this->setError(Text::_('JGLOBAL_START_PUBLISH_AFTER_FINISH'));
+
+            return false;
+        }
 
         $result = $this->trigger('onOSDownloadsBeforeSaveFile', [&$this, $isNew]);
         if (!in_array(false, $result, true)) {

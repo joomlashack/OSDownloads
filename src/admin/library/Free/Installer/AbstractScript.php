@@ -367,6 +367,8 @@ class AbstractScript extends \Alledia\Installer\AbstractScript
      */
     protected function fixDatabase()
     {
+        $db = $this->dbo;
+
         /*
          * There is an odd issue in Joomla 4 that reports database errors
          * when there aren't any. Stupid.
@@ -380,6 +382,20 @@ class AbstractScript extends \Alledia\Installer\AbstractScript
 
         foreach ($oldUpdates as $oldUpdate) {
             File::delete($oldUpdate);
+        }
+
+        /**
+         * We moved to null dates as of v1.13.0
+         * Finally fixed this as of v2.1.1
+         */
+        foreach (['publish_up', 'publish_down'] as $field) {
+            $field = $db->quoteName($field);
+            $query = $db->getQuery(true)
+                ->update('#__osdownloads_documents')
+                ->where($field . ' = ' . $db->quote('0000-00-00 00:00:00'))
+                ->set($field . ' = NULL');
+
+            $db->setQuery($query)->execute();
         }
     }
 

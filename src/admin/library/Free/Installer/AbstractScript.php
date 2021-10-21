@@ -55,38 +55,23 @@ class AbstractScript extends \Alledia\Installer\AbstractScript
     /**
      * @inheritDoc
      */
-    public function preFlight($type, $parent)
+    protected function customPostFlight($type, $parent)
     {
-        return !$this->cancelInstallation;
-    }
+        if ($type != 'uninstall') {
+            $include = JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
+            if (is_file($include) && include $include) {
+                $this->checkParamStructure();
+                $this->checkAndCreateDefaultCategory();
+                $this->fixOrderingParamForMenus();
+                $this->fixDownloadsViewParams();
+                $this->fixItemViewParams();
+                $this->fixDatabase();
+                $this->clearProData();
 
-    /**
-     * @inheritDoc
-     */
-    public function postFlight($type, $parent)
-    {
-        try {
-            parent::postFlight($type, $parent);
-
-            if ($type != 'uninstall') {
-                $include = JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
-                if (is_file($include) && include $include) {
-                    $this->checkParamStructure();
-                    $this->checkAndCreateDefaultCategory();
-                    $this->fixOrderingParamForMenus();
-                    $this->fixDownloadsViewParams();
-                    $this->fixItemViewParams();
-                    $this->fixDatabase();
-                    $this->clearProData();
-
-                    if ($type == 'update') {
-                        $this->moveLayouts();
-                    }
+                if ($type == 'update') {
+                    $this->moveLayouts();
                 }
             }
-
-        } catch (\Throwable $error) {
-            $this->sendErrorMessage($error);
         }
     }
 

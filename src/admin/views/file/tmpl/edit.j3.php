@@ -44,120 +44,118 @@ OutputFilter::objectHtmlSafe($this->item);
 $container  = Factory::getPimpleContainer();
 $formAction = Route::_('index.php?option=com_osdownloads&view=file&layout=edit&id=' . (int)$this->item->id);
 ?>
-    <script type="text/javascript">
-        Joomla.submitbutton = function(task) {
-            if (task === 'file.cancel' || document.formvalidator.isValid(document.id('adminForm'))) {
-                Joomla.submitform(task, document.getElementById('adminForm'));
-            }
+<script type="text/javascript">
+    Joomla.submitbutton = function(task) {
+        if (task === 'file.cancel' || document.formvalidator.isValid(document.id('adminForm'))) {
+            Joomla.submitform(task, document.getElementById('adminForm'));
         }
-    </script>
+    }
+</script>
 
-    <form name="adminForm"
-          id="adminForm"
-          action="<?php echo $formAction; ?>"
-          method="post"
-          enctype="multipart/form-data"
-          class="form-validate">
+<form name="adminForm"
+      id="adminForm"
+      action="<?php echo $formAction; ?>"
+      method="post"
+      enctype="multipart/form-data"
+      class="form-validate">
 
-        <?php echo LayoutHelper::render('joomla.edit.title_alias', $this); ?>
+    <?php echo LayoutHelper::render('joomla.edit.title_alias', $this); ?>
 
-        <div class="form-horizontal">
-            <?php
-            echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', ['active' => 'general']);
+    <div class="form-horizontal">
+        <?php
+        echo HTMLHelper::_('bootstrap.startTabSet', 'myTab', ['active' => 'general']);
 
-            echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'general', Text::_('COM_OSDOWNLOADS_FILE', true));
-            ?>
-            <div class="row-fluid">
-                <div class="span9">
-                    <?php echo $this->form->renderFieldset('file'); ?>
+        echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'general', Text::_('COM_OSDOWNLOADS_FILE', true));
+        ?>
+        <div class="row-fluid">
+            <div class="span9">
+                <?php echo $this->form->renderFieldset('file'); ?>
 
-                    <div class="control-group">
-                        <div class="control-label">
-                            <?php echo Text::_('COM_OSDOWNLOADS_DESCRIPTIONS'); ?>
-                        </div>
-                        <div class="controls">
-                            <?php
-                            echo HTMLHelper::_(
-                                'bootstrap.startTabSet',
-                                'myTabDescriptions',
-                                ['active' => 'description1']
-                            );
+                <div class="control-group">
+                    <div class="control-label">
+                        <?php echo Text::_('COM_OSDOWNLOADS_DESCRIPTIONS'); ?>
+                    </div>
+                    <div class="controls">
+                        <?php
+                        echo HTMLHelper::_(
+                            'bootstrap.startTabSet',
+                            'myTabDescriptions',
+                            ['active' => 'description1']
+                        );
 
-                            // Main Description
-                            echo HTMLHelper::_(
-                                'bootstrap.addTab',
-                                'myTabDescriptions',
-                                'description1',
-                                Text::_('COM_OSDOWNLOADS_DESCRIPTION_1H', true)
-                            );
-                            echo $this->form->getField('description_1')->input;
-                            echo HTMLHelper::_('bootstrap.endTab');
+                        // Main Description
+                        echo HTMLHelper::_(
+                            'bootstrap.addTab',
+                            'myTabDescriptions',
+                            'description1',
+                            Text::_('COM_OSDOWNLOADS_DESCRIPTION_1H', true)
+                        );
+                        echo $this->form->getField('description_1')->input;
+                        echo HTMLHelper::_('bootstrap.endTab');
 
-                            // Before Button text
-                            echo HTMLHelper::_(
-                                'bootstrap.addTab',
-                                'myTabDescriptions',
-                                'description2',
-                                Text::_('COM_OSDOWNLOADS_DESCRIPTION_2H', true)
-                            );
-                            echo $this->form->getField('description_2')->input;
-                            echo HTMLHelper::_('bootstrap.endTab');
+                        // Before Button text
+                        echo HTMLHelper::_(
+                            'bootstrap.addTab',
+                            'myTabDescriptions',
+                            'description2',
+                            Text::_('COM_OSDOWNLOADS_DESCRIPTION_2H', true)
+                        );
+                        echo $this->form->getField('description_2')->input;
+                        echo HTMLHelper::_('bootstrap.endTab');
 
-                            // After button text
-                            echo HTMLHelper::_(
-                                'bootstrap.addTab',
-                                'myTabDescriptions',
-                                'description3',
-                                Text::_('COM_OSDOWNLOADS_DESCRIPTION_3H', true)
-                            );
-                            echo $this->form->getField('description_3')->input;
-                            echo HTMLHelper::_('bootstrap.endTab');
+                        // After button text
+                        echo HTMLHelper::_(
+                            'bootstrap.addTab',
+                            'myTabDescriptions',
+                            'description3',
+                            Text::_('COM_OSDOWNLOADS_DESCRIPTION_3H', true)
+                        );
+                        echo $this->form->getField('description_3')->input;
+                        echo HTMLHelper::_('bootstrap.endTab');
 
-                            echo HTMLHelper::_('bootstrap.endTabSet');
-                            ?>
-                        </div>
+                        echo HTMLHelper::_('bootstrap.endTabSet');
+                        ?>
                     </div>
                 </div>
-
-                <div class="span3">
-                    <fieldset class="form-vertical">
-                        <?php echo $this->form->renderFieldset('file-vertical'); ?>
-                    </fieldset>
-                </div>
             </div>
-            <?php
-            echo HTMLHelper::_('bootstrap.endTab');
 
-            /** @var Licensed $component */
-            $component = FreeComponentSite::getInstance();
-            if ($component->isPro()) :
-                echo $this->loadTemplate('custom_fields');
-            endif;
-
-            // Requirements tab
-            echo HTMLHelper::_(
-                'bootstrap.addTab',
-                'myTab',
-                'requirements',
-                Text::_('COM_OSDOWNLOADS_REQUIREMENTS_TO_DOWNLOAD', true)
-            );
-
-            echo $this->form->renderFieldset('requirements');
-
-            echo HTMLHelper::_('bootstrap.endTab');
-
-            // Advanced tab
-            echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'advanced', Text::_('COM_OSDOWNLOADS_ADVANCED', true));
-
-            echo $this->form->renderFieldset('advanced');
-
-            echo HTMLHelper::_('bootstrap.endTab');
-            echo HTMLHelper::_('bootstrap.endTabSet');
-            ?>
+            <div class="span3">
+                <fieldset class="form-vertical">
+                    <?php echo $this->form->renderFieldset('file-vertical'); ?>
+                </fieldset>
+            </div>
         </div>
+        <?php
+        echo HTMLHelper::_('bootstrap.endTab');
 
-        <input type="hidden" name="task" value=""/>
-        <?php echo HTMLHelper::_('form.token'); ?>
-    </form>
-<?php
-echo $this->extension->getFooterMarkup();
+        /** @var Licensed $component */
+        $component = FreeComponentSite::getInstance();
+        if ($component->isPro()) :
+            echo $this->loadTemplate('custom_fields');
+        endif;
+
+        // Requirements tab
+        echo HTMLHelper::_(
+            'bootstrap.addTab',
+            'myTab',
+            'requirements',
+            Text::_('COM_OSDOWNLOADS_REQUIREMENTS_TO_DOWNLOAD', true)
+        );
+
+        echo $this->form->renderFieldset('requirements');
+
+        echo HTMLHelper::_('bootstrap.endTab');
+
+        // Advanced tab
+        echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'advanced', Text::_('COM_OSDOWNLOADS_ADVANCED', true));
+
+        echo $this->form->renderFieldset('advanced');
+
+        echo HTMLHelper::_('bootstrap.endTab');
+        echo HTMLHelper::_('bootstrap.endTabSet');
+        ?>
+    </div>
+
+    <input type="hidden" name="task" value=""/>
+    <?php echo HTMLHelper::_('form.token'); ?>
+</form>

@@ -2,7 +2,7 @@
 /**
  * @package   OSDownloads
  * @contact   www.joomlashack.com, help@joomlashack.com
- * @copyright 2005-2021 Joomlashack.com. All rights reserved
+ * @copyright 2005-2022 Joomlashack.com. All rights reserved
  * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
  *
  * This file is part of OSDownloads.

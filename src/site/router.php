@@ -433,7 +433,8 @@ if (is_file($includePath) && include $includePath) {
                         }
                         break;
                 }
-            } elseif ($task) {
+
+            } elseif ($task && $id) {
                 if ($fileMenu = $this->helper->getMenuItemForFile($id)) {
                     $itemId = $fileMenu->id;
 

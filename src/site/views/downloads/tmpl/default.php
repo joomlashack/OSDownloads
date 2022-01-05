@@ -149,7 +149,8 @@ HTMLHelper::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', $opt
             <?php echo Text::_('COM_OSDOWNLOADS_NO_DOWNLOADS'); ?>
         </div>
     <?php endif; ?>
-    <div class="clr"></div>
-    <div class="osdownloads-pages-counter"><?php echo $this->pagination->getPagesCounter(); ?></div>
-    <div class="osdownloads-pagination"><?php echo $this->pagination->getPagesLinks(); ?></div>
+    <div class="pagination">
+        <div class="osdownloads-pages-counter"><?php echo $this->pagination->getPagesCounter(); ?></div>
+        <div class="osdownloads-pagination"><?php echo $this->pagination->getPagesLinks(); ?></div>
+    </div>
 </div>

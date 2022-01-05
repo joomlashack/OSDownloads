@@ -43,6 +43,7 @@ class Site extends BaseController
 
         $view = $app->input->getCmd('view', 'category');
         $app->input->set('view', $view);
+
         parent::display();
     }
 

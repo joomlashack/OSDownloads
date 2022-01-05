@@ -23,20 +23,21 @@
 
 defined('_JEXEC') or die();
 
-require_once JPATH_SITE . '/components/com_osdownloads/models/item.php';
-
 use Alledia\OSDownloads\Factory;
-use Alledia\OSDownloads\Free\Joomla\View;
-use Joomla\CMS\Application\SiteApplication;
+use Alledia\OSDownloads\Free\Joomla\View\Site\Base as SiteViewBase;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Router\Route;
-use Joomla\Registry\Registry;
 
-class OSDownloadsViewDownloads extends View\Site\Base
+class OSDownloadsViewDownloads extends SiteViewBase
 {
+    /**
+     * @var bool
+     */
+    public $isPro = null;
+
     /**
      * @var object[]
      */
@@ -62,22 +63,23 @@ class OSDownloadsViewDownloads extends View\Site\Base
      */
     protected $pagination = null;
 
-    /**
-     * @var Registry
-     */
-    public $params = null;
+    protected function setup()
+    {
+        parent::setup();
+
+        $model = BaseDatabaseModel::getInstance('Item', 'OSDownloadsModel');
+        $this->setModel($model, true);
+    }
 
     /**
-     * @var bool
+     * @inheritDoc
      */
-    public $isPro = null;
-
     public function display($tpl = null)
     {
-        /** @var SiteApplication $app */
-        $app                 = Factory::getApplication();
-        $db                  = Factory::getDbo();
-        $params              = $app->getParams();
+        $app = $this->app;
+        $db  = Factory::getDbo();
+
+        $params              = $this->params;
         $includeChildFiles   = (bool)$params->get('include_child_files', 0);
         $showChildCategories = (bool)$params->get('show_child_categories', 1);
 
@@ -93,13 +95,10 @@ class OSDownloadsViewDownloads extends View\Site\Base
         // Default is 1 to start from root category
         $id = $app->input->getInt('id') ?: 1;
 
-        /** @var OSDownloadsModelItem $model */
-        $model = BaseDatabaseModel::getInstance('OSDownloadsModelItem');
-
         $app->setUserState('com_osdownloads.files.filter_order', $params->get('ordering', 'doc.ordering'));
         $app->setUserState('com_osdownloads.files.filter_order_Dir', $params->get('ordering_dir', 'asc'));
 
-        $query = $model->getItemQuery();
+        $query = $this->model->getItemQuery();
 
         $query->select('cat.access as cat_access');
 
@@ -121,8 +120,18 @@ class OSDownloadsViewDownloads extends View\Site\Base
         $total = $db->getNumRows();
 
         $defaultLimit = $params->get('list_limit') ?: $app->get('list_limit');
-        $limit        = $app->getUserStateFromRequest('osdownloads.request.list.limit', 'limit', $defaultLimit, 'int');
-        $limitstart   = $app->getUserStateFromRequest('osdownloads.request.limitstart', 'limitstart', 0, 'int');
+        $limit        = $app->getUserStateFromRequest(
+            'osdownloads.request.list.limit',
+            'limit',
+            $defaultLimit,
+            'int'
+        );
+        $limitstart   = $app->getUserStateFromRequest(
+            'osdownloads.request.limitstart',
+            'limitstart',
+            0,
+            'int'
+        );
 
         $pagination = new Pagination($total, $limitstart, $limit);
 
@@ -173,7 +182,6 @@ class OSDownloadsViewDownloads extends View\Site\Base
 
         Factory::getPimpleContainer()->helperView->buildCategoryBreadcrumbs($id);
 
-        $this->params             = $params;
         $this->categories         = $categories;
         $this->showCategoryFilter = $showCategoryFilter;
         $this->items              = $items;

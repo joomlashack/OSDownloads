@@ -34,6 +34,10 @@ class Site extends AbstractComponent
 
     protected $version = 'auto';
 
+    /**
+     * @inheritDoc
+     * @return self
+     */
     public static function getInstance($namespace = null)
     {
         return parent::getInstance('OSDownloads');

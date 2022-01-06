@@ -126,12 +126,27 @@
         </minify>
 
         <obsolete>
+            <preflight>
+                <!-- Clear pro folders -->
+                <folder>administrator/components/com_osdownloads/form/fields</folder>
+                <folder>administrator/components/com_osdownloads/library</folder>
+                <folder>administrator/components/com_osdownloads/models/forms</folder>
+                <folder>components/com_osdownloads/models</folder>
+                <folder>components/com_osdownloads/views</folder>
+            </preflight>
+
             <folder>administrator/components/com_osdownloads/models/abstract</folder>
             <folder>administrator/components/com_osdownloads/vendor/guzzlehttp/promises</folder>
             <folder>administrator/components/com_osdownloads/vendor/guzzlehttp/psr7</folder>
             <folder>administrator/components/com_osdownloads/vendor/ralouphie</folder>
             <folder>administrator/components/com_osdownloads/vendor/symfony/contracts</folder>
             <folder>components/components/com_osdownloads/layouts/buttons</folder>
+
+            <!-- Clear pro features -->
+            <extension type="plugin"
+                       group="search"
+                       element="osdownloads"/>
+            <!-- End clear pro features -->
 
             <file>administrator/components/com_osdownloads/form/fields/AbstractMailChimp.php</file>
             <file>administrator/components/com_osdownloads/form/fields/AbstractMailChimpList.php</file>
@@ -198,10 +213,6 @@
             <extension type="plugin"
                        group="content"
                        element="osdownloadsshortcodes"/>
-
-            <extension type="plugin"
-                       group="search"
-                       element="osdownloads"/>
         </obsolete>
     </alledia>
 </extension>

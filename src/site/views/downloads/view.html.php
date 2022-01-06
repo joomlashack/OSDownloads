@@ -63,6 +63,26 @@ class OSDownloadsViewDownloads extends SiteViewBase
      */
     protected $pagination = null;
 
+    /**
+     * @param string $name
+     *
+     * @return mixed
+     */
+    public function __get(string $name)
+    {
+        if (property_exists($this, $name)) {
+            return $this->{$name};
+        }
+
+        throw new InvalidArgumentException(
+            Text::sprintf(
+                'COM_OSDOWNLOADS_ERROR_INVALID_ARGUMENT',
+                get_class($this),
+                $name
+            )
+        );
+    }
+
     protected function setup()
     {
         parent::setup();

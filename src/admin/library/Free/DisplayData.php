@@ -24,7 +24,9 @@
 namespace Alledia\OSDownloads\Free;
 
 use Alledia\OSDownloads\Factory;
+use InvalidArgumentException;
 use Joomla\CMS\Form\Form;
+use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die();
@@ -49,7 +51,7 @@ class DisplayData
     /**
      * @var Registry
      */
-    public $params = null;
+    protected $params = null;
 
     /**
      * @var int
@@ -70,6 +72,27 @@ class DisplayData
             $params = new Registry();
         }
         $this->params = $params;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return mixed
+     * @throws \Exception
+     */
+    public function __get(string $name)
+    {
+        if (property_exists($this, $name)) {
+            return $this->{$name};
+        }
+
+        throw new InvalidArgumentException(
+            Text::sprintf(
+                'COM_OSDOWNLOADS_ERROR_INVALID_ARGUMENT',
+                get_class($this),
+                $name
+            )
+        );
     }
 
     /**

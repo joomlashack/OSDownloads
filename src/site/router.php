@@ -212,6 +212,11 @@ if (is_file($includePath) && include $includePath) {
                 unset($query['tmpl']);
             }
 
+            $start = $query['start'] ?? $query['limitstart'] ?? null;
+            if ($start !== null) {
+                return [];
+            }
+
             $activeMenu = $this->menu->getActive();
 
             $itemId = $query['Itemid'] ?? $activeMenu->id ?? null;

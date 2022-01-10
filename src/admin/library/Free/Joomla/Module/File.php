@@ -77,9 +77,9 @@ class File extends AbstractFlexibleModule
      */
     public function init()
     {
-        // Load the OSDownloads extension
         $baseLang = Factory::getApplication()->isClient('site') ? JPATH_SITE : JPATH_ADMINISTRATOR;
         Factory::getLanguage()->load('com_osdownloads', $baseLang . '/components/com_osdownloads');
+
         $osdownloads = FreeComponentSite::getInstance();
         $osdownloads->loadLibrary();
 

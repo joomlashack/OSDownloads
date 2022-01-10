@@ -164,6 +164,7 @@ if ($saveOrder && $this->items) {
                                 <td class="text-center d-none d-md-table-cell">
                                     <?php echo HTMLHelper::_('grid.checkedout', $item, $i); ?>
                                 </td>
+
                                 <td class="text-center d-none d-md-table-cell">
                                     <?php
                                     $class = 'sortable-handler' . ($saveOrder ? '' : ' inactive');

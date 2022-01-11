@@ -59,6 +59,11 @@ class DisplayData
     public $itemId = null;
 
     /**
+     * @var string
+     */
+    protected $buttonClasses = null;
+
+    /**
      * @param ?Registry $params
      *
      * @return void

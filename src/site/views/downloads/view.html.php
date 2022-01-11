@@ -64,6 +64,11 @@ class OSDownloadsViewDownloads extends SiteViewBase
     protected $pagination = null;
 
     /**
+     * @var string
+     */
+    protected $buttonClasses = null;
+
+    /**
      * @param string $name
      *
      * @return mixed

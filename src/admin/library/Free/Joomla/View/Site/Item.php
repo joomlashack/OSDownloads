@@ -61,6 +61,11 @@ class Item extends Base
     protected $category = null;
 
     /**
+     * @var string
+     */
+    protected $buttonClasses = null;
+
+    /**
      * @param string $tpl
      *
      * @return void

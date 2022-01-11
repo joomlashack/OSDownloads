@@ -72,6 +72,11 @@ class File extends AbstractFlexibleModule
     protected $form = null;
 
     /**
+     * @var string
+     */
+    protected $buttonClasses = null;
+
+    /**
      * @inheritDoc
      * @throws \Exception
      */

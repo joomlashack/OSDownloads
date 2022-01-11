@@ -33,22 +33,23 @@ use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
+use OSDownloadsViewDownloads as ViewDownloads;
 use OSDownloadsViewItem as ViewItem;
 
 defined('_JEXEC') or die();
 
 /**
- * @var FileLayout                      $this
- * @var ViewItem|DisplayData|FileModule $displayData
- * @var string                          $layoutOutput
- * @var string                          $path
+ * @var FileLayout                                    $this
+ * @var ViewItem|ViewDownloads|DisplayData|FileModule $displayData
+ * @var string                                        $layoutOutput
+ * @var string                                        $path
  */
 
 $lang          = Factory::getLanguage();
 $container     = Factory::getPimpleContainer();
 $compParams    = ComponentHelper::getParams('com_osdownloads');
 $elementsId    = md5('osdownloads_download_button_' . $displayData->item->id . '_' . uniqid());
-$buttonClasses = $displayData->buttonClasses ?? '';
+$buttonClasses = $displayData->buttonClasses ?: '';
 $actionUrl     = Route::_(
     $container->helperRoute->getFileDownloadContentRoute($displayData->item->id, $displayData->itemId)
 );

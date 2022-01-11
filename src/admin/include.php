@@ -21,6 +21,7 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Alledia\Framework\AutoLoader;
 use Alledia\Framework\Joomla\Extension\Helper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Version;
@@ -47,6 +48,7 @@ if (defined('ALLEDIA_FRAMEWORK_LOADED') && !defined('OSDOWNLOADS_LOADED')) {
     require_once OSDOWNLOADS_ADMIN . '/vendor/autoload.php';
 
     Helper::loadLibrary('com_osdownloads');
+    AutoLoader::register('\\Alledia\\OSDownloads', OSDOWNLOADS_LIBRARY);
 
     if (Version::MAJOR_VERSION < 4) {
         // Joomla 3 shims

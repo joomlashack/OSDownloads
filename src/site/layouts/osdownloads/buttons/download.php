@@ -49,7 +49,7 @@ $lang          = Factory::getLanguage();
 $container     = Factory::getPimpleContainer();
 $compParams    = ComponentHelper::getParams('com_osdownloads');
 $elementsId    = md5('osdownloads_download_button_' . $displayData->item->id . '_' . uniqid());
-$buttonClasses = $displayData->buttonClasses ?: '';
+$buttonClasses = $displayData->buttonClasses ?? '';
 $actionUrl     = Route::_(
     $container->helperRoute->getFileDownloadContentRoute($displayData->item->id, $displayData->itemId)
 );

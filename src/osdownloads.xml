@@ -142,12 +142,6 @@
             <folder>administrator/components/com_osdownloads/vendor/symfony/contracts</folder>
             <folder>components/components/com_osdownloads/layouts/buttons</folder>
 
-            <!-- Clear pro features -->
-            <extension type="plugin"
-                       group="search"
-                       element="osdownloads"/>
-            <!-- End clear pro features -->
-
             <file>administrator/components/com_osdownloads/form/fields/AbstractMailChimp.php</file>
             <file>administrator/components/com_osdownloads/form/fields/AbstractMailChimpList.php</file>
             <file>administrator/components/com_osdownloads/form/fields/constantcontactlistslist.php</file>
@@ -205,6 +199,12 @@
             <file>language/fr-FR/fr-FR.com_osdownloads.sys.ini</file>
             <file>media/com_osdownloads/css/frontend.min.css</file>
             <file>media/com_osdownloads/js/jquery.osdownloads.min.js</file>
+
+            <!-- Clear pro related extensions -->
+            <extension type="plugin"
+                       group="search"
+                       element="osdownloads"/>
+            <!-- End Clear pro related extensions -->
 
             <extension type="plugin"
                        group="system"

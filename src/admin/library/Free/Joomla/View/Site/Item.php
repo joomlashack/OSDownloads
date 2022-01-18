@@ -63,7 +63,7 @@ class Item extends Base
     /**
      * @var string
      */
-    protected $buttonClasses = null;
+    public $buttonClasses = null;
 
     /**
      * @param string $tpl

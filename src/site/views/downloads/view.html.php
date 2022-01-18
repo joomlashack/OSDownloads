@@ -66,7 +66,7 @@ class OSDownloadsViewDownloads extends SiteViewBase
     /**
      * @var string
      */
-    protected $buttonClasses = null;
+    public $buttonClasses = null;
 
     /**
      * @param string $name

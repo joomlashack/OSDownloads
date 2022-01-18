@@ -61,7 +61,7 @@ class DisplayData
     /**
      * @var string
      */
-    protected $buttonClasses = null;
+    public $buttonClasses = null;
 
     /**
      * @param ?Registry $params

@@ -23,7 +23,7 @@
         "vendor-dir": "src/admin/vendor"
     },
     "require"          : {
-        "php"                     : ">=7.2",
+        "php"                     : ">=7.2.5",
         "ext-curl"                : "*",
         "ext-fileinfo"            : "*",
         "ext-simplexml"           : "*",

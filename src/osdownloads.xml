@@ -127,6 +127,8 @@
 
         <obsolete>
             <preflight>
+                <folder>administrator/components/com_osdownloads/vendor</folder>
+
                 <!-- Clear pro folders -->
                 <folder>administrator/components/com_osdownloads/form/fields</folder>
                 <folder>administrator/components/com_osdownloads/library</folder>
@@ -136,10 +138,6 @@
             </preflight>
 
             <folder>administrator/components/com_osdownloads/models/abstract</folder>
-            <folder>administrator/components/com_osdownloads/vendor/guzzlehttp/promises</folder>
-            <folder>administrator/components/com_osdownloads/vendor/guzzlehttp/psr7</folder>
-            <folder>administrator/components/com_osdownloads/vendor/ralouphie</folder>
-            <folder>administrator/components/com_osdownloads/vendor/symfony/contracts</folder>
             <folder>components/components/com_osdownloads/layouts/buttons</folder>
 
             <file>administrator/components/com_osdownloads/form/fields/AbstractMailChimp.php</file>

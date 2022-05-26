@@ -5,20 +5,6 @@ namespace Illuminate\Contracts\Queue;
 interface Job
 {
     /**
-     * Get the job identifier.
-     *
-     * @return string
-     */
-    public function getJobId();
-
-    /**
-     * Get the decoded body of the job.
-     *
-     * @return array
-     */
-    public function payload();
-
-    /**
      * Fire the job.
      *
      * @return void
@@ -28,19 +14,10 @@ interface Job
     /**
      * Release the job back into the queue.
      *
-     * Accepts a delay specified in seconds.
-     *
      * @param  int   $delay
-     * @return void
+     * @return mixed
      */
     public function release($delay = 0);
-
-    /**
-     * Determine if the job was released back into the queue.
-     *
-     * @return bool
-     */
-    public function isReleased();
 
     /**
      * Delete the job from the queue.
@@ -71,47 +48,26 @@ interface Job
     public function attempts();
 
     /**
-     * Determine if the job has been marked as a failure.
+     * Process an exception that caused the job to fail.
      *
-     * @return bool
-     */
-    public function hasFailed();
-
-    /**
-     * Mark the job as "failed".
-     *
+     * @param  \Throwable  $e
      * @return void
      */
-    public function markAsFailed();
+    public function failed($e);
 
     /**
-     * Delete the job, call the "failed" method, and raise the failed job event.
-     *
-     * @param  \Throwable|null $e
-     * @return void
-     */
-    public function fail($e = null);
-
-    /**
-     * Get the number of times to attempt a job.
+     * The number of times to attempt a job.
      *
      * @return int|null
      */
     public function maxTries();
 
     /**
-     * Get the number of seconds the job can run.
+     * The number of seconds the job can run.
      *
      * @return int|null
      */
     public function timeout();
-
-    /**
-     * Get the timestamp indicating when the job should timeout.
-     *
-     * @return int|null
-     */
-    public function timeoutAt();
 
     /**
      * Get the name of the queued job class.

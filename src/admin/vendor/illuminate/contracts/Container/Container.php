@@ -3,9 +3,8 @@
 namespace Illuminate\Contracts\Container;
 
 use Closure;
-use Psr\Container\ContainerInterface;
 
-interface Container extends ContainerInterface
+interface Container
 {
     /**
      * Determine if the given abstract type has been bound.
@@ -21,8 +20,6 @@ interface Container extends ContainerInterface
      * @param  string  $abstract
      * @param  string  $alias
      * @return void
-     *
-     * @throws \LogicException
      */
     public function alias($abstract, $alias);
 
@@ -38,15 +35,15 @@ interface Container extends ContainerInterface
     /**
      * Resolve all of the bindings for a given tag.
      *
-     * @param  string  $tag
-     * @return iterable
+     * @param  array  $tag
+     * @return array
      */
     public function tagged($tag);
 
     /**
      * Register a binding with the container.
      *
-     * @param  string  $abstract
+     * @param  string|array  $abstract
      * @param  \Closure|string|null  $concrete
      * @param  bool  $shared
      * @return void
@@ -66,7 +63,7 @@ interface Container extends ContainerInterface
     /**
      * Register a shared binding in the container.
      *
-     * @param  string  $abstract
+     * @param  string|array  $abstract
      * @param  \Closure|string|null  $concrete
      * @return void
      */
@@ -88,24 +85,14 @@ interface Container extends ContainerInterface
      *
      * @param  string  $abstract
      * @param  mixed   $instance
-     * @return mixed
+     * @return void
      */
     public function instance($abstract, $instance);
 
     /**
-     * Add a contextual binding to the container.
-     *
-     * @param  string  $concrete
-     * @param  string  $abstract
-     * @param  \Closure|string  $implementation
-     * @return void
-     */
-    public function addContextualBinding($concrete, $abstract, $implementation);
-
-    /**
      * Define a contextual binding.
      *
-     * @param  string|array  $concrete
+     * @param  string  $concrete
      * @return \Illuminate\Contracts\Container\ContextualBindingBuilder
      */
     public function when($concrete);
@@ -119,22 +106,12 @@ interface Container extends ContainerInterface
     public function factory($abstract);
 
     /**
-     * Flush the container of all bindings and resolved instances.
-     *
-     * @return void
-     */
-    public function flush();
-
-    /**
      * Resolve the given type from the container.
      *
      * @param  string  $abstract
-     * @param  array  $parameters
      * @return mixed
-     *
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function make($abstract, array $parameters = []);
+    public function make($abstract);
 
     /**
      * Call the given Closure / class@method and inject its dependencies.
@@ -157,7 +134,7 @@ interface Container extends ContainerInterface
     /**
      * Register a new resolving callback.
      *
-     * @param  \Closure|string  $abstract
+     * @param  string    $abstract
      * @param  \Closure|null  $callback
      * @return void
      */
@@ -166,7 +143,7 @@ interface Container extends ContainerInterface
     /**
      * Register a new after resolving callback.
      *
-     * @param  \Closure|string  $abstract
+     * @param  string    $abstract
      * @param  \Closure|null  $callback
      * @return void
      */

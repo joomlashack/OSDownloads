@@ -56,14 +56,18 @@ class NamespacedItemResolver
         // just pulling an entire group out of the array and not a single item.
         $group = $segments[0];
 
+        if (count($segments) == 1) {
+            return [null, $group, null];
+        }
+
         // If there is more than one segment in this group, it means we are pulling
         // a specific item out of a group and will need to return this item name
         // as well as the group so we know which item to pull from the arrays.
-        $item = count($segments) === 1
-                    ? null
-                    : implode('.', array_slice($segments, 1));
+        else {
+            $item = implode('.', array_slice($segments, 1));
 
-        return [null, $group, $item];
+            return [null, $group, $item];
+        }
     }
 
     /**
@@ -74,7 +78,7 @@ class NamespacedItemResolver
      */
     protected function parseNamespacedSegments($key)
     {
-        [$namespace, $item] = explode('::', $key);
+        list($namespace, $item) = explode('::', $key);
 
         // First we'll just explode the first segment to get the namespace and group
         // since the item should be in the remaining segments. Once we have these

@@ -55,10 +55,10 @@ class Arr
                 continue;
             }
 
-            $results[] = $values;
+            $results = array_merge($results, $values);
         }
 
-        return array_merge([], ...$results);
+        return $results;
     }
 
     /**
@@ -122,7 +122,7 @@ class Arr
     }
 
     /**
-     * Get all of the given array except for a specified array of keys.
+     * Get all of the given array except for a specified array of items.
      *
      * @param  array  $array
      * @param  array|string  $keys
@@ -206,25 +206,17 @@ class Arr
      */
     public static function flatten($array, $depth = INF)
     {
-        $result = [];
-
-        foreach ($array as $item) {
+        return array_reduce($array, function ($result, $item) use ($depth) {
             $item = $item instanceof Collection ? $item->all() : $item;
 
             if (! is_array($item)) {
-                $result[] = $item;
+                return array_merge($result, [$item]);
+            } elseif ($depth === 1) {
+                return array_merge($result, array_values($item));
             } else {
-                $values = $depth === 1
-                    ? array_values($item)
-                    : static::flatten($item, $depth - 1);
-
-                foreach ($values as $value) {
-                    $result[] = $value;
-                }
+                return array_merge($result, static::flatten($item, $depth - 1));
             }
-        }
-
-        return $result;
+        }, []);
     }
 
     /**
@@ -275,7 +267,7 @@ class Arr
      * Get an item from an array using "dot" notation.
      *
      * @param  \ArrayAccess|array  $array
-     * @param  string|int  $key
+     * @param  string  $key
      * @param  mixed   $default
      * @return mixed
      */
@@ -291,10 +283,6 @@ class Arr
 
         if (static::exists($array, $key)) {
             return $array[$key];
-        }
-
-        if (strpos($key, '.') === false) {
-            return $array[$key] ?? value($default);
         }
 
         foreach (explode('.', $key) as $segment) {
@@ -317,9 +305,17 @@ class Arr
      */
     public static function has($array, $keys)
     {
+        if (is_null($keys)) {
+            return false;
+        }
+
         $keys = (array) $keys;
 
-        if (! $array || $keys === []) {
+        if (! $array) {
+            return false;
+        }
+
+        if ($keys === []) {
             return false;
         }
 
@@ -381,7 +377,7 @@ class Arr
     {
         $results = [];
 
-        [$value, $key] = static::explodePluckParameters($value, $key);
+        list($value, $key) = static::explodePluckParameters($value, $key);
 
         foreach ($array as $item) {
             $itemValue = data_get($item, $value);
@@ -537,18 +533,11 @@ class Arr
      * Shuffle the given array and return the result.
      *
      * @param  array  $array
-     * @param  int|null  $seed
      * @return array
      */
-    public static function shuffle($array, $seed = null)
+    public static function shuffle($array)
     {
-        if (is_null($seed)) {
-            shuffle($array);
-        } else {
-            mt_srand($seed);
-            shuffle($array);
-            mt_srand();
-        }
+        shuffle($array);
 
         return $array;
     }
@@ -557,10 +546,10 @@ class Arr
      * Sort the array using the given callback or "dot" notation.
      *
      * @param  array  $array
-     * @param  callable|string|null  $callback
+     * @param  callable|string  $callback
      * @return array
      */
-    public static function sort($array, $callback = null)
+    public static function sort($array, $callback)
     {
         return Collection::make($array)->sortBy($callback)->all();
     }
@@ -589,17 +578,6 @@ class Arr
     }
 
     /**
-     * Convert the array into a query string.
-     *
-     * @param  array  $array
-     * @return string
-     */
-    public static function query($array)
-    {
-        return http_build_query($array, null, '&', PHP_QUERY_RFC3986);
-    }
-
-    /**
      * Filter the array using the given callback.
      *
      * @param  array  $array
@@ -612,17 +590,13 @@ class Arr
     }
 
     /**
-     * If the given value is not an array and not null, wrap it in one.
+     * If the given value is not an array, wrap it in one.
      *
      * @param  mixed  $value
      * @return array
      */
     public static function wrap($value)
     {
-        if (is_null($value)) {
-            return [];
-        }
-
-        return is_array($value) ? $value : [$value];
+        return ! is_array($value) ? [$value] : $value;
     }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="ShackBuilder Client" default="build">
-    <property name="builder.version.client" value="4.0.3"/>
+    <property name="builder.version.client" value="4.1.3"/>
     <echo message="${phing.project.name} Version ${builder.version.client}"/>
 
     <if>

@@ -104,7 +104,7 @@
             <extension type="module"
                        element="osdownloadsfiles"
                        uninstall="true"
-                       downgrade="true">OSDownloadsFiles</extension>
+                       downgrade="true">mod_osdownloadsfiles</extension>
 
             <extension type="plugin"
                        group="content"

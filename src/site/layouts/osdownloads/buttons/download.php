@@ -26,7 +26,6 @@ use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\DisplayData;
 use Alledia\OSDownloads\Free\Joomla\Module\File as FileModule;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
@@ -48,7 +47,7 @@ defined('_JEXEC') or die();
 $lang          = Factory::getLanguage();
 $container     = Factory::getPimpleContainer();
 $compParams    = ComponentHelper::getParams('com_osdownloads');
-$elementsId    = md5('osdownloads_download_button_' . $displayData->item->id . '_' . uniqid());
+$elementId     = sprintf('file%s_%s', $displayData->item->id, uniqid());
 $buttonClasses = $displayData->buttonClasses ?? '';
 $actionUrl     = Route::_(
     $container->helperRoute->getFileDownloadContentRoute($displayData->item->id, $displayData->itemId)
@@ -58,13 +57,13 @@ HTMLHelper::_('behavior.formvalidator');
 
 Factory::getDocument()->addScriptDeclaration("
 jQuery(function osdownloadsDomReady($) {
-        $('#{$elementsId}_link').osdownloads();
+        $('#{$elementId}_link').osdownloads();
     });
 ");
 
 $attribs = [
     'href'                   => $actionUrl,
-    'id'                     => $elementsId . '_link',
+    'id'                     => $elementId . '_link',
     'style'                  => !empty($displayData->item->download_color)
         ? 'background:' . $displayData->item->download_color
         : '',
@@ -76,7 +75,7 @@ $attribs = [
     'data-lang'              => $lang->getTag(),
     'data-name'              => $displayData->item->name,
     'data-agreement-article' => $displayData->item->agreementLink,
-    'data-prefix'            => $elementsId,
+    'data-prefix'            => $elementId,
     'data-animation'         => $displayData->params->get('popup_animation', 'fade'),
     'data-fields-layout'     => $compParams->get('download_form_fields_layout', 'block')
 ];
@@ -98,12 +97,10 @@ else :
 endif;
 
 ?>
-<div id="<?php echo $elementsId . '_popup'; ?>"
+<div id="<?php echo $elementId . '_popup'; ?>"
      class="reveal-modal osdownloads-modal <?php echo FrameworkHelper::getJoomlaVersionCssClass(); ?>"
-     data-prefix="<?php echo $elementsId; ?>">
-    <?php
-    if ($displayData->item->require_user_email || $displayData->item->require_agree) :
-        ?>
+     data-prefix="<?php echo $elementId; ?>">
+    <?php if ($displayData->item->require_user_email || $displayData->item->require_agree) : ?>
         <h2 class="title">
             <?php
             echo Text::_($compParams->get('download_form_title', 'COM_OSDOWNLOADS_BEFORE_DOWNLOAD'));
@@ -115,85 +112,65 @@ endif;
         endif;
         ?>
         <form action="<?php echo $actionUrl; ?>"
-              id="<?php echo $elementsId . '_form'; ?>"
-              name="<?php echo $elementsId . '_form'; ?>"
+              id="<?php echo $elementId . '_form'; ?>"
+              name="<?php echo $elementId . '_form'; ?>"
               class="form-validate"
               method="post">
 
-            <div id="<?php echo $elementsId . 'EmailGroup'; ?>"
-                 class="osdownloadsemail osdownloads-email-group"
-                 style="display: none;">
+            <?php if ($displayData->item->require_user_email) : ?>
+                <div id="<?php echo $elementId . '_emailgroup'; ?>"
+                     class="osdownloadsemail osdownloads-email-group"
+                     style="display: none;">
 
-                <label for="<?php echo $elementsId; ?>RequireEmail">
-                    <input type="email"
-                           aria-required="true"
-                        <?php echo $displayData->item->require_user_email == 1 ? 'required' : ''; ?>
-                           name="require_email"
-                           id="<?php echo $elementsId; ?>RequireEmail"
-                           class="osdownloads-field-email"
-                           placeholder="<?php echo Text::_('COM_OSDOWNLOADS_ENTER_EMAIL_ADDRESS'); ?>"/>
-                </label>
+                    <label for="<?php echo $elementId; ?>_requireemail">
+                        <input type="email"
+                               aria-required="true"
+                            <?php echo $displayData->item->require_user_email == 1 ? 'required' : ''; ?>
+                               name="require_email"
+                               id="<?php echo $elementId; ?>_requireemail"
+                               class="osdownloads-field-email"
+                               placeholder="<?php echo Text::_('COM_OSDOWNLOADS_ENTER_EMAIL_ADDRESS'); ?>"/>
+                    </label>
 
-                <div class="error osdownloads-error-email" style="display: none;"
-                     id="<?php echo $elementsId; ?>ErrorInvalidEmail">
-                    <?php echo Text::_('COM_OSDOWNLOADS_INVALID_EMAIL'); ?>
+                    <div class="error osdownloads-error-email" style="display: none;"
+                         id="<?php echo $elementId; ?>_errorinvalidemail">
+                        <?php echo Text::_('COM_OSDOWNLOADS_INVALID_EMAIL'); ?>
+                    </div>
                 </div>
-            </div>
             <?php
-            if ($displayData->item->require_user_email && ComponentHelper::isEnabled('com_fields')) :
-                ?>
-                <div class="osdownloads-custom-fields-container">
-                    <?php
-                    $displayData->tab_name = $elementsId . '-tab-' . $displayData->item->id;
+            endif;
 
-                    $form = new Form('com_osdownloads.download');
-                    $form->load('<?xml version="1.0" encoding="utf-8"?><form><fieldset/></form>');
+            echo LayoutHelper::render(
+                'osdownloads.fields.custom',
+                $displayData,
+                null,
+                ['elementId' => $elementId]
+            );
 
-                    Factory::getApplication()->triggerEvent(
-                        'onContentPrepareForm',
-                        [
-                            $form,
-                            [
-                                'catid' => $displayData->item->cate_id ?? null
-                            ]
-                        ]
-                    );
-
-                    $displayData->setForm($form);
-
-                    if ($form->getFieldsets()) :
-                        // Add IDs to avoid ID crashing when multiple buttons on the page
-                        $fields = $form->getXml()->xpath('//field');
-                        foreach ($fields as $field) :
-                            $field['id'] = $field['name'] . '_' . $elementsId;
-                        endforeach;
-                        echo LayoutHelper::render('joomla.edit.fieldset', $displayData);
-                    endif;
-                    ?>
-                </div>
-            <?php endif; ?>
-            <div id="<?php echo $elementsId; ?>AgreeGroup"
-                 class="osdownloadsagree osdownloads-group-agree"
-                 style="display: none;">
-                <label for="<?php echo $elementsId; ?>RequireAgree">
-                    <input type="checkbox"
-                           name="require_agree"
-                           id="<?php echo $elementsId; ?>RequireAgree"
-                           value="1"
-                           class="osdownloads-field-agree"/>
-                    <span>
+            if ($displayData->item->require_agree) : ?>
+                <div id="<?php echo $elementId; ?>_agreegroup"
+                     class="osdownloads-group-agree"
+                     style="display: none;">
+                    <label for="<?php echo $elementId; ?>_requireagree">
+                        <input type="checkbox"
+                               name="require_agree"
+                               id="<?php echo $elementId; ?>_requireagree"
+                               value="1"
+                               class="osdownloads-field-agree"/>
+                        <span>
                         * <?php echo(Text::_('COM_OSDOWNLOADS_DOWNLOAD_TERM')); ?>
                     </span>
-                </label>
-                <div class="error osdownloads-error-agree"
-                     style="display: none;"
-                     id="<?php echo $elementsId; ?>ErrorAgreeTerms">
-                    <?php echo Text::_('COM_OSDOWNLOADS_YOU_HAVE_AGREE_TERMS_TO_DOWNLOAD_THIS'); ?>
+                    </label>
+                    <div class="error osdownloads-error-agree"
+                         style="display: none;"
+                         id="<?php echo $elementId; ?>_erroragreeterms">
+                        <?php echo Text::_('COM_OSDOWNLOADS_YOU_HAVE_AGREE_TERMS_TO_DOWNLOAD_THIS'); ?>
+                    </div>
                 </div>
-            </div>
+            <?php endif; ?>
         </form>
 
-        <a href="#" id="<?php echo $elementsId; ?>DownloadContinue"
+        <a href="#" id="<?php echo $elementId; ?>_downloadcontinue"
            class="osdownloads-readmore readmore osdownloads-continue-button">
             <span>
                 <?php echo Text::_($compParams->get('download_form_button_label', 'COM_OSDOWNLOADS_CONTINUE')); ?>
@@ -209,8 +186,8 @@ endif;
         <a class="close-reveal-modal">&#215;</a>
     <?php else : ?>
         <form action="<?php echo $actionUrl; ?>"
-              id="<?php echo $elementsId . '_form'; ?>"
-              name="<?php echo $elementsId . '_form'; ?>"
+              id="<?php echo $elementId . '_form'; ?>"
+              name="<?php echo $elementId . '_form'; ?>"
               method="post">
         </form>
     <?php endif; ?>

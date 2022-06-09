@@ -92,7 +92,7 @@
 
                     // Validate the form for custom fields before submitting
                     if ($form.length > 0) {
-                        $form.attr('target', 'osdownloads-tmp-iframe-' + $form.attr('id'));
+                        $form.prop('target', 'osdownloads-tmp-iframe-' + $form.prop('id'));
 
                         return document.formvalidator.isValid($form[0]);
 
@@ -111,14 +111,15 @@
                 };
 
                 let download = function() {
-                    $form.attr('target', 'osdownloads-tmp-iframe-' + $form.attr('id'));
+                    $form.prop('target', 'osdownloads-tmp-iframe-' + $form.prop('id'));
 
                     // Create the popup element
                     $container = $('<div>')
-                        .attr('id', prefix + 'PopupIframe')
+                        .prop('id', prefix + 'PopupIframe')
                         .addClass('reveal-modal')
                         .addClass('osdownloads-modal');
 
+                    $iframe = $('<iframe>').prop('name', 'osdownloads-tmp-iframe-' + $form.prop('id'));
                     $close = $('<a class="close-reveal-modal">&#215;</a>');
 
                     $iframe.appendTo($container);
@@ -154,14 +155,14 @@
                         }
 
                         if (requireAgree) {
-                            $groupAgree.find('.agreement-article').attr('href', $this.data('agreement-article'));
+                            $groupAgree.find('.agreement-article').prop('href', $this.data('agreement-article'));
                             $groupAgree.show();
 
                         } else {
                             $groupAgree.hide();
                         }
 
-                        $btnContinue.attr('href', $this.attr('href'));
+                        $btnContinue.prop('href', $this.prop('href'));
 
                         showPopup('#' + popupElementId);
 
@@ -170,7 +171,7 @@
                             function requirementsRevealOnClose() {
                                 // Clean fields
                                 $fieldEmail.val('');
-                                $fieldAgree.attr('checked', false);
+                                $fieldAgree.prop('checked', false);
                                 $('.osdownloads-modal .error').hide();
                             }
                         );

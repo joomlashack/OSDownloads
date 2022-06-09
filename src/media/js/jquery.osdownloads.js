@@ -119,10 +119,6 @@
                         .addClass('reveal-modal')
                         .addClass('osdownloads-modal');
 
-                    $iframe = $('<iframe>').attr('name', 'osdownloads-tmp-iframe-' + $form.attr('id'));
-                    $iframe.iframeAutoHeight({
-                        heightOffset: 10
-                    });
                     $close = $('<a class="close-reveal-modal">&#215;</a>');
 
                     $iframe.appendTo($container);

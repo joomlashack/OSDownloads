@@ -118,8 +118,6 @@
 
         <minify suffix=".min">
             <scripts destination="media/js/jquery.osdownloads.bundle.js">
-                <script>media/js/jquery.browser.js</script>
-                <script>media/js/jquery.iframe-auto-height.js</script>
                 <script>media/js/jquery.reveal.js</script>
                 <script>media/js/jquery.osdownloads.js</script>
             </scripts>

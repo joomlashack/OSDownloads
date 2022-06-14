@@ -116,19 +116,15 @@ endif;
               method="post">
 
             <?php if ($displayData->item->require_user_email) : ?>
-                <div id="<?php echo $elementId . '_emailgroup'; ?>"
-                     class="osdownloadsemail osdownloads-email-group">
-
-                    <label for="<?php echo $elementId; ?>_requireemail">
-                        <input type="email"
-                               required
-                               name="require_email"
-                               id="<?php echo $elementId; ?>_requireemail"
-                               class="osdownloads-field-email"
-                               data-msg="<?php echo Text::_('COM_OSDOWNLOADS_INVALID_EMAIL'); ?>"
-                               placeholder="<?php echo Text::_('COM_OSDOWNLOADS_ENTER_EMAIL_ADDRESS'); ?>"/>
-                    </label>
-                </div>
+                <label for="<?php echo $elementId; ?>_requireemail">
+                    <input type="email"
+                           required
+                           name="require_email"
+                           id="<?php echo $elementId; ?>_requireemail"
+                           class="osdownloads-field-email"
+                           data-msg="<?php echo Text::_('COM_OSDOWNLOADS_INVALID_EMAIL'); ?>"
+                           placeholder="<?php echo Text::_('COM_OSDOWNLOADS_ENTER_EMAIL_ADDRESS'); ?>"/>
+                </label>
             <?php
             endif;
 

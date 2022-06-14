@@ -234,7 +234,6 @@ a.modosdownloadsDownloadButton:active {
 }
 
 .osdownloads-modal label.error {
-  margin-bottom: 20px;
 }
 
 .osdownloads-modal label {
@@ -243,6 +242,7 @@ a.modosdownloadsDownloadButton:active {
 
 .osdownloads-modal input {
   width: 97%;
+  height: 30px;
 }
 
 .osdownloads-modal h2 {
@@ -252,6 +252,8 @@ a.modosdownloadsDownloadButton:active {
 .osdownloads-modal input[type="checkbox"] {
   margin-right: 5px;
   margin-top: -2px;
+  width: auto;
+  height: auto;
 }
 
 .osdownloads-modal .osdownloads-header {

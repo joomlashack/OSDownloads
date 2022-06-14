@@ -53,9 +53,6 @@ $actionUrl     = Route::_(
     $container->helperRoute->getFileDownloadContentRoute($displayData->item->id, $displayData->itemId)
 );
 
-//HTMLHelper::_('behavior.formvalidator');
-HTMLHelper::_('script', 'com_osdownloads/jquery.validate.min.js', ['relative' => true]);
-
 Factory::getDocument()->addScriptDeclaration("
 jQuery(function osdownloadsDomReady($) {
         $('#{$elementId}_link').osdownloads();

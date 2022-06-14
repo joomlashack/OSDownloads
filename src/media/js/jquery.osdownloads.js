@@ -43,11 +43,7 @@
                 // Move the popup containers to the body
                 $popup.appendTo($('body'));
 
-                $form.validate({
-                    submitHandler: function(form) {
-                        download();
-                    }
-                });
+                $form.validate();
 
                 let showPopup = function(selector) {
                     $(selector).reveal({
@@ -74,7 +70,6 @@
                     $close.appendTo($container);
                     $container.appendTo($('body'));
 
-                    // Submit the form
                     $form.submit();
 
                     // Close the requirements popup
@@ -109,7 +104,9 @@
                     $btnContinue.on('click', function continueBtnOnClick(event) {
                         event.preventDefault();
 
-                        $form.submit();
+                        if ($form.valid()) {
+                            download();
+                        }
                     });
                 });
 

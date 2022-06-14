@@ -36,6 +36,10 @@
                     $btnContinue       = $popup.find('.osdownloads-continue-button'),
                     $form              = $popup.find('form');
 
+                if ($popup.length !== 1 && $form.length !== 1) {
+                    return;
+                }
+
                 // Move the popup containers to the body
                 $popup.appendTo($('body'));
 

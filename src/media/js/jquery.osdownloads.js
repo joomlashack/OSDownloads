@@ -43,7 +43,7 @@
                 // Move the popup containers to the body
                 $popup.appendTo($('body'));
 
-                $form.validate();
+                let $validator = $form.validate();
 
                 let showPopup = function(selector) {
                     $(selector).reveal({
@@ -95,10 +95,12 @@
 
                     $popup.on(
                         'reveal:close',
-                        function requirementsRevealOnClose() {
-                            $form[0].reset();
-                        }
-                    );
+                        function() {
+                            setTimeout(function() {
+                                $form[0].reset();
+                                $validator.resetForm();
+                            }, 500);
+                        });
 
                     $btnContinue.off();
                     $btnContinue.on('click', function(event) {

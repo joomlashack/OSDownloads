@@ -246,9 +246,12 @@ Example markup
 }
 
 .osdownloads-modal .error {
-  margin-bottom: 20px;
   font-style: italic;
   color: #d85030;
+}
+
+.osdownloads-modal label.error {
+  margin-bottom: 20px;
 }
 
 .osdownloads-modal label {

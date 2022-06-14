@@ -47,59 +47,11 @@
                 // Move the popup containers to the body
                 $popup.appendTo($('body'));
 
-                let isValidForm = function() {
-                    let email      = $fieldEmail.val().trim(),
-                        emailRegex = /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,25})$/,
-                        hasError   = false;
-
-                    if (requireAgree) {
-                        if ($fieldAgree.is(':checked')) {
-                            $errorAgreeTerms.hide();
-
-                        } else {
-                            hasError = true;
-                            $errorAgreeTerms.show();
-                        }
+                $form.validate({
+                    submitHandler: function(form) {
+                        download();
                     }
-
-                    switch (requireEmail) {
-                        case 1:
-                            // email required
-                            if (email === '' || !emailRegex.test(email)) {
-                                hasError = true;
-                                $errorInvalidEmail.show();
-
-                            } else {
-                                $errorInvalidEmail.hide();
-                            }
-                            break;
-
-                        case 2:
-                            // email optional
-                            if (email !== '' && !emailRegex.test(email)) {
-                                hasError = true;
-                                $errorInvalidEmail.show();
-
-                            } else {
-                                $errorInvalidEmail.hide();
-                            }
-                            break;
-                    }
-
-                    if (hasError) {
-                        return false;
-                    }
-
-                    // Validate the form for custom fields before submitting
-                    if ($form.length > 0) {
-                        $form.prop('target', 'osdownloads-tmp-iframe-' + $form.prop('id'));
-
-                        return document.formvalidator.isValid($form[0]);
-
-                    } else {
-                        return true;
-                    }
-                };
+                });
 
                 let showPopup = function(selector) {
                     $(selector).reveal({
@@ -120,7 +72,7 @@
                         .addClass('osdownloads-modal');
 
                     $iframe = $('<iframe>').prop('name', 'osdownloads-tmp-iframe-' + $form.prop('id'));
-                    $close = $('<a class="close-reveal-modal">&#215;</a>');
+                    $close  = $('<a class="close-reveal-modal">&#215;</a>');
 
                     $iframe.appendTo($container);
                     $close.appendTo($container);
@@ -146,47 +98,25 @@
                     event.preventDefault();
                     event.stopPropagation();
 
-                    if (requireEmail || requireAgree) {
-                        if (requireEmail !== 0) {
-                            $groupEmail.show();
+                    $btnContinue.prop('href', $this.prop('href'));
 
-                        } else {
-                            $groupEmail.hide();
+                    showPopup('#' + popupElementId);
+
+                    $popup.on(
+                        'reveal:close',
+                        function requirementsRevealOnClose() {
+                            // Clean fields
+                            $fieldEmail.val('');
+                            $fieldAgree.prop('checked', false);
                         }
+                    );
 
-                        if (requireAgree) {
-                            $groupAgree.find('.agreement-article').prop('href', $this.data('agreement-article'));
-                            $groupAgree.show();
+                    $btnContinue.off();
+                    $btnContinue.on('click', function continueBtnOnClick(event) {
+                        event.preventDefault();
 
-                        } else {
-                            $groupAgree.hide();
-                        }
-
-                        $btnContinue.prop('href', $this.prop('href'));
-
-                        showPopup('#' + popupElementId);
-
-                        $popup.on(
-                            'reveal:close',
-                            function requirementsRevealOnClose() {
-                                // Clean fields
-                                $fieldEmail.val('');
-                                $fieldAgree.prop('checked', false);
-                                $('.osdownloads-modal .error').hide();
-                            }
-                        );
-
-                        $btnContinue.off();
-                        $btnContinue.on('click', function continueBtnOnClick(event) {
-                            event.preventDefault();
-
-                            if (isValidForm()) {
-                                download();
-                            }
-                        });
-                    } else {
-                        download();
-                    }
+                        $form.submit();
+                    });
                 });
 
                 $this.data('osdownloads-loaded', 1);

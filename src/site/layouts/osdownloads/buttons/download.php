@@ -53,7 +53,8 @@ $actionUrl     = Route::_(
     $container->helperRoute->getFileDownloadContentRoute($displayData->item->id, $displayData->itemId)
 );
 
-HTMLHelper::_('behavior.formvalidator');
+//HTMLHelper::_('behavior.formvalidator');
+HTMLHelper::_('script', 'com_osdownloads/jquery.validate.min.js', ['relative' => true]);
 
 Factory::getDocument()->addScriptDeclaration("
 jQuery(function osdownloadsDomReady($) {
@@ -119,23 +120,17 @@ endif;
 
             <?php if ($displayData->item->require_user_email) : ?>
                 <div id="<?php echo $elementId . '_emailgroup'; ?>"
-                     class="osdownloadsemail osdownloads-email-group"
-                     style="display: none;">
+                     class="osdownloadsemail osdownloads-email-group">
 
                     <label for="<?php echo $elementId; ?>_requireemail">
                         <input type="email"
-                               aria-required="true"
-                            <?php echo $displayData->item->require_user_email == 1 ? 'required' : ''; ?>
+                               required
                                name="require_email"
                                id="<?php echo $elementId; ?>_requireemail"
                                class="osdownloads-field-email"
+                               data-msg="<?php echo Text::_('COM_OSDOWNLOADS_INVALID_EMAIL'); ?>"
                                placeholder="<?php echo Text::_('COM_OSDOWNLOADS_ENTER_EMAIL_ADDRESS'); ?>"/>
                     </label>
-
-                    <div class="error osdownloads-error-email" style="display: none;"
-                         id="<?php echo $elementId; ?>_errorinvalidemail">
-                        <?php echo Text::_('COM_OSDOWNLOADS_INVALID_EMAIL'); ?>
-                    </div>
                 </div>
             <?php
             endif;
@@ -149,24 +144,24 @@ endif;
 
             if ($displayData->item->require_agree) : ?>
                 <div id="<?php echo $elementId; ?>_agreegroup"
-                     class="osdownloads-group-agree"
-                     style="display: none;">
+                     class="osdownloads-group-agree">
                     <label for="<?php echo $elementId; ?>_requireagree">
                         <input type="checkbox"
                                name="require_agree"
                                id="<?php echo $elementId; ?>_requireagree"
                                value="1"
+                               required
+                               data-msg="<?php echo Text::_('COM_OSDOWNLOADS_YOU_HAVE_AGREE_TERMS_TO_DOWNLOAD_THIS'); ?>"
                                class="osdownloads-field-agree"/>
                         <span>
-                        * <?php echo(Text::_('COM_OSDOWNLOADS_DOWNLOAD_TERM')); ?>
-                    </span>
+                           * <?php echo(Text::_('COM_OSDOWNLOADS_DOWNLOAD_TERM')); ?>
+                        </span>
                     </label>
-                    <div class="error osdownloads-error-agree"
-                         style="display: none;"
-                         id="<?php echo $elementId; ?>_erroragreeterms">
-                        <?php echo Text::_('COM_OSDOWNLOADS_YOU_HAVE_AGREE_TERMS_TO_DOWNLOAD_THIS'); ?>
-                    </div>
                 </div>
+                <label for="require_agree"
+                       class="error osdownloads-error-agree"
+                       id="<?php echo $elementId; ?>_erroragreeterms">
+                </label>
             <?php endif; ?>
         </form>
 

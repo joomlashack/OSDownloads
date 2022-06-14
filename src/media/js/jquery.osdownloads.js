@@ -20,21 +20,21 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-;(function osdownloadsClosure($) {
+;jQuery(function($) {
     $.fn.osdownloads = function osdownloads(options) {
         if (this.length) {
-            return this.each(function osdownloadsEachElement() {
+            return this.each(function() {
                 if ($(this).data('osdownloads-loaded') === 1) {
                     return;
                 }
 
-                let $this              = $(this),
-                    prefix             = $this.data('prefix'),
-                    animation          = $this.data('animation'),
-                    popupElementId     = prefix + '_popup',
-                    $popup             = $('#' + popupElementId),
-                    $btnContinue       = $popup.find('.osdownloads-continue-button'),
-                    $form              = $popup.find('form');
+                let $this          = $(this),
+                    prefix         = $this.data('prefix'),
+                    animation      = $this.data('animation'),
+                    popupElementId = prefix + '_popup',
+                    $popup         = $('#' + popupElementId),
+                    $btnContinue   = $popup.find('.osdownloads-continue-button'),
+                    $form          = $popup.find('form');
 
                 if ($popup.length !== 1 && $form.length !== 1) {
                     return;
@@ -74,18 +74,18 @@
 
                     // Close the requirements popup
                     $container.on('reveal:close', function() {
-                        setTimeout(function timeoutRemoveIframePopup() {
+                        setTimeout(function() {
                             $container.remove();
                         }, 500);
                     });
                     $popup.trigger('reveal:close');
 
-                    setTimeout(function timeoutShowPopup() {
+                    setTimeout(function() {
                         showPopup('#' + prefix + 'PopupIframe');
                     }, 500);
                 };
 
-                $this.on('click', function downloadBtnOnClick(event) {
+                $this.on('click', function(event) {
                     event.preventDefault();
                     event.stopPropagation();
 
@@ -101,7 +101,7 @@
                     );
 
                     $btnContinue.off();
-                    $btnContinue.on('click', function continueBtnOnClick(event) {
+                    $btnContinue.on('click', function(event) {
                         event.preventDefault();
 
                         if ($form.valid()) {
@@ -114,5 +114,5 @@
             });
         }
     };
-})(jQuery);
+});
 

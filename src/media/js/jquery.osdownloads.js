@@ -34,14 +34,6 @@
                     popupElementId     = prefix + '_popup',
                     $popup             = $('#' + popupElementId),
                     $btnContinue       = $popup.find('.osdownloads-continue-button'),
-                    $errorAgreeTerms   = $popup.find('.osdownloads-error-agree'),
-                    $errorInvalidEmail = $popup.find('.osdownloads-error-email'),
-                    $fieldAgree        = $popup.find('.osdownloads-field-agree'),
-                    $fieldEmail        = $popup.find('.osdownloads-field-email'),
-                    $groupEmail        = $popup.find('.osdownloads-email-group'),
-                    $groupAgree        = $popup.find('.osdownloads-group-agree'),
-                    requireEmail       = $this.data('require-email'),
-                    requireAgree       = $this.data('require-agree') === 1,
                     $form              = $popup.find('form');
 
                 // Move the popup containers to the body
@@ -105,9 +97,7 @@
                     $popup.on(
                         'reveal:close',
                         function requirementsRevealOnClose() {
-                            // Clean fields
-                            $fieldEmail.val('');
-                            $fieldAgree.prop('checked', false);
+                            $form[0].reset();
                         }
                     );
 

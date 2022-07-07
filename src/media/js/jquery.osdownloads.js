@@ -20,86 +20,30 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-;(function osdownloadsClosure($) {
+;jQuery(function($) {
     $.fn.osdownloads = function osdownloads(options) {
         if (this.length) {
-            return this.each(function osdownloadsEachElement() {
+            return this.each(function() {
                 if ($(this).data('osdownloads-loaded') === 1) {
                     return;
                 }
 
-                let $this              = $(this),
-                    prefix             = $this.data('prefix'),
-                    animation          = $this.data('animation'),
-                    popupElementId     = prefix + '_popup',
-                    $popup             = $('#' + popupElementId),
-                    $btnContinue       = $popup.find('.osdownloads-continue-button'),
-                    $errorAgreeTerms   = $popup.find('.osdownloads-error-agree'),
-                    $errorInvalidEmail = $popup.find('.osdownloads-error-email'),
-                    $fieldAgree        = $popup.find('.osdownloads-field-agree'),
-                    $fieldEmail        = $popup.find('.osdownloads-field-email'),
-                    $groupEmail        = $popup.find('.osdownloads-email-group'),
-                    $groupAgree        = $popup.find('.osdownloads-group-agree'),
-                    requireEmail       = $this.data('require-email'),
-                    requireAgree       = $this.data('require-agree') === 1,
-                    $form              = $popup.find('form');
+                let $this          = $(this),
+                    prefix         = $this.data('prefix'),
+                    animation      = $this.data('animation'),
+                    popupElementId = prefix + '_popup',
+                    $popup         = $('#' + popupElementId),
+                    $btnContinue   = $popup.find('.osdownloads-continue-button'),
+                    $form          = $popup.find('form');
+
+                if ($popup.length !== 1 && $form.length !== 1) {
+                    return;
+                }
 
                 // Move the popup containers to the body
                 $popup.appendTo($('body'));
 
-                let isValidForm = function() {
-                    let email      = $fieldEmail.val().trim(),
-                        emailRegex = /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,25})$/,
-                        hasError   = false;
-
-                    if (requireAgree) {
-                        if ($fieldAgree.is(':checked')) {
-                            $errorAgreeTerms.hide();
-
-                        } else {
-                            hasError = true;
-                            $errorAgreeTerms.show();
-                        }
-                    }
-
-                    switch (requireEmail) {
-                        case 1:
-                            // email required
-                            if (email === '' || !emailRegex.test(email)) {
-                                hasError = true;
-                                $errorInvalidEmail.show();
-
-                            } else {
-                                $errorInvalidEmail.hide();
-                            }
-                            break;
-
-                        case 2:
-                            // email optional
-                            if (email !== '' && !emailRegex.test(email)) {
-                                hasError = true;
-                                $errorInvalidEmail.show();
-
-                            } else {
-                                $errorInvalidEmail.hide();
-                            }
-                            break;
-                    }
-
-                    if (hasError) {
-                        return false;
-                    }
-
-                    // Validate the form for custom fields before submitting
-                    if ($form.length > 0) {
-                        $form.prop('target', 'osdownloads-tmp-iframe-' + $form.prop('id'));
-
-                        return document.formvalidator.isValid($form[0]);
-
-                    } else {
-                        return true;
-                    }
-                };
+                let $validator = $form.validate();
 
                 let showPopup = function(selector) {
                     $(selector).reveal({
@@ -120,78 +64,57 @@
                         .addClass('osdownloads-modal');
 
                     $iframe = $('<iframe>').prop('name', 'osdownloads-tmp-iframe-' + $form.prop('id'));
-                    $close = $('<a class="close-reveal-modal">&#215;</a>');
+                    $close  = $('<a class="close-reveal-modal">&#215;</a>');
 
                     $iframe.appendTo($container);
                     $close.appendTo($container);
                     $container.appendTo($('body'));
 
-                    // Submit the form
                     $form.submit();
 
                     // Close the requirements popup
                     $container.on('reveal:close', function() {
-                        setTimeout(function timeoutRemoveIframePopup() {
+                        setTimeout(function() {
                             $container.remove();
                         }, 500);
                     });
                     $popup.trigger('reveal:close');
 
-                    setTimeout(function timeoutShowPopup() {
+                    setTimeout(function() {
                         showPopup('#' + prefix + 'PopupIframe');
                     }, 500);
                 };
 
-                $this.on('click', function downloadBtnOnClick(event) {
+                $this.on('click', function(event) {
                     event.preventDefault();
                     event.stopPropagation();
 
-                    if (requireEmail || requireAgree) {
-                        if (requireEmail !== 0) {
-                            $groupEmail.show();
+                    $btnContinue.prop('href', $this.prop('href'));
 
-                        } else {
-                            $groupEmail.hide();
-                        }
+                    showPopup('#' + popupElementId);
 
-                        if (requireAgree) {
-                            $groupAgree.find('.agreement-article').prop('href', $this.data('agreement-article'));
-                            $groupAgree.show();
-
-                        } else {
-                            $groupAgree.hide();
-                        }
-
-                        $btnContinue.prop('href', $this.prop('href'));
-
-                        showPopup('#' + popupElementId);
-
-                        $popup.on(
-                            'reveal:close',
-                            function requirementsRevealOnClose() {
-                                // Clean fields
-                                $fieldEmail.val('');
-                                $fieldAgree.prop('checked', false);
-                                $('.osdownloads-modal .error').hide();
-                            }
-                        );
-
-                        $btnContinue.off();
-                        $btnContinue.on('click', function continueBtnOnClick(event) {
-                            event.preventDefault();
-
-                            if (isValidForm()) {
-                                download();
-                            }
+                    $popup.on(
+                        'reveal:close',
+                        function() {
+                            setTimeout(function() {
+                                $form[0].reset();
+                                $validator.resetForm();
+                            }, 500);
                         });
-                    } else {
-                        download();
-                    }
+
+                    $btnContinue.off();
+                    $btnContinue.on('click', function(event) {
+                        event.preventDefault();
+
+                        if ($form.valid()) {
+                            download();
+                        }
+                    });
                 });
 
                 $this.data('osdownloads-loaded', 1);
             });
         }
     };
-})(jQuery);
+});
 

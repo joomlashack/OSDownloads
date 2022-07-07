@@ -7,8 +7,8 @@
     <copyright>Copyright 2022 Joomlashack.com</copyright>
     <license>GNU GPL; see LICENSE file</license>
     <description>COM_OSDOWNLOADS_DESCRIPTION</description>
-    <version>2.2.0b1</version>
-    <creationDate>May 26 2022</creationDate>
+    <version>2.1.6b1</version>
+    <creationDate>June 14 2022</creationDate>
     <variant>FREE</variant>
 
     <scriptfile>script.installer.php</scriptfile>
@@ -118,14 +118,21 @@
 
         <minify suffix=".min">
             <scripts destination="media/js/jquery.osdownloads.bundle.js">
-                <script>media/js/jquery.reveal.js</script>
                 <script>media/js/jquery.osdownloads.js</script>
+                <script>media/js/jquery.reveal.js</script>
+                <script>media/js/jquery.validate.js</script>
             </scripts>
         </minify>
 
         <obsolete>
             <preflight>
+                <folder>administrator/components/com_osdownloads/form</folder>
+                <folder>administrator/components/com_osdownloads/helpers</folder>
+                <folder>administrator/components/com_osdownloads/library</folder>
                 <folder>administrator/components/com_osdownloads/vendor</folder>
+                <folder>administrator/components/com_osdownloads/views</folder>
+                <folder>components/com_osdownloads/layouts</folder>
+                <folder>media/com_osdownloads</folder>
 
                 <!-- Clear pro folders -->
                 <folder>administrator/components/com_osdownloads/form/fields</folder>
@@ -138,63 +145,16 @@
             <folder>administrator/components/com_osdownloads/models/abstract</folder>
             <folder>components/components/com_osdownloads/layouts/buttons</folder>
 
-            <file>administrator/components/com_osdownloads/form/fields/AbstractMailChimp.php</file>
-            <file>administrator/components/com_osdownloads/form/fields/AbstractMailChimpList.php</file>
-            <file>administrator/components/com_osdownloads/form/fields/constantcontactlistslist.php</file>
-            <file>administrator/components/com_osdownloads/form/fields/mailchimpgroupslist.php</file>
-            <file>administrator/components/com_osdownloads/form/fields/mailchimplistslist.php</file>
-            <file>administrator/components/com_osdownloads/form/fields/MailinglistFieldTraits.php</file>
             <file>administrator/components/com_osdownloads/helpers/category.php</file>
             <file>administrator/components/com_osdownloads/helpers/category.php</file>
             <file>administrator/components/com_osdownloads/helpers/file.php</file>
             <file>administrator/components/com_osdownloads/helpers/file.php</file>
-            <file>administrator/components/com_osdownloads/library/Ctct/Util/CurlResponse.php</file>
-            <file>administrator/components/com_osdownloads/library/Ctct/Util/RestClient.php</file>
-            <file>administrator/components/com_osdownloads/library/Ctct/Util/RestClientInterface.php</file>
-            <file>administrator/components/com_osdownloads/library/Free/Container.php</file>
-            <file>administrator/components/com_osdownloads/library/Free/Factory.php</file>
-            <file>administrator/components/com_osdownloads/library/Free/Joomla/View/Legacy.php</file>
-            <file>administrator/components/com_osdownloads/library/Pro/Joomla/Table/Email.php</file>
             <file>administrator/components/com_osdownloads/models/items.php</file>
             <file>administrator/components/com_osdownloads/tables/abstract.php</file>
             <file>administrator/components/com_osdownloads/tables/abstractdocument.php</file>
-            <file>administrator/components/com_osdownloads/views/emails/tmpl/default_pro_filters.php</file>
-            <file>administrator/components/com_osdownloads/views/file/tmpl/default.j2.php</file>
-            <file>administrator/components/com_osdownloads/views/files/tmpl/default.j2.php</file>
-            <file>administrator/components/com_osdownloads/views/installer/tmpl/default_custom.php</file>
-            <file>administrator/components/com_osdownloads/views/view.html.php</file>
-            <file>administrator/language/en-GB/en-GB.com_osdownloads.ini</file>
-            <file>administrator/language/en-GB/en-GB.com_osdownloads.sys.ini</file>
-            <file>administrator/language/en-GB/en-GB.plg_editors-xtd_osdownseditorxtdfile.ini</file>
-            <file>administrator/language/en-GB/en-GB.plg_editors-xtd_osdownseditorxtdfile.sys.ini</file>
-            <file>administrator/language/en-GB/en-GB.plg_system_osdownloadssystem.ini</file>
-            <file>administrator/language/en-GB/en-GB.plg_system_osdownloadssystem.sys.ini</file>
-            <file>administrator/language/fa-IR/fa-IR.com_osdownloads.ini</file>
-            <file>administrator/language/fa-IR/fa-IR.com_osdownloads.sys.ini</file>
-            <file>administrator/language/fa-IR/fa-IR.plg_editors-xtd_osdownseditorxtdfile.ini</file>
-            <file>administrator/language/fa-IR/fa-IR.plg_editors-xtd_osdownseditorxtdfile.sys.ini</file>
-            <file>administrator/language/fa-IR/fa-IR.plg_system_osdownloadssystem.ini</file>
-            <file>administrator/language/fa-IR/fa-IR.plg_system_osdownloadssystem.sys.ini</file>
-            <file>administrator/language/fr-FR/fr-FR.com_osdownloads.ini</file>
-            <file>administrator/language/fr-FR/fr-FR.com_osdownloads.sys.ini</file>
-            <file>administrator/language/fr-FR/fr-FR.plg_editors-xtd_osdownseditorxtdfile.ini</file>
-            <file>administrator/language/fr-FR/fr-FR.plg_editors-xtd_osdownseditorxtdfile.sys.ini</file>
-            <file>administrator/language/fr-FR/fr-FR.plg_system_osdownloadssystem.ini</file>
-            <file>administrator/language/fr-FR/fr-FR.plg_system_osdownloadssystem.sys.ini</file>
-            <file>administrator/manifests/packages/pkg_osdownloads.xml</file>
-            <file>components/com_osdownloads/layouts/download_button.php</file>
-            <file>components/com_osdownloads/layouts/social_download.php</file>
             <file>components/com_osdownloads/sef_ext.php</file>
             <file>components/com_osdownloads/views/download/tmpl/error_not_available.php</file>
             <file>components/com_osdownloads/views/download/tmpl/error_too_big.php</file>
-            <file>language/en-GB/en-GB.com_osdownloads.ini</file>
-            <file>language/en-GB/en-GB.com_osdownloads.sys.ini</file>
-            <file>language/fa-IR/fa-IR.com_osdownloads.ini</file>
-            <file>language/fa-IR/fa-IR.com_osdownloads.sys.ini</file>
-            <file>language/fr-FR/fr-FR.com_osdownloads.ini</file>
-            <file>language/fr-FR/fr-FR.com_osdownloads.sys.ini</file>
-            <file>media/com_osdownloads/css/frontend.min.css</file>
-            <file>media/com_osdownloads/js/jquery.osdownloads.min.js</file>
 
             <!-- Clear pro related extensions -->
             <extension type="plugin"

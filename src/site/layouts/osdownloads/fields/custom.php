@@ -65,7 +65,6 @@ if ($elementId && $displayData->item->require_user_email && ComponentHelper::isE
         ?>
         <div class="osdownloads-custom-fields-container">
             <?php
-            $displayData->tab_name = $elementId . '-tab-' . $displayData->item->id;
             $displayData->setForm($form);
             echo LayoutHelper::render('joomla.edit.fieldset', $displayData);
             ?>

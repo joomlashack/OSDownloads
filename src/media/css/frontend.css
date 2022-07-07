@@ -160,9 +160,7 @@ a.modosdownloadsDownloadButton:active {
   padding: 15px;
 }
 
-/************
-Reveal Modals
-*************/
+/************ Reveal Modals *************/
 .reveal-modal-bg {
   position: fixed;
   height: 100%;
@@ -225,38 +223,26 @@ Reveal Modals
   cursor: pointer;
 }
 
-/*
-NOTES
-
-Close button entity is &#215;
-
-Example markup
-
-<div id="myModal" class="reveal-modal osdownloads-modal">
-    <h2>Awesome. I have it.</h2>
-    <p class="lead">Your couch.  I it's mine.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ultrices aliquet placerat. Duis pulvinar orci et nisi euismod vitae tempus lorem consectetur. Duis at magna quis turpis mattis venenatis eget id diam. </p>
-    <a class="close-reveal-modal">&#215;</a>
-</div>
-*/
-
 .osdownloads-modal iframe {
   border: 0;
   width: 100%;
 }
 
 .osdownloads-modal .error {
-  margin-bottom: 20px;
   font-style: italic;
   color: #d85030;
+}
+
+.osdownloads-modal label.error {
 }
 
 .osdownloads-modal label {
   width: 100%;
 }
 
-.osdownloads-modal input[type="email"] {
+.osdownloads-modal input {
   width: 97%;
+  height: 30px;
 }
 
 .osdownloads-modal h2 {
@@ -266,10 +252,16 @@ Example markup
 .osdownloads-modal input[type="checkbox"] {
   margin-right: 5px;
   margin-top: -2px;
+  width: auto;
+  height: auto;
 }
 
 .osdownloads-modal .osdownloads-header {
   padding-bottom: 18px;
+}
+
+.osdownloads-group-agree {
+  margin-top: 30px;
 }
 
 @media screen and (max-width: 320px) {
@@ -298,11 +290,6 @@ Example markup
     width: 280px !important;
     margin-left: -180px !important;
   }
-}
-
-/* DOWNLOAD CUSTOM FIELDS */
-.osdownloads-group-agree {
-  margin-top: 30px;
 }
 
 .osdownloads-title-download a {

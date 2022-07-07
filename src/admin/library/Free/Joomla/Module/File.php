@@ -72,6 +72,11 @@ class File extends AbstractFlexibleModule
     protected $form = null;
 
     /**
+     * @var bool
+     */
+    protected $show_options = true;
+
+    /**
      * @var string
      */
     public $buttonClasses = null;

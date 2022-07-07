@@ -21,6 +21,7 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Alledia\OSDownloads\Free\Helper\Helper as FreeHelper;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
@@ -59,15 +60,22 @@ class OsdownloadsFormFieldUpload extends FormField
      */
     protected function getInput()
     {
-        $parts = explode('_', $this->value, 2);
+        $parts     = explode('_', $this->value, 2);
+        $fileName  = array_pop($parts);
+        $alertType = 'info';
+        if ($fileName) {
+            if (FreeHelper::getFullPath($this->value)) {
+                $text = Text::sprintf('COM_OSDOWNLOADS_CURRENT_FILE', $fileName);
+            } else {
+                $text      = Text::sprintf('COM_OSDOWNLOADS_CURRENT_FILE_MISSING', $fileName);
+                $alertType = 'error';
+            }
 
-        if ($fileName = array_pop($parts)) {
-            $text = Text::sprintf('COM_OSDOWNLOADS_CURRENT_FILE', $fileName);
         } else {
             $text = Text::_('COM_OSDOWNLOADS_CURRENT_FILE_NONE');
         }
 
-        return sprintf('<span class="btn alert-info">%s</span>', $text);
+        return sprintf('<span class="btn alert-%s">%s</span>', $alertType, $text);
     }
 
     /**

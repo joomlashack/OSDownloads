@@ -25,7 +25,6 @@ defined('_JEXEC') or die();
 
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\File;
-use Alledia\OSDownloads\Free\Helper\Helper;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView;
@@ -81,61 +80,44 @@ class OSDownloadsViewDownload extends HtmlView
             return;
         }
 
-        if ($item->file_url) {
-            $url = explode('?', $item->file_url);
+        $this->isLocal      = $item->isLocal;
+        $this->realName     = $item->realName;
+        $this->fileFullPath = $item->fullPath;
 
-            $this->realName = basename(reset($url));
-            $this->isLocal = Helper::isLocalPath($item->file_url);
+        if ($this->isLocal) {
+            $this->fileSize = $item->fileSize;
 
-            if ($this->isLocal) {
-                $fileFullPath = realpath(JPATH_SITE . '/' . ltrim($item->file_url, '/'));
-                if (is_file($fileFullPath)) {
-                    $this->fileSize = filesize($fileFullPath);
-                } else {
-                    $fileFullPath = null;
-                }
+        } elseif ($item->file_url) {
+            // Trigger the onOSDownloadsGetExternalDownloadLink event
+            PluginHelper::importPlugin('osdownloads');
+            $app->triggerEvent('onOSDownloadsGetExternalDownloadLink', [&$item]);
 
-            } else {
-                // Triggers the onOSDownloadsGetExternalDownloadLink event
-                PluginHelper::importPlugin('osdownloads');
-
-                $app->triggerEvent('onOSDownloadsGetExternalDownloadLink', [&$item]);
-
-                $fileFullPath = $item->file_url;
-
-                $this->headers = File::getHeaders($fileFullPath);
-                if (!empty($this->headers['http_code']) && $this->headers['http_code'] >= 400) {
-                    $this->displayError(
-                        Text::sprintf('COM_OSDOWNLOADS_ERROR_DOWNLOAD_SERVER_ERROR', $this->headers['http_code'])
-                    );
-                    return;
-                }
-
-                if (!empty($this->headers['Content-Length'])) {
-                    $this->fileSize = $this->headers['Content-Length'];
-
-                }
-
-                // Adjust for redirects
-                if (!empty($this->headers['Location'])) {
-                    $fileFullPath = $this->headers['Location'];
-                }
+            $this->headers = File::getHeaders($item->file_url);
+            if (empty($this->headers['http_code']) == false && $this->headers['http_code'] >= 400) {
+                $this->displayError(
+                    Text::sprintf('COM_OSDOWNLOADS_ERROR_DOWNLOAD_SERVER_ERROR', $this->headers['http_code'])
+                );
+                return;
             }
 
-        } else {
-            $this->isLocal = true;
-            $fileFullPath   = realpath(JPATH_SITE . '/media/com_osdownloads/files/' . $item->file_path);
-            $this->realName = substr($item->file_path, strpos($item->file_path, '_') + 1);
-            $this->fileSize = filesize($fileFullPath);
-    }
+            if (empty($this->headers['Content-Length']) == false) {
+                $this->fileSize = $this->headers['Content-Length'];
+            }
 
-        if (empty($fileFullPath)) {
+            if (empty($this->headers['Location'])) {
+                $this->fileFullPath = $item->file_url;
+            } else {
+                // Adjust for redirects
+                $this->fileFullPath = $this->headers['Location'];
+            }
+        }
+
+        if (empty($this->fileFullPath)) {
             $this->displayError(Text::_('COM_OSDOWNLOADS_ERROR_DOWNLOAD_NOT_AVAILABLE'));
             return;
         }
 
-        $this->contentType  = File::getContentTypeFromFileName($fileFullPath);
-        $this->fileFullPath = $fileFullPath;
+        $this->contentType  = File::getContentTypeFromFileName($this->fileFullPath);
 
         if ($this->checkMemory()) {
             $model->incrementDownloadCount($id);

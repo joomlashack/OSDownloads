@@ -162,6 +162,22 @@ abstract class Helper
     }
 
     /**
+     * @param string $fileName
+     * @param ?bool  $isUpload
+     *
+     * @return ?string
+     */
+    public static function getFullPath(string $fileName, bool $isUpload = true): ?string
+    {
+        $fileName = ltrim($fileName, '/');
+        if ($isUpload) {
+            return realpath(JPATH_SITE . '/media/com_osdownloads/files/' . $fileName);
+        }
+
+        return realpath(JPATH_SITE . '/' . $fileName);
+    }
+
+    /**
      * Standard item model amendments
      *
      * @param object $item
@@ -182,6 +198,31 @@ abstract class Helper
 
         } else {
             $item->agreementLink = '';
+        }
+
+        $item->isLocal  = null;
+        $item->realName = null;
+        $item->fullPath = null;
+        $item->fileSize = null;
+        if ($item->file_url) {
+            $url = explode('?', $item->file_url);
+
+            $item->isLocal  = Helper::isLocalPath($item->file_url);
+            $item->realName = basename(reset($url));
+
+            if ($item->isLocal) {
+                $fileFullPath = static::getFullPath($item->file_url, false);
+            }
+
+        } else {
+            $item->isLocal  = true;
+            $item->realName = substr($item->file_path, strpos($item->file_path, '_') + 1);
+            $fileFullPath = static::getFullPath($item->file_path);
+        }
+
+        if ($item->isLocal && empty($fileFullPath) == false && is_file($fileFullPath)) {
+            $item->fullPath = $fileFullPath;
+            $item->fileSize = filesize($fileFullPath);
         }
 
         PluginHelper::importPlugin('content');

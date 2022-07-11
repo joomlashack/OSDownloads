@@ -80,7 +80,7 @@
     </update>
 
     <updateservers>
-        <server type="extension" priority="1" name="OSDownloads"><![CDATA[https://deploy.ostraining.com/client/update/free/stable/com_osdownloads]]></server>
+        <server type="extension" priority="1" name="OSDownloads Free"><![CDATA[https://deploy.ostraining.com/client/update/free/stable/com_osdownloads]]></server>
     </updateservers>
 
     <alledia>

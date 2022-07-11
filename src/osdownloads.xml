@@ -132,7 +132,9 @@
                 <folder>administrator/components/com_osdownloads/vendor</folder>
                 <folder>administrator/components/com_osdownloads/views</folder>
                 <folder>components/com_osdownloads/layouts</folder>
-                <folder>media/com_osdownloads</folder>
+                <folder>media/com_osdownloads/css</folder>
+                <folder>media/com_osdownloads/images</folder>
+                <folder>media/com_osdownloads/js</folder>
 
                 <!-- Clear pro folders -->
                 <folder>administrator/components/com_osdownloads/form/fields</folder>

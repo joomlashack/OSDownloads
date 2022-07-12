@@ -91,25 +91,31 @@
 
                     $btnContinue.prop('href', $this.prop('href'));
 
-                    showPopup('#' + popupElementId);
+                    if ($btnContinue.length) {
+                        showPopup('#' + popupElementId);
 
-                    $popup.on(
-                        'reveal:close',
-                        function() {
-                            setTimeout(function() {
-                                $form[0].reset();
-                                $validator.resetForm();
-                            }, 500);
+                        $popup.on(
+                            'reveal:close',
+                            function() {
+                                setTimeout(function() {
+                                    $form[0].reset();
+                                    $validator.resetForm();
+                                }, 500);
+                            });
+
+                        $btnContinue.off();
+                        $btnContinue.on('click', function(event) {
+                            event.preventDefault();
+
+                            if ($form.valid()) {
+                                download();
+                            }
                         });
 
-                    $btnContinue.off();
-                    $btnContinue.on('click', function(event) {
-                        event.preventDefault();
-
-                        if ($form.valid()) {
-                            download();
-                        }
-                    });
+                    } else {
+                        // Continue button so submit immediately
+                        download();
+                    }
                 });
 
                 $this.data('osdownloads-loaded', 1);

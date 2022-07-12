@@ -378,57 +378,29 @@ if (is_file($includePath) && include $includePath) {
             $task   = $query['task'] ?? null;
             $id     = $query['id'] ?? null;
             $itemId = $query['Itemid'] ?? null;
+            $parts  = $query;
 
-            $parts = $query;
-            if ($itemId) {
-                $menu = $this->menu->getItem($itemId);
-                if ($menu) {
-                    $menuView = $menu->query['view'] ?? null;
-                    $menuTask = $menu->query['task'] ?? null;
+            if ($view) {
+                switch ($view) {
+                    case 'item':
+                        if ($id && ($viewMenu = $this->helper->getMenuItemForFile($id))) {
+                            $viewItemid = $viewMenu->id;
 
-                    if ($view && $view != $menuView) {
-                        switch ($view) {
-                            case 'item':
-                                if ($id && ($viewMenu = $this->helper->getMenuItemForFile($id))) {
-                                    $itemId = $viewMenu->id;
+                        } else {
+                            $categoryId = $this->helper->getCategoryIdFromFileId($id);
 
-                                } else {
-                                    $categoryId = $this->helper->getCategoryIdFromFileId($id);
-
-                                    $categoryMenu = $this->helper->getMenuItemForListOfFiles($categoryId)
-                                        ?: $this->helper->getMenuItemForListOfFiles(0);
-                                    if ($categoryMenu) {
-                                        $itemId = $categoryMenu->id;
-
-                                    } else {
-                                        $itemId = null;
-                                        unset($parts['Itemid']);
-                                    }
-                                }
-                                break;
-                        }
-
-                    } elseif ($task && $task != $menuTask && $id) {
-                        if ($itemMenu = $this->helper->getMenuItemForFile($id)) {
-                            $itemId = $itemMenu->id;
-
-                        } elseif ($categoryId = $this->helper->getCategoryIdFromFileId($id)) {
                             $categoryMenu = $this->helper->getMenuItemForListOfFiles($categoryId)
                                 ?: $this->helper->getMenuItemForListOfFiles(0);
-
                             if ($categoryMenu) {
-                                $itemId = $categoryMenu->id;
-
-                            } else {
-                                $itemId = null;
-                                unset($parts['Itemid']);
+                                $viewItemid = $categoryMenu->id;
                             }
                         }
-                    }
-                }
 
-            } elseif ($view) {
-                switch ($view) {
+                        if ($itemId == ($viewItemid ?? 0)) {
+                            $itemId = null;
+                        }
+                        break;
+
                     case 'downloads':
                         $listMenu = $this->helper->getMenuItemForListOfFiles($id)
                             ?: $this->helper->getMenuItemForListOfFiles(0);
@@ -452,6 +424,8 @@ if (is_file($includePath) && include $includePath) {
 
             if ($itemId) {
                 $parts['Itemid'] = $itemId;
+            } elseif (isset($parts['Itemid'])) {
+                unset($parts['Itemid']);
             }
 
             return $parts;

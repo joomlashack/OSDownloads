@@ -91,7 +91,7 @@
 
                     $btnContinue.prop('href', $this.prop('href'));
 
-                    if ($btnContinue.length) {
+                    if ($btnContinue.length && $form[0].elements.length) {
                         showPopup('#' + popupElementId);
 
                         $popup.on(

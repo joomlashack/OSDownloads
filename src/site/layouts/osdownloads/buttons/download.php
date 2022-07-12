@@ -132,7 +132,10 @@ endif;
                 'osdownloads.fields.custom',
                 $displayData,
                 null,
-                ['elementId' => $elementId]
+                [
+                    'elementId' => $elementId,
+                    'component' => 'com_osdownloads'
+                ]
             );
 
             if ($displayData->item->require_agree) : ?>

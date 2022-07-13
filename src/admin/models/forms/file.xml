@@ -16,7 +16,8 @@
 
     <fieldset name="file">
         <field name="type"
-               type="list"
+               type="radio"
+               class="btn-group"
                label="COM_OSDOWNLOADS_FILE_TYPE"
                default="upload">
             <option value="upload">COM_OSDOWNLOADS_OPTION_UPLOAD</option>
@@ -63,6 +64,7 @@
     <fieldset name="file-vertical">
         <field name="cate_id"
                type="category"
+               layout="joomla.form.field.list-fancy-select"
                required="true"
                label="COM_OSDOWNLOADS_CATEGORY"
                description="COM_OSDOWNLOADS_CATEGORY_DESC"
@@ -80,6 +82,7 @@
 
         <field name="access"
                type="accesslevel"
+               layout="joomla.form.field.list-fancy-select"
                label="JFIELD_ACCESS_LABEL"
                description="JFIELD_ACCESS_DESC"/>
 
@@ -91,12 +94,11 @@
                class="readonly"
                readonly="true"/>
 
-        <field
-            name="ordering"
-            type="hidden"
-            label="JFIELD_ORDERING_LABEL"
-            size="6"
-            default="0"/>
+        <field name="ordering"
+               type="hidden"
+               label="JFIELD_ORDERING_LABEL"
+               size="6"
+               default="0"/>
     </fieldset>
 
     <fieldset name="requirements" addfieldpath="/administrator/components/com_content/models/fields">
@@ -113,6 +115,7 @@
 
         <field name="require_agree"
                type="radio"
+               layout="joomla.form.field.radio.switcher"
                class="btn-group btn-group-yesno"
                label="COM_OSDOWNLOADS_REQUIRE_AGREEMENT"
                description="COM_OSDOWNLOADS_AGREEMENT_TIP"

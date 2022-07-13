@@ -420,7 +420,7 @@ class SEF
     protected function getMenuItems(): array
     {
         $app       = Factory::getApplication();
-        $menu      = $app->getMenu();
+        $menu      = $app->getMenu('site');
         $menuItems = $menu->getItems('component', 'com_osdownloads');
 
         static::$menuItemsById = [];

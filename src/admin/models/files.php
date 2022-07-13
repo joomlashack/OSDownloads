@@ -99,7 +99,7 @@ class OSDownloadsModelFiles extends ListModel
 
         $published = $this->getState('filter.published');
         if ($published != '') {
-            $query->where('published = ' . (int)$published);
+            $query->where('doc.published = ' . (int)$published);
         }
 
         $categoryId = (int)$this->getState('filter.cate_id');

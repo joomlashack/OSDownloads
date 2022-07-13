@@ -23,6 +23,7 @@
 
 namespace Alledia\OSDownloads\Free\Helper;
 
+use Alledia\OSDownloads\Container;
 use Alledia\OSDownloads\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
@@ -41,10 +42,14 @@ class SEF
     protected static $menuItemsById = null;
 
     /**
-     * @var object
+     * @var Container
      */
     protected $container;
 
+    /**
+     * @return void
+     * @throws \Exception
+     */
     public function __construct()
     {
         $this->container = Factory::getPimpleContainer();
@@ -199,9 +204,9 @@ class SEF
      * @param string $alias
      * @param string $path
      *
-     * @return object|false
+     * @return ?object
      */
-    public function getFileFromAlias($alias, $path = null)
+    public function getFileFromAlias(string $alias, ?string $path = null): ?object
     {
         $db = Factory::getDbo();
 
@@ -222,25 +227,23 @@ class SEF
                 Log::WARNING
             );
 
-            return false;
-        }
-
-        // Do we have only one file and no path to check?
-        if (empty($path) && count($files) === 1) {
+        } elseif (empty($path) && count($files) === 1) {
+            // Only one file and no path to check
             return $files[0];
-        }
 
-        // We have more files. We need to check the path of each file
-        foreach ($files as $file) {
-            // Get the file category
-            $category = $this->getCategory($file->cate_id);
+        } else {
+            // We need to check the path of each file
+            foreach ($files as $file) {
+                // Get the file category
+                $category = $this->getCategory($file->cate_id);
 
-            if (!empty($category) && $category->path === $path) {
-                return $file;
+                if (empty($category) == false && $category->path === $path) {
+                    return $file;
+                }
             }
         }
 
-        return false;
+        return null;
     }
 
     /**
@@ -248,17 +251,15 @@ class SEF
      *
      * @param string $alias
      *
-     * @return int|false
+     * @return ?int
      */
-    public function getFileIdFromAlias($alias)
+    public function getFileIdFromAlias(string $alias): ?int
     {
-        $file = $this->getFileFromAlias($alias);
-
-        if (!empty($file)) {
+        if ($file = $this->getFileFromAlias($alias)) {
             return $file->id;
         }
 
-        return false;
+        return null;
     }
 
     /**
@@ -416,17 +417,16 @@ class SEF
      * @return MenuItem[]
      * @throws \Exception
      */
-    protected function getMenuItems()
+    protected function getMenuItems(): array
     {
-        // Get all relevant menu items.
         $app       = Factory::getApplication();
         $menu      = $app->getMenu();
         $menuItems = $menu->getItems('component', 'com_osdownloads');
 
         static::$menuItemsById = [];
 
-        foreach ($menuItems as $item) {
-            static::$menuItemsById[$item->id] = $item;
+        foreach ($menuItems as $menuItem) {
+            static::$menuItemsById[$menuItem->id] = $menuItem;
         }
 
         return static::$menuItemsById;

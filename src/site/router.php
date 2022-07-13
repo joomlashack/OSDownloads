@@ -488,8 +488,8 @@ if (is_file($includePath) && include $includePath) {
                         array_pop($tmpSegments);
 
                         $path = implode('/', $tmpSegments);
-                        $file = $this->helper->getFileFromAlias($lastSegment, $path);
 
+                        $file = $this->helper->getFileFromAlias($lastSegment, $path);
                         if (empty($file)) {
                             if ('com_osdownloads' === $activeMenu->query['option']) {
                                 if (in_array($activeMenu->query['view'], ['downloads', 'categories'])) {
@@ -503,25 +503,18 @@ if (is_file($includePath) && include $includePath) {
 
                                     // Try to get the file with the new path
                                     $file = $this->helper->getFileFromAlias($lastSegment, $tmpPath);
-
-                                    if (!empty($file)) {
-                                        // We found a file
-                                        $vars['id'] = $file->id;
-                                    }
                                 }
                             }
-
                         }
 
-                        if (!is_object($file)) {
-                            throw new Exception(Text::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'), 404);
+                        if ($file) {
+                            $vars['id'] = $file->id;
+
+                            return $vars;
                         }
 
-                        $vars['id'] = $file->id;
-
-                        return $vars;
+                        throw new Exception(Text::_('COM_OSDOWNLOADS_ERROR_NOT_FOUND'), 404);
                     }
-
                     break;
             }
 
@@ -586,10 +579,9 @@ if (is_file($includePath) && include $includePath) {
             $file = $this->helper->getFileFromAlias($lastSegment, $path);
 
             if (empty($file)) {
-                // If no file was found, we try to complete the path based on the menu
                 if ($activeMenu && 'com_osdownloads' === $activeMenu->query['option']) {
+                    // Try to complete the path based on the active menu
                     if (in_array($activeMenu->query['view'], ['downloads', 'categories'])) {
-                        // Complete the path using the path from the menu
                         $category = $this->helper->getCategory($activeMenu->query['id']);
                         if ($category) {
                             $tmpPath = $category->path;
@@ -606,7 +598,6 @@ if (is_file($includePath) && include $includePath) {
             }
 
             if ($file) {
-                // Cool, we found a file
                 $vars['view'] = 'item';
                 $vars['id']   = $file->id;
 

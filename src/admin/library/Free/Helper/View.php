@@ -50,13 +50,13 @@ class View
         $container = Factory::getPimpleContainer();
 
         $pathway    = $app->getPathway();
-        $itemID     = $app->input->getInt('Itemid');
+        $itemId     = $app->input->getInt('Itemid');
         $countPaths = count($paths) - 1;
 
         $pathwayList = $pathway->getPathway();
 
         for ($i = $countPaths; $i >= 0; $i--) {
-            $link   = $container->helperRoute->getFileListRoute($paths[$i]->id, $itemID);
+            $link   = $container->helperRoute->getFileListRoute($paths[$i]->id, $itemId);
             $route  = Route::_($link);
             $exists = false;
 
@@ -101,9 +101,9 @@ class View
         $container = Factory::getPimpleContainer();
 
         $pathway = $app->getPathway();
-        $itemID  = $app->input->getInt('Itemid');
+        $itemId  = $app->input->getInt('Itemid');
 
-        $link = $container->helperRoute->getViewItemRoute($file->id, $itemID);
+        $link = $container->helperRoute->getViewItemRoute($file->id, $itemId);
 
         $pathway->addItem($file->name, $link);
     }

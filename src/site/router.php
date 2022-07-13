@@ -306,7 +306,7 @@ if (is_file($includePath) && include $includePath) {
                 return $segments;
             }
 
-            // If there is no recognized tasks, try to get the view
+            // If there is no recognized task, try to get the view
             if ($view) {
                 switch ($view) {
                     case 'categories':
@@ -342,7 +342,6 @@ if (is_file($includePath) && include $includePath) {
                             $endPath,
                             $query
                         );
-
                         break;
 
                     case 'item':

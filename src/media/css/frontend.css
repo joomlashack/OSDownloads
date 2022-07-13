@@ -241,8 +241,7 @@ a.modosdownloadsDownloadButton:active {
 }
 
 .osdownloads-modal input {
-  width: 97%;
-  height: 30px;
+  width: 100%;
 }
 
 .osdownloads-modal h2 {

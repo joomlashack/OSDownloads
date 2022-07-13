@@ -121,7 +121,7 @@ endif;
                            required
                            name="require_email"
                            id="<?php echo $elementId; ?>_requireemail"
-                           class="osdownloads-field-email"
+                           class="osdownloads-field-email form-control"
                            data-msg="<?php echo Text::_('COM_OSDOWNLOADS_INVALID_EMAIL'); ?>"
                            placeholder="<?php echo Text::_('COM_OSDOWNLOADS_ENTER_EMAIL_ADDRESS'); ?>"/>
                 </label>

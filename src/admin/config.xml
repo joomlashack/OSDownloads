@@ -4,8 +4,8 @@
               label="COM_OSDOWNLOADS_GENERAL">
         <field name="list_limit"
                type="list"
+               layout="joomla.form.field.list-fancy-select"
                label="COM_OSDOWNLOADS_LIST_LIMIT_LABEL"
-               description="COM_OSDOWNLOADS_LIST_LIMIT_DESC"
                filter="integer"
                useglobal="true">
             <option value="5">J5</option>
@@ -20,6 +20,7 @@
 
         <field name="popup_animation"
                type="list"
+               layout="joomla.form.field.list-fancy-select"
                default="fade"
                label="COM_OSDOWNLOADS_POPUP_ANIMATION">
             <option value="none">COM_OSDOWNLOADS_NONE</option>
@@ -29,6 +30,7 @@
 
         <field name="show_readmore_button"
                type="radio"
+               layout="joomla.form.field.radio.switcher"
                class="btn-group btn-group-yesno"
                label="COM_OSDOWNLOADS_SHOW_READMORE_BUTTON_LABEL"
                description="COM_OSDOWNLOADS_SHOW_READMORE_BUTTON_DESC"
@@ -39,6 +41,7 @@
 
         <field name="show_download_button"
                type="radio"
+               layout="joomla.form.field.radio.switcher"
                class="btn-group btn-group-yesno"
                label="COM_OSDOWNLOADS_SHOW_DOWNLOAD_BUTTON_LABEL"
                description="COM_OSDOWNLOADS_SHOW_DOWNLOAD_BUTTON_DESC"

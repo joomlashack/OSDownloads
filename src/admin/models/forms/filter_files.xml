@@ -6,6 +6,7 @@
 
         <field name="published"
                type="status"
+               layout="joomla.form.field.list-fancy-select"
                onchange="this.form.submit();"
                filter="0,1"
                optionsFilter="0,1">
@@ -14,6 +15,7 @@
 
         <field name="cate_id"
                type="category"
+               layout="joomla.form.field.list-fancy-select"
                extension="com_osdownloads"
                onchange="this.form.submit();">
             <option value="">COM_OSDOWNLOADS_OPTION_SELECT_CATEGORY</option>
@@ -45,7 +47,6 @@
                class="inputbox input-mini"
                default="25"
                label="COM_OSDOWNLOADS_LIST_LIMIT"
-               description="COM_OSDOWNLOADS_LIST_LIMIT_DESC"
                onchange="this.form.submit();"/>
     </fields>
 </form>

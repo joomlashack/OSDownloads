@@ -69,10 +69,14 @@ HTMLHelper::_(
     if ($this->params->get('show_category', 0) && is_object($this->category)) :
         ?>
         <div class="cate_info">
-            <?php echo Text::_('COM_OSDOWNLOADS_CATEGORY') . ':'; ?>
-            <a href="<?php echo Route::_($container->helperRoute->getFileListRoute($this->category->id)); ?>">
-                <?php echo $this->category->title; ?>
-            </a>
+            <?php
+            echo Text::_('COM_OSDOWNLOADS_CATEGORY') . ': '
+                . HTMLHelper::_(
+                    'link',
+                    Route::_($container->helperRoute->getFileListRoute($this->category->id, $this->itemId)),
+                    $this->category->title
+                );
+            ?>
         </div>
     <?php endif;
 

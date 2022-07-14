@@ -380,34 +380,13 @@ if (is_file($includePath) && include $includePath) {
             $parts  = $query;
 
             if ($view) {
-                switch ($view) {
-                    case 'item':
-                        if ($id && ($viewMenu = $this->helper->getMenuItemForFile($id))) {
-                            $viewItemid = $viewMenu->id;
+                if ($view == 'downloads') {
+                    $listMenu = $this->helper->getMenuItemForListOfFiles($id)
+                        ?: $this->helper->getMenuItemForListOfFiles(0);
 
-                        } else {
-                            $categoryId = $this->helper->getCategoryIdFromFileId($id);
-
-                            $categoryMenu = $this->helper->getMenuItemForListOfFiles($categoryId)
-                                ?: $this->helper->getMenuItemForListOfFiles(0);
-                            if ($categoryMenu) {
-                                $viewItemid = $categoryMenu->id;
-                            }
-                        }
-
-                        if ($itemId == ($viewItemid ?? 0)) {
-                            $itemId = null;
-                        }
-                        break;
-
-                    case 'downloads':
-                        $listMenu = $this->helper->getMenuItemForListOfFiles($id)
-                            ?: $this->helper->getMenuItemForListOfFiles(0);
-
-                        if ($listMenu) {
-                            $itemId = $listMenu->id;
-                        }
-                        break;
+                    if ($listMenu) {
+                        $itemId = $listMenu->id;
+                    }
                 }
 
             } elseif ($task && $id) {

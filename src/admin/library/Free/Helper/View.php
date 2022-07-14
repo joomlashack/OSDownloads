@@ -43,33 +43,44 @@ class View
      */
     public function buildCategoryBreadcrumbs($categoryId)
     {
+        $app          = Factory::getApplication();
+        $routing      = Factory::getPimpleContainer()->helperRoute;
+        $pathway      = $app->getPathway();
+        $itemId       = $app->input->getInt('Itemid');
+        $pathwayItems = $pathway->getPathway();
+
+        $lastItem = [];
+        parse_str(
+            parse_url(
+                end($pathwayItems)->link,
+                PHP_URL_QUERY
+            ),
+            $lastItem
+        );
+        if ($lastItem['id'] == $categoryId && $lastItem['Itemid'] == $itemId) {
+            // We're already on the required menu
+            return;
+        }
+
         $paths = [];
         $this->buildPath($paths, $categoryId);
 
-        $app       = Factory::getApplication();
-        $container = Factory::getPimpleContainer();
-
-        $pathway    = $app->getPathway();
-        $itemId     = $app->input->getInt('Itemid');
-        $countPaths = count($paths) - 1;
-
-        $pathwayList = $pathway->getPathway();
-
-        for ($i = $countPaths; $i >= 0; $i--) {
-            $link   = $container->helperRoute->getFileListRoute($paths[$i]->id, $itemId);
+        $paths = array_reverse($paths);
+        foreach ($paths as $path) {
+            $link   = $routing->getFileListRoute($path->id, $itemId);
             $route  = Route::_($link);
             $exists = false;
 
             // Check if the current category is already in the pathway, to ignore
-            foreach ($pathwayList as $item) {
-                if ($item->link === $link) {
+            foreach ($pathwayItems as $pathwayItem) {
+                if ($pathwayItem->link === $link) {
                     $exists = true;
                     break;
                 }
             }
 
             if (!$exists) {
-                $pathway->addItem($paths[$i]->title, $route);
+                $pathway->addItem($path->title, $route);
             }
         }
     }
@@ -88,7 +99,7 @@ class View
 
         if ($activeMenu = $container->app->getMenu()->getActive()) {
             $view = $activeMenu->query['view'] ?? null;
-            $id = $activeMenu->query['id'] ?? null;
+            $id   = $activeMenu->query['id'] ?? null;
             if ($view == 'item' && $id == $file->id) {
                 // Current menu is for this file
                 return;
@@ -111,8 +122,8 @@ class View
     /**
      * Build an inverse recurcive list of paths for categories' breadcrumbs.
      *
-     * @param array &$paths
-     * @param int    $categoryId
+     * @param object[] &$paths
+     * @param int       $categoryId
      */
     protected function buildPath(&$paths, $categoryId)
     {
@@ -131,7 +142,7 @@ class View
             ]);
         $category = $db->setQuery($query)->loadObject();
 
-        if (!empty($category)) {
+        if ($category) {
             $paths[] = $category;
 
             if ($category->parent_id) {

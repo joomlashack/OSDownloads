@@ -92,29 +92,18 @@ if (is_file($includePath) && include $includePath) {
         }
 
         /**
-         * Allow to set custom segments for routes.
-         *
-         * @param string[] $segments
-         */
-        protected function setCustomSegments(array $segments = [])
-        {
-            $params = ComponentHelper::getParams('com_osdownloads');
-
-            // Default values
-            $default = ['files' => $params->get('route_segment_files') ?: 'files'];
-
-            $this->customSegments = array_merge($default, $segments);
-        }
-
-        /**
          * Get a list of custom segments.
          *
          * @return string[]
          */
         protected function getCustomSegments(): array
         {
-            if (!isset($this->customSegments)) {
-                $this->setCustomSegments();
+            if ($this->customSegments === null) {
+                $params = ComponentHelper::getParams('com_osdownloads');
+
+                $this->customSegments = [
+                    'files' => $params->get('route_segment_files') ?: 'files'
+                ];
             }
 
             return $this->customSegments;
@@ -482,10 +471,8 @@ if (is_file($includePath) && include $includePath) {
                     break;
             }
 
-            if (
-                isset($this->customSegments['files'])
-                && $this->customSegments['files'] === $lastSegment
-            ) {
+            $listSegment = $this->getCustomSegments()['files'];
+            if ($listSegment === $lastSegment) {
                 $vars['view'] = 'downloads';
 
                 array_pop($segments);

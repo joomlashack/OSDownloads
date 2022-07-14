@@ -233,7 +233,6 @@ if (is_file($includePath) && include $includePath) {
             $segments = [];
 
             if ($view) {
-                // See if there is a menu for this view
                 $viewMenu = $this->helper->getMenuItemByQuery(
                     [
                         'view' => $view,
@@ -241,27 +240,14 @@ if (is_file($includePath) && include $includePath) {
                     ]
                 );
 
-                if (is_object($viewMenu)) {
+                if ($viewMenu) {
                     if ($viewMenu->query['id'] == $id) {
-                        $query = [
-                            'option' => $query['option'],
-                            'Itemid' => $viewMenu->id
-                        ];
+                        $query['Itemid'] = $viewMenu->id;
 
                         if (empty($task)) {
                             return [];
                         }
                     }
-
-                } elseif (is_array($viewMenu) && isset($viewMenu[$id])) {
-                    if ($viewMenu[$id]->query['id'] == $id) {
-                        $query['Itemid'] = $viewMenu[$id]->id;
-
-                        if (empty($task)) {
-                            return $segments;
-                        }
-                    }
-
                 }
             }
 

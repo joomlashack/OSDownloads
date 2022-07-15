@@ -355,13 +355,31 @@ if (is_file($includePath) && include $includePath) {
             $parts  = $query;
 
             if ($view) {
-                if ($view == 'downloads') {
-                    $listMenu = $this->helper->getMenuItemForListOfFiles($id)
-                        ?: $this->helper->getMenuItemForListOfFiles(0);
+                switch ($view) {
+                    case 'item':
+                        if (empty($itemId)) {
+                            // Try to find a menu
+                            $menu = $this->helper->getMenuItemForFile($id);
+                            if (empty($menu)) {
+                                if ($category = $this->helper->getCategoryFromFileId($id)) {
+                                    $menu = $this->helper->getMenuItemForCategoryTreeRecursively($category->id);
+                                }
+                            }
+                            if ($menu) {
+                                $itemId = $menu->id;
+                            }
+                        }
+                        break;
 
-                    if ($listMenu) {
-                        $itemId = $listMenu->id;
-                    }
+                    case 'downloads':
+                        $listMenu = $this->helper->getMenuItemForListOfFiles($id)
+                            ?: $this->helper->getMenuItemForListOfFiles(0);
+
+                        if ($listMenu) {
+                            $itemId = $listMenu->id;
+                        }
+                        break;
+
                 }
 
             } elseif ($task && $id) {

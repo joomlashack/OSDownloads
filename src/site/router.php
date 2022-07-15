@@ -380,6 +380,12 @@ if (is_file($includePath) && include $includePath) {
                         }
                         break;
 
+                    case 'categories':
+                        if ($menu = $this->helper->getMenuItemForCategoryTreeRecursively($id)) {
+                            $itemId = $menu->id;
+                        }
+                        break;
+
                 }
 
             } elseif ($task && $id) {

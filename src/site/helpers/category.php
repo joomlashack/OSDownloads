@@ -21,23 +21,16 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Joomla\CMS\Categories\Categories;
+
 defined('_JEXEC') or die();
 
-/**
- * Contact Component Category Tree
- *
- * @since  1.6
- */
-class OsdownloadsCategories extends JCategories
+class OsdownloadsCategories extends Categories
 {
-	/**
-	 * Class constructor
-	 *
-	 * @param   array  $options  Array of options
-	 *
-	 * @since   1.6
-	 */
-	public function __construct($options = array())
+    /**
+     * @inheritDoc
+     */
+	public function __construct($options = [])
 	{
 		$options['table']      = '#__osdownloads_documents';
 		$options['extension']  = 'com_osdownloads';

@@ -232,6 +232,9 @@ if (is_file($includePath) && include $includePath) {
                 if ($viewMenu) {
                     if ($viewMenu->query['id'] == $id) {
                         $query['Itemid'] = $viewMenu->id;
+                        if (empty($id)) {
+                            unset($query['id']);
+                        }
 
                         if (empty($task)) {
                             return [];

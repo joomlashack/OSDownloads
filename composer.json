@@ -31,5 +31,8 @@
         "ext-openssl"           : "*",
         "pimple/pimple"         : "^3.5",
         "pacely/mailchimp-apiv3": "^1.0"
+    },
+    "replace": {
+        "psr/container": "^1.1 || ^2.0"
     }
 }

@@ -23,13 +23,13 @@
         "vendor-dir": "src/admin/vendor"
     },
     "require"          : {
-        "php"                     : ">=7.2.5",
-        "ext-curl"                : "*",
-        "ext-fileinfo"            : "*",
-        "ext-simplexml"           : "*",
-        "ext-json"                : "*",
-        "ext-openssl"             : "*",
-        "pimple/pimple"           : "^3.5",
-        "pacely/mailchimp-apiv3"  : "^1.0"
+        "php"                   : ">=7.2.5",
+        "ext-curl"              : "*",
+        "ext-fileinfo"          : "*",
+        "ext-simplexml"         : "*",
+        "ext-json"              : "*",
+        "ext-openssl"           : "*",
+        "pimple/pimple"         : "^3.5",
+        "pacely/mailchimp-apiv3": "^1.0"
     }
 }

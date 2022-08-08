@@ -33,6 +33,6 @@
         "pacely/mailchimp-apiv3": "^1.0"
     },
     "replace": {
-        "psr/container": "^1.1 || ^2.0"
+        "psr/container": "*"
     }
 }

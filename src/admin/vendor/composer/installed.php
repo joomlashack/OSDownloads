@@ -3,7 +3,7 @@
         'name' => 'joomlashack/osdownloads',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'c03dffc069065b8f97bee5ca5e90833284d74e17',
+        'reference' => 'eed3688304c452c43b363f4a0287f54e91bf8d02',
         'type' => 'joomla-component',
         'install_path' => __DIR__ . '/../../../../',
         'aliases' => array(),
@@ -67,16 +67,16 @@
         'joomlashack/osdownloads' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'c03dffc069065b8f97bee5ca5e90833284d74e17',
+            'reference' => 'eed3688304c452c43b363f4a0287f54e91bf8d02',
             'type' => 'joomla-component',
             'install_path' => __DIR__ . '/../../../../',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
         'nesbot/carbon' => array(
-            'pretty_version' => '2.60.0',
-            'version' => '2.60.0.0',
-            'reference' => '00a259ae02b003c563158b54fb6743252b638ea6',
+            'pretty_version' => '2.61.0',
+            'version' => '2.61.0.0',
+            'reference' => 'bdf4f4fe3a3eac4de84dbec0738082a862c68ba6',
             'type' => 'library',
             'install_path' => __DIR__ . '/../nesbot/carbon',
             'aliases' => array(),
@@ -103,7 +103,7 @@
         'psr/container' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => '^1.1 || ^2.0',
+                0 => '*',
             ),
         ),
         'psr/http-message' => array(

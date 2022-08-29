@@ -43,44 +43,47 @@ class View
      */
     public function buildCategoryBreadcrumbs($categoryId)
     {
-        $app          = Factory::getApplication();
-        $routing      = Factory::getPimpleContainer()->helperRoute;
-        $pathway      = $app->getPathway();
-        $itemId       = $app->input->getInt('Itemid');
+        $app     = Factory::getApplication();
+        $pathway = $app->getPathway();
+
         $pathwayItems = $pathway->getPathway();
+        if ($pathwayItems) {
+            $routing = Factory::getPimpleContainer()->helperRoute;
+            $itemId  = $app->input->getInt('Itemid');
 
-        $lastItem = [];
-        parse_str(
-            parse_url(
-                end($pathwayItems)->link,
-                PHP_URL_QUERY
-            ),
-            $lastItem
-        );
-        if ($lastItem['id'] == $categoryId && $lastItem['Itemid'] == $itemId) {
-            // We're already on the required menu
-            return;
-        }
-
-        $paths = [];
-        $this->buildPath($paths, $categoryId);
-
-        $paths = array_reverse($paths);
-        foreach ($paths as $path) {
-            $link   = $routing->getFileListRoute($path->id, $itemId);
-            $route  = Route::_($link);
-            $exists = false;
-
-            // Check if the current category is already in the pathway, to ignore
-            foreach ($pathwayItems as $pathwayItem) {
-                if ($pathwayItem->link === $link) {
-                    $exists = true;
-                    break;
-                }
+            $lastItem = [];
+            parse_str(
+                parse_url(
+                    end($pathwayItems)->link,
+                    PHP_URL_QUERY
+                ),
+                $lastItem
+            );
+            if ($lastItem['id'] == $categoryId && $lastItem['Itemid'] == $itemId) {
+                // We're already on the required menu
+                return;
             }
 
-            if (!$exists) {
-                $pathway->addItem($path->title, $route);
+            $paths = [];
+            $this->buildPath($paths, $categoryId);
+
+            $paths = array_reverse($paths);
+            foreach ($paths as $path) {
+                $link   = $routing->getFileListRoute($path->id, $itemId);
+                $route  = Route::_($link);
+                $exists = false;
+
+                // Check if the current category is already in the pathway, to ignore
+                foreach ($pathwayItems as $pathwayItem) {
+                    if ($pathwayItem->link === $link) {
+                        $exists = true;
+                        break;
+                    }
+                }
+
+                if (!$exists) {
+                    $pathway->addItem($path->title, $route);
+                }
             }
         }
     }

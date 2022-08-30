@@ -48,6 +48,7 @@ class OSDownloadsModelFile extends AdminModel
 
     /**
      * @inheritDoc
+     * @throws Exception
      */
     public function getForm($data = [], $loadData = true)
     {
@@ -181,6 +182,7 @@ class OSDownloadsModelFile extends AdminModel
             }
 
         } catch (Throwable $e) {
+            $this->setError($e->getMessage());
             return false;
         }
 
@@ -242,14 +244,14 @@ class OSDownloadsModelFile extends AdminModel
         $files = $app->input->files->get('jform', [], 'raw');
 
         if (empty($files['file_path_upload'])) {
-            return;
+            throw new Exception(Text::_('COM_OSDOWNLOADS_UPLOAD_ERR_EMPTY_FIELD'));
         }
 
         $upload = new Registry($files['file_path_upload']);
 
         $uploadError = $upload->get('error');
         if ($uploadError == UPLOAD_ERR_NO_FILE) {
-            return;
+            throw New Exception(Text::_('COM_OSDOWNLOADS_UPLOAD_ERR_NO_FILE'));
 
         } elseif ($uploadError != UPLOAD_ERR_OK) {
             if (isset($this->uploadErrors[$uploadError])) {

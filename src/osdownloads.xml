@@ -7,8 +7,8 @@
     <copyright>Copyright 2022 Joomlashack.com</copyright>
     <license>GNU GPL; see LICENSE file</license>
     <description>COM_OSDOWNLOADS_DESCRIPTION</description>
-    <version>2.2.2b1</version>
-    <creationDate>August 29 2022</creationDate>
+    <version>2.2.2</version>
+    <creationDate>September 12 2022</creationDate>
     <variant>FREE</variant>
 
     <scriptfile>script.installer.php</scriptfile>

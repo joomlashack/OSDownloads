@@ -48,6 +48,7 @@ class OSDownloadsModelFile extends AdminModel
 
     /**
      * @inheritDoc
+     * @throws Exception
      */
     public function getForm($data = [], $loadData = true)
     {
@@ -181,6 +182,7 @@ class OSDownloadsModelFile extends AdminModel
             }
 
         } catch (Throwable $e) {
+            $this->setError($e->getMessage());
             return false;
         }
 
@@ -240,16 +242,26 @@ class OSDownloadsModelFile extends AdminModel
     {
         $app   = Factory::getApplication();
         $files = $app->input->files->get('jform', [], 'raw');
+        $upload = new Registry($files['file_path_upload']);
 
-        if (empty($files['file_path_upload'])) {
+        $fileName = $upload->get('name');
+        if (empty($fileName)) {
+            if (empty($data['file_path'])) {
+                if (isset($files['file_path_upload']['name'])) {
+                    $error = 'COM_OSDOWNLOADS_UPLOAD_ERR_REQUIRED';
+                } else {
+                    $error = 'COM_OSDOWNLOADS_UPLOAD_ERR_EMPTY_FIELD';
+                }
+
+                throw new Exception(Text::_($error));
+            }
+
             return;
         }
 
-        $upload = new Registry($files['file_path_upload']);
-
         $uploadError = $upload->get('error');
         if ($uploadError == UPLOAD_ERR_NO_FILE) {
-            return;
+            throw New Exception(Text::_('COM_OSDOWNLOADS_UPLOAD_ERR_NO_FILE'));
 
         } elseif ($uploadError != UPLOAD_ERR_OK) {
             if (isset($this->uploadErrors[$uploadError])) {
@@ -262,7 +274,7 @@ class OSDownloadsModelFile extends AdminModel
             throw new Exception($errorMessage);
         }
 
-        if ($fileName = File::makeSafe($upload->get('name'))) {
+        if ($fileName = File::makeSafe($fileName)) {
             if (!is_dir($this->uploadDir)) {
                 if (is_file($this->uploadDir)) {
                     throw new Exception(Text::_('COM_OSDOWNLOADS_UPLOAD_ERR_FILESYSTEM'));

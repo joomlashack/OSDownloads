@@ -22,22 +22,23 @@
  */
 
 use Alledia\OSDownloads\Factory;
-use Alledia\OSDownloads\Free\Joomla\Plugin\Content as FreePlugin;
-use Alledia\OSDownloads\Pro\Joomla\Plugin\Content as ProPlugin;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+
 
 $includePath = JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
 if (is_file($includePath) && include $includePath) {
     if (Factory::getExtension()->isPro()) {
-        class PlgContentOsdownloads extends ProPlugin
-        {
+        class_alias('\\Alledia\\OSDownloads\\Pro\\Joomla\\Plugin\\Content', 'DownloadsPlugin');
 
-        }
     } else {
-        class PlgContentOsdownloads extends FreePlugin
-        {
+        class_alias('\\Alledia\\OSDownloads\\Free\\Joomla\\Plugin\\Content', 'DownloadsPlugin');
+    }
 
-        }
+    class PlgContentOsdownloads extends DownloadsPlugin
+    {
+
     }
 }

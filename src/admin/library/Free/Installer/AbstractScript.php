@@ -94,8 +94,7 @@ class AbstractScript extends \Alledia\Installer\AbstractScript
 
             $row->setLocation($data['parent_id'], 'last-child');
             $row->bind($data);
-            if ($row->check()) {
-                $row->store();
+            if ($row->store()) {
                 $row->rebuildPath();
                 $this->sendMessage(Text::_('COM_OSDOWNLOADS_INSTALL_GENERAL_CATEGORY_CREATED'));
 

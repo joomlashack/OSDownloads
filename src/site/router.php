@@ -608,7 +608,7 @@ if (is_file($includePath) && include $includePath) {
         public function parseProcessAfter(Router $router, Uri $uri)
         {
             // Kinda crazy but needed in Joomla 4
-            $uri->setPath(null);
+            $uri->setPath('');
         }
     }
 }

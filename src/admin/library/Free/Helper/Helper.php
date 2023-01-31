@@ -228,7 +228,7 @@ abstract class Helper
         PluginHelper::importPlugin('content');
 
         // Make compatible with content plugins
-        $item->text = null;
+        $item->text = '';
 
         Factory::getApplication()->triggerEvent(
             'onContentPrepare',

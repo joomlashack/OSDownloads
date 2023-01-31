@@ -23,9 +23,9 @@
 
 namespace Alledia\OSDownloads\Free\Joomla\Model;
 
-defined('_JEXEC') or die();
-
 use Joomla\CMS\MVC\Model\ListModel;
+
+defined('_JEXEC') or die();
 
 class Emails extends ListModel
 {

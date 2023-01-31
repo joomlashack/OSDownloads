@@ -23,8 +23,6 @@
 
 namespace Alledia\OSDownloads\Free\Joomla\View\Site;
 
-defined('_JEXEC') or die();
-
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Joomla\CMS\Application\SiteApplication;
@@ -32,6 +30,8 @@ use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
+
+defined('_JEXEC') or die();
 
 class Item extends Base
 {

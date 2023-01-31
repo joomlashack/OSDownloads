@@ -21,8 +21,6 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die();
-
 use Alledia\OSDownloads\Factory;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
@@ -32,6 +30,8 @@ use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Table\Table;
 use Joomla\Registry\Registry;
+
+defined('_JEXEC') or die();
 
 class OSDownloadsModelFile extends AdminModel
 {

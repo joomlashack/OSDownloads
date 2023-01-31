@@ -21,10 +21,9 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die();
-
 use Alledia\OSDownloads\Free\Joomla\Controller\Site as SiteController;
 
+defined('_JEXEC') or die();
 
 class OSDownloadsController extends SiteController
 {

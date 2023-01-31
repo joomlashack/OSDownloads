@@ -21,12 +21,12 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die();
-
 use Alledia\Framework\Joomla\View\Admin\AbstractForm;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+
+defined('_JEXEC') or die();
 
 class OSDownloadsViewFile extends AbstractForm
 {

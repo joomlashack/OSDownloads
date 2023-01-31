@@ -21,11 +21,11 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die();
-
 use Alledia\Framework\Joomla\Extension\Licensed;
 use Alledia\OSDownloads\Factory;
 use Joomla\CMS\MVC\Controller\FormController;
+
+defined('_JEXEC') or die();
 
 class OSDownloadsControllerFile extends FormController
 {

@@ -23,13 +23,13 @@
 
 namespace Alledia\OSDownloads\Free\Joomla\Module;
 
-defined('_JEXEC') or die();
-
 use Alledia\Framework\Joomla\Extension\AbstractFlexibleModule;
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Helper\Helper as FreeHelper;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Joomla\CMS\Form\Form;
+
+defined('_JEXEC') or die();
 
 class File extends AbstractFlexibleModule
 {

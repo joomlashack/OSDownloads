@@ -21,12 +21,12 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die();
-
 use Alledia\OSDownloads\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
+
+defined('_JEXEC') or die();
 
 HTMLHelper::_('bootstrap.tooltip');
 HTMLHelper::_('formbehavior.chosen', 'select');

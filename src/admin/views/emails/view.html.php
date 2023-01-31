@@ -25,7 +25,6 @@ use Alledia\OSDownloads\Free\Joomla\View\Admin\Emails as EmailsView;
 
 defined('_JEXEC') or die();
 
-
 class OSDownloadsViewEmails extends EmailsView
 {
 

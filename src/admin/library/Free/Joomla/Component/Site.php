@@ -23,10 +23,10 @@
 
 namespace Alledia\OSDownloads\Free\Joomla\Component;
 
-defined('_JEXEC') or die();
-
 use Alledia\Framework\Joomla\Extension\AbstractComponent;
 use Joomla\CMS\HTML\HTMLHelper;
+
+defined('_JEXEC') or die();
 
 class Site extends AbstractComponent
 {

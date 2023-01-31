@@ -21,8 +21,6 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die();
-
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Joomla\View\Site\Base as SiteViewBase;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -30,6 +28,8 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Router\Route;
+
+defined('_JEXEC') or die();
 
 class OSDownloadsViewDownloads extends SiteViewBase
 {

@@ -21,8 +21,6 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die();
-
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\File;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
@@ -30,6 +28,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Plugin\PluginHelper;
 
+defined('_JEXEC') or die();
 
 class OSDownloadsViewDownload extends HtmlView
 {

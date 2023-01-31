@@ -23,8 +23,6 @@
 
 namespace Alledia\OSDownloads\Free\Joomla\Table;
 
-defined('_JEXEC') or die();
-
 use Alledia\Framework\Joomla\Table\Base;
 use Alledia\OSDownloads\Factory;
 use JDatabaseDriver;
@@ -32,6 +30,8 @@ use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Registry\Registry;
+
+defined('_JEXEC') or die();
 
 class Item extends Base
 {

@@ -23,14 +23,14 @@
 
 namespace Alledia\OSDownloads\Free\Joomla\Model;
 
-defined('_JEXEC') or die();
-
 use Alledia\Framework\Joomla\Model\Base as BaseModel;
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Helper\Helper;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Joomla\CMS\Table\Table;
 use OsdownloadsTableEmail;
+
+defined('_JEXEC') or die();
 
 class Email extends BaseModel
 {

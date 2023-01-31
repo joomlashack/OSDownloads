@@ -23,14 +23,14 @@
 
 namespace Alledia\OSDownloads\Free\Joomla\Controller;
 
-defined('_JEXEC') or die();
-
 use Alledia\Framework\Joomla\Controller\Base as BaseController;
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Helper\Helper;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Language\Text;
+
+defined('_JEXEC') or die();
 
 class Site extends BaseController
 {

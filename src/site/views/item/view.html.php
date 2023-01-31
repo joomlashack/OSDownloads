@@ -21,9 +21,9 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die();
-
 use Alledia\OSDownloads\Free\Joomla\View\Site\Item as FreeItemView;
+
+defined('_JEXEC') or die();
 
 class OSDownloadsViewItem extends FreeItemView
 {

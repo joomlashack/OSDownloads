@@ -21,11 +21,11 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-defined('_JEXEC') or die();
-
 use Alledia\OSDownloads\Free\File;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+
+defined('_JEXEC') or die();
 
 $app = Factory::getApplication();
 

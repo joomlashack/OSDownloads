@@ -28,7 +28,10 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Plugin\PluginHelper;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+// phpcs:enable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 
 class OSDownloadsViewDownload extends HtmlView
 {
@@ -116,7 +119,7 @@ class OSDownloadsViewDownload extends HtmlView
             return;
         }
 
-        $this->contentType  = File::getContentTypeFromFileName($this->fileFullPath);
+        $this->contentType = File::getContentTypeFromFileName($this->fileFullPath);
 
         $model->incrementDownloadCount($id);
         parent::display($tpl);
@@ -128,7 +131,7 @@ class OSDownloadsViewDownload extends HtmlView
      * @return void
      * @throws Exception
      */
-    protected function displayError($message)
+    protected function displayError(string $message): void
     {
         Factory::getApplication()->enqueueMessage($message, 'error');
 

@@ -118,14 +118,8 @@ class OSDownloadsViewDownload extends HtmlView
 
         $this->contentType  = File::getContentTypeFromFileName($this->fileFullPath);
 
-        if ($this->checkMemory()) {
-            $model->incrementDownloadCount($id);
-            parent::display($tpl);
-
-            return;
-        }
-
-        $this->displayError(Text::_('COM_OSDOWNLOADS_ERROR_DOWNLOAD_TOO_BIG'));
+        $model->incrementDownloadCount($id);
+        parent::display($tpl);
     }
 
     /**
@@ -140,32 +134,5 @@ class OSDownloadsViewDownload extends HtmlView
 
         $this->setLayout('error');
         parent::display();
-    }
-
-    /**
-     * Try to make sure there is enough memory in the case of large files.
-     * If the file is too large, a zero-length file gets saved.
-     *
-     * @TODO: See if this is required for remote files
-     *
-     * @return bool
-     */
-    protected function checkMemory(): bool
-    {
-        if ($this->fileSize) {
-            $memoryLimit = ini_get('memory_limit');
-            if (preg_match('/(\d+)([a-z])/i', $memoryLimit, $memory)) {
-                $memory = $memory[1] * pow(2, stripos('-KMG', $memory[2]) * 10);
-            } else {
-                $memory = (int)ini_get('memory_limit');
-            }
-
-            if ($this->fileSize > $memory) {
-                ini_set('memory_limit', -1);
-                return (ini_get('memory_limit') == -1);
-            }
-        }
-
-        return true;
     }
 }

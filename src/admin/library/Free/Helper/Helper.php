@@ -134,37 +134,6 @@ abstract class Helper
     }
 
     /**
-     * Get the files the user has access to, filtering or not by the externalRef.
-     *
-     * @param ?int    $userId
-     * @param ?string $externalRef
-     *
-     * @return array
-     */
-    public static function getAuthorizedFilesForUser(?int $userId, ?string $externalRef = ''): array
-    {
-        // Flush any Access cache
-        Access::clearStatics();
-
-        $authorizedViewLevels = Access::getAuthorisedViewLevels($userId);
-        $authorizedViewLevels = implode(',', $authorizedViewLevels);
-
-        // Get the files the user has access to and external ref has the suffix .pro
-        $db    = Factory::getDbo();
-        $query = $db->getQuery(true)
-            ->select('*')
-            ->from('#__osdownloads_documents')
-            ->where("access IN ($authorizedViewLevels)");
-
-        if ($externalRef !== '') {
-            $query->where('external_ref LIKE "' . $externalRef . '"');
-        }
-        $db->setQuery($query);
-
-        return $db->loadObjectList();
-    }
-
-    /**
      * @param string $fileName
      * @param ?bool  $isUpload
      *

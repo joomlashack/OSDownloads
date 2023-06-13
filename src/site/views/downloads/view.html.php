@@ -79,13 +79,15 @@ class OSDownloadsViewDownloads extends SiteViewBase
             return $this->{$name};
         }
 
-        throw new InvalidArgumentException(
+        trigger_error(
             Text::sprintf(
                 'COM_OSDOWNLOADS_ERROR_INVALID_ARGUMENT',
                 get_class($this),
                 $name
             )
         );
+
+        return null;
     }
 
     protected function setup()

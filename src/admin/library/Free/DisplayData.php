@@ -24,7 +24,6 @@
 namespace Alledia\OSDownloads\Free;
 
 use Alledia\OSDownloads\Factory;
-use InvalidArgumentException;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
@@ -91,13 +90,15 @@ class DisplayData
             return $this->{$name};
         }
 
-        throw new InvalidArgumentException(
+        trigger_error(
             Text::sprintf(
                 'COM_OSDOWNLOADS_ERROR_INVALID_ARGUMENT',
                 get_class($this),
                 $name
             )
         );
+
+        return null;
     }
 
     /**

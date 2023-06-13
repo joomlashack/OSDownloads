@@ -29,11 +29,11 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Log\Log;
 use Joomla\CMS\Menu\MenuItem;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
 
-/**
- * OSDownloads Component Route Helper.
- */
+// phpcs:enable PSR1.Files.SideEffects
+
 class SEF
 {
     /**
@@ -64,14 +64,14 @@ class SEF
      *
      * @return int
      */
-    public function getCategoryIdFromFileId($fileId)
+    public function getCategoryIdFromFileId(int $fileId): int
     {
         $db = Factory::getDbo();
 
         $query = $db->getQuery(true)
             ->select('cate_id')
             ->from('#__osdownloads_documents')
-            ->where('id = ' . (int)$fileId);
+            ->where('id = ' . $fileId);
 
 
         $categoryId = $db->setQuery($query)->loadResult();
@@ -93,14 +93,17 @@ class SEF
     /**
      * Build the path to a category, considering the parent categories.
      *
-     * @param array  $categories
-     * @param int    $categoryId
-     * @param string $categorySegmentToSkip
+     * @param array   $categories
+     * @param int     $categoryId
+     * @param ?string $categorySegmentToSkip
      *
      * @return array
      */
-    public function buildCategoriesPath($categories, $categoryId, $categorySegmentToSkip = null)
-    {
+    public function buildCategoriesPath(
+        array $categories,
+        int $categoryId,
+        ?string $categorySegmentToSkip = null
+    ): array {
         if (empty($categoryId)) {
             return [];
         }
@@ -127,14 +130,17 @@ class SEF
      * Append the category path to the segments and return the new array
      * of segments
      *
-     * @param array  $segments
-     * @param int    $categoryId
-     * @param string $categorySegmentToSkip
+     * @param array   $segments
+     * @param int     $categoryId
+     * @param ?string $categorySegmentToSkip
      *
      * @return  array
      */
-    public function appendCategoriesToSegments($segments, $categoryId, $categorySegmentToSkip = null)
-    {
+    public function appendCategoriesToSegments(
+        array $segments,
+        int $categoryId,
+        ?string $categorySegmentToSkip = null
+    ): array {
         // Append the categories before the alias of the file
         $categories = $this->buildCategoriesPath([], $categoryId, $categorySegmentToSkip);
 
@@ -173,14 +179,14 @@ class SEF
      *
      * @return string
      */
-    public function getFileAlias($id)
+    public function getFileAlias(int $id): string
     {
         $db = Factory::getDbo();
 
         $query = $db->getQuery(true)
             ->select('alias')
             ->from('#__osdownloads_documents')
-            ->where('id = ' . $db->quote((int)$id));
+            ->where('id = ' . $db->quote($id));
 
         $alias = $db->setQuery($query)->loadResult();
 
@@ -201,8 +207,8 @@ class SEF
     /**
      * Return the file object from alias
      *
-     * @param string $alias
-     * @param string $path
+     * @param string  $alias
+     * @param ?string $path
      *
      * @return ?object
      */
@@ -267,20 +273,20 @@ class SEF
      *
      * @param int $id
      *
-     * @return object
+     * @return ?object
      */
-    public function getCategory($id)
+    public function getCategory(int $id): ?object
     {
         $db = Factory::getDbo();
 
         $query = $db->getQuery(true)
             ->select('*')
             ->from('#__categories')
-            ->where('id = ' . (int)$id);
+            ->where('id = ' . $id);
 
         $category = $db->setQuery($query)->loadObject();
 
-        if (!is_object($category)) {
+        if (empty($category)) {
             Log::add(
                 Text::sprintf(
                     'COM_OSDOWNLOADS_ERROR_CATEGORY_NOT_FOUND',
@@ -301,7 +307,7 @@ class SEF
      *
      * @return object[]
      */
-    public function getCategoriesFromAlias($alias)
+    public function getCategoriesFromAlias(string $alias): array
     {
         $db = Factory::getDbo();
 
@@ -324,7 +330,7 @@ class SEF
      *
      * @return ?object
      */
-    public function getCategoryFromAlias($alias, $path = null)
+    public function getCategoryFromAlias(string $alias, ?string $path = null): ?object
     {
         $categories = $this->getCategoriesFromAlias($alias);
 
@@ -340,7 +346,7 @@ class SEF
         }
 
         // Do we have only one file?
-        if (count($categories) === 1 || (empty($path) && !empty($categories))) {
+        if (count($categories) === 1 || (empty($path) && empty($categories) == false)) {
             return $categories[0];
         }
 
@@ -361,7 +367,7 @@ class SEF
      *
      * @return ?object
      */
-    public function getCategoryFromFileId($fileId)
+    public function getCategoryFromFileId(int $fileId): ?object
     {
         $categoryId = $this->getCategoryIdFromFileId($fileId);
 
@@ -371,11 +377,11 @@ class SEF
     /**
      * Returns the id found in the query of the link.
      *
-     * @param string link
+     * @param string $link
      *
-     * @return int|null
+     * @return ?int
      */
-    public function getIdFromLink($link)
+    public function getIdFromLink(string $link): ?int
     {
         $vars = [];
 
@@ -439,9 +445,9 @@ class SEF
      *
      * @return ?MenuItem
      */
-    public function getMenuItemForListOfFiles($categoryId)
+    public function getMenuItemForListOfFiles(int $categoryId): ?MenuItem
     {
-        if (!empty(static::$menuItemsById)) {
+        if (empty(static::$menuItemsById) == false) {
             foreach (static::$menuItemsById as $menu) {
                 $link = $this->container->helperRoute->getFileListRoute($categoryId);
 
@@ -461,7 +467,7 @@ class SEF
      *
      * @return ?object
      */
-    public function getMenuItemForFile($fileId)
+    public function getMenuItemForFile(int $fileId): ?object
     {
         if (!empty(static::$menuItemsById)) {
             foreach (static::$menuItemsById as $menu) {
@@ -512,7 +518,7 @@ class SEF
      *
      * @return ?MenuItem
      */
-    public function getMenuItemForCategoryTreeRecursively($categoryId)
+    public function getMenuItemForCategoryTreeRecursively(int $categoryId): ?MenuItem
     {
         // Is there a menu for the given category?
         $menu = $this->getMenuItemForListOfFiles($categoryId);

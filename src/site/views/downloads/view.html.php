@@ -29,7 +29,10 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Pagination\Pagination;
 use Joomla\CMS\Router\Route;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+// phpcs:enable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 
 class OSDownloadsViewDownloads extends SiteViewBase
 {
@@ -90,6 +93,9 @@ class OSDownloadsViewDownloads extends SiteViewBase
         return null;
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function setup()
     {
         parent::setup();

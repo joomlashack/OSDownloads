@@ -30,7 +30,9 @@ use Alledia\OSDownloads\MailingLists\Manager;
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\Database\DatabaseDriver;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+// phpcs:enable PSR1.Files.SideEffects
 
 /**
  * Class Container
@@ -83,11 +85,7 @@ class Container extends \Pimple\Container
      */
     public function __get(string $name)
     {
-        if (isset($this[$name])) {
-            return $this[$name];
-        }
-
-        return null;
+        return $this[$name] ?? null;
     }
 
     /**

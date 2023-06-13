@@ -36,7 +36,10 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Registry\Registry;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+
+// phpcs:enable PSR1.Files.SideEffects
 
 abstract class Helper
 {
@@ -46,7 +49,7 @@ abstract class Helper
      * @return void
      * @throws Exception
      */
-    public static function addSubmenu($vName)
+    public static function addSubmenu(string $vName): void
     {
         Sidebar::addEntry(
             Text::_('COM_OSDOWNLOADS_SUBMENU_FILES'),
@@ -94,12 +97,12 @@ abstract class Helper
      * plus signs in the email validation. The native PHP filter
      * doesn't support + in the email address, which is now allowed.
      *
-     * @param string $email
-     * @param bool   $acceptPlusSign
+     * @param ?string $email
+     * @param ?bool   $acceptPlusSign
      *
      * @return bool
      */
-    public static function validateEmail($email, $acceptPlusSign = true)
+    public static function validateEmail(?string $email, ?bool $acceptPlusSign = true): bool
     {
         if ($acceptPlusSign) {
             $pattern = '/^([a-z0-9_\-.+])+@([a-z0-9_\-.])+\.([a-z]{2,25})$/i';
@@ -113,14 +116,14 @@ abstract class Helper
     }
 
     /**
-     * Check if the path is a local path and exists. Otherwise it can means
+     * Check if the path is a local path and exists. Otherwise, it can mean
      * we have an external URL.
      *
-     * @param string $path
+     * @param ?string $path
      *
      * @return bool
      */
-    public static function isLocalPath($path)
+    public static function isLocalPath(?string $path): bool
     {
         if (empty($path) || preg_match('#^//|[a-z0-9]+?://#i', $path)) {
             return false;
@@ -133,12 +136,12 @@ abstract class Helper
     /**
      * Get the files the user has access to, filtering or not by the externalRef.
      *
-     * @param int    $userId
-     * @param string $externalRef
+     * @param ?int    $userId
+     * @param ?string $externalRef
      *
      * @return array
      */
-    public static function getAuthorizedFilesForUser($userId, $externalRef = '')
+    public static function getAuthorizedFilesForUser(?int $userId, ?string $externalRef = ''): array
     {
         // Flush any Access cache
         Access::clearStatics();
@@ -185,7 +188,7 @@ abstract class Helper
      * @return void
      * @throws Exception
      */
-    public static function prepareItem($item)
+    public static function prepareItem(object $item): void
     {
         if (!($item->params instanceof Registry)) {
             $item->params = new Registry($item->params);
@@ -217,7 +220,7 @@ abstract class Helper
         } else {
             $item->isLocal  = true;
             $item->realName = substr($item->file_path, strpos($item->file_path, '_') + 1);
-            $fileFullPath = static::getFullPath($item->file_path);
+            $fileFullPath   = static::getFullPath($item->file_path);
         }
 
         if ($item->isLocal && empty($fileFullPath) == false && is_file($fileFullPath)) {

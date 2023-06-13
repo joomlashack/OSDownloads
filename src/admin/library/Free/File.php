@@ -26,7 +26,9 @@ namespace Alledia\OSDownloads\Free;
 use Alledia\OSDownloads\Factory;
 use Joomla\CMS\Router\Route;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+// phpcs:enable PSR1.Files.SideEffects
 
 class File
 {
@@ -103,7 +105,7 @@ class File
         // Either not recognized or no extension
         // if a url, maybe we can get it from the http headers
         $headers = static::getHeaders($path);
-        if (!empty($headers['Content-Type'])) {
+        if (empty($headers['Content-Type']) == false) {
             return $headers['Content-Type'];
         }
 
@@ -120,7 +122,7 @@ class File
     public static function getHeaders(string $url): array
     {
         $key = md5($url);
-        if (!isset(static::$headers[$key])) {
+        if (isset(static::$headers[$key]) == false) {
             static::$headers[$key] = [];
             if (filter_var($url, FILTER_VALIDATE_URL) !== false) {
                 if (preg_match('#^(https?)://#i', $url, $schema)) {
@@ -163,16 +165,10 @@ class File
         }
 
         // May not be a local file, try file extension
-        $pathinfo = pathinfo($filename);
-        if (!empty($pathinfo['extension'])) {
-            $extension = $pathinfo['extension'];
-            if (!empty(static::$mimeTypes[$extension])) {
-                return static::$mimeTypes[$extension];
-            }
-        }
+        $pathInfo  = pathinfo($filename);
+        $extension = $pathInfo['extension'] ?? null;
 
-        // Unable to determine from file name
-        return null;
+        return static::$mimeTypes[$extension] ?? null;
     }
 
     /**

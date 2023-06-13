@@ -152,27 +152,6 @@ class SEF
     }
 
     /**
-     * Append menu path segments to the segments array, returning the new
-     * array of segments.
-     *
-     * @param string[] $segments
-     * @param MenuItem $menu
-     *
-     * @return array
-     */
-    public function appendMenuPathToSegments($segments, $menu)
-    {
-        if (is_array($segments) && isset($menu->path)) {
-            $segments = array_merge(
-                $segments,
-                explode('/', $menu->path)
-            );
-        }
-
-        return $segments;
-    }
-
-    /**
      * Returns the alias of a file based on the file id.
      *
      * @param int $id
@@ -247,22 +226,6 @@ class SEF
                     return $file;
                 }
             }
-        }
-
-        return null;
-    }
-
-    /**
-     * Returns the id of a file based on the file's alias.
-     *
-     * @param string $alias
-     *
-     * @return ?int
-     */
-    public function getFileIdFromAlias(string $alias): ?int
-    {
-        if ($file = $this->getFileFromAlias($alias)) {
-            return $file->id;
         }
 
         return null;
@@ -395,29 +358,6 @@ class SEF
     }
 
     /**
-     * Returns the last item of the array not considering empty items.
-     * Some routes, with trailing slash can produce an empty segment item,
-     * specially when using SEF Advance. The array is modified, having the
-     * last items removed.
-     *
-     * @param array $array
-     *
-     * @return mixed
-     */
-    public function getLastNoEmptyArrayItem(array &$array)
-    {
-        if (!empty($array)) {
-            $lastItem = array_pop($array);
-
-            if (empty($lastItem)) {
-                $lastItem = $this->getLastNoEmptyArrayItem($array);
-            }
-        }
-
-        return $lastItem ?? null;
-    }
-
-    /**
      * Get the list of menu items
      *
      * @return MenuItem[]
@@ -481,36 +421,6 @@ class SEF
     }
 
     /**
-     * Look for a menu item related to OSDownloads.
-     *
-     * @return array
-     */
-    public function getMenuItemsForComponent()
-    {
-        return static::$menuItemsById;
-    }
-
-    /**
-     * Look for a menu item based on the path
-     *
-     * @param string $path
-     *
-     * @return ?object
-     */
-    public function getMenuItemsFromPath($path)
-    {
-        if (!empty(static::$menuItemsById)) {
-            foreach (static::$menuItemsById as $menu) {
-                if ($menu->path === $path) {
-                    return $menu;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    /**
      * Look for a menu item related to the most close category up in the tree,
      * recursively, including the root category.
      *
@@ -538,22 +448,6 @@ class SEF
         }
 
         return $menu;
-    }
-
-    /**
-     * Get a menu item related to the component, by id.
-     *
-     * @param int $id
-     *
-     * @return object|bool
-     */
-    public function getMenuItemById($id)
-    {
-        if (!empty(static::$menuItemsById) && isset(static::$menuItemsById[$id])) {
-            return static::$menuItemsById[$id];
-        }
-
-        return false;
     }
 
     /**

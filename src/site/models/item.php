@@ -25,7 +25,7 @@ use Alledia\OSDownloads\Free\Joomla\Model\Item as ItemModel;
 
 defined('_JEXEC') or die();
 
-class OSDownloadsModelItem extends ItemModel
+class OsdownloadsModelItem extends ItemModel
 {
 
 }

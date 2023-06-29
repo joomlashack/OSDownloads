@@ -69,7 +69,7 @@ class Site extends BaseController
                 return false;
             }
 
-            /** @var \OSDownloadsModelEmail $modelEmail */
+            /** @var \OsdownloadsModelEmail $modelEmail */
             $modelEmail = $component->getModel('Email');
             if (!$modelEmail->insert($email, $item->id)) {
                 $app->input->set('layout', 'error_invalid_email');
@@ -118,7 +118,7 @@ class Site extends BaseController
         $component = FreeComponentSite::getInstance();
         $id        = $app->input->getInt('id');
 
-        /** @var \OSDownloadsModelItem $model */
+        /** @var \OsdownloadsModelItem $model */
         $model = $component->getModel('Item');
         $item  = $model->getItem($id);
 

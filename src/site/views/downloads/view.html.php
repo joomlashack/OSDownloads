@@ -100,7 +100,7 @@ class OSDownloadsViewDownloads extends SiteViewBase
     {
         parent::setup();
 
-        $model = BaseDatabaseModel::getInstance('Item', 'OSDownloadsModel');
+        $model = BaseDatabaseModel::getInstance('Item', 'OsdownloadsModel');
         $this->setModel($model, true);
     }
 

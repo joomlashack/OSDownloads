@@ -27,7 +27,7 @@ use Joomla\CMS\Table\Table;
 
 defined('_JEXEC') or die();
 
-class OSDownloadsModelFiles extends ListModel
+class OsdownloadsModelFiles extends ListModel
 {
     /**
      * @inheritDoc

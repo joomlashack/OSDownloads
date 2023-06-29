@@ -25,7 +25,7 @@ use Alledia\OSDownloads\Free\Joomla\Model\Email as EmailModel;
 
 defined('_JEXEC') or die();
 
-class OSDownloadsModelEmail extends EmailModel
+class OsdownloadsModelEmail extends EmailModel
 {
 
 }

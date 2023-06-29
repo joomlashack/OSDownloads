@@ -33,7 +33,7 @@ use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die();
 
-class OSDownloadsModelFile extends AdminModel
+class OsdownloadsModelFile extends AdminModel
 {
     protected $uploadDir = OSDOWNLOADS_MEDIA . '/files';
 
@@ -240,8 +240,8 @@ class OSDownloadsModelFile extends AdminModel
      */
     protected function uploadFile(&$data)
     {
-        $app   = Factory::getApplication();
-        $files = $app->input->files->get('jform', [], 'raw');
+        $app    = Factory::getApplication();
+        $files  = $app->input->files->get('jform', [], 'raw');
         $upload = new Registry($files['file_path_upload']);
 
         $fileName = $upload->get('name');
@@ -261,7 +261,7 @@ class OSDownloadsModelFile extends AdminModel
 
         $uploadError = $upload->get('error');
         if ($uploadError == UPLOAD_ERR_NO_FILE) {
-            throw New Exception(Text::_('COM_OSDOWNLOADS_UPLOAD_ERR_NO_FILE'));
+            throw new Exception(Text::_('COM_OSDOWNLOADS_UPLOAD_ERR_NO_FILE'));
 
         } elseif ($uploadError != UPLOAD_ERR_OK) {
             if (isset($this->uploadErrors[$uploadError])) {

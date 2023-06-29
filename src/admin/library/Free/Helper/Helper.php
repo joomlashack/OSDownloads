@@ -26,13 +26,13 @@ namespace Alledia\OSDownloads\Free\Helper;
 use Alledia\OSDownloads\Factory;
 use ContentHelperRoute;
 use Exception;
-use Joomla\CMS\Access\Access;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\HTML\Helpers\Sidebar;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Table\Table;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Registry\Registry;
 
@@ -164,13 +164,7 @@ abstract class Helper
         }
         $item->require_agree        = (bool)$item->require_agree;
         $item->agreement_article_id = (int)$item->agreement_article_id;
-
-        if ($item->require_agree && $item->agreement_article_id) {
-            $item->agreementLink = Route::_(ContentHelperRoute::getArticleRoute($item->agreement_article_id));
-
-        } else {
-            $item->agreementLink = '';
-        }
+        $item->agreementLink        = $item->require_agree ? static::getArticleLink($item->agreement_article_id) : '';
 
         $item->isLocal  = null;
         $item->realName = null;
@@ -234,5 +228,26 @@ abstract class Helper
     public static function getContexts(): array
     {
         return [];
+    }
+
+    /**
+     * @param ?int $articleId
+     * @param ?int $categoryId
+     *
+     * @return string
+     */
+    public static function getArticleLink(?int $articleId, ?int $categoryId = null): string
+    {
+        if ($articleId) {
+            if ($categoryId == false) {
+                $contentTable = Table::getInstance('Content');
+                $contentTable->load(['id' => $articleId]);
+                $categoryId = $contentTable->get('catid');
+            }
+
+            return Route::_(ContentHelperRoute::getArticleRoute($articleId, $categoryId));
+        }
+
+        return '';
     }
 }

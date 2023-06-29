@@ -22,12 +22,12 @@
  */
 
 use Alledia\OSDownloads\Factory;
+use Alledia\OSDownloads\Free\Helper\Helper;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
-use Joomla\CMS\Router\Route;
 use Joomla\CMS\Table\Table;
 use Joomla\Registry\Registry;
 
@@ -116,9 +116,7 @@ class OsdownloadsModelFile extends AdminModel
 
             $agreementRequired   = (bool)$item->get('require_agree');
             $agreementId         = (int)$item->get('agreement_article_id');
-            $item->agreementLink = ($agreementRequired && $agreementId)
-                ? Route::_(ContentHelperRoute::getArticleRoute($agreementId))
-                : '';
+            $item->agreementLink = $agreementRequired ? Helper::getArticleLink($agreementId) : '';
 
             $item->type = empty($item->file_url) ? 'upload' : 'url';
         }

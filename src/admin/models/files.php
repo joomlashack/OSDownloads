@@ -21,8 +21,8 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Alledia\OSDownloads\Free\Helper\Helper;
 use Joomla\CMS\MVC\Model\ListModel;
-use Joomla\CMS\Router\Route;
 use Joomla\CMS\Table\Table;
 
 defined('_JEXEC') or die();
@@ -58,10 +58,7 @@ class OsdownloadsModelFiles extends ListModel
         $items = parent::getItems();
         if (!empty($items[0]) && !isset($items[0]->agreementLink)) {
             foreach ($items as $item) {
-                $item->agreementLink = '';
-                if ($item->require_agree && $item->agreement_article_id) {
-                    $item->agreementLink = Route::_(ContentHelperRoute::getArticleRoute($item->agreement_article_id));
-                }
+                $item->agreementLink = $item->require_agree ? Helper::getArticleLink($item->agreement_article_id) : '';
             }
         }
 

@@ -22,12 +22,12 @@
  */
 
 use Alledia\OSDownloads\Factory;
+use Alledia\OSDownloads\Free\Helper\Helper;
 use Alledia\OSDownloads\Free\Joomla\View\Site\Base as SiteViewBase;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Pagination\Pagination;
-use Joomla\CMS\Router\Route;
 
 // phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
@@ -173,10 +173,7 @@ class OSDownloadsViewDownloads extends SiteViewBase
 
         $items = $db->loadObjectList();
         foreach ($items as $item) {
-            $item->agreementLink = '';
-            if ($item->require_agree) {
-                $item->agreementLink = Route::_(ContentHelperRoute::getArticleRoute($item->agreement_article_id));
-            }
+            $item->agreementLink = $item->require_agree ? Helper::getArticleLink($item->agreement_article_id) : '';
 
             $item->brief         = HTMLHelper::_('content.prepare', $item->brief);
             $item->description_1 = HTMLHelper::_('content.prepare', $item->description_1);

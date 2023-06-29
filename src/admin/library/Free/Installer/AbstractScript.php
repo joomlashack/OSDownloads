@@ -23,26 +23,31 @@
 
 namespace Alledia\OSDownloads\Free\Installer;
 
+use Alledia\Installer\AbstractScript as AllediaAbstractScript;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Category;
 use Joomla\CMS\Table\Extension;
 use Joomla\CMS\Table\Table;
 use Joomla\Registry\Registry;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
 
-$includePath = realpath(__DIR__ . '/../../../library/Installer/include.php');
-
+$includePath = realpath(__DIR__ . '/../../Installer/include.php');
 require_once $includePath;
 
-class AbstractScript extends \Alledia\Installer\AbstractScript
+// phpcs:enable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+
+class AbstractScript extends AllediaAbstractScript
 {
     /**
      * @inheritDoc
      */
-    protected function customPostFlight($type, $parent)
+    protected function customPostFlight(string $type, InstallerAdapter $parent): void
     {
         if ($type != 'uninstall') {
             $include = JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
@@ -308,7 +313,7 @@ class AbstractScript extends \Alledia\Installer\AbstractScript
      *
      * @return array
      */
-    protected function getParameterChangeMap()
+    protected function getParameterChangeMap(): array
     {
         return [
             'connect_mailchimp' => 'mailinglist.mailchimp.enable',

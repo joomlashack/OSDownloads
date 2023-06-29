@@ -31,7 +31,10 @@ use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
 use Joomla\Registry\Registry;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+// phpcs:enable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 
 class OsdownloadsModelFile extends AdminModel
 {
@@ -236,7 +239,7 @@ class OsdownloadsModelFile extends AdminModel
      * @return void
      * @throws Exception
      */
-    protected function uploadFile(&$data)
+    protected function uploadFile(array &$data): void
     {
         $app    = Factory::getApplication();
         $files  = $app->input->files->get('jform', [], 'raw');
@@ -245,10 +248,11 @@ class OsdownloadsModelFile extends AdminModel
         $fileName = $upload->get('name');
         if (empty($fileName)) {
             if (empty($data['file_path'])) {
-                if (isset($files['file_path_upload']['name'])) {
-                    $error = 'COM_OSDOWNLOADS_UPLOAD_ERR_REQUIRED';
-                } else {
+                if (empty($files['file_path_upload']['name'])) {
                     $error = 'COM_OSDOWNLOADS_UPLOAD_ERR_EMPTY_FIELD';
+
+                } else {
+                    $error = 'COM_OSDOWNLOADS_UPLOAD_ERR_REQUIRED';
                 }
 
                 throw new Exception(Text::_($error));

@@ -33,8 +33,8 @@
                     animation      = $this.data('animation'),
                     popupElementId = prefix + '_popup',
                     $popup         = $('#' + popupElementId),
-                    $btnContinue   = $popup.find('.osdownloads-continue-button'),
-                    $form          = $popup.find('form');
+                    $btnContinue   = $('.osdownloads-continue-button', $popup),
+                    $form          = $('form', $popup);
 
                 if ($popup.length !== 1 && $form.length !== 1) {
                     return;
@@ -89,9 +89,22 @@
                     event.preventDefault();
                     event.stopPropagation();
 
-                    $btnContinue.prop('href', $this.prop('href'));
-
                     if ($btnContinue.length && $form[0].elements.length) {
+                        let $agreeGroup = $('.osdownloads-group-agree', $popup),
+                            agreeLink   = $this.data('agreement-article');
+
+                        if ($agreeGroup.length) {
+                            if (agreeLink) {
+                                $agreeGroup.show();
+                                $('a.agreement-article', $agreeGroup).prop('href', agreeLink);
+
+                            } else {
+                                $agreeGroup.hide();
+                            }
+                        }
+
+                        $btnContinue.prop('href', $this.data('agreement-article'));
+
                         showPopup('#' + popupElementId);
 
                         $popup.on(

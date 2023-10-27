@@ -40,7 +40,7 @@ class Item extends Base
      */
     protected $_columnAlias = [
         'title' => 'name',
-        'catid' => 'cate_id'
+        'catid' => 'cate_id',
     ];
 
     /**

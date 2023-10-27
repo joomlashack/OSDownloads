@@ -23,13 +23,17 @@
 
 namespace Alledia\OSDownloads\Free\Joomla\Table;
 
-use Alledia\Framework\Joomla\Table\Base as BaseTable;
+use Alledia\Framework\Joomla\AbstractTable;
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\MailingLists\AbstractClient;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
 
-class Email extends BaseTable
+// phpcs:enable PSR1.Files.SideEffects
+// phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
+
+class Email extends AbstractTable
 {
     /**
      * @var AbstractClient[]
@@ -58,7 +62,7 @@ class Email extends BaseTable
         $pluginResults = $app->triggerEvent('onOSDownloadsBeforeSaveEmail', [$this]);
 
         $result = false;
-        if (!in_array(false, $pluginResults, true)) {
+        if (in_array(false, $pluginResults, true) == false) {
             $result = parent::store($updateNulls);
         }
 
@@ -78,7 +82,7 @@ class Email extends BaseTable
         $pluginResults = $app->triggerEvent('onOSDownloadsBeforeDeleteEmail', [$this, $pk]);
 
         $result = false;
-        if (!in_array(false, $pluginResults, true)) {
+        if (in_array(false, $pluginResults, true) == false) {
             $result = parent::delete($pk);
 
             $app->triggerEvent('onOSDownloadsAfterDeleteEmail', [$result, $this->get('id'), $pk]);

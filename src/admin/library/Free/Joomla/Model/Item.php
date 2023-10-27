@@ -40,9 +40,10 @@ class Item extends BaseDatabaseModel
      * @param int $documentId
      *
      * @return object
+     *
      * @throws \Exception
      */
-    public function getItem($documentId)
+    public function getItem(int $documentId): object
     {
         $db    = $this->getDbo();
         $query = $this->getItemQuery($documentId);
@@ -98,12 +99,12 @@ class Item extends BaseDatabaseModel
                 'cat.published = 1',
                 'doc.published = 1',
                 'doc.access IN (' . implode(',', $groups) . ')',
-                'cat.access IN (' . implode(',', $groups) . ')'
+                'cat.access IN (' . implode(',', $groups) . ')',
             ])
             ->order($db->quoteName($filterOrder) . ' ' . $filterOrderDir);
 
-        if (!empty($documentId)) {
-            $query->where('doc.id = ' . $db->quote((int)$documentId));
+        if ($documentId) {
+            $query->where('doc.id = ' . $documentId);
         }
 
         if ($component->isFree()) {

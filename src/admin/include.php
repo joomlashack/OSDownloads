@@ -54,6 +54,8 @@ if (defined('ALLEDIA_FRAMEWORK_LOADED') && defined('OSDOWNLOADS_LOADED') == fals
     if (Version::MAJOR_VERSION < 4) {
         // Joomla 3 shims
         JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
+        class_alias('\\JDatabaseQuery', '\\Joomla\\Database\\DatabaseQuery');
+        class_alias('\\JDatabaseDriver', '\\Joomla\\Database\\DatabaseDrive');
     }
 
     switch (Factory::getApplication()->getName()) {

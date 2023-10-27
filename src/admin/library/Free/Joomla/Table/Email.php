@@ -26,6 +26,7 @@ namespace Alledia\OSDownloads\Free\Joomla\Table;
 use Alledia\Framework\Joomla\AbstractTable;
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\MailingLists\AbstractClient;
+use Joomla\Database\DatabaseDriver;
 
 // phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
@@ -42,7 +43,7 @@ class Email extends AbstractTable
 
     /**
      * @inheritDoc
-     * @param \JDatabaseDriver $db
+     * @param DatabaseDriver $db
      */
     public function __construct($db)
     {

@@ -26,9 +26,8 @@ namespace Alledia\OSDownloads\Free\Joomla\Model;
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Helper\Helper as FreeHelper;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeSite;
-use JDatabaseQuery;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-use Joomla\Database\QueryInterface;
+use Joomla\Database\DatabaseQuery;
 
 // phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
@@ -65,10 +64,10 @@ class Item extends BaseDatabaseModel
      *
      * @param ?int $documentId
      *
-     * @return JDatabaseQuery|QueryInterface
+     * @return DatabaseQuery
      * @throws \Exception
      */
-    public function getItemQuery(?int $documentId = null)
+    public function getItemQuery(?int $documentId = null): DatabaseQuery
     {
         $app       = Factory::getApplication();
         $db        = $this->getDbo();

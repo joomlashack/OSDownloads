@@ -25,7 +25,6 @@ namespace Alledia\OSDownloads\Free\Joomla\Table;
 
 use Alledia\Framework\Joomla\Table\Base;
 use Alledia\OSDownloads\Factory;
-use JDatabaseDriver;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -46,7 +45,7 @@ class Item extends Base
     /**
      * @inheritDoc
      */
-    public function __construct(JDatabaseDriver $_db)
+    public function __construct(&$_db)
     {
         parent::__construct('#__osdownloads_documents', 'id', $_db);
     }

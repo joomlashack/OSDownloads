@@ -163,6 +163,10 @@
             <extension type="plugin"
                        group="search"
                        element="osdownloads"/>
+
+            <extension type="plugin"
+                       group="finder"
+                       element="osdownloads"/>
             <!-- End Clear pro related extensions -->
 
             <extension type="plugin"

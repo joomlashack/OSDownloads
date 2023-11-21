@@ -23,19 +23,22 @@
 
 use Joomla\CMS\Categories\Categories;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+// phpcs:enable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 
 class OsdownloadsCategories extends Categories
 {
     /**
      * @inheritDoc
      */
-	public function __construct($options = [])
-	{
-		$options['table']      = '#__osdownloads_documents';
-		$options['extension']  = 'com_osdownloads';
-		$options['statefield'] = 'published';
+    public function __construct($options = [])
+    {
+        $options['table']      = '#__osdownloads_documents';
+        $options['extension']  = 'com_osdownloads';
+        $options['statefield'] = 'published';
 
-		parent::__construct($options);
-	}
+        parent::__construct($options);
+    }
 }

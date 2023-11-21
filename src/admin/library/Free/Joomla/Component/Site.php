@@ -26,23 +26,34 @@ namespace Alledia\OSDownloads\Free\Joomla\Component;
 use Alledia\Framework\Joomla\Extension\AbstractComponent;
 use Joomla\CMS\HTML\HTMLHelper;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+
+// phpcs:enable PSR1.Files.SideEffects
 
 class Site extends AbstractComponent
 {
+    /**
+     * @var self
+     */
     protected static $instance;
 
+    /**
+     * @var string
+     */
     protected $version = 'auto';
 
     /**
      * @inheritDoc
-     * @return self
      */
     public static function getInstance($namespace = null)
     {
         return parent::getInstance('OSDownloads');
     }
 
+    /**
+     * @inheritDoc
+     */
     public function init()
     {
         $options = ['version' => $this->getMediaVersion(), 'relative' => true];
@@ -52,7 +63,10 @@ class Site extends AbstractComponent
         parent::init();
     }
 
-    public function getMediaVersion()
+    /**
+     * @return string
+     */
+    public function getMediaVersion(): string
     {
         if ('auto' === $this->version) {
             $manifest = $this->getManifest();

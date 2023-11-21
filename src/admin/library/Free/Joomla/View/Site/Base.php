@@ -29,15 +29,14 @@ use Exception;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+// phpcs:enable PSR1.Files.SideEffects
 
 class Base extends AbstractBase
 {
     /**
-     * @param string $tpl
-     *
-     * @return void
-     * @throws Exception
+     * @inheritDoc
      */
     public function display($tpl = null)
     {

@@ -39,6 +39,5 @@ if (is_file($includePath) && include $includePath) {
 
     class PlgContentOsdownloads extends DownloadsPlugin
     {
-
     }
 }

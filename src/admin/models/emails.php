@@ -21,16 +21,19 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Alledia\OSDownloads\Joomla\Model\Emails;
+
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+// phpcs:enable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 
 if (class_exists('\\Alledia\\OSDownloads\\Pro\\Joomla\\Model\\Emails')) {
-    class OsdownloadsModelEmails extends Alledia\OSDownloads\Pro\Joomla\Model\Emails
-    {
-
-    }
+    class_alias('\\Alledia\\OSDownloads\\Pro\\Joomla\\Model\\Emails', '\\Alledia\\OSDownloads\\Joomla\\Model\\Emails');
 } else {
-    class OsdownloadsModelEmails extends Alledia\OSDownloads\Free\Joomla\Model\Emails
-    {
+    class_alias('\\Alledia\\OSDownloads\\Free\\Joomla\\Model\\Emails', '\\Alledia\\OSDownloads\\Joomla\\Model\\Emails');
+}
 
-    }
+class OsdownloadsModelEmails extends Emails
+{
 }

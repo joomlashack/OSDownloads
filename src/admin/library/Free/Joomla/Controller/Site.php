@@ -30,7 +30,9 @@ use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Joomla\CMS\Application\SiteApplication;
 use Joomla\CMS\Language\Text;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+// phpcs:enable PSR1.Files.SideEffects
 
 class Site extends BaseController
 {
@@ -89,7 +91,7 @@ class Site extends BaseController
      * @return bool
      * @throws \Exception
      */
-    protected function processRequirements($item)
+    protected function processRequirements(object $item): bool
     {
         if ($item->require_agree == 1) {
             $app = Factory::getApplication();
@@ -112,7 +114,7 @@ class Site extends BaseController
      * @return void
      * @throws \Exception
      */
-    public function routedownload()
+    public function routedownload(): void
     {
         $app       = Factory::getApplication();
         $component = FreeComponentSite::getInstance();
@@ -139,7 +141,7 @@ class Site extends BaseController
      * @return void
      * @throws \Exception
      */
-    public function download()
+    public function download(): void
     {
         $app = Factory::getApplication();
 

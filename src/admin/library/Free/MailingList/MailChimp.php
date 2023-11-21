@@ -29,13 +29,11 @@ use Joomla\CMS\Table\Table;
 use Joomla\Event\Dispatcher;
 use Joomla\Event\Event;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
 
-/**
- * Class MailChimp
- *
- * @package Alledia\OSDownloads\Free\MailingList
- */
+// phpcs:enable PSR1.Files.SideEffects
+
 class MailChimp extends AbstractClient
 {
     /**
@@ -46,7 +44,7 @@ class MailChimp extends AbstractClient
     /**
      * @inheritDoc
      */
-    protected function registerObservers()
+    protected function registerObservers(): void
     {
         $dispatcher = Factory::getDispatcher();
 
@@ -64,7 +62,7 @@ class MailChimp extends AbstractClient
      *
      * @return void
      */
-    public function onAfterStore(bool $result, Table $table)
+    public function onAfterStore(bool $result, Table $table): void
     {
         if ($result && static::isEnabled()) {
             try {
@@ -86,7 +84,7 @@ class MailChimp extends AbstractClient
                         // The email is not subscribed. Let's subscribe it.
                         $mc->post("lists/{$listId}/members/", [
                             'email_address' => $email,
-                            'status'        => 'subscribed'
+                            'status'        => 'subscribed',
                         ]);
                     }
                 }
@@ -99,8 +97,10 @@ class MailChimp extends AbstractClient
 
     /**
      * @param Event $event
+     *
+     * @return void
      */
-    public function onTableAfterStore(Event $event)
+    public function onTableAfterStore(Event $event): void
     {
         if ($event->count() == 2) {
             $result = $event->getArgument(0);

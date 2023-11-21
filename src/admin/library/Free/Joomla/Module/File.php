@@ -29,7 +29,10 @@ use Alledia\OSDownloads\Free\Helper\Helper as FreeHelper;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Joomla\CMS\Form\Form;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+
+// phpcs:enable PSR1.Files.SideEffects
 
 class File extends AbstractFlexibleModule
 {
@@ -52,9 +55,19 @@ class File extends AbstractFlexibleModule
     ];
 
     /**
+     * @var int
+     */
+    public $itemId = null;
+
+    /**
      * @var object[]
      */
     protected $list = null;
+
+    /**
+     * @var object
+     */
+    public $item = null;
 
     /**
      * @var string

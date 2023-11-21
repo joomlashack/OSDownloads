@@ -26,11 +26,11 @@ namespace Alledia\OSDownloads\Free\Helper;
 use Alledia\OSDownloads\Factory;
 use Joomla\CMS\Router\Route;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+// phpcs:enable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 
-/**
- * OSDownloads View Helper.
- */
 class View
 {
     /**
@@ -41,7 +41,7 @@ class View
      * @return void
      * @throws \Exception
      */
-    public function buildCategoryBreadcrumbs($categoryId)
+    public function buildCategoryBreadcrumbs(int $categoryId): void
     {
         $app     = Factory::getApplication();
         $pathway = $app->getPathway();
@@ -81,7 +81,7 @@ class View
                     }
                 }
 
-                if (!$exists) {
+                if ($exists == false) {
                     $pathway->addItem($path->title, $route);
                 }
             }
@@ -96,7 +96,7 @@ class View
      * @return void
      * @throws \Exception
      */
-    public function buildFileBreadcrumbs($file)
+    public function buildFileBreadcrumbs(object $file): void
     {
         $container = Factory::getPimpleContainer();
 
@@ -123,12 +123,14 @@ class View
     }
 
     /**
-     * Build an inverse recurcive list of paths for categories' breadcrumbs.
+     * Build an inverse recursive list of paths for categories' breadcrumbs.
      *
      * @param object[] &$paths
-     * @param int       $categoryId
+     * @param ?int       $categoryId
+     *
+     * @return void
      */
-    protected function buildPath(&$paths, $categoryId)
+    protected function buildPath(array &$paths, ?int $categoryId): void
     {
         if (empty($categoryId)) {
             return;
@@ -141,7 +143,7 @@ class View
             ->from('#__categories')
             ->where([
                 'extension = ' . $db->quote('com_osdownloads'),
-                'id = ' . $db->quote((int)$categoryId)
+                'id = ' . $db->quote($categoryId),
             ]);
         $category = $db->setQuery($query)->loadObject();
 

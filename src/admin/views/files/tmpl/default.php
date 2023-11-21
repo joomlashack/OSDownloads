@@ -41,14 +41,14 @@ if ($saveOrder && $this->items) {
             'option'                => 'com_osdownloads',
             'task'                  => 'files.saveOrderAjax',
             'tmpl'                  => 'component',
-            Session::getFormToken() => '1'
+            Session::getFormToken() => '1',
         ]);
 
     $bodyAttribs = ArrayHelper::toString([
         'class'          => 'js-draggable',
         'data-url'       => $saveOrderingUrl,
         'data-direction' => strtolower($listDirn),
-        'data-nested'    => 'true'
+        'data-nested'    => 'true',
     ]);
 }
 ?>
@@ -188,7 +188,7 @@ if ($saveOrder && $this->items) {
                                     <?php
                                     $options = [
                                         'task_prefix' => 'files.',
-                                        'id'          => 'state-' . $item->id
+                                        'id'          => 'state-' . $item->id,
                                     ];
 
                                     echo (new PublishedButton())->render(
@@ -206,7 +206,7 @@ if ($saveOrder && $this->items) {
                                         <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
                                     </span>
                                     <div class="small">
-                                        <?php echo Text::_('JCATEGORY') . ": " . $this->escape($item->cat_title); ?>
+                                        <?php echo Text::_('JCATEGORY') . ': ' . $this->escape($item->cat_title); ?>
                                     </div>
                                 </td>
                                 <td>

@@ -26,7 +26,10 @@ use Alledia\OSDownloads\Free\Helper\Helper as FreeHelper;
 use Alledia\OSDownloads\Pro\Helper\Helper as ProHelper;
 use Joomla\CMS\MVC\Controller\BaseController;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+// phpcs:enable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 
 class OSDownloadsController extends BaseController
 {
@@ -57,15 +60,13 @@ class OSDownloadsController extends BaseController
         $view = $app->input->getCmd('view', 'files');
         $app->input->set('view', $view);
 
-        switch ($this->getTask()) {
-            case 'file':
-                $app->input->set('view', 'file');
-                $view = 'file';
-                break;
+        if ($this->getTask() == 'file') {
+            $app->input->set('view', 'file');
+            $view = 'file';
         }
 
         if ($view !== 'file') {
-            $extension = Factory::getExtension('OSDownloads', 'component');
+            $extension = Factory::getExtension('OSDownloads');
             if ($extension->isPro()) {
                 ProHelper::addSubmenu($app->input->getCmd('view', $view));
             } else {

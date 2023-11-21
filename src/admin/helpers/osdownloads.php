@@ -22,21 +22,22 @@
  */
 
 use Alledia\OSDownloads\Factory;
-use Alledia\OSDownloads\Free\Helper\Helper as FreeHelper;
-use Alledia\OSDownloads\Pro\Helper\Helper as ProHelper;
+use Alledia\OSDownloads\Helper\Helper;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+// phpcs:enable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 
 $include = JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
 if (is_file($include) && include $include) {
     if (Factory::getExtension()->isPro()) {
-        class OsdownloadsHelper extends ProHelper
-        {
-        }
-
+        class_alias('\\Alledia\\OSDownloads\\Pro\\Helper\\Helper', '\\Alledia\\OSDownloads\\Helper\\Helper');
     } else {
-        class OsdownloadsHelper extends FreeHelper
-        {
-        }
+        class_alias('\\Alledia\\OSDownloads\\Free\\Helper\\Helper', '\\Alledia\\OSDownloads\\Helper\\Helper');
+    }
+
+    class OsdownloadsHelper extends Helper
+    {
     }
 }

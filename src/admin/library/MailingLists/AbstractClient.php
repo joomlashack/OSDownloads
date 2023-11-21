@@ -24,7 +24,7 @@
 namespace Alledia\OSDownloads\MailingLists;
 
 use Alledia\Framework\Factory;
-use Alledia\Framework\Joomla\Table\Base;
+use Alledia\Framework\Joomla\AbstractTable;
 use Alledia\OSDownloads\Free;
 use CategoriesTableCategory;
 use Joomla\CMS\Component\ComponentHelper;
@@ -35,7 +35,10 @@ use Joomla\CMS\User\User;
 use Joomla\Registry\Registry;
 use OsdownloadsTableDocument;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+
+// phpcs:enable PSR1.Files.SideEffects
 
 abstract class AbstractClient
 {
@@ -59,7 +62,7 @@ abstract class AbstractClient
      */
     protected static $categories = [];
 
-    public function __construct(Base $table)
+    public function __construct(AbstractTable $table)
     {
         $this->table = $table;
         $this->registerObservers();
@@ -68,7 +71,7 @@ abstract class AbstractClient
     /**
      * @return void
      */
-    abstract protected function registerObservers();
+    abstract protected function registerObservers(): void;
 
     /**
      * For customizing in subclasses. Prevents any access to a particular mailing list
@@ -82,9 +85,6 @@ abstract class AbstractClient
     }
 
     /**
-     * For use in subclasses for display of plugin options on any form
-     * other than the configuration form
-     *
      * @return bool
      */
     public static function isEnabled(): bool
@@ -149,7 +149,7 @@ abstract class AbstractClient
             static::$categories[$categoryId] = $category;
         }
 
-        if (!empty(static::$categories[$categoryId])) {
+        if (empty(static::$categories[$categoryId]) == false) {
             return static::$categories[$categoryId];
         }
 
@@ -206,9 +206,9 @@ abstract class AbstractClient
      *
      * @return void
      */
-    protected function logError(string $message, int $level = Log::ALERT, ?string $category = null)
+    protected function logError(string $message, int $level = Log::ALERT, ?string $category = null): void
     {
-        if (!$category) {
+        if ($category == false) {
             $classParts = explode('\\', get_class($this));
             $category   = array_pop($classParts);
         }

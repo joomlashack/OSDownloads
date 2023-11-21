@@ -24,11 +24,21 @@
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Language;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 
 defined('_JEXEC') or die();
+
+/**
+ * @var OSDownloadsViewItem $this
+ * @var string              $template
+ * @var string              $layout
+ * @var string              $layoutTemplate
+ * @var Language            $lang
+ * @var string              $filetofind
+ */
 
 $lang      = Factory::getLanguage();
 $container = Factory::getPimpleContainer();
@@ -42,7 +52,7 @@ HTMLHelper::_(
     'com_osdownloads/jquery.osdownloads.bundle.min.js',
     [
         'version'  => $component->getMediaVersion(),
-        'relative' => true
+        'relative' => true,
     ]
 );
 

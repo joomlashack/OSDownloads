@@ -117,7 +117,7 @@ class DisplayData
      *
      * @return void
      */
-    public function setForm(Form $form)
+    public function setForm(Form $form): void
     {
         $this->form = $form;
     }

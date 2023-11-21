@@ -25,7 +25,10 @@ use Alledia\Framework\Joomla\Extension\Licensed;
 use Alledia\OSDownloads\Factory;
 use Joomla\CMS\MVC\Controller\FormController;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+// phpcs:enable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 
 class OSDownloadsControllerFile extends FormController
 {

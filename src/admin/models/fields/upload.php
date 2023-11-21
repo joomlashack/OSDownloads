@@ -27,17 +27,21 @@ use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
 
 FormHelper::loadFieldClass('Hidden');
 FormHelper::loadFieldClass('File');
+
+// phpcs:enable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 
 class OsdownloadsFormFieldUpload extends FormField
 {
     protected $baseAttribs = [
         'name'        => null,
         'label'       => null,
-        'description' => null
+        'description' => null,
     ];
 
     /**
@@ -96,7 +100,7 @@ class OsdownloadsFormFieldUpload extends FormField
     {
         return $this->renderSubfield([
             'name' => $this->baseAttribs['name'],
-            'type' => 'hidden'
+            'type' => 'hidden',
         ]);
     }
 

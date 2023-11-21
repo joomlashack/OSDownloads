@@ -75,7 +75,7 @@ $attribs = [
     'data-agreement-article' => $displayData->item->agreementLink,
     'data-prefix'            => $elementId,
     'data-animation'         => $displayData->params->get('popup_animation', 'fade'),
-    'data-fields-layout'     => $compParams->get('download_form_fields_layout', 'block')
+    'data-fields-layout'     => $compParams->get('download_form_fields_layout', 'block'),
 ];
 
 echo HTMLHelper::_(
@@ -107,8 +107,7 @@ endif;
         <?php
         if ($header) :
             echo sprintf('<div class="osdownloads-header">%s</div>', $header);
-        endif;
-        ?>
+        endif; ?>
         <form action="<?php echo $actionUrl; ?>"
               id="<?php echo $elementId . '_form'; ?>"
               name="<?php echo $elementId . '_form'; ?>"
@@ -125,8 +124,7 @@ endif;
                            data-msg="<?php echo Text::_('COM_OSDOWNLOADS_INVALID_EMAIL'); ?>"
                            placeholder="<?php echo Text::_('COM_OSDOWNLOADS_ENTER_EMAIL_ADDRESS'); ?>"/>
                 </label>
-            <?php
-            endif;
+            <?php endif;
 
             echo LayoutHelper::render(
                 'osdownloads.fields.custom',
@@ -134,7 +132,7 @@ endif;
                 null,
                 [
                     'elementId' => $elementId,
-                    'component' => 'com_osdownloads'
+                    'component' => 'com_osdownloads',
                 ]
             );
 

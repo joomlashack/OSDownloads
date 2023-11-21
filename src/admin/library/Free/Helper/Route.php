@@ -25,11 +25,10 @@ namespace Alledia\OSDownloads\Free\Helper;
 
 use Alledia\OSDownloads\Factory;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+// phpcs:enable PSR1.Files.SideEffects
 
-/**
- * OSDownloads Component Route Helper.
- */
 class Route
 {
     /**

@@ -31,7 +31,10 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
 use SimpleXMLElement;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+
+// phpcs:enable PSR1.Files.SideEffects
 
 class Manager
 {
@@ -61,7 +64,7 @@ class Manager
     protected static $sourceNames = [
         'com_config.component'                   => 'config',
         'com_categories.categorycom_osdownloads' => 'category',
-        'com_osdownloads.file'                   => 'file'
+        'com_osdownloads.file'                   => 'file',
     ];
 
     /**
@@ -112,14 +115,15 @@ class Manager
      *
      * @param Form $form
      *
+     * @return void
      * @throws \Exception
      */
-    public function loadForms(Form $form)
+    public function loadForms(Form $form): void
     {
         if ($formFiles = $this->getPluginFiles('xml')) {
             $formName = $form->getName();
 
-            if (!empty(static::$sourceNames[$formName])) {
+            if (empty(static::$sourceNames[$formName]) == false) {
                 $sourceName = static::$sourceNames[$formName];
 
                 // Special handling for configuration form
@@ -138,9 +142,11 @@ class Manager
     /**
      * Load all xml configuration files for mailing list plugins
      *
+     * @param string $type
+     *
      * @return string[]
      */
-    protected function getPluginFiles($type): array
+    protected function getPluginFiles(string $type): array
     {
         $baseFolder = '/MailingList';
         $regex      = sprintf('\.%s$', $type);
@@ -215,7 +221,7 @@ class Manager
      *
      * @return void
      */
-    protected function addFields(array $files, Form $form, string $sourceName)
+    protected function addFields(array $files, Form $form, string $sourceName): void
     {
         $formXml = $form->getXml();
 

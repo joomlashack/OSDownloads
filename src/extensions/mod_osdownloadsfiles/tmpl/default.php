@@ -64,7 +64,7 @@ endif;
 
 $moduleAttribs = [
     'class' => 'mod_osdownloadsfiles' . $this->params->get('moduleclass_sfx'),
-    'id'    => 'mod_osdownloads_' . $this->id
+    'id'    => 'mod_osdownloads_' . $this->id,
 ];
 
 echo sprintf('<%s %s>', $moduleTag, ArrayHelper::toString($moduleAttribs));

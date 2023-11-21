@@ -23,7 +23,10 @@
 
 use Alledia\OSDownloads\Free\Joomla\Model\Item as ItemModel;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+// phpcs:enable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 
 class OsdownloadsModelItem extends ItemModel
 {

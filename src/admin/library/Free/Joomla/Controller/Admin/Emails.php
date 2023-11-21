@@ -27,7 +27,9 @@ use Alledia\OSDownloads\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+// phpcs:enable PSR1.Files.SideEffects
 
 class Emails extends BaseController
 {
@@ -35,7 +37,7 @@ class Emails extends BaseController
      * @return void
      * @throws \Exception
      */
-    public function delete()
+    public function delete(): void
     {
         $app       = Factory::getApplication();
         $container = Factory::getPimpleContainer();

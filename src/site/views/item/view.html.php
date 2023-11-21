@@ -23,7 +23,10 @@
 
 use Alledia\OSDownloads\Free\Joomla\View\Site\Item as FreeItemView;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+// phpcs:enable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 
 class OSDownloadsViewItem extends FreeItemView
 {

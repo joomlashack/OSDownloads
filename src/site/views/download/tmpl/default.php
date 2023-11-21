@@ -21,7 +21,18 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Joomla\CMS\Language\Language;
+
 defined('_JEXEC') or die();
+
+/**
+ * @var OSDownloadsViewDownload $this
+ * @var string                  $template
+ * @var string                  $layout
+ * @var string                  $layoutTemplate
+ * @var Language                $lang
+ * @var string                  $filetofind
+ */
 
 while (ob_get_level()) {
     ob_end_clean();

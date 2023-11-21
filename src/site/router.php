@@ -31,6 +31,9 @@ use Joomla\CMS\Log\Log;
 use Joomla\CMS\Router\Router;
 use Joomla\CMS\Uri\Uri;
 
+// phpcs:disable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+
 defined('_JEXEC') or die();
 
 $includePath = JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
@@ -102,7 +105,7 @@ if (is_file($includePath) && include $includePath) {
                 $params = ComponentHelper::getParams('com_osdownloads');
 
                 $this->customSegments = [
-                    'files' => $params->get('route_segment_files') ?: 'files'
+                    'files' => $params->get('route_segment_files') ?: 'files',
                 ];
             }
 
@@ -130,14 +133,14 @@ if (is_file($includePath) && include $includePath) {
             ?array $endPath,
             array &$query
         ): array {
-            $skipCategoryAndFileSegments = false;
-            $categorySegmentToSkip       = false;
+            $skipCategories = false;
+            $categoryToSkip = '';
 
             $menu = $fileId ? $this->helper->getMenuItemForFile($fileId) : null;
 
             if ($menu) {
                 // There is a menu item for the file
-                $skipCategoryAndFileSegments = true;
+                $skipCategories = true;
 
                 $query['Itemid'] = $menu->id;
             }
@@ -151,7 +154,7 @@ if (is_file($includePath) && include $includePath) {
 
                     if (is_object($menuCategory)) {
                         // Related to the root menu, so it won't have a category segment
-                        $categorySegmentToSkip = $menuCategory->path;
+                        $categoryToSkip = $menuCategory->path;
                     }
                 }
             }
@@ -160,14 +163,14 @@ if (is_file($includePath) && include $includePath) {
                 $segments = array_merge($segments, $middlePath);
             }
 
-            if ($skipCategoryAndFileSegments) {
+            if ($skipCategories) {
                 return $segments;
             }
 
             $segments = $this->helper->appendCategoriesToSegments(
                 $segments,
                 $categoryId,
-                $categorySegmentToSkip
+                $categoryToSkip
             );
 
             if ($endPath) {
@@ -225,7 +228,7 @@ if (is_file($includePath) && include $includePath) {
                 $viewMenu = $this->helper->getMenuItemByQuery(
                     [
                         'view' => $view,
-                        'id'   => $id
+                        'id'   => $id,
                     ]
                 );
 

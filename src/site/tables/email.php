@@ -23,7 +23,10 @@
 
 use Alledia\OSDownloads\Free\Joomla\Table\Email as FreeEmailTable;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+// phpcs:enable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 
 class OsdownloadsTableEmail extends FreeEmailTable
 {

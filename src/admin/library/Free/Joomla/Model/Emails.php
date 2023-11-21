@@ -25,7 +25,9 @@ namespace Alledia\OSDownloads\Free\Joomla\Model;
 
 use Joomla\CMS\MVC\Model\ListModel;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+// phpcs:enable PSR1.Files.SideEffects
 
 class Emails extends ListModel
 {
@@ -52,7 +54,7 @@ class Emails extends ListModel
     /**
      * @inheritDoc
      */
-    public function populateState($ordering = 'email.id', $direction = 'desc')
+    protected function populateState($ordering = 'email.id', $direction = 'desc')
     {
         parent::populateState($ordering, $direction);
     }

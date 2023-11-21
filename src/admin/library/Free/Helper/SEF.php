@@ -95,14 +95,14 @@ class SEF
      *
      * @param array   $categories
      * @param int     $categoryId
-     * @param ?string $categorySegmentToSkip
+     * @param ?string $skipCateogry
      *
      * @return array
      */
     public function buildCategoriesPath(
         array $categories,
         int $categoryId,
-        ?string $categorySegmentToSkip = null
+        ?string $skipCateogry = null
     ): array {
         if (empty($categoryId)) {
             return [];
@@ -111,8 +111,8 @@ class SEF
         $category = $this->getCategory($categoryId);
 
         $categoriesToSkip = [];
-        if ($categorySegmentToSkip) {
-            $categoriesToSkip = explode('/', $categorySegmentToSkip);
+        if ($skipCateogry) {
+            $categoriesToSkip = explode('/', $skipCateogry);
         }
 
         if (is_object($category) && $category->alias !== 'root' && !in_array($category->alias, $categoriesToSkip)) {
@@ -120,7 +120,7 @@ class SEF
         }
 
         if (is_object($category) && $category->parent_id) {
-            $categories = $this->buildCategoriesPath($categories, $category->parent_id, $categorySegmentToSkip);
+            $categories = $this->buildCategoriesPath($categories, $category->parent_id, $skipCateogry);
         }
 
         return $categories;
@@ -132,17 +132,17 @@ class SEF
      *
      * @param array   $segments
      * @param int     $categoryId
-     * @param ?string $categorySegmentToSkip
+     * @param ?string $skipCateogry
      *
      * @return  array
      */
     public function appendCategoriesToSegments(
         array $segments,
         int $categoryId,
-        ?string $categorySegmentToSkip = null
+        ?string $skipCateogry = null
     ): array {
         // Append the categories before the alias of the file
-        $categories = $this->buildCategoriesPath([], $categoryId, $categorySegmentToSkip);
+        $categories = $this->buildCategoriesPath([], $categoryId, $skipCateogry);
 
         for ($i = count($categories) - 1; $i >= 0; $i--) {
             $segments[] = $categories[$i];
@@ -279,7 +279,7 @@ class SEF
             ->from('#__categories')
             ->where([
                 'extension = ' . $db->quote('com_osdownloads'),
-                'alias = ' . $db->quote($alias)
+                'alias = ' . $db->quote($alias),
             ]);
 
         return $db->setQuery($query)->loadObjectList();

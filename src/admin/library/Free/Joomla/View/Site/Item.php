@@ -26,12 +26,14 @@ namespace Alledia\OSDownloads\Free\Joomla\View\Site;
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Joomla\CMS\Application\SiteApplication;
-use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+
+// phpcs:enable PSR1.Files.SideEffects
 
 class Item extends Base
 {
@@ -66,10 +68,7 @@ class Item extends Base
     public $buttonClasses = null;
 
     /**
-     * @param string $tpl
-     *
-     * @return void
-     * @throws \Exception
+     * @inheritDoc
      */
     public function display($tpl = null)
     {

@@ -23,16 +23,55 @@
 
 namespace Alledia\OSDownloads\Free\Joomla\Table;
 
-use Alledia\Framework\Joomla\Table\Base;
+use Alledia\Framework\Joomla\AbstractTable;
 use Alledia\OSDownloads\Factory;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Registry\Registry;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+// phpcs:enable PSR1.Files.SideEffects
+// phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
 
-class Item extends Base
+/**
+ * @property string $typeAlias
+ * @property int    $id
+ * @property int    $cate_id
+ * @property string $name
+ * @property string $alias
+ * @property string $brief
+ * @property string $description_1
+ * @property string $description_2
+ * @property string $description_3
+ * @property int    $require_email
+ * @property int    $require_agree
+ * @property string $download_text
+ * @property string $download_color
+ * @property string $documentation_link
+ * @property string $demo_link
+ * @property string $support_link
+ * @property string $other_name
+ * @property string $other_link
+ * @property string $file_path
+ * @property string $file_url
+ * @property int    $downloaded
+ * @property string $direct_page
+ * @property int    $published
+ * @property int    $ordering
+ * @property string $external_ref
+ * @property int    $access
+ * @property int    $created_user_id
+ * @property string $created_time
+ * @property int    $modified_user_id
+ * @property string $modified_time
+ * @property int    $agreement_article_id
+ * @property string $publish_up
+ * @property string $publish_down
+ * @property string $params
+ */
+class Item extends AbstractTable
 {
     /**
      * @inheritdoc

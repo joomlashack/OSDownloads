@@ -29,7 +29,9 @@ use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Plugin\CMSPlugin;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+// phpcs:enable PSR1.Files.SideEffects
 
 class Content extends CMSPlugin
 {
@@ -50,7 +52,7 @@ class Content extends CMSPlugin
      * @return bool
      * @throws Exception
      */
-    public function onContentPrepareForm($form, $data)
+    public function onContentPrepareForm($form, $data): bool
     {
         if ($this->isEnabled()) {
             Factory::getPimpleContainer()->mailingLists->loadForms($form);

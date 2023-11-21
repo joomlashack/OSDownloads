@@ -28,26 +28,16 @@ use Alledia\OSDownloads\MailingLists\Manager;
 use Pimple\Container as Pimple;
 use Pimple\ServiceProviderInterface;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+// phpcs:enable PSR1.Files.SideEffects
 
-/**
- * Class Services
- *
- * Pimple services for OSDownloads.
- *
- * @package OSDownloads
- */
 class Services implements ServiceProviderInterface
 {
     /**
-     * Registers services on the given container.
-     *
-     * This method should only be used to configure services and parameters.
-     * It should not get services.
-     *
-     * @param Pimple $pimple
+     * @inheritDoc
      */
-    public function register(Pimple $pimple)
+    public function register(Pimple $pimple): void
     {
         // Services
         $pimple['app'] = function () {

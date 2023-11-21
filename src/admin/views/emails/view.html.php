@@ -23,9 +23,11 @@
 
 use Alledia\OSDownloads\Free\Joomla\View\Admin\Emails as EmailsView;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+// phpcs:enable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 
 class OSDownloadsViewEmails extends EmailsView
 {
-
 }

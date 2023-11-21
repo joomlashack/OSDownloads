@@ -38,15 +38,21 @@ defined('_JEXEC') or die();
 
 class OsdownloadsModelFile extends AdminModel
 {
+    /**
+     * @var string
+     */
     protected $uploadDir = OSDOWNLOADS_MEDIA . '/files';
 
+    /**
+     * @var string[]
+     */
     protected $uploadErrors = [
         UPLOAD_ERR_CANT_WRITE => 'COM_OSDOWNLOADS_UPLOAD_ERR_CANT_WRITE',
         UPLOAD_ERR_EXTENSION  => 'COM_OSDOWNLOADS_UPLOAD_ERR_EXTENSION',
         UPLOAD_ERR_FORM_SIZE  => 'COM_OSDOWNLOADS_UPLOAD_ERR_FORM_SIZE',
         UPLOAD_ERR_INI_SIZE   => 'COM_OSDOWNLOADS_UPLOAD_ERR_INI_SIZE',
         UPLOAD_ERR_NO_TMP_DIR => 'COM_OSDOWNLOADS_UPLOAD_ERR_NO_TMP_DIR',
-        UPLOAD_ERR_PARTIAL    => 'COM_OSDOWNLOADS_UPLOAD_ERR_PARTIAL'
+        UPLOAD_ERR_PARTIAL    => 'COM_OSDOWNLOADS_UPLOAD_ERR_PARTIAL',
     ];
 
     /**
@@ -140,7 +146,7 @@ class OsdownloadsModelFile extends AdminModel
                 $original->load($app->input->getInt('id'));
 
                 if ($data['name'] == $original->name) {
-                    list($name, $alias) = $this->generateNewTitle($data['cate_id'], $data['alias'], $data['name']);
+                    [$name, $alias] = $this->generateNewTitle($data['cate_id'], $data['alias'], $data['name']);
 
                     $data['name']  = $name;
                     $data['alias'] = $alias;
@@ -287,7 +293,7 @@ class OsdownloadsModelFile extends AdminModel
                 $accessFile = [
                     'Order Deny,Allow',
                     'Deny from all',
-                    ''
+                    '',
                 ];
                 file_put_contents($this->uploadDir . '/.htaccess', join("\n", $accessFile));
             }

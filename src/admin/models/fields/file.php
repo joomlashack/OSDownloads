@@ -22,17 +22,28 @@
  */
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Version;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
 
 FormHelper::loadFieldClass('list');
 
-class JFormFieldModal_Document extends JFormFieldList
+if (Version::MAJOR_VERSION < 4) {
+    class_alias('\\JFormFieldList', '\\Joomla\\CMS\\Form\\Field\\ListField');
+}
+
+// phpcs:enable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+// phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
+
+class OsdownloadsFormFieldFile extends ListField
 {
-    protected $type = 'Modal_Document';
+    protected $type = 'osdownloads.file';
 
     /**
      * @inheritDoc

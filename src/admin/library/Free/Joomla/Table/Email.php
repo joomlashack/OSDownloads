@@ -34,6 +34,16 @@ defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 // phpcs:disable PSR2.Classes.PropertyDeclaration.Underscore
 
+/**
+ * @property int    $id
+ * @property string $email
+ * @property int    $document_id
+ * @property string $downloaded_date
+ * @property string $hash
+ * @property int    $confirmed
+ * @property string $synced
+ * @property string $sync_error
+ */
 class Email extends AbstractTable
 {
     /**

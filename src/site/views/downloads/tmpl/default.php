@@ -24,10 +24,20 @@
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Language;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
 defined('_JEXEC') or die();
+
+/**
+ * @var OSDownloadsViewDownloads $this
+ * @var string                   $template
+ * @var string                   $layout
+ * @var string                   $layoutTemplate
+ * @var Language                 $lang
+ * @var string                   $filetofind
+ */
 
 $this->app                    = Factory::getApplication();
 $this->lang                   = Factory::getLanguage();
@@ -74,7 +84,7 @@ HTMLHelper::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', $opt
                         'column',
                         'column-' . $column,
                         'item' . $column,
-                        'cate_' . $category->id
+                        'cate_' . $category->id,
                     ];
                     ?>
                     <div class="<?php echo join(' ', $classes); ?>">
@@ -109,7 +119,7 @@ HTMLHelper::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', $opt
         ?>
         <div class="items columns-<?php echo $this->numberOfColumns; ?>">
             <?php
-            $i = 0;
+            $i              = 0;
             foreach ($this->items as $file) :
                 $column = $i % $this->numberOfColumns;
                 $this->item = $file;
@@ -117,7 +127,7 @@ HTMLHelper::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', $opt
                     'column',
                     'column-' . $column,
                     'item' . $column,
-                    'file_' . $this->item->id
+                    'file_' . $this->item->id,
                 ];
                 ?>
 

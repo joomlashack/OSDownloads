@@ -28,7 +28,7 @@ use Joomla\CMS\MVC\Controller\BaseController;
 
 defined('_JEXEC') or die();
 
-if (!Factory::getUser()->authorise('core.manage', 'com_osdownloads')) {
+if (Factory::getUser()->authorise('core.manage', 'com_osdownloads') == false) {
     throw new NotAllowed(Text::_('JERROR_ALERTNOAUTHOR'), 403);
 }
 

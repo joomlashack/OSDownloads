@@ -23,9 +23,19 @@
 
 use Alledia\OSDownloads\Free\File;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Language;
 use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die();
+
+/**
+ * @var OSDownloadsViewItem $this
+ * @var string              $template
+ * @var string              $layout
+ * @var string              $layoutTemplate
+ * @var Language            $lang
+ * @var string              $filetofind
+ */
 
 $app = Factory::getApplication();
 
@@ -38,7 +48,7 @@ $downloadUrl = File::getDownloadUrl($this->item->id);
  * Fixes the issue with download in iOS devices.
  * The browser doesn't recognize the headers or tag attributes to force
  * download as an attachment. It displays the content, if possible. So as
- * an workaround we display a link instead of the content. The link takes to
+ * a workaround we display a link instead of the content. The link takes to
  * a new page, where the content is nativelly displayed and available for
  * download in the iOS way.
  */
@@ -48,36 +58,36 @@ $iOSBrowser = stripos($_SERVER['HTTP_USER_AGENT'], 'iPod')
     || stripos($_SERVER['HTTP_USER_AGENT'], 'iPhone')
     || stripos($_SERVER['HTTP_USER_AGENT'], 'iPad');
 
-// Get a custom thank you page from the settings
-$thankyoupage = $this->params->get('thankyoupage');
+// Get a custom thank-you page from the settings
+$thankYouPage = $this->params->get('thankyoupage');
 
-if (empty($thankyoupage)) {
+if (empty($thankYouPage)) {
     $defaultMessage = $iOSBrowser
         ? 'COM_OSDOWNLOADS_CLICK_TO_DOWNLOAD_FILE_IOS'
         : 'COM_OSDOWNLOADS_CLICK_TO_DOWNLOAD_FILE';
 
-    $thankyoupage = sprintf(
+    $thankYouPage = sprintf(
         '<h2>%s</h2><p>%s</p>',
         Text::_('COM_OSDOWNLOADS_THANK_YOU'),
         Text::sprintf($defaultMessage, $downloadUrl)
     );
 } elseif ($iOSBrowser) {
-    $thankyoupage .= sprintf(
+    $thankYouPage .= sprintf(
         '<p>%s</p>',
         Text::sprintf('COM_OSDOWNLOADS_CLICK_TO_DOWNLOAD_FILE_IOS', $downloadUrl)
     );
 }
 
-// Replace found tags in the thank you message by the respective information
-$thankyoupage = str_replace('{{download_url}}', $downloadUrl, $thankyoupage);
+// Replace found tags in the thank-you message by the respective information
+$thankYouPage = str_replace('{{download_url}}', $downloadUrl, $thankYouPage);
 
 Factory::getDocument()->addStyleDeclaration('* { background: none transparent !important; }');
 
 ?>
 <div id="osdownloads-thankyou">
     <div class="contentopen thank">
-        <?php echo $thankyoupage; ?>
-        <?php if (!$iOSBrowser) : ?>
+        <?php echo $thankYouPage; ?>
+        <?php if ($iOSBrowser == false) : ?>
             <meta http-equiv="refresh" content="0;url=<?php echo $downloadUrl; ?>">
         <?php endif; ?>
     </div>

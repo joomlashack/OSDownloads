@@ -51,8 +51,8 @@ if ($elementId && $displayData->item->require_user_email && ComponentHelper::isE
         [
             $form,
             [
-                'catid' => $displayData->item->cate_id ?? null
-            ]
+                'catid' => $displayData->item->cate_id ?? null,
+            ],
         ]
     );
 
@@ -69,6 +69,5 @@ if ($elementId && $displayData->item->require_user_email && ComponentHelper::isE
             echo LayoutHelper::render('joomla.edit.fieldset', $displayData);
             ?>
         </div>
-    <?php
-    endif;
+    <?php endif;
 endif;

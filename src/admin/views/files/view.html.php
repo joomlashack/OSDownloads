@@ -28,15 +28,15 @@ use Joomla\CMS\HTML\Helpers\Sidebar;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+// phpcs:enable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 
 class OSDownloadsViewFiles extends AbstractList
 {
     /**
-     * @param string $tpl
-     *
-     * @return void
-     * @throws Exception
+     * @inheritDoc
      */
     public function display($tpl = null)
     {
@@ -52,7 +52,10 @@ class OSDownloadsViewFiles extends AbstractList
         parent::display($tpl);
     }
 
-    protected function addToolbar()
+    /**
+     * @return void
+     */
+    protected function addToolbar(): void
     {
         ToolbarHelper::title(
             Text::_('COM_OSDOWNLOADS') . ': ' . Text::_('COM_OSDOWNLOADS_FILES'),
@@ -89,7 +92,7 @@ class OSDownloadsViewFiles extends AbstractList
      *
      * @return  string[]
      */
-    protected function getSortFields()
+    protected function getSortFields(): array
     {
         return [
             'doc.ordering'   => Text::_('JGRID_HEADING_ORDERING'),
@@ -97,7 +100,7 @@ class OSDownloadsViewFiles extends AbstractList
             'doc.name'       => Text::_('COM_OSDOWNLOADS_NAME'),
             'doc.access'     => Text::_('COM_OSDOWNLOADS_ACCESS'),
             'doc.downloaded' => Text::_('COM_OSDOWNLOADS_DOWNLOADED'),
-            'doc.id'         => Text::_('COM_OSDOWNLOADS_ID')
+            'doc.id'         => Text::_('COM_OSDOWNLOADS_ID'),
         ];
     }
 }

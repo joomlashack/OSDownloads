@@ -25,6 +25,8 @@ use Alledia\Framework\AutoLoader;
 use Alledia\Framework\Joomla\Extension\Helper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Version;
+use Joomla\Database\DatabaseDriver;
+use Joomla\Database\DatabaseQuery;
 
 defined('_JEXEC') or die();
 
@@ -56,8 +58,8 @@ if (defined('ALLEDIA_FRAMEWORK_LOADED') && defined('OSDOWNLOADS_LOADED') == fals
         JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
 
         $classAliases = [
-            '\\JDatabaseQuery'  => '\\Joomla\\Database\\DatabaseQuery',
-            '\\JDatabaseDriver' => '\\Joomla\\Database\\DatabaseDrive',
+            JDatabaseQuery::class  => DatabaseQuery::class,
+            JDatabaseDriver::class => DatabaseDriver::class,
         ];
         foreach ($classAliases as $class => $classAlias) {
             if (class_exists($classAlias) == false) {

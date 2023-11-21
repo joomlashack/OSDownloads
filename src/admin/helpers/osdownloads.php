@@ -22,7 +22,9 @@
  */
 
 use Alledia\OSDownloads\Factory;
+use Alledia\OSDownloads\Free\Helper\Helper as HelperFree;
 use Alledia\OSDownloads\Helper\Helper;
+use Alledia\OSDownloads\Pro\Helper\Helper as HelperPro;
 
 // phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
@@ -32,9 +34,10 @@ defined('_JEXEC') or die();
 $include = JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
 if (is_file($include) && include $include) {
     if (Factory::getExtension()->isPro()) {
-        class_alias('\\Alledia\\OSDownloads\\Pro\\Helper\\Helper', '\\Alledia\\OSDownloads\\Helper\\Helper');
+        class_alias(HelperPro::class, Helper::class);
+
     } else {
-        class_alias('\\Alledia\\OSDownloads\\Free\\Helper\\Helper', '\\Alledia\\OSDownloads\\Helper\\Helper');
+        class_alias(HelperFree::class, Helper::class);
     }
 
     class OsdownloadsHelper extends Helper

@@ -21,6 +21,7 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Alledia\OSDownloads\ContentPlugin;
 use Alledia\OSDownloads\Factory;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -31,13 +32,13 @@ defined('_JEXEC') or die();
 $includePath = JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
 if (is_file($includePath) && include $includePath) {
     if (Factory::getExtension()->isPro()) {
-        class_alias('\\Alledia\\OSDownloads\\Pro\\Joomla\\Plugin\\Content', 'DownloadsPlugin');
+        class_alias(\Alledia\OSDownloads\Pro\Joomla\Plugin\Content::class, ContentPlugin::class);
 
     } else {
-        class_alias('\\Alledia\\OSDownloads\\Free\\Joomla\\Plugin\\Content', 'DownloadsPlugin');
+        class_alias(\Alledia\OSDownloads\Free\Joomla\Plugin\Content::class, ContentPlugin::class);
     }
 
-    class PlgContentOsdownloads extends DownloadsPlugin
+    class PlgContentOsdownloads extends ContentPlugin
     {
     }
 }

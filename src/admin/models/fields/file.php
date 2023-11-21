@@ -34,7 +34,7 @@ defined('_JEXEC') or die();
 FormHelper::loadFieldClass('list');
 
 if (Version::MAJOR_VERSION < 4) {
-    class_alias('\\JFormFieldList', '\\Joomla\\CMS\\Form\\Field\\ListField');
+    class_alias(JFormFieldList::class, ListField::class);
 }
 
 // phpcs:enable PSR1.Files.SideEffects

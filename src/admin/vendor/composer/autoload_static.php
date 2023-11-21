@@ -36,6 +36,7 @@ class ComposerStaticInit30e37e4406280450bdcfd6fc092dd33b
         array (
             'Psr\\SimpleCache\\' => 16,
             'Psr\\Http\\Message\\' => 17,
+            'Psr\\Clock\\' => 10,
         ),
         'M' => 
         array (
@@ -99,6 +100,10 @@ class ComposerStaticInit30e37e4406280450bdcfd6fc092dd33b
         'Psr\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
+        'Psr\\Clock\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/clock/src',
         ),
         'Mailchimp\\' => 
         array (

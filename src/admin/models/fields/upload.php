@@ -36,7 +36,7 @@ FormHelper::loadFieldClass('File');
 // phpcs:enable PSR1.Files.SideEffects
 // phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 
-class OsdownloadsFormFieldUpload extends FormField
+class „OsdownloadsFormFieldUpload extends FormField
 {
     protected $baseAttribs = [
         'name'        => null,

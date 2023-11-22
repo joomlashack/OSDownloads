@@ -26,14 +26,13 @@ use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Version;
 
 // phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
 
 FormHelper::loadFieldClass('list');
 
-if (Version::MAJOR_VERSION < 4) {
+if (class_exists(ListField::class) == false) {
     class_alias(JFormFieldList::class, ListField::class);
 }
 

@@ -41,11 +41,11 @@ class Item extends BaseDatabaseModel
      *
      * @param int $documentId
      *
-     * @return object
+     * @return ?object
      *
      * @throws \Exception
      */
-    public function getItem(int $documentId): object
+    public function getItem(int $documentId): ?object
     {
         $db    = $this->getDbo();
         $query = $this->getItemQuery($documentId);

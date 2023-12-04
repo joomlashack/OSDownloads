@@ -51,7 +51,6 @@ class AbstractScript extends AllediaAbstractScript
             $include = JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
             if (is_file($include) && include $include) {
                 $this->checkAndCreateDefaultCategory();
-                $this->fixDatabase();
                 $this->clearProData();
 
                 if ($type == 'update') {
@@ -164,28 +163,6 @@ class AbstractScript extends AllediaAbstractScript
             }
 
             File::move($file, $newPath);
-        }
-    }
-
-    /**
-     * Apply any needed database fixes
-     */
-    protected function fixDatabase()
-    {
-        $db = $this->dbo;
-
-        /**
-         * We moved to null dates as of v1.13.0
-         * Finally fixed this as of v2.1.1
-         */
-        foreach (['publish_up', 'publish_down'] as $field) {
-            $field = $db->quoteName($field);
-            $query = $db->getQuery(true)
-                ->update('#__osdownloads_documents')
-                ->where($field . ' = ' . $db->quote('0000-00-00 00:00:00'))
-                ->set($field . ' = NULL');
-
-            $db->setQuery($query)->execute();
         }
     }
 

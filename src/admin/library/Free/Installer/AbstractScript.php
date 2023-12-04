@@ -79,8 +79,8 @@ class AbstractScript extends AllediaAbstractScript
         $total = (int)$db->setQuery($query)->loadResult();
 
         if ($total === 0) {
-            /** @var Category $row */
-            $row = Table::getInstance('category');
+            /** @var Category $category */
+            $category = Table::getInstance('category');
 
             $data = [
                 'title'     => 'General',
@@ -90,10 +90,9 @@ class AbstractScript extends AllediaAbstractScript
                 'language'  => '*',
             ];
 
-            $row->setLocation($data['parent_id'], 'last-child');
-            $row->bind($data);
-            if ($row->store()) {
-                $row->rebuildPath();
+            $category->setLocation($data['parent_id'], 'last-child');
+            if ($category->bind($data) && $category->check() && $category->store()) {
+                $category->rebuildPath();
                 $this->sendMessage(Text::_('COM_OSDOWNLOADS_INSTALL_GENERAL_CATEGORY_CREATED'));
 
             } else {

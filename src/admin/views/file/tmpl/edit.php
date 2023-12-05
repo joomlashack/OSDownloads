@@ -50,7 +50,7 @@ $formAction = Route::_('index.php?option=com_osdownloads&view=file&layout=edit&i
     <?php echo LayoutHelper::render('joomla.edit.title_alias', $this); ?>
 
     <div class="main-card">
-        <?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', ['active' => 'general']); ?>
+        <?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', ['active' => 'general', 'recall' => true]); ?>
 
         <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'general', Text::_('COM_OSDOWNLOADS_FILE', true)); ?>
         <div class="row">

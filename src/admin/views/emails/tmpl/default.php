@@ -136,7 +136,8 @@ $listDirection = $this->state->get('list.direction');
                     echo $this->pagination->getListFooter();
 
                 else : ?>
-                    <div class="alert alert-no-items">
+                    <div class="alert alert-info">
+                        <span class="icon-info-circle"></span>
                         <?php
                         if ($this->activeFilters || $this->state->get('filter.search')) :
                             echo Text::_('COM_OSDOWNLOADS_EMAILS_NO_RESULTS');

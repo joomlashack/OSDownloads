@@ -182,17 +182,26 @@ abstract class AbstractClient
     {
         if ($document = $this->getDocument($documentId)) {
             $value = $document->get('params')->get($key);
+            if (is_array($value)) {
+                $value = array_filter($value);
+            }
         }
 
         if (empty($value)) {
             // Try category lookup
             if ($category = $this->getCategory($document->get('cate_id'))) {
                 $value = $category->get('params')->get($key);
+                if (is_array($value)) {
+                    $value = array_filter($value);
+                }
             }
 
             if (empty($value)) {
                 // Try global
                 $value = static::getParams()->get($key);
+                if (is_array($value)) {
+                    $value = array_filter($value);
+                }
             }
         }
 

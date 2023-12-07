@@ -100,7 +100,7 @@ abstract class AbstractClient
     protected function getDocument(?int $documentId = null): ?OsdownloadsTableDocument
     {
         $documentId = (int)($documentId ?: $this->table->get('document_id'));
-        if (!isset(static::$documents[$documentId])) {
+        if (isset(static::$documents[$documentId]) == false) {
             /** @var OsdownloadsTableDocument $document */
             $document = Table::getInstance('Document', 'OsdownloadsTable');
             $document->load($documentId);
@@ -143,7 +143,7 @@ abstract class AbstractClient
             $category = Table::getInstance('Category');
             $category->load($categoryId);
 
-            if (!$category->get('params') instanceof Registry) {
+            if ($category->get('params') instanceof Registry == false) {
                 $category->set('params', new Registry($category->get('params')));
             }
             static::$categories[$categoryId] = $category;

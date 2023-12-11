@@ -21,12 +21,10 @@
  * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Alledia\Framework\AutoLoader;
-use Alledia\Framework\Joomla\Extension\Helper;
+use Alledia\Framework\Helper as FrameworkHelper;
+use Alledia\Framework\Joomla\Extension\Helper as ExtensionHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Version;
-use Joomla\Database\DatabaseDriver;
-use Joomla\Database\DatabaseQuery;
 
 defined('_JEXEC') or die();
 
@@ -50,23 +48,12 @@ if (defined('ALLEDIA_FRAMEWORK_LOADED') && defined('OSDOWNLOADS_LOADED') == fals
 
     require_once OSDOWNLOADS_ADMIN . '/vendor/autoload.php';
 
-    Helper::loadLibrary('com_osdownloads');
-    AutoLoader::register('\\Alledia\\OSDownloads', OSDOWNLOADS_LIBRARY);
+    ExtensionHelper::loadLibrary('com_osdownloads');
+    FrameworkHelper::createDatabaseClassAliases();
 
     if (Version::MAJOR_VERSION < 4) {
         // Joomla 3 shims
         JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
-
-        $classAliases = [
-            JDatabaseQuery::class  => DatabaseQuery::class,
-            JDatabaseDriver::class => DatabaseDriver::class,
-        ];
-        foreach ($classAliases as $class => $classAlias) {
-            if (class_exists($classAlias) == false) {
-                class_alias($class, $classAlias);
-            }
-        }
-        unset($classAliases);
     }
 
     switch (Factory::getApplication()->getName()) {

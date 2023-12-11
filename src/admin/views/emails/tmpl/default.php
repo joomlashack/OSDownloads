@@ -50,7 +50,7 @@ $listDirection = $this->state->get('list.direction');
                             <th scope="col" class="w-1 text-center d-none d-md-table-cell">
                                 <?php echo HTMLHelper::_('grid.checkall'); ?>
                             </th>
-                            <th class="has-context w-50">
+                            <th class="has-context">
                                 <?php echo HTMLHelper::_(
                                     'searchtools.sort',
                                     'COM_OSDOWNLOADS_EMAIL',
@@ -110,7 +110,7 @@ $listDirection = $this->state->get('list.direction');
                                 <td class="w-1 d-none d-md-table-cell">
                                     <?php echo HTMLHelper::_('grid.checkedout', $item, $i); ?>
                                 </td>
-                                <td class="has-context w-50"><?php echo($item->email); ?></td>
+                                <td class="has-context"><?php echo($item->email); ?></td>
                                 <?php if ($this->extension->isPro()) : ?>
                                     <?php
                                     $this->item = $item;

@@ -120,7 +120,7 @@ $container     = Factory::getPimpleContainer();
                         <td class="hidden-phone" style="width: 1%;">
                             <?php echo HTMLHelper::_('grid.id', $i, $item->id); ?>
                         </td>
-                        <td class="has-context span6"><?php echo($item->email); ?></td>
+                        <td class="has-context"><?php echo($item->email); ?></td>
                         <?php if ($this->extension->isPro()) : ?>
                             <?php
                             $this->item = $item;

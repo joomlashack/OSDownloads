@@ -29,7 +29,7 @@
         "ext-simplexml"         : "*",
         "ext-json"              : "*",
         "ext-openssl"           : "*",
-        "pacely/mailchimp-apiv3": "^1.0"
+        "mailchimp/marketing": "^3.0"
     },
     "replace": {
         "psr/container": "*"

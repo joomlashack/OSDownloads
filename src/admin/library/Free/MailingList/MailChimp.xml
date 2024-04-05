@@ -12,7 +12,7 @@
         </field>
 
         <field name="api"
-               type="text"
+               type="textarea"
                label="COM_OSDOWNLOADS_ML_MAILCHIMP_API"
                showon="enable:1"/>
 

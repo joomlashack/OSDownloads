@@ -25,6 +25,8 @@ namespace Alledia\OSDownloads\Free\MailingList;
 
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\MailingLists\AbstractClient;
+use GuzzleHttp\Exception\RequestException;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\Table\Table;
 use Joomla\Event\Dispatcher;
 use Joomla\Event\Event;
@@ -87,7 +89,7 @@ class MailChimp extends AbstractClient
                     }
 
                 } catch (\Throwable $error) {
-                    $this->logError($error->getMessage());
+                    $this->logMailChimpError($error, $email);
                 }
             }
         }
@@ -153,5 +155,28 @@ class MailChimp extends AbstractClient
     public static function isEnabled(): bool
     {
         return (bool)static::getParams()->get('mailinglist.mailchimp.enable', false);
+    }
+
+    /**
+     * @param \Throwable $error
+     * @param ?string    $email (optional)
+     * @param int        $level (optional)
+     *
+     * @return void
+     */
+    protected function logMailChimpError(\Throwable $error, ?string $email = null, int $level = Log::ALERT): void
+    {
+        if ($error instanceof RequestException) {
+            $response = $error->getResponse();
+            $message  = sprintf('%s %s', $response->getStatusCode(), $response->getReasonPhrase());
+
+        } else {
+            $message = $error->getMessage();
+        }
+        if ($email) {
+            $message .= sprintf(' (%s)', $email);
+        }
+
+        $this->logError($message, $level);
     }
 }

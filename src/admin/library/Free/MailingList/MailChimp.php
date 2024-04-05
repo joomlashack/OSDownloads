@@ -125,30 +125,26 @@ class MailChimp extends AbstractClient
     }
 
     /**
-     * @return ?ApiClient
+     * @return ApiClient
      */
-    public static function getMailChimp(): ?ApiClient
+    public static function getMailChimp(): ApiClient
     {
         if (static::$apiManager === null) {
-            static::$apiManager = false;
-            try {
-                $params = static::getParams();
-                $apiKey = $params->get('mailinglist.mailchimp.api', 0);
-                if ($apiKey) {
-                    [$apikey, $server] = explode('-', $apiKey);
-                    static::$apiManager = new ApiClient();
-                    static::$apiManager->setConfig([
-                        'apiKey' => $apiKey,
-                        'server' => $server,
-                    ]);
-                }
+            static::$apiManager = new ApiClient();
 
-            } catch (\Throwable $e) {
-                // Just ignore this
+            $params = static::getParams();
+            $api    = $params->get('mailinglist.mailchimp.api');
+            if ($api && str_contains($api, '-')) {
+                [$apiKey, $server] = explode('-', $api, 2);
+                static::$apiManager = new ApiClient();
+                static::$apiManager->setConfig([
+                    'apiKey' => $apiKey,
+                    'server' => $server,
+                ]);
             }
         }
 
-        return static::$apiManager ?: null;
+        return static::$apiManager;
     }
 
     /**

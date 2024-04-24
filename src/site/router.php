@@ -480,8 +480,8 @@ if (is_file($includePath) && include $includePath) {
                                     $category = $this->helper->getCategory($activeMenu->query['id']);
                                     $tmpPath  = $category->path;
 
-                                    if (!empty($tmpSegments)) {
-                                        $tmpPath .= '/' . implode($tmpSegments);
+                                    if ($tmpSegments) {
+                                        $tmpPath .= '/' . implode('/', $tmpSegments);
                                     }
 
                                     // Try to get the file with the new path

@@ -16,4 +16,4 @@ It allows you to easily provide downloads in exchange for emails, which can in t
 
 ## License
 
-[GNU General Public License v3](http://www.gnu.org/copyleft/gpl.html)
+[GNU General Public License v3](https://www.gnu.org/copyleft/gpl.html)

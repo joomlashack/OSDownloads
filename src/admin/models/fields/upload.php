@@ -2,8 +2,8 @@
 /**
  * @package   OSDownloads
  * @contact   www.joomlashack.com, help@joomlashack.com
- * @copyright 2019-2023 Joomlashack.com. All rights reserved
- * @license   http://www.gnu.org/licenses/gpl.html GNU/GPL
+ * @copyright 2019-2025 Joomlashack.com. All rights reserved
+ * @license   https://www.gnu.org/licenses/gpl.html GNU/GPL
  *
  * This file is part of OSDownloads.
  *
@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with OSDownloads.  If not, see <http://www.gnu.org/licenses/>.
+ * along with OSDownloads.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 use Alledia\OSDownloads\Free\Helper\Helper as FreeHelper;

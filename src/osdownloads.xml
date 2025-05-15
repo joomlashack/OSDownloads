@@ -88,7 +88,7 @@
         <namespace>OSDownloads</namespace>
         <license>free</license>
         <targetplatform>3.9</targetplatform>
-        <phpminimum>7.2.5</phpminimum>
+        <phpminimum>7.4</phpminimum>
         <previousminimum>2.0.0</previousminimum>
 
         <relatedExtensions>

@@ -188,6 +188,10 @@ a.modosdownloadsDownloadButton:active {
   -moz-box-shadow: 0 0 10px rgba(0, 0, 0, .4);
   -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, .4);
   box-shadow: 0 0 10px rgba(0, 0, 0, .4);
+  overflow-y: auto;
+  word-wrap: break-word;
+  line-height: 1.5;
+  max-height: 90vh;
 }
 
 .osdownloads-modal.small {
@@ -286,8 +290,10 @@ a.modosdownloadsDownloadButton:active {
 
 @media screen and (max-width: 480px) {
   .osdownloads-modal {
-    width: 280px !important;
-    margin-left: -180px !important;
+    width: 90% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    left: 5% !important;
   }
 }
 

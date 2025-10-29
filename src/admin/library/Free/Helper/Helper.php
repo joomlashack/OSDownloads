@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package   OSDownloads
  * @contact   www.joomlashack.com, help@joomlashack.com
@@ -26,7 +27,6 @@ namespace Alledia\OSDownloads\Free\Helper;
 use Alledia\OSDownloads\Factory;
 use ContentHelperRoute;
 use Exception;
-use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\HTML\Helpers\Sidebar;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -130,7 +130,7 @@ abstract class Helper
         }
 
         // If the file exists, it is a local path
-        return File::exists(realpath(JPATH_SITE . '/' . ltrim($path, '/')));
+        return is_file(realpath(JPATH_SITE . '/' . ltrim($path, '/')));
     }
 
     /**
@@ -213,7 +213,7 @@ abstract class Helper
             'afterDisplayContent'  => Factory::getApplication()->triggerEvent(
                 'onContentAfterDisplay',
                 ['com_osdownloads.file', &$item, &$item->params, null]
-            )
+            ),
         ];
 
         foreach ($prepareEvent as &$results) {

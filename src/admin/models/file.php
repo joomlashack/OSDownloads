@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package   OSDownloads
  * @contact   www.joomlashack.com, help@joomlashack.com
@@ -21,14 +22,14 @@
  * along with OSDownloads.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+use Alledia\Framework\Joomla\Model\AdminModel;
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Helper\Helper;
-use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Filesystem\Folder;
-use Joomla\CMS\Filesystem\Path;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\Table\Table;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Folder;
+use Joomla\Filesystem\Path;
 use Joomla\Registry\Registry;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -113,18 +114,18 @@ class OsdownloadsModelFile extends AdminModel
     public function getItem($pk = null)
     {
         if ($item = parent::getItem($pk)) {
-            if ($description = $item->get('description_1')) {
+            if ($description = ($item->description_1 ?? null)) {
                 $item->description_1 = sprintf(
                     '%s<hr id="system-readmore" />%s',
-                    $item->get('brief'),
+                    $item->brief ?? null,
                     $description
                 );
             } else {
-                $item->description_1 = $item->get('brief');
+                $item->description_1 = $item->brief ?? null;
             }
 
-            $agreementRequired   = (bool)$item->get('require_agree');
-            $agreementId         = (int)$item->get('agreement_article_id');
+            $agreementRequired   = (bool)($item->require_agree ?? false);
+            $agreementId         = (int)($item->agreement_article_id ?? null);
             $item->agreementLink = $agreementRequired ? Helper::getArticleLink($agreementId) : '';
 
             $item->type = empty($item->file_url) ? 'upload' : 'url';
@@ -138,59 +139,53 @@ class OsdownloadsModelFile extends AdminModel
      */
     public function save($data)
     {
-        try {
-            $app = Factory::getApplication();
+        $app = Factory::getApplication();
 
-            if ($app->input->getCmd('task') == 'save2copy') {
-                $original = clone $this->getTable();
-                $original->load($app->input->getInt('id'));
+        if ($app->input->getCmd('task') == 'save2copy') {
+            $original = clone $this->getTable();
+            $original->load($app->input->getInt('id'));
 
-                if ($data['name'] == $original->name) {
-                    [$name, $alias] = $this->generateNewTitle($data['cate_id'], $data['alias'], $data['name']);
+            if ($data['name'] == $original->name) {
+                [$name, $alias] = $this->generateNewTitle($data['cate_id'], $data['alias'], $data['name']);
 
-                    $data['name']  = $name;
-                    $data['alias'] = $alias;
+                $data['name']  = $name;
+                $data['alias'] = $alias;
 
-                } elseif ($data['alias'] == $original->alias) {
-                    $data['alias'] = '';
-                }
-
-                $data['published']  = 0;
-                $data['downloaded'] = 0;
+            } elseif ($data['alias'] == $original->alias) {
+                $data['alias'] = '';
             }
 
-            $mainText = $data['description_1'];
-            if (preg_match('#<hr\s+id=["|\']system-readmore["|\']\s*/*>#i', $mainText, $match)) {
-                $splitText = explode($match[0], $mainText, 2);
-            } else {
-                $splitText = [$mainText, ''];
-            }
+            $data['published']  = 0;
+            $data['downloaded'] = 0;
+        }
 
-            $data['description_1'] = array_pop($splitText);
-            $data['brief']         = array_pop($splitText);
+        $mainText = $data['description_1'];
+        if (preg_match('#<hr\s+id=["|\']system-readmore["|\']\s*/*>#i', $mainText, $match)) {
+            $splitText = explode($match[0], $mainText, 2);
+        } else {
+            $splitText = [$mainText, ''];
+        }
 
-            $data['require_email']        = (int)$data['require_email'];
-            $data['require_agree']        = (int)$data['require_agree'];
-            $data['agreement_article_id'] = (int)$data['agreement_article_id'];
+        $data['description_1'] = array_pop($splitText);
+        $data['brief']         = array_pop($splitText);
 
-            $type = empty($data['type']) ? null : $data['type'];
-            switch ($type) {
-                case 'url':
-                    $data['file_path'] = '';
-                    break;
+        $data['require_email']        = (int)$data['require_email'];
+        $data['require_agree']        = (int)$data['require_agree'];
+        $data['agreement_article_id'] = (int)$data['agreement_article_id'];
 
-                case 'upload':
-                    $this->uploadFile($data);
-                    $data['file_url'] = '';
-                    break;
+        $type = empty($data['type']) ? null : $data['type'];
+        switch ($type) {
+            case 'url':
+                $data['file_path'] = '';
+                break;
 
-                default:
-                    throw new Exception(Text::sprintf('COM_OSDOWNLOADS_ERROR_FILE_TYPE_UNKNOWN', $type));
-            }
+            case 'upload':
+                $this->uploadFile($data);
+                $data['file_url'] = '';
+                break;
 
-        } catch (Throwable $e) {
-            $this->setError($e->getMessage());
-            return false;
+            default:
+                throw new Exception(Text::sprintf('COM_OSDOWNLOADS_ERROR_FILE_TYPE_UNKNOWN', $type));
         }
 
         if (parent::save($data)) {
@@ -303,17 +298,7 @@ class OsdownloadsModelFile extends AdminModel
 
             $tempPath = $upload->get('tmp_name');
 
-            // Disable file extension and tag checks
-            $safeFileOptions = [
-                'forbidden_extensions'       => [],
-                'php_tag_in_content'         => false,
-                'shorttag_in_content'        => false,
-                'shorttag_extensions'        => [],
-                'fobidden_ext_in_content'    => false,
-                'php_ext_content_extensions' => [],
-            ];
-
-            if (!File::upload($tempPath, $filePath, false, false, $safeFileOptions)) {
+            if (!File::upload($tempPath, $filePath)) {
                 if ($messages = $app->getMessageQueue(true)) {
                     $uploadErrorMessage = array_pop($messages);
 

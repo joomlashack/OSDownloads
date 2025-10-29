@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package   OSDownloads
  * @contact   www.joomlashack.com, help@joomlashack.com
@@ -25,10 +26,10 @@ namespace Alledia\OSDownloads\MailingLists;
 
 use Alledia\Framework\Joomla\Extension\Licensed;
 use Alledia\OSDownloads\Factory;
-use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
+use Joomla\Filesystem\Folder;
 use SimpleXMLElement;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -254,6 +255,10 @@ class Manager
                         : ($orderA < $orderB ? -1 : 1);
                 });
 
+                /**
+                 * @var SimpleXMLElement   $source
+                 * @var SimpleXMLElement[] $newFields
+                 */
                 foreach ($sources as $group => $source) {
                     $listNode = $target->xpath(sprintf('fields[@name="%s"]', $group));
                     if (!$listNode) {

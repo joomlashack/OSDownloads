@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package   OSDownloads
  * @contact   www.joomlashack.com, help@joomlashack.com
@@ -24,12 +25,12 @@
 namespace Alledia\OSDownloads\Free\Installer;
 
 use Alledia\Installer\AbstractScript as AllediaAbstractScript;
-use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Category;
 use Joomla\CMS\Table\Table;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Folder;
 
 // phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();

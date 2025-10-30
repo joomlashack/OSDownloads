@@ -23,7 +23,7 @@
 
 namespace Alledia\OSDownloads\Free\Joomla\Controller;
 
-use Alledia\Framework\Joomla\Controller\Base as BaseController;
+use Alledia\Framework\Joomla\Controller\AbstractBase;
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Helper\Helper;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
@@ -32,9 +32,10 @@ use Joomla\CMS\Language\Text;
 
 // phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+
 // phpcs:enable PSR1.Files.SideEffects
 
-class Site extends BaseController
+class Site extends AbstractBase
 {
     /**
      * @inheritDoc

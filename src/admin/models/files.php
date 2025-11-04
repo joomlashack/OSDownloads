@@ -81,7 +81,7 @@ class OsdownloadsModelFiles extends ListModel
                 'doc.*',
                 'cat.access AS cat_access',
                 'cat.title AS cat_title',
-                'vl.title AS access_title'
+                'vl.title AS access_title',
             ])
             ->from('#__osdownloads_documents AS doc')
             ->leftJoin(

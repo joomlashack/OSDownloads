@@ -46,7 +46,7 @@ class Emails extends ListModel
                 'cat.title',
                 'email.downloaded_date',
                 'email.id',
-                'cate_id'
+                'cate_id',
             ]
         );
 
@@ -79,7 +79,7 @@ class Emails extends ListModel
             $search = $db->quote('%' . $search . '%');
             $ors    = [
                 'email.email LIKE ' . $search,
-                'doc.name LIKE' . $search
+                'doc.name LIKE' . $search,
             ];
             $query->where(sprintf('(%)', join(' OR ', $ors)));
         }

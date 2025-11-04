@@ -28,6 +28,7 @@ use Alledia\Framework\Joomla\Extension\AbstractFlexibleModule;
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Helper\Helper as FreeHelper;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
+use Alledia\OSDownloads\Free\Joomla\Model\Item;
 use Joomla\CMS\Form\Form;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -127,8 +128,10 @@ class File extends AbstractFlexibleModule
         $app->setUserState('com_osdownloads.files.filter_order_Dir', $this->params->get('ordering_dir', 'asc'));
 
         $osdownloads = FreeComponentSite::getInstance();
-        $model       = $osdownloads->getModel('Item');
-        $query       = $model->getItemQuery();
+
+        /** @var Item $model */
+        $model = $osdownloads->getModel('Item');
+        $query = $model->getItemQuery();
         $query->where('cate_id = ' . $db->quote($this->params->get('category', 0)));
         $db->setQuery($query);
 

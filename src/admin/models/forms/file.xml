@@ -40,7 +40,7 @@
                type="editor"
                label="COM_OSDOWNLOADS_DESCRIPTION_1H"
                description="COM_CATEGORIES_DESCRIPTION_DESC"
-               filter="JComponentHelper::filterText"
+               filter="\Joomla\CMS\Component\ComponentHelper::filterText"
                buttons="true"
                hide="pagebreak"/>
 
@@ -48,7 +48,7 @@
                type="editor"
                label="COM_OSDOWNLOADS_DESCRIPTION_2H"
                description="COM_CATEGORIES_DESCRIPTION_DESC"
-               filter="JComponentHelper::filterText"
+               filter="\Joomla\CMS\Component\ComponentHelper::filterText"
                buttons="true"
                hide="readmore,pagebreak"/>
 
@@ -56,7 +56,7 @@
                type="editor"
                label="COM_OSDOWNLOADS_DESCRIPTION_3H"
                description="COM_CATEGORIES_DESCRIPTION_DESC"
-               filter="JComponentHelper::filterText"
+               filter="\Joomla\CMS\Component\ComponentHelper::filterText"
                buttons="true"
                hide="readmore,pagebreak"/>
     </fieldset>

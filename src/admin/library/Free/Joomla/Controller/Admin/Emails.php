@@ -49,7 +49,7 @@ class Emails extends BaseController
             )
         );
 
-        $db    = Factory::getDbo();
+        $db    = Factory::getDatabase();
         $query = $db->getQuery(true)
             ->delete('#__osdownloads_emails')
             ->where(sprintf('id IN (%s)', join(',', $ids)));

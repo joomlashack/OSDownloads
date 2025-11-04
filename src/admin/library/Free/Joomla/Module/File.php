@@ -120,7 +120,7 @@ class File extends AbstractFlexibleModule
      */
     public function getList(): array
     {
-        $db  = Factory::getDbo();
+        $db  = Factory::getDatabase();
         $app = Factory::getApplication();
 
         $app->setUserState('com_osdownloads.files.filter_order', $this->params->get('ordering', 'ordering'));

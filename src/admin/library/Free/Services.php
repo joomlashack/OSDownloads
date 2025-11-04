@@ -46,7 +46,7 @@ class Services implements ServiceProviderInterface
         };
 
         $pimple['db'] = function () {
-            return Factory::getDbo();
+            return Factory::getDatabase();
         };
 
         $pimple['helperRoute'] = function () {

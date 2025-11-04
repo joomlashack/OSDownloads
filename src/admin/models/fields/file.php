@@ -22,7 +22,7 @@
  * along with OSDownloads.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-use Joomla\CMS\Factory;
+use Alledia\OSDownloads\Factory;
 use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -53,7 +53,7 @@ class OsdownloadsFormFieldFile extends ListField
         // Initialize variables.
         $options = [];
 
-        $db = Factory::getDbo();
+        $db = Factory::getDatabase();
 
         $query = $db->getQuery(true)
             ->select('*')

@@ -67,7 +67,7 @@ class SEF
      */
     public function getCategoryIdFromFileId(int $fileId): int
     {
-        $db = Factory::getDbo();
+        $db = Factory::getDatabase();
 
         $query = $db->getQuery(true)
             ->select('cate_id')
@@ -161,7 +161,7 @@ class SEF
      */
     public function getFileAlias(int $id): string
     {
-        $db = Factory::getDbo();
+        $db = Factory::getDatabase();
 
         $query = $db->getQuery(true)
             ->select('alias')
@@ -194,7 +194,7 @@ class SEF
      */
     public function getFileFromAlias(string $alias, ?string $path = null): ?object
     {
-        $db = Factory::getDbo();
+        $db = Factory::getDatabase();
 
         $query = $db->getQuery(true)
             ->select('*')
@@ -241,7 +241,7 @@ class SEF
      */
     public function getCategory(int $id): ?object
     {
-        $db = Factory::getDbo();
+        $db = Factory::getDatabase();
 
         $query = $db->getQuery(true)
             ->select('*')
@@ -273,7 +273,7 @@ class SEF
      */
     public function getCategoriesFromAlias(string $alias): array
     {
-        $db = Factory::getDbo();
+        $db = Factory::getDatabase();
 
         $query = $db->getQuery(true)
             ->select('*')

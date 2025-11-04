@@ -111,7 +111,7 @@ class OSDownloadsViewDownloads extends SiteViewBase
     public function display($tpl = null)
     {
         $app = $this->app;
-        $db  = Factory::getDbo();
+        $db  = Factory::getDatabase();
 
         $params              = $this->params;
         $includeChildFiles   = (bool)$params->get('include_child_files', 0);

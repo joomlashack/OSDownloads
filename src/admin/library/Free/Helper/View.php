@@ -137,7 +137,7 @@ class View
             return;
         }
 
-        $db = Factory::getDbo();
+        $db = Factory::getDatabase();
 
         $query    = $db->getQuery(true)
             ->select('*')

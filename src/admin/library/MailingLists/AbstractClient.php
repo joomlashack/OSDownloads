@@ -119,7 +119,7 @@ abstract class AbstractClient
      */
     protected function getUserByEmail(string $email): ?User
     {
-        $db    = Factory::getDbo();
+        $db    = Factory::getDatabase();
         $query = $db->getQuery(true)
             ->select('id')
             ->from('#__users')

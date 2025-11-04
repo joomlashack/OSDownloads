@@ -24,10 +24,11 @@
 
 namespace Alledia\OSDownloads\Free\Joomla\Model;
 
-use Joomla\CMS\MVC\Model\ListModel;
+use Alledia\Framework\Joomla\Model\ListModel;
 
 // phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+
 // phpcs:enable PSR1.Files.SideEffects
 
 class Emails extends ListModel

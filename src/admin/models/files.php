@@ -22,8 +22,8 @@
  * along with OSDownloads.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+use Alledia\Framework\Joomla\Model\ListModel;
 use Alledia\OSDownloads\Free\Helper\Helper;
-use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Table\Table;
 
 // phpcs:disable PSR1.Files.SideEffects

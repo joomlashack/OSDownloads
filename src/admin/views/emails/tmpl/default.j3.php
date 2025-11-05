@@ -65,11 +65,11 @@ $container     = Factory::getPimpleContainer();
                     </th>
                     <th class="has-context span6">
                         <?php echo HTMLHelper::_(
-                            'searchtools.sort',
-                            'COM_OSDOWNLOADS_EMAIL',
-                            'email.email',
-                            $listDirection,
-                            $listOrder
+                                'searchtools.sort',
+                                'COM_OSDOWNLOADS_EMAIL',
+                                'email.email',
+                                $listDirection,
+                                $listOrder
                         ); ?>
                     </th>
                     <?php if ($this->extension->isPro()) : ?>
@@ -77,38 +77,38 @@ $container     = Factory::getPimpleContainer();
                     <?php endif; ?>
                     <th>
                         <?php echo HTMLHelper::_(
-                            'searchtools.sort',
-                            'COM_OSDOWNLOADS_FILE',
-                            'doc.name',
-                            $listDirection,
-                            $listOrder
+                                'searchtools.sort',
+                                'COM_OSDOWNLOADS_FILE',
+                                'doc.name',
+                                $listDirection,
+                                $listOrder
                         ); ?>
                     </th>
                     <th>
                         <?php echo HTMLHelper::_(
-                            'searchtools.sort',
-                            'COM_OSDOWNLOADS_CATEGORY',
-                            'cat.title',
-                            $listDirection,
-                            $listOrder
+                                'searchtools.sort',
+                                'COM_OSDOWNLOADS_CATEGORY',
+                                'cat.title',
+                                $listDirection,
+                                $listOrder
                         ); ?>
                     </th>
                     <th>
                         <?php echo HTMLHelper::_(
-                            'searchtools.sort',
-                            'COM_OSDOWNLOADS_DATE',
-                            'email.downloaded_date',
-                            $listDirection,
-                            $listOrder
+                                'searchtools.sort',
+                                'COM_OSDOWNLOADS_DATE',
+                                'email.downloaded_date',
+                                $listDirection,
+                                $listOrder
                         ); ?>
                     </th>
                     <th class="hidden-phone center">
                         <?php echo HTMLHelper::_(
-                            'searchtools.sort',
-                            'COM_OSDOWNLOADS_ID',
-                            'email.id',
-                            $listDirection,
-                            $listOrder
+                                'searchtools.sort',
+                                'COM_OSDOWNLOADS_ID',
+                                'email.id',
+                                $listDirection,
+                                $listOrder
                         ); ?>
                     </th>
                 </tr>
@@ -127,9 +127,11 @@ $container     = Factory::getPimpleContainer();
                             echo $this->loadTemplate('pro_columns');
                             ?>
                         <?php endif; ?>
-                        <td><?php echo($item->doc_name); ?></td>
-                        <td><?php echo($item->cate_name); ?></td>
-                        <td><?php echo(HTMLHelper::_('date', $item->downloaded_date, 'd-m-Y H:m:s')); ?></td>
+                        <td><?php echo $item->doc_name; ?></td>
+                        <td><?php echo $item->cate_name; ?></td>
+                        <td>
+                            <?php echo HTMLHelper::_('date', $item->downloaded_date, Text::_('DATE_FORMAT_LC4')); ?>
+                        </td>
                         <td class="hidden-phone center"><?php echo($item->id); ?></td>
                     </tr>
                 <?php endforeach; ?>

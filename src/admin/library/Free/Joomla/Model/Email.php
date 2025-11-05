@@ -23,6 +23,7 @@
 
 namespace Alledia\OSDownloads\Free\Joomla\Model;
 
+use Alledia\Framework\Joomla\Model\AbstractBaseDatabaseModel;
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Helper\Helper;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
@@ -35,7 +36,7 @@ defined('_JEXEC') or die();
 
 // phpcs:enable PSR1.Files.SideEffects
 
-class Email extends BaseDatabaseModel
+class Email extends AbstractBaseDatabaseModel
 {
     /**
      * @param object $row

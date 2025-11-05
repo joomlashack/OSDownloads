@@ -22,7 +22,7 @@
  * along with OSDownloads.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-use Alledia\Framework\Joomla\Model\ListModel;
+use Alledia\Framework\Joomla\Model\AbstractListModel;
 use Alledia\OSDownloads\Free\Helper\Helper;
 use Joomla\CMS\Table\Table;
 
@@ -31,7 +31,7 @@ defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 // phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 
-class OsdownloadsModelFiles extends ListModel
+class OsdownloadsModelFiles extends AbstractListModel
 {
     /**
      * @inheritDoc

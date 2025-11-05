@@ -24,14 +24,14 @@
 
 namespace Alledia\OSDownloads\Free\Joomla\Model;
 
-use Alledia\Framework\Joomla\Model\ListModel;
+use Alledia\Framework\Joomla\Model\AbstractListModel;
 
 // phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
 
 // phpcs:enable PSR1.Files.SideEffects
 
-class Emails extends ListModel
+class Emails extends AbstractListModel
 {
     /**
      * @inheritDoc

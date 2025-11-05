@@ -24,11 +24,10 @@
 
 namespace Alledia\OSDownloads\Free\Joomla\Model;
 
-use Alledia\Framework\Joomla\Model\TraitModel;
+use Alledia\Framework\Joomla\Model\AbstractBaseDatabaseModel;
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Helper\Helper as FreeHelper;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeSite;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\Database\DatabaseQuery;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -36,10 +35,8 @@ defined('_JEXEC') or die();
 
 // phpcs:enable PSR1.Files.SideEffects
 
-class Item extends BaseDatabaseModel
+class Item extends AbstractBaseDatabaseModel
 {
-    use TraitModel;
-
     /**
      * Get document's data from db
      *

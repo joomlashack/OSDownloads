@@ -22,7 +22,7 @@
  * along with OSDownloads.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-use Alledia\Framework\Joomla\Model\AdminModel;
+use Alledia\Framework\Joomla\Model\AbstractAdminModel;
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Helper\Helper;
 use Joomla\CMS\Language\Text;
@@ -37,7 +37,7 @@ defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 // phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 
-class OsdownloadsModelFile extends AdminModel
+class OsdownloadsModelFile extends AbstractAdminModel
 {
     /**
      * @var string

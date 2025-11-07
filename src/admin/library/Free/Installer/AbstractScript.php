@@ -64,7 +64,7 @@ class AbstractScript extends AllediaAbstractScript
     /**
      * @return void
      */
-    protected function checkAndCreateDefaultCategory()
+    protected function checkAndCreateDefaultCategory(): void
     {
         $db = $this->dbo;
 
@@ -140,7 +140,7 @@ class AbstractScript extends AllediaAbstractScript
      *
      * @since v1.13.14
      */
-    protected function moveLayouts()
+    protected function moveLayouts(): void
     {
         $renames = [
             'download_button' => 'download',
@@ -171,7 +171,7 @@ class AbstractScript extends AllediaAbstractScript
      *
      * @return void
      */
-    protected function clearProData()
+    protected function clearProData(): void
     {
         if ($this->getLicense()->isPro()) {
             // only do this with Free installs

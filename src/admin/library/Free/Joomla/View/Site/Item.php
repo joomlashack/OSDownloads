@@ -100,7 +100,7 @@ class Item extends Base
         $component->loadLibrary();
 
         $this->isPro    = $component->isPro();
-        $this->category = $container->helperSEF->getCategory($this->item->cate_id);
+        $this->category = $container->helperSEF->getCategory($this->item->catid);
 
         // Process content plugins
         $this->item->brief         = HTMLHelper::_('content.prepare', $this->item->brief);

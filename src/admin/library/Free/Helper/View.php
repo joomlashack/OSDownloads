@@ -110,7 +110,7 @@ class View
             }
         }
 
-        $this->buildCategoryBreadcrumbs($file->cate_id);
+        $this->buildCategoryBreadcrumbs($file->catid);
 
         $app       = Factory::getApplication();
         $container = Factory::getPimpleContainer();

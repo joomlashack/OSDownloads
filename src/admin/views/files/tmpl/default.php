@@ -160,7 +160,7 @@ if ($saveOrder && $this->items) {
                             $link = 'index.php?option=com_osdownloads&task=file.edit&id=' . $item->id;
                             ?>
                             <tr class="<?php echo 'row' . ($i % 2); ?>"
-                                data-draggable-group="<?php echo $item->cate_id; ?>">
+                                data-draggable-group="<?php echo $item->catid; ?>">
                                 <td class="text-center d-none d-md-table-cell">
                                     <?php echo HTMLHelper::_('grid.checkedout', $item, $i); ?>
                                 </td>

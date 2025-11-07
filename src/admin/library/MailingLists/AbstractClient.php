@@ -190,7 +190,7 @@ abstract class AbstractClient
 
         if (empty($value)) {
             // Try category lookup
-            if ($category = $this->getCategory($document->get('cate_id'))) {
+            if ($category = $this->getCategory($document->get('catid'))) {
                 $value = $category->get('params')->get($key);
                 if (is_array($value)) {
                     $value = array_filter($value);

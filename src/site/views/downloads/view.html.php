@@ -137,7 +137,7 @@ class OSDownloadsViewDownloads extends SiteViewBase
         $query->select('cat.access as cat_access');
 
         $where = [
-            sprintf('cate_id = %s', $db->quote($id))
+            sprintf('catid = %s', $db->quote($id))
         ];
 
         if ($includeChildFiles) {

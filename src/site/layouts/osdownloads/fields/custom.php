@@ -51,7 +51,7 @@ if ($elementId && $displayData->item->require_user_email && ComponentHelper::isE
         [
             $form,
             [
-                'catid' => $displayData->item->cate_id ?? null,
+                'catid' => $displayData->item->catid ?? null,
             ],
         ]
     );

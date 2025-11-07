@@ -38,7 +38,7 @@ defined('_JEXEC') or die();
 /**
  * @property string $typeAlias
  * @property int    $id
- * @property int    $cate_id
+ * @property int    $catid
  * @property string $name
  * @property string $alias
  * @property string $brief
@@ -78,7 +78,6 @@ class Item extends AbstractTable
      */
     protected $_columnAlias = [
         'title' => 'name',
-        'catid' => 'cate_id',
     ];
 
     /**

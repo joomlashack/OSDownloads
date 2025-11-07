@@ -70,7 +70,7 @@ class SEF
         $db = Factory::getDatabase();
 
         $query = $db->getQuery(true)
-            ->select('cate_id')
+            ->select('catid')
             ->from('#__osdownloads_documents')
             ->where('id = ' . $fileId);
 
@@ -221,7 +221,7 @@ class SEF
             // We need to check the path of each file
             foreach ($files as $file) {
                 // Get the file category
-                $category = $this->getCategory($file->cate_id);
+                $category = $this->getCategory($file->catid);
 
                 if (empty($category) == false && $category->path === $path) {
                     return $file;

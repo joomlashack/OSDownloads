@@ -46,7 +46,7 @@ class Emails extends AbstractListModel
                 'cat.title',
                 'email.downloaded_date',
                 'email.id',
-                'cate_id',
+                'catid',
             ]
         );
 
@@ -72,7 +72,7 @@ class Emails extends AbstractListModel
             ->select('email.*, doc.name AS doc_name, cat.title AS cate_name')
             ->from('#__osdownloads_emails email')
             ->leftJoin('#__osdownloads_documents doc ON (email.document_id = doc.id)')
-            ->leftJoin('#__categories cat ON (cat.id = doc.cate_id)');
+            ->leftJoin('#__categories cat ON (cat.id = doc.catid)');
 
         $search = $this->getState('filter.search');
         if ($search) {
@@ -83,7 +83,7 @@ class Emails extends AbstractListModel
             ];
             $query->where(sprintf('(%)', join(' OR ', $ors)));
         }
-        if ($categoryId = (int)$this->getState('filter.cate_id')) {
+        if ($categoryId = (int)$this->getState('filter.catid')) {
             $query->where('cat.id = ' . $categoryId);
         }
 

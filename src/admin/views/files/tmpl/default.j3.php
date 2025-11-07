@@ -163,7 +163,7 @@ endif;
                     $item->checked_out = false;
                     ?>
                     <tr class="<?php echo 'row' . ($i % 2); ?>"
-                        sortable-group-id="<?php echo $item->cate_id; ?>">
+                        sortable-group-id="<?php echo $item->catid; ?>">
                         <td class="order nowrap center hidden-phone">
                             <?php
                             $class = 'sortable-handler' . ($saveOrder ? '' : ' inactive');

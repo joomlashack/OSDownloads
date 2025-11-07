@@ -39,7 +39,7 @@ class OsdownloadsModelFiles extends AbstractListModel
     public function __construct($config = [])
     {
         $config['filter_fields'] = [
-            'cate_id',
+            'catid',
             'doc.access',
             'doc.downloaded',
             'doc.id',
@@ -86,7 +86,7 @@ class OsdownloadsModelFiles extends AbstractListModel
             ->from('#__osdownloads_documents AS doc')
             ->leftJoin(
                 '#__categories AS cat'
-                . ' ON (doc.cate_id = cat.id AND cat.extension = ' . $db->quote('com_osdownloads') . ')'
+                . ' ON (doc.catid = cat.id AND cat.extension = ' . $db->quote('com_osdownloads') . ')'
             )
             ->leftJoin(
                 '#__viewlevels AS vl'
@@ -103,16 +103,16 @@ class OsdownloadsModelFiles extends AbstractListModel
             $query->where('doc.published = ' . (int)$published);
         }
 
-        $categoryId = (int)$this->getState('filter.cate_id');
+        $categoryId = (int)$this->getState('filter.catid');
         if ($categoryId) {
-            $query->where('doc.cate_id = ' . $categoryId);
+            $query->where('doc.catid = ' . $categoryId);
         }
 
         $ordering  = $this->getState('list.ordering');
         $direction = $this->getState('list.direction');
 
         if ($ordering == 'doc.ordering') {
-            $query->order('doc.cate_id ' . $direction);
+            $query->order('doc.catid ' . $direction);
         }
         $query->order($ordering . ' ' . $direction);
 

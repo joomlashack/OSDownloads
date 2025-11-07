@@ -132,7 +132,7 @@ class File extends AbstractFlexibleModule
         /** @var Item $model */
         $model = $osdownloads->getModel('Item');
         $query = $model->getItemQuery();
-        $query->where('cate_id = ' . $db->quote($this->params->get('category', 0)));
+        $query->where('catid = ' . $db->quote($this->params->get('category', 0)));
         $db->setQuery($query);
 
         if ($rows = $db->loadObjectList()) {

@@ -146,7 +146,7 @@ class OsdownloadsModelFile extends AbstractAdminModel
             $original->load($app->input->getInt('id'));
 
             if ($data['name'] == $original->name) {
-                [$name, $alias] = $this->generateNewTitle($data['cate_id'], $data['alias'], $data['name']);
+                [$name, $alias] = $this->generateNewTitle($data['catid'], $data['alias'], $data['name']);
 
                 $data['name']  = $name;
                 $data['alias'] = $alias;

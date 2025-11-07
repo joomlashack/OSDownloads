@@ -96,7 +96,7 @@ class Item extends AbstractBaseDatabaseModel
             ->from('#__osdownloads_documents AS doc')
             ->leftJoin(
                 '#__categories AS cat'
-                . ' ON (doc.cate_id = cat.id AND cat.extension = ' . $db->quote('com_osdownloads') . ')'
+                . ' ON (doc.catid = cat.id AND cat.extension = ' . $db->quote('com_osdownloads') . ')'
             )
             ->where([
                 'cat.published = 1',

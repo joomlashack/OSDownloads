@@ -62,7 +62,7 @@
     </fieldset>
 
     <fieldset name="file-vertical">
-        <field name="cate_id"
+        <field name="catid"
                type="category"
                layout="joomla.form.field.list-fancy-select"
                required="true"

@@ -56,6 +56,7 @@ class AbstractScript extends AllediaAbstractScript
 
                 if ($type == 'update') {
                     $this->moveLayouts();
+                    $this->updateSchema();
                 }
             }
         }
@@ -203,5 +204,16 @@ class AbstractScript extends AllediaAbstractScript
             ->delete('#__fields_categories')
             ->where($fieldId);
         $db->setQuery($query)->execute();
+    }
+
+    /**
+     * @return void
+     */
+    protected function updateSchema(): void
+    {
+        $this->executeQuery(
+            '2.3.0',
+            'ALTER TABLE `#__osdownloads_documents` CHANGE COLUMN `cate_id` `catid` int UNSIGNED NOT NULL AFTER `id`;'
+        );
     }
 }

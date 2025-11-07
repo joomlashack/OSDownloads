@@ -1,0 +1,3 @@
+--
+-- Schema changes in installer script to avoid Joomla DB review
+--

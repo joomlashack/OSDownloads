@@ -51,11 +51,6 @@ if (defined('ALLEDIA_FRAMEWORK_LOADED') && defined('OSDOWNLOADS_LOADED') == fals
     ExtensionHelper::loadLibrary('com_osdownloads');
     FrameworkHelper::createDatabaseClassAliases();
 
-    if (Version::MAJOR_VERSION < 4) {
-        // Joomla 3 shims
-        JLoader::register('ContentHelperRoute', JPATH_SITE . '/components/com_content/helpers/route.php');
-    }
-
     switch (Factory::getApplication()->getName()) {
         case 'site':
             Factory::getLanguage()->load('com_osdownloads', OSDOWNLOADS_SITE);

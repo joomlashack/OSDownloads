@@ -25,7 +25,6 @@
 namespace Alledia\OSDownloads\Free\Helper;
 
 use Alledia\OSDownloads\Factory;
-use ContentHelperRoute;
 use Exception;
 use Joomla\CMS\HTML\Helpers\Sidebar;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -34,6 +33,7 @@ use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\Component\Content\Site\Helper\RouteHelper;
 use Joomla\Registry\Registry;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -245,7 +245,7 @@ abstract class Helper
                 $categoryId = $contentTable->get('catid');
             }
 
-            return Route::_(ContentHelperRoute::getArticleRoute($articleId, $categoryId));
+            return Route::_(RouteHelper::getArticleRoute($articleId, $categoryId));
         }
 
         return '';

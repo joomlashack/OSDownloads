@@ -21,6 +21,7 @@
  * along with OSDownloads.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+use Alledia\OSDownloads\Factory;
 use Joomla\CMS\Language\Language;
 
 defined('_JEXEC') or die();
@@ -64,4 +65,4 @@ if ($this->isLocal) {
     curl_close($ch);
 }
 
-jexit();
+Factory::getApplication()->close();

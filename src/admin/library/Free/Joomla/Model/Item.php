@@ -3,7 +3,7 @@
 /**
  * @package   OSDownloads
  * @contact   www.joomlashack.com, help@joomlashack.com
- * @copyright 2005-2026 Joomlashack.com. All rights reserved
+ * @copyright 2005-2025 Joomlashack.com. All rights reserved
  * @license   https://www.gnu.org/licenses/gpl.html GNU/GPL
  *
  * This file is part of OSDownloads.
@@ -76,18 +76,37 @@ class Item extends AbstractBaseDatabaseModel
         $groups    = $user->getAuthorisedViewLevels();
         $component = FreeSite::getInstance();
 
-        $filterOrder    = $app->getUserStateFromRequest(
+        $filterOrder = trim((string)$app->getUserStateFromRequest(
             'com_osdownloads.files.filter_order',
             'filter_order',
             'doc.ordering',
-            ''
-        );
-        $filterOrderDir = $app->getUserStateFromRequest(
+            'cmd'
+        ));
+
+        $allowedOrder = [
+            'doc.ordering',
+            'doc.title',
+            'doc.id',
+            'doc.created_time',
+            'doc.modified_time',
+            'doc.published',
+            'doc.downloaded',
+        ];
+
+        if (!in_array($filterOrder, $allowedOrder, true)) {
+            $filterOrder = 'doc.ordering';
+        }
+
+        $filterOrderDir = strtolower((string)$app->getUserStateFromRequest(
             'com_osdownloads.files.filter_order_Dir',
             'filter_order_Dir',
             'asc',
             'word'
-        );
+        ));
+
+        if (!in_array($filterOrderDir, ['asc', 'desc'], true)) {
+            $filterOrderDir = 'asc';
+        }
 
         $query = $db->getQuery(true)
             ->select('doc.*')

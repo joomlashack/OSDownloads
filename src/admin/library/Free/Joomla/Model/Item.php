@@ -76,18 +76,19 @@ class Item extends AbstractBaseDatabaseModel
         $groups    = $user->getAuthorisedViewLevels();
         $component = FreeSite::getInstance();
 
-        $filterOrder    = $app->getUserStateFromRequest(
+        $filterOrder = $app->getUserStateFromRequest(
             'com_osdownloads.files.filter_order',
             'filter_order',
-            'doc.ordering',
-            ''
-        );
+            null,
+            'cmd'
+        ) ?: 'doc.ordering';
+
         $filterOrderDir = $app->getUserStateFromRequest(
             'com_osdownloads.files.filter_order_Dir',
             'filter_order_Dir',
-            'asc',
-            'word'
-        );
+            null,
+            'cmd'
+        ) ?: 'asc';
 
         $query = $db->getQuery(true)
             ->select('doc.*')

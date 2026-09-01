@@ -26,12 +26,12 @@ use Alledia\OSDownloads\Free\Installer\AbstractScript;
 
 // phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
-// phpcs:enable PSR1.Files.SideEffects
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
-// phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
 
 $installPath = __DIR__ . (is_dir(__DIR__ . '/admin') ? '/admin' : '');
 require_once $installPath . '/library/Free/Installer/AbstractScript.php';
+// phpcs:enable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
+// phpcs:disable Squiz.Classes.ValidClassName.NotCamelCaps
 
 class Com_OsdownloadsInstallerScript extends AbstractScript
 {

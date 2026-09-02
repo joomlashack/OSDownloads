@@ -25,6 +25,7 @@
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\File;
 use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
+use Alledia\OSDownloads\Free\Joomla\Controller\Site as SiteController;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -78,8 +79,12 @@ class OSDownloadsViewDownload extends HtmlView
         $model     = $component->getModel('Item');
         $item      = $model->getItem($id);
 
-        if (empty($item)) {
+        if (
+            empty($item)
+            || !SiteController::isDownloadAuthorized($item)
+        ) {
             $this->displayError(Text::_('COM_OSDOWNLOADS_ERROR_DOWNLOAD_DENIED'));
+
             return;
         }
 

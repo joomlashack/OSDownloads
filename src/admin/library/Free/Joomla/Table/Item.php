@@ -138,7 +138,7 @@ class Item extends AbstractTable
 
             $this->trigger('onOSDownloadsAfterSaveFile', [$result, &$this]);
 
-            return true;
+            return $result;
         }
 
         return false;
@@ -151,11 +151,11 @@ class Item extends AbstractTable
     {
         $result = $this->trigger('onOSDownloadsBeforeDeleteFile', [&$this, $pk]);
         if (in_array(false, $result, true) == false) {
-            $result = parent::delete($pk['id']);
+            $result = parent::delete($pk);
 
             $this->trigger('onOSDownloadsAfterDeleteFile', [$result, $this->get('id'), $pk]);
 
-            return true;
+            return $result;
         }
 
         return false;

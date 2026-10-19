@@ -11,8 +11,13 @@ It allows you to easily provide downloads in exchange for emails, which can in t
 
 ## Requirements
 
-* php 5.6+
-* Joomla 3.7+
+* php 7.4+
+* Joomla 3.9+
+
+## Development
+
+See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) for build instructions and an
+architecture overview.
 
 ## License
 

@@ -53,12 +53,6 @@ $this->component              = FreeComponentSite::getInstance();
 $this->isPro                  = $this->component->isPro();
 $this->version                = $this->component->getMediaVersion();
 
-HTMLHelper::_('jquery.framework');
-
-$options = ['version' => $this->version, 'relative' => true];
-
-HTMLHelper::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', $options, []);
-
 ?>
 <div class="contentopen osdownloads-container">
     <?php

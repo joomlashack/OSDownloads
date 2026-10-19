@@ -58,11 +58,6 @@ $options   = ['version' => $component->getMediaVersion(), 'relative' => true];
 
 HTMLHelper::_('stylesheet', 'com_osdownloads/frontend.css', $options, []);
 
-if ($linkTo === 'download') :
-    HTMLHelper::_('jquery.framework');
-    HTMLHelper::_('script', 'com_osdownloads/jquery.osdownloads.bundle.min.js', $options, []);
-endif;
-
 $moduleAttribs = [
     'class' => 'mod_osdownloadsfiles' . $this->params->get('moduleclass_sfx'),
     'id'    => 'mod_osdownloads_' . $this->id,

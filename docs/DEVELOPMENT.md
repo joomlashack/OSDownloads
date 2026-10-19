@@ -28,9 +28,17 @@ There are no automated tests or lint configs in this repo. Packages are assemble
 
 The builder also pulls in the related extensions listed under
 `<alledia><relatedExtensions>` in `src/osdownloads.xml`, and minifies
-`media/js/jquery.osdownloads.js`, `jquery.reveal.js`, and `jquery.validate.js` into
+`media/js/jquery.osdownloads.js` and `jquery.reveal.js` into
 `jquery.osdownloads.bundle(.min).js`. Those bundle files are committed, so rebuild them
 whenever any of the source JS files change.
+
+jQuery Validation isn't bundled. It comes from ShackFramework and is loaded with
+`HTMLHelper::_('alledia.jqueryValidate')`, which must be called before the bundle is
+loaded.
+
+`Free\Joomla\Component\Site::loadScripts()` loads jQuery, jQuery Validation and the
+bundle in the right order. Call it from view or module classes rather than from
+templates, so sites that override a template don't lose the scripts.
 
 ### Dependencies
 

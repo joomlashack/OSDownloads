@@ -120,7 +120,6 @@
             <scripts destination="media/js/jquery.osdownloads.bundle.js">
                 <script>media/js/jquery.osdownloads.js</script>
                 <script>media/js/jquery.reveal.js</script>
-                <script>media/js/jquery.validate.js</script>
             </scripts>
         </minify>
 

@@ -79,4 +79,20 @@ class Site extends AbstractComponent
 
         return $this->version;
     }
+
+    /**
+     * Load the scripts used by the download buttons
+     *
+     * @return void
+     */
+    public function loadScripts(): void
+    {
+        HTMLHelper::_('jquery.framework');
+        HTMLHelper::_('alledia.jqueryValidate');
+        HTMLHelper::_(
+            'script',
+            'com_osdownloads/jquery.osdownloads.bundle.min.js',
+            ['version' => $this->getMediaVersion(), 'relative' => true]
+        );
+    }
 }

@@ -109,6 +109,8 @@ class Item extends Base
         $this->item->description_2 = HTMLHelper::_('content.prepare', $this->item->description_2);
         $this->item->description_3 = HTMLHelper::_('content.prepare', $this->item->description_3);
 
+        $component->loadScripts();
+
         parent::display($tpl);
     }
 }

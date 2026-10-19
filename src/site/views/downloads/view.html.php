@@ -24,6 +24,7 @@
 
 use Alledia\OSDownloads\Factory;
 use Alledia\OSDownloads\Free\Helper\Helper;
+use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Alledia\OSDownloads\Free\Joomla\View\Site\Base as SiteViewBase;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -218,6 +219,8 @@ class OSDownloadsViewDownloads extends SiteViewBase
         $this->items              = $items;
         $this->pagination         = $pagination;
         $this->isPro              = $extension->isPro();
+
+        FreeComponentSite::getInstance()->loadScripts();
 
         parent::display($tpl);
     }

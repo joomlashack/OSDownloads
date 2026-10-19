@@ -23,7 +23,6 @@
  */
 
 use Alledia\OSDownloads\Factory;
-use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Language;
 use Joomla\CMS\Language\Text;
@@ -43,19 +42,6 @@ defined('_JEXEC') or die();
 
 $lang      = Factory::getLanguage();
 $container = Factory::getPimpleContainer();
-$component = FreeComponentSite::getInstance();
-
-HTMLHelper::_('jquery.framework');
-
-$options = [];
-HTMLHelper::_(
-    'script',
-    'com_osdownloads/jquery.osdownloads.bundle.min.js',
-    [
-        'version'  => $component->getMediaVersion(),
-        'relative' => true,
-    ]
-);
 
 ?>
 <div class="contentopen osdownloads-container item_<?php echo $this->item->id; ?>">

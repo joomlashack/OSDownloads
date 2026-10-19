@@ -14,7 +14,9 @@ There are no tests or lint configs in this repo. Packages are built with Phing v
 
 - Copy `build.dist.properties` to `build.properties` (gitignored) and set `builder.path` plus the `project.Shack*.path` entries pointing at local checkouts of ShackInstaller, ShackDefaultFiles, ShackFramework and ShackExtensionSupport.
 - `phing` (default target `build`) — assembles the installable zip into `packages/` (gitignored). Set `builder.phplint=1` to lint all PHP during the build.
-- The builder also pulls in the related extensions listed under `<alledia><relatedExtensions>` in `src/osdownloads.xml` and minifies `media/js/jquery.osdownloads.js`, `jquery.reveal.js` and `jquery.validate.js` into `jquery.osdownloads.bundle(.min).js`. The bundle files are committed, so rebuild them whenever any of those source JS files change.
+- The builder also pulls in the related extensions listed under `<alledia><relatedExtensions>` in `src/osdownloads.xml` and minifies `media/js/jquery.osdownloads.js` and `jquery.reveal.js` into `jquery.osdownloads.bundle(.min).js`. The bundle files are committed, so rebuild them whenever any of those source JS files change.
+- jQuery Validation is not bundled. It comes from ShackFramework via `HTMLHelper::_('alledia.jqueryValidate')`, which must be called before the bundle is loaded.
+- Load the download scripts with `Free\Joomla\Component\Site::loadScripts()` from view/module classes, not from templates, so template overrides can't drop them.
 
 Composer dependencies (Mailchimp SDK, Guzzle, etc.) install into `src/admin/vendor`, and that directory is **committed**. After `composer update`, commit the vendor changes too.
 

@@ -105,7 +105,6 @@ class Item extends AbstractTable
             $this->downloaded      = 0;
             $this->created_time    = $date->toSql();
             $this->created_user_id = $user->get('id');
-
         } else {
             $this->modified_user_id = $user->get('id');
         }
@@ -117,7 +116,6 @@ class Item extends AbstractTable
 
         if ($this->params instanceof Registry) {
             $params = $this->params->toString();
-
         } elseif (!is_string($this->params)) {
             $params = new Registry($this->params);
             $params = $params->toString();
@@ -175,7 +173,6 @@ class Item extends AbstractTable
             PluginHelper::importPlugin('osdownloads');
 
             return Factory::getApplication()->triggerEvent($event, $arguments);
-
         } catch (\Throwable $error) {
             return [];
         }

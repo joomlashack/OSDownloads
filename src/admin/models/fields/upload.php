@@ -75,7 +75,6 @@ class OsdownloadsFormFieldUpload extends FormField
                 $text      = Text::sprintf('COM_OSDOWNLOADS_CURRENT_FILE_MISSING', $fileName);
                 $alertType = 'error';
             }
-
         } else {
             $text = Text::_('COM_OSDOWNLOADS_CURRENT_FILE_NONE');
         }

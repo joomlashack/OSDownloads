@@ -150,7 +150,6 @@ class OsdownloadsModelFile extends AbstractAdminModel
 
                 $data['name']  = $name;
                 $data['alias'] = $alias;
-
             } elseif ($data['alias'] == $original->alias) {
                 $data['alias'] = '';
             }
@@ -251,7 +250,6 @@ class OsdownloadsModelFile extends AbstractAdminModel
             if (empty($data['file_path'])) {
                 if (empty($files['file_path_upload']['name'])) {
                     $error = 'COM_OSDOWNLOADS_UPLOAD_ERR_EMPTY_FIELD';
-
                 } else {
                     $error = 'COM_OSDOWNLOADS_UPLOAD_ERR_REQUIRED';
                 }
@@ -265,11 +263,9 @@ class OsdownloadsModelFile extends AbstractAdminModel
         $uploadError = $upload->get('error');
         if ($uploadError == UPLOAD_ERR_NO_FILE) {
             throw new Exception(Text::_('COM_OSDOWNLOADS_UPLOAD_ERR_NO_FILE'));
-
         } elseif ($uploadError != UPLOAD_ERR_OK) {
             if (isset($this->uploadErrors[$uploadError])) {
                 $errorMessage = Text::_($this->uploadErrors[$uploadError]);
-
             } else {
                 $errorMessage = Text::sprintf('COM_OSDOWNLOADS_UPLOAD_ERR_UNKNOWN', $uploadError);
             }
@@ -312,7 +308,6 @@ class OsdownloadsModelFile extends AbstractAdminModel
                         '"' . $fileName . '"',
                         $uploadErrorMessage['message']
                     );
-
                 } else {
                     $uploadErrorMessage = Text::_('COM_OSDOWNLOADS_UPLOAD_ERR_UNKNOWN');
                 }

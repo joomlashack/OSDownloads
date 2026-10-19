@@ -54,7 +54,6 @@ class MailChimp extends AbstractClient
 
         if ($dispatcher instanceof \JEventDispatcher) {
             $dispatcher->register('onOSDownloadsAfterSaveEmail', [$this, 'onAfterStore']);
-
         } elseif ($dispatcher instanceof Dispatcher) {
             $dispatcher->addListener('onOSDownloadsAfterSaveEmail', [$this, 'onTableAfterStore']);
         }
@@ -82,13 +81,11 @@ class MailChimp extends AbstractClient
                             'email_address' => $email,
                             'status'        => 'subscribed',
                         ]);
-
                     } elseif ($member->status != 'subscribed') {
                         $mc->lists->updateListMember($listId, $email, [
                             'status' => 'subscribed',
                         ]);
                     }
-
                 } catch (\Throwable $error) {
                     $this->logMailChimpError($error, $email);
                 }
@@ -170,7 +167,6 @@ class MailChimp extends AbstractClient
         if ($error instanceof RequestException) {
             $response = $error->getResponse();
             $message  = sprintf('%s %s', $response->getStatusCode(), $response->getReasonPhrase());
-
         } else {
             $message = $error->getMessage();
         }

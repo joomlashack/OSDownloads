@@ -392,13 +392,10 @@ if (is_file($includePath) && include $includePath) {
                             $itemId = $menu->id;
                         }
                         break;
-
                 }
-
             } elseif ($task && $id) {
                 if ($fileMenu = $this->helper->getMenuItemForFile($id)) {
                     $itemId = $fileMenu->id;
-
                 } elseif ($categoryId = $this->helper->getCategoryIdFromFileId($id)) {
                     if ($categoryMenu = $this->helper->getMenuItemForCategoryTreeRecursively($categoryId)) {
                         $itemId = $categoryMenu->id;
@@ -466,7 +463,6 @@ if (is_file($includePath) && include $includePath) {
 
                             return $vars;
                         }
-
                     } else {
                         // Look for the file id using the remaining segments
                         array_pop($tmpSegments);

@@ -59,7 +59,6 @@ if ($this->fileSize > 0) {
 
 if ($this->isLocal) {
     @readfile($this->fileFullPath);
-
 } else {
     $ch = curl_init($this->fileFullPath);
     curl_exec($ch);

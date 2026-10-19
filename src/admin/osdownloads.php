@@ -38,7 +38,6 @@ if (include 'include.php') {
 
     $controller->execute(Factory::getApplication()->input->get('task'));
     $controller->redirect();
-
 } else {
     echo '<h3>Joomlashack Framework is not installed</h3>';
 }

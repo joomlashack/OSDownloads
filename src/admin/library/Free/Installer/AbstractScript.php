@@ -96,11 +96,9 @@ class AbstractScript extends AllediaAbstractScript
             if ($category->bind($data) && $category->check() && $category->store()) {
                 $category->rebuildPath();
                 $this->sendMessage(Text::_('COM_OSDOWNLOADS_INSTALL_GENERAL_CATEGORY_CREATED'));
-
             } else {
                 $this->sendMessage(Text::_('COM_OSDOWNLOADS_INSTALL_GENERAL_CATEGORY_WARNING'), 'notice');
             }
-
         } else {
             // Make sure to fix the undefined language
             $query = $db->getQuery(true)

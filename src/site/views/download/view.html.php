@@ -94,7 +94,6 @@ class OSDownloadsViewDownload extends HtmlView
 
         if ($this->isLocal) {
             $this->fileSize = $item->fileSize;
-
         } elseif ($item->file_url) {
             // Trigger the onOSDownloadsGetExternalDownloadLink event
             PluginHelper::importPlugin('osdownloads');

@@ -27,6 +27,7 @@ use Alledia\Framework\Joomla\Extension\Helper as ExtensionHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Version;
 
+// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
 defined('_JEXEC') or die();
 
 $frameworkPath = JPATH_SITE . '/libraries/allediaframework/include.php';

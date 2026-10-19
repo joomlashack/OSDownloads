@@ -27,7 +27,9 @@ namespace Alledia\OSDownloads;
 use Alledia\OSDownloads\Free\Services as FreeServices;
 use Alledia\OSDownloads\Pro\Services as ProServices;
 
+// phpcs:disable PSR1.Files.SideEffects
 defined('_JEXEC') or die();
+// phpcs:enable PSR1.Files.SideEffects
 
 /**
  * Class Factory

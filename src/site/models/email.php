@@ -31,5 +31,4 @@ defined('_JEXEC') or die();
 
 class OsdownloadsModelEmail extends EmailModel
 {
-
 }

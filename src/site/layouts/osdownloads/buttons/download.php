@@ -89,11 +89,12 @@ echo HTMLHelper::_(
 if ($compParams->get('download_form_translate')) :
     $header = Text::_('COM_OSDOWNLOADS_DOWNLOAD_FORM_HEADER');
     $footer = Text::_('COM_OSDOWNLOADS_DOWNLOAD_FORM_FOOTER');
-
 else :
     $header = $compParams->get('download_form_header');
     $footer = $compParams->get('download_form_footer');
 endif;
+
+$agreeMessage = Text::_('COM_OSDOWNLOADS_YOU_HAVE_AGREE_TERMS_TO_DOWNLOAD_THIS');
 
 ?>
 <div id="<?php echo $elementId . '_popup'; ?>"
@@ -137,7 +138,7 @@ endif;
                 ]
             );
 
-            if ($displayData->item->require_agree) : ?>
+        if ($displayData->item->require_agree) : ?>
                 <div id="<?php echo $elementId; ?>_agreegroup"
                      class="osdownloads-group-agree">
                     <label for="<?php echo $elementId; ?>_requireagree">
@@ -146,7 +147,7 @@ endif;
                                id="<?php echo $elementId; ?>_requireagree"
                                value="1"
                                required
-                               data-msg="<?php echo Text::_('COM_OSDOWNLOADS_YOU_HAVE_AGREE_TERMS_TO_DOWNLOAD_THIS'); ?>"
+                               data-msg="<?php echo $agreeMessage; ?>"
                                class="osdownloads-field-agree"/>
                         <span>
                            * <?php echo(Text::_('COM_OSDOWNLOADS_DOWNLOAD_TERM')); ?>
@@ -157,7 +158,7 @@ endif;
                        class="error osdownloads-error-agree"
                        id="<?php echo $elementId; ?>_erroragreeterms">
                 </label>
-            <?php endif; ?>
+        <?php endif; ?>
         </form>
 
         <a href="#" id="<?php echo $elementId; ?>_downloadcontinue"

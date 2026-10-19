@@ -31,5 +31,4 @@ defined('_JEXEC') or die();
 
 class OsdownloadsModelItem extends ItemModel
 {
-
 }

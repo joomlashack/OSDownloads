@@ -179,7 +179,6 @@ abstract class Helper
             if ($item->isLocal) {
                 $fileFullPath = static::getFullPath($item->file_url, false);
             }
-
         } else {
             $item->isLocal  = true;
             $item->realName = substr($item->file_path, strpos($item->file_path, '_') + 1);

@@ -66,11 +66,11 @@ $container     = Factory::getPimpleContainer();
                     </th>
                     <th class="has-context span6">
                         <?php echo HTMLHelper::_(
-                                'searchtools.sort',
-                                'COM_OSDOWNLOADS_EMAIL',
-                                'email.email',
-                                $listDirection,
-                                $listOrder
+                            'searchtools.sort',
+                            'COM_OSDOWNLOADS_EMAIL',
+                            'email.email',
+                            $listDirection,
+                            $listOrder
                         ); ?>
                     </th>
                     <?php if ($this->extension->isPro()) : ?>
@@ -78,38 +78,38 @@ $container     = Factory::getPimpleContainer();
                     <?php endif; ?>
                     <th>
                         <?php echo HTMLHelper::_(
-                                'searchtools.sort',
-                                'COM_OSDOWNLOADS_FILE',
-                                'doc.name',
-                                $listDirection,
-                                $listOrder
+                            'searchtools.sort',
+                            'COM_OSDOWNLOADS_FILE',
+                            'doc.name',
+                            $listDirection,
+                            $listOrder
                         ); ?>
                     </th>
                     <th>
                         <?php echo HTMLHelper::_(
-                                'searchtools.sort',
-                                'COM_OSDOWNLOADS_CATEGORY',
-                                'cat.title',
-                                $listDirection,
-                                $listOrder
+                            'searchtools.sort',
+                            'COM_OSDOWNLOADS_CATEGORY',
+                            'cat.title',
+                            $listDirection,
+                            $listOrder
                         ); ?>
                     </th>
                     <th>
                         <?php echo HTMLHelper::_(
-                                'searchtools.sort',
-                                'COM_OSDOWNLOADS_DATE',
-                                'email.downloaded_date',
-                                $listDirection,
-                                $listOrder
+                            'searchtools.sort',
+                            'COM_OSDOWNLOADS_DATE',
+                            'email.downloaded_date',
+                            $listDirection,
+                            $listOrder
                         ); ?>
                     </th>
                     <th class="hidden-phone center">
                         <?php echo HTMLHelper::_(
-                                'searchtools.sort',
-                                'COM_OSDOWNLOADS_ID',
-                                'email.id',
-                                $listDirection,
-                                $listOrder
+                            'searchtools.sort',
+                            'COM_OSDOWNLOADS_ID',
+                            'email.id',
+                            $listDirection,
+                            $listOrder
                         ); ?>
                     </th>
                 </tr>
@@ -140,7 +140,6 @@ $container     = Factory::getPimpleContainer();
             </table>
 
             <?php echo $this->pagination->getListFooter();
-
         else : ?>
             <div class="alert alert-no-items">
                 <?php

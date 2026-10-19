@@ -31,7 +31,6 @@ $include = JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
 if (is_file($include) && include $include) {
     $component = SiteComponent::getInstance();
     $component->init();
-
 } else {
     Factory::getApplication()->enqueueMessage('OSDownloads installation has been corrupted', 'error');
 }

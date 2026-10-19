@@ -212,11 +212,9 @@ class SEF
                 ),
                 Log::WARNING
             );
-
         } elseif (empty($path) && count($files) === 1) {
             // Only one file and no path to check
             return $files[0];
-
         } else {
             // We need to check the path of each file
             foreach ($files as $file) {

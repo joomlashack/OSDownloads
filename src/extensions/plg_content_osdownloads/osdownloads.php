@@ -34,7 +34,6 @@ $includePath = JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
 if (is_file($includePath) && include $includePath) {
     if (Factory::getExtension()->isPro()) {
         class_alias(\Alledia\OSDownloads\Pro\Joomla\Plugin\Content::class, ContentPlugin::class);
-
     } else {
         class_alias(\Alledia\OSDownloads\Free\Joomla\Plugin\Content::class, ContentPlugin::class);
     }

@@ -27,16 +27,14 @@ use Alledia\OSDownloads\Free\Helper\Helper as HelperFree;
 use Alledia\OSDownloads\Helper\Helper;
 use Alledia\OSDownloads\Pro\Helper\Helper as HelperPro;
 
-// phpcs:disable PSR1.Files.SideEffects
+// phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
 defined('_JEXEC') or die();
-// phpcs:enable PSR1.Files.SideEffects
 // phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 
 $include = JPATH_ADMINISTRATOR . '/components/com_osdownloads/include.php';
 if (is_file($include) && include $include) {
     if (Factory::getExtension()->isPro()) {
         class_alias(HelperPro::class, Helper::class);
-
     } else {
         class_alias(HelperFree::class, Helper::class);
     }

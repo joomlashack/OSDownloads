@@ -31,5 +31,4 @@ defined('_JEXEC') or die();
 
 class OsdownloadsTableDocument extends FreeItemTable
 {
-
 }

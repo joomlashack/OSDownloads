@@ -238,7 +238,6 @@ class Manager
 
                     $fieldset['description'] = Text::_('COM_OSDOWNLOADS_ML_NO_PLUGINS');
                 }
-
             } else {
                 $parents        = $target->xpath('ancestor::fields[@name]/@name');
                 $parentGroups   = array_map('strval', $parents ?: []);

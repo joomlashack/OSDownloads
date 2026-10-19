@@ -23,7 +23,6 @@
  */
 
 use Alledia\OSDownloads\Factory;
-use Alledia\OSDownloads\Free\Joomla\Component\Site as FreeComponentSite;
 use Alledia\OSDownloads\Free\Joomla\Module\File as ModuleFile;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -51,12 +50,6 @@ $linkTo    = $this->params->get('link_to', 'download');
 $requireEmail = false;
 $requireAgree = false;
 $showModal    = false;
-
-// Module body
-$component = FreeComponentSite::getInstance();
-$options   = ['version' => $component->getMediaVersion(), 'relative' => true];
-
-HTMLHelper::_('stylesheet', 'com_osdownloads/frontend.css', $options, []);
 
 $moduleAttribs = [
     'class' => 'mod_osdownloadsfiles' . $this->params->get('moduleclass_sfx'),

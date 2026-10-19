@@ -112,6 +112,8 @@ class File extends AbstractFlexibleModule
         $this->popupAnimation = $osdownloads->params->get('popup_animation', 'fade');
         $this->isPro          = $osdownloads->isPro();
 
+        $osdownloads->loadStylesheet();
+
         if ($this->params->get('link_to', 'download') === 'download') {
             $osdownloads->loadScripts();
         }

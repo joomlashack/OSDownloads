@@ -57,9 +57,7 @@ class Site extends AbstractComponent
      */
     public function init()
     {
-        $options = ['version' => $this->getMediaVersion(), 'relative' => true];
-
-        HTMLHelper::_('stylesheet', 'com_osdownloads/frontend.css', $options, []);
+        $this->loadStylesheet();
 
         parent::init();
     }
@@ -78,6 +76,20 @@ class Site extends AbstractComponent
         }
 
         return $this->version;
+    }
+
+    /**
+     * Load the frontend stylesheet
+     *
+     * @return void
+     */
+    public function loadStylesheet(): void
+    {
+        HTMLHelper::_(
+            'stylesheet',
+            'com_osdownloads/frontend.css',
+            ['version' => $this->getMediaVersion(), 'relative' => true]
+        );
     }
 
     /**

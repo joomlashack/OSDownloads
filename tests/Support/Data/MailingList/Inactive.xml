@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form group="inactive">
+    <fields name="config">
+        <field name="inactive_config" type="text"/>
+    </fields>
+
+    <fields name="file">
+        <field name="inactive_file" type="text"/>
+    </fields>
+</form>

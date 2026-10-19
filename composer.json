@@ -33,5 +33,24 @@
     },
     "replace": {
         "psr/container": "*"
+    },
+    "scripts"          : {
+        "test"    : [
+            "@composer --working-dir=tests install --no-interaction --quiet",
+            "@php tests/vendor/codeception/codeception/codecept run"
+        ],
+        "lint"    : [
+            "@composer --working-dir=tests install --no-interaction --quiet",
+            "@php tests/vendor/squizlabs/php_codesniffer/bin/phpcs --standard=PSR12 --extensions=php -sp --ignore='src/admin/vendor/*,tests/vendor/*,tests/_output/*,tests/Support/_generated/*' src tests"
+        ],
+        "lint:fix": [
+            "@composer --working-dir=tests install --no-interaction --quiet",
+            "@php tests/vendor/squizlabs/php_codesniffer/bin/phpcbf --standard=PSR12 --extensions=php --ignore='src/admin/vendor/*,tests/vendor/*,tests/_output/*,tests/Support/_generated/*' src tests"
+        ]
+    },
+    "scripts-descriptions": {
+        "test"    : "Install test dependencies into tests/vendor and run the Codeception suite",
+        "lint"    : "Check src and tests against the PSR-12 coding standard",
+        "lint:fix": "Automatically fix PSR-12 violations that phpcbf can correct"
     }
 }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form group="disabled">
+    <fields name="config">
+        <field name="disabled_config" type="text"/>
+    </fields>
+
+    <fields name="file">
+        <field name="disabled_file" type="text"/>
+    </fields>
+</form>

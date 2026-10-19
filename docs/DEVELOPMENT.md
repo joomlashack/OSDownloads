@@ -11,10 +11,28 @@ A separate **OSDownloads-Pro** repository builds on top of this one. When changi
 here, make sure it keeps working both when Pro classes are present and when they are
 absent.
 
+## Tests and coding standard
+
+Run these from the repo root. Each one installs the test tooling into `tests/vendor` first.
+
+- `composer test` runs the [Codeception](https://codeception.com/) unit tests in
+  `tests/Unit`.
+- `composer lint` checks `src` and `tests` against PSR-12 with PHP_CodeSniffer.
+- `composer lint:fix` automatically fixes the violations that phpcbf can correct.
+
+Test dependencies live in `tests/composer.json`, separate from the shipped
+`src/admin/vendor`. To update them, run `composer --working-dir=tests update`, never a
+root `composer update`, and commit `tests/composer.lock`.
+
+The unit tests cover only code that runs without Joomla or ShackFramework, since
+neither is installed for the tests. `tests/bootstrap.php` defines `_JEXEC` and points
+`JPATH_SITE` at a small fixture site in `tests/Support/Data/site`. Fixture classes go in
+`tests/Support/Fixtures`, and data files go in `tests/Support/Data`.
+
 ## Building the package
 
-There are no automated tests or lint configs in this repo. Packages are assembled with
-[Phing](https://www.phing.info/) via the external **ShackBuilder** project.
+Packages are assembled with [Phing](https://www.phing.info/) via the external
+**ShackBuilder** project.
 
 1. Check out **ShackBuilder**, **ShackInstaller**, **ShackDefaultFiles**,
    **ShackFramework**, and **ShackExtensionSupport** locally.

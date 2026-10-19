@@ -1,0 +1,1 @@
+Local file used by the path helper tests.

@@ -10,7 +10,14 @@ There is a separate **OSDownloads-Pro** repository that builds on top of this on
 
 ## Build
 
-There are no tests or lint configs in this repo. Packages are built with Phing via the external **ShackBuilder** project:
+### Tests and coding standard
+- Unit tests use Codeception: run `composer test` from the repo root (it installs `tests/vendor` first). Test tooling has its own `tests/composer.json` and gitignored `tests/vendor`, so it never touches the shipped `src/admin/vendor`. `codeception.yml` is at the repo root. `tests/composer.json` autoloads `Alledia\OSDownloads\` from `src/admin/library`, and `tests/bootstrap.php` defines `_JEXEC`, `JPATH_SITE` (the fixture site in `tests/Support/Data/site`) and `OSDOWNLOADS_LIBRARY`.
+- Only code that runs without Joomla CMS classes or ShackFramework is unit tested; neither is installed in `tests/vendor`. Skip Joomla-coupled constructors with `ReflectionClass::newInstanceWithoutConstructor()`, or use a fixture subclass that presets state (see `ExposedManager`). Use `Codeception\Attribute\DataProvider`, because Codeception ignores PHPUnit's attribute. Put fixture classes in `tests/Support/Fixtures` (`Tests\Support\Fixtures`), one class per file, and data files in `tests/Support/Data`. Use `setUp()` rather than Codeception's `_before()`.
+- Coding standard is stock PSR-12, checked by PHP_CodeSniffer from `tests/vendor`. `composer lint` reports and `composer lint:fix` runs phpcbf. Both cover `src` and `tests` and skip vendor and generated folders. There is no ruleset file and no CI.
+- Updating test dependencies: run `composer --working-dir=tests update`, never root `composer update` (that rewrites the shipped `src/admin/vendor`). Keep `config.platform.php` (8.2.0) in `tests/composer.json`, and commit `tests/composer.lock`.
+
+### Packaging
+Packages are built with Phing via the external **ShackBuilder** project:
 
 - Copy `build.dist.properties` to `build.properties` (gitignored) and set `builder.path` plus the `project.Shack*.path` entries pointing at local checkouts of ShackInstaller, ShackDefaultFiles, ShackFramework and ShackExtensionSupport.
 - `phing` (default target `build`) — assembles the installable zip into `packages/` (gitignored). Set `builder.phplint=1` to lint all PHP during the build.

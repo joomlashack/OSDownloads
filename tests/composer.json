@@ -1,0 +1,32 @@
+{
+    "name"       : "joomlashack/osdownloads-tests",
+    "description": "Test suite for OSDownloads",
+    "type"       : "project",
+    "license"    : "GPL-2.0-or-later",
+    "authors"    : [
+        {
+            "name" : "Joomlashack",
+            "email": "help@joomlashack.com"
+        }
+    ],
+    "require-dev": {
+        "codeception/codeception"   : "^5.3",
+        "codeception/module-asserts": "^3.3",
+        "pimple/pimple"             : "^3.0",
+        "squizlabs/php_codesniffer" : "^3.13"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Alledia\\OSDownloads\\": "../src/admin/library/",
+            "Tests\\Support\\"      : "Support/"
+        }
+    },
+    "config"     : {
+        "platform": {
+            "php": "8.2.0"
+        }
+    },
+    "scripts"    : {
+        "test": "codecept run -c .."
+    }
+}

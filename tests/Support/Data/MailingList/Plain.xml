@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form group="plain">
+    <fields name="config">
+        <field name="plain_config" type="text"/>
+    </fields>
+
+    <fields name="file" order="5">
+        <field name="plain_file" type="text"/>
+    </fields>
+</form>

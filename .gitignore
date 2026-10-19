@@ -57,3 +57,5 @@ _notes/
 error_log
 config.codekit
 tests/_output/*
+tests/vendor/
+tests/Support/_generated/

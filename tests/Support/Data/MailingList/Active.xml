@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form group="active" order="20">
+    <fields name="config">
+        <field name="active_config" type="text"/>
+    </fields>
+
+    <fields name="file">
+        <field name="active_file" type="text"/>
+    </fields>
+</form>

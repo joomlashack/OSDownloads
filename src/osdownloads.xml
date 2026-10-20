@@ -87,7 +87,7 @@
         <element>osdownloads</element>
         <namespace>OSDownloads</namespace>
         <license>free</license>
-        <targetplatform>3.10</targetplatform>
+        <targetplatform>3.10.4</targetplatform>
         <phpminimum>8.1</phpminimum>
         <previousminimum>2.0.0</previousminimum>
 

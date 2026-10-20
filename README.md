@@ -12,7 +12,7 @@ It allows you to easily provide downloads in exchange for emails, which can in t
 ## Requirements
 
 * php 8.1+
-* Joomla 3.10+ through 6
+* Joomla 3.10.4+ through 6
 
 ## Development
 

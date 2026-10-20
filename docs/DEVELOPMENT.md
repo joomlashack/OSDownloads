@@ -1,7 +1,7 @@
 # Developer Guide
 
 This guide covers building OSDownloads (Free) from source and understanding how the
-codebase fits together. It targets Joomla 3.9+ through 6 and PHP 7.4+ (see
+codebase fits together. It targets Joomla 3.10+ through 6 and PHP 8.1+ (see
 `src/osdownloads.xml` and `composer.json` for the authoritative requirements).
 
 OSDownloads (Free) ships as a package containing the `com_osdownloads` component, the

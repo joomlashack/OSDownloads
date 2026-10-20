@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-OSDownloads (Free) is a Joomla component (`com_osdownloads`) for managing downloads, optionally gated behind an email address (which can be pushed to Mailchimp) and/or a terms agreement. It ships as a package with a content plugin (`plg_content_osdownloads`) and a module (`mod_osdownloadsfiles`). Targets Joomla 3.9+ through 6 and PHP 7.4+ (`src/osdownloads.xml`, `composer.json`).
+OSDownloads (Free) is a Joomla component (`com_osdownloads`) for managing downloads, optionally gated behind an email address (which can be pushed to Mailchimp) and/or a terms agreement. It ships as a package with a content plugin (`plg_content_osdownloads`) and a module (`mod_osdownloadsfiles`). Targets Joomla 3.10+ through 6 and PHP 8.1+ (`src/osdownloads.xml`, `composer.json`).
 
 There is a separate **OSDownloads-Pro** repository that builds on top of this one. Code here must keep working when Pro classes are present and when they are absent.
 

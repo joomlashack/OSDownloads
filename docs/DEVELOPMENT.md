@@ -26,8 +26,11 @@ root `composer update`, and commit `tests/composer.lock`.
 
 The unit tests cover only code that runs without Joomla or ShackFramework, since
 neither is installed for the tests. `tests/bootstrap.php` defines `_JEXEC` and points
-`JPATH_SITE` at a small fixture site in `tests/Support/Data/site`. Fixture classes go in
-`tests/Support/Fixtures`, and data files go in `tests/Support/Data`.
+`JPATH_SITE` at a small fixture site in `tests/Support/Data/site`. Pimple comes from
+ShackFramework at runtime, so the tests load it from a ShackFramework checkout too. Set
+`SHACKFRAMEWORK_PATH`, or `project.ShackFramework.path` in `build.properties` (or
+ShackBuilder's `global.properties`). Fixture classes go in `tests/Support/Fixtures`,
+and data files go in `tests/Support/Data`.
 
 ## Building the package
 

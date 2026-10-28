@@ -98,7 +98,7 @@ class Site extends AbstractBase
         $view = $app->input->getCmd('view', 'category');
         $app->input->set('view', $view);
 
-        parent::display();
+        return parent::display();
     }
 
     /**

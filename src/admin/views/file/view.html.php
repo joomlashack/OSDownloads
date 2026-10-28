@@ -35,6 +35,11 @@ defined('_JEXEC') or die();
 class OSDownloadsViewFile extends AbstractForm
 {
     /**
+     * @var object
+     */
+    protected $item = null;
+
+    /**
      * @inheritDoc
      */
     public function display($tpl = null)

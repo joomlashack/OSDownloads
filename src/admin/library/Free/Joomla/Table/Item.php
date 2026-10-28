@@ -115,12 +115,10 @@ class Item extends AbstractTable
         $this->alias = ApplicationHelper::stringURLSafe($this->alias);
 
         if ($this->params instanceof Registry) {
-            $params = $this->params->toString();
+            $this->params = $this->params->toString();
         } elseif (!is_string($this->params)) {
-            $params = new Registry($this->params);
-            $params = $params->toString();
+            $this->params = (new Registry($this->params))->toString();
         }
-        $this->params = $params ?? null;
 
         // check publishing dates
         $this->publish_up   = $this->get('publish_up') ?: null;

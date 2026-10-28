@@ -79,9 +79,9 @@ class Emails extends AbstractListModel
             $search = $db->quote('%' . $search . '%');
             $ors    = [
                 'email.email LIKE ' . $search,
-                'doc.name LIKE' . $search,
+                'doc.name LIKE ' . $search,
             ];
-            $query->where(sprintf('(%)', join(' OR ', $ors)));
+            $query->where(sprintf('(%s)', join(' OR ', $ors)));
         }
         if ($categoryId = (int)$this->getState('filter.catid')) {
             $query->where('cat.id = ' . $categoryId);

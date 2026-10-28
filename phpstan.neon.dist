@@ -1,0 +1,48 @@
+includes:
+    - tests/phpstan/paths.php
+
+parameters:
+    level: 1
+    phpVersion: 80100
+    tmpDir: tests/_output/phpstan
+    paths:
+        - src
+    excludePaths:
+        - src/admin/vendor (?)
+    bootstrapFiles:
+        - tests/phpstan/bootstrap.php
+    scanFiles:
+        - tests/phpstan/stubs.php
+    ignoreErrors:
+        # Joomla includes layouts from inside the view, so $this is the view object,
+        # protected properties are in scope, and views allow dynamic properties
+        -
+            message: '#^Variable \$this might not be defined\.$#'
+            identifier: variable.undefined
+            paths:
+                - src/*/views/*/tmpl/*
+        -
+            identifier: property.protected
+            paths:
+                - src/*/views/*/tmpl/*
+                - src/extensions/*/tmpl/*
+        -
+            identifier: property.notFound
+            paths:
+                - src/*/views/*/tmpl/*
+        # Pro classes are only used when Pro is installed over this component
+        -
+            message: '#Alledia\\OSDownloads\\Pro\\#'
+            identifier: class.notFound
+        # Paths built from JPATH_* constants only exist inside a Joomla install
+        -
+            identifier: requireOnce.fileNotFound
+        -
+            identifier: include.fileNotFound
+        # Joomla 3 returns false from loadForm(), and ShackFramework's getManifest()
+        # returns false when the manifest is missing, though both are typed as objects
+        -
+            identifier: empty.variable
+            paths:
+                - src/admin/models/file.php
+                - src/admin/library/Free/Joomla/Component/Site.php

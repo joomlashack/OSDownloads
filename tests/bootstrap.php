@@ -24,6 +24,8 @@
 
 // phpcs:disable PSR1.Files.SideEffects
 
+use Tests\Support\Paths;
+
 // Extension files exit unless loaded from within Joomla
 define('_JEXEC', 1);
 
@@ -31,37 +33,7 @@ define('JPATH_SITE', __DIR__ . '/Support/Data/site');
 
 define('OSDOWNLOADS_LIBRARY', dirname(__DIR__) . '/src/admin/library');
 
-/*
- * Pimple comes from ShackFramework at runtime, so load it from a framework checkout.
- * Use SHACKFRAMEWORK_PATH, then project.ShackFramework.path from build.properties,
- * then from ShackBuilder's global.properties, the same as the build.
- */
-$frameworkPath = getenv('SHACKFRAMEWORK_PATH') ?: null;
-if ($frameworkPath === null) {
-    $properties = [];
-    if (is_file(dirname(__DIR__) . '/build.properties')) {
-        $properties = parse_ini_file(dirname(__DIR__) . '/build.properties', false, INI_SCANNER_RAW) ?: [];
-    }
+require_once __DIR__ . '/Support/Paths.php';
 
-    $globalProperties = rtrim($properties['builder.path'] ?? '', '/') . '/global.properties';
-    if (isset($properties['builder.path']) && is_file($globalProperties)) {
-        $properties += parse_ini_file($globalProperties, false, INI_SCANNER_RAW) ?: [];
-    }
-
-    $frameworkPath = $properties['project.ShackFramework.path'] ?? null;
-}
-
-$frameworkAutoload = rtrim((string)$frameworkPath, '/') . '/src/vendor/autoload.php';
-if ($frameworkPath === null || is_file($frameworkAutoload) == false) {
-    fwrite(
-        STDERR,
-        sprintf(
-            "ShackFramework vendor autoloader not found at %s\n"
-            . "Set SHACKFRAMEWORK_PATH or project.ShackFramework.path in build.properties\n",
-            $frameworkAutoload
-        )
-    );
-    exit(1);
-}
-
-require_once $frameworkAutoload;
+// Pimple comes from ShackFramework at runtime, so load it from a framework checkout
+require_once Paths::framework() . '/src/vendor/autoload.php';

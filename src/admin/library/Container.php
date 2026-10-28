@@ -53,6 +53,8 @@ defined('_JEXEC') or die();
  * @method Route          getHelperRoute()
  * @method SEF            helperSEF()
  * @method View           helperView()
+ *
+ * @phpstan-consistent-constructor
  */
 class Container extends \Pimple\Container
 {

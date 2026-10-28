@@ -11,7 +11,7 @@ A separate **OSDownloads-Pro** repository builds on top of this one. When changi
 here, make sure it keeps working both when Pro classes are present and when they are
 absent.
 
-## Tests and coding standard
+## Tests, coding standard and static analysis
 
 Run these from the repo root. Each one installs the test tooling into `tests/vendor` first.
 
@@ -19,6 +19,10 @@ Run these from the repo root. Each one installs the test tooling into `tests/ven
   `tests/Unit`.
 - `composer lint` checks `src` and `tests` against PSR-12 with PHP_CodeSniffer.
 - `composer lint:fix` automatically fixes the violations that phpcbf can correct.
+- `composer analyse` runs [PHPStan](https://phpstan.org/) on `src` (see
+  [Static analysis](#static-analysis)).
+- `composer check` runs `lint`, `analyse` and `test` in that order, stopping at the
+  first failure. Run it before committing.
 
 Test dependencies live in `tests/composer.json`, separate from the shipped
 `src/admin/vendor`. To update them, run `composer --working-dir=tests update`, never a
@@ -32,6 +36,40 @@ ShackFramework at runtime, so the tests load it from a ShackFramework checkout t
 ShackBuilder's `global.properties`). Fixture classes go in `tests/Support/Fixtures`,
 and data files go in `tests/Support/Data`.
 
+`Tests\Support\Paths` finds the external checkouts for both the tests and PHPStan. Each
+one comes from an environment variable, then `project.<Name>.path` in `build.properties`,
+then ShackBuilder's `global.properties`.
+
+### Static analysis
+
+`phpstan.neon.dist` runs PHPStan at level 1 on `src`, targeting PHP 8.1. PHPStan never
+runs the code, but it reads the classes the code uses, so `tests/phpstan/paths.php`
+points it at these checkouts:
+
+| Checkout | Environment variable | Property |
+|---|---|---|
+| ShackFramework | `SHACKFRAMEWORK_PATH` | `project.ShackFramework.path` |
+| ShackInstaller | `SHACKINSTALLER_PATH` | `project.ShackInstaller.path` |
+| A Joomla site | `JOOMLA_PATH` | `project.Joomla.path` |
+
+Use the newest Joomla the extension supports, so PHPStan flags anything that version
+removed. `tests/phpstan/stubs.php` declares the classes PHPStan can't find on its own:
+Joomla 3-only classes (`JEventDispatcher`, `JFormFieldList`) and the neutral names the
+Free/Pro shims create with `class_alias()`. Add a declaration there when you add a shim.
+`tests/phpstan/bootstrap.php` defines the Joomla and OSDownloads path constants.
+
+The config ignores these:
+
+- In layout files (`views/*/tmpl`), uses of `$this` and of protected or dynamic view
+  properties, because Joomla includes layouts from inside the view.
+- Missing `Alledia\OSDownloads\Pro\…` classes, which only exist when Pro is installed.
+- `include`/`require_once` paths built from `JPATH_*` constants.
+- Two `empty()` checks that are only needed on Joomla 3, or when the manifest is
+  missing.
+
+Level 2 reports around 120 more issues, most of them caused by Joomla 3 era docblocks.
+Fix those before raising the level.
+
 ## Building the package
 
 Packages are assembled with [Phing](https://www.phing.info/) via the external
@@ -44,8 +82,7 @@ Packages are assembled with [Phing](https://www.phing.info/) via the external
    `project.ShackDefaultFiles.path`, `project.ShackFramework.path`, and
    `project.ShackExtensionSupport.path` entries.
 3. Run `phing` (default target `build`) to assemble the installable zip into `packages/`
-   (gitignored). Set `builder.phplint=1` in `build.properties` to lint all PHP during the
-   build.
+   (gitignored).
 
 The builder also pulls in the related extensions listed under
 `<alledia><relatedExtensions>` in `src/osdownloads.xml`, and minifies

@@ -46,11 +46,22 @@
         "lint:fix": [
             "@composer --working-dir=tests install --no-interaction --quiet",
             "@php tests/vendor/squizlabs/php_codesniffer/bin/phpcbf --standard=PSR12 --extensions=php --ignore='src/admin/vendor/*,tests/vendor/*,tests/_output/*,tests/Support/_generated/*' src tests"
+        ],
+        "analyse" : [
+            "@composer --working-dir=tests install --no-interaction --quiet",
+            "@php tests/vendor/bin/phpstan analyse --memory-limit=2G"
+        ],
+        "check"   : [
+            "@lint",
+            "@analyse",
+            "@test"
         ]
     },
     "scripts-descriptions": {
         "test"    : "Install test dependencies into tests/vendor and run the Codeception suite",
         "lint"    : "Check src and tests against the PSR-12 coding standard",
-        "lint:fix": "Automatically fix PSR-12 violations that phpcbf can correct"
+        "lint:fix": "Automatically fix PSR-12 violations that phpcbf can correct",
+        "analyse" : "Run PHPStan static analysis on src against a Joomla checkout",
+        "check"   : "Run lint, analyse and test, stopping at the first failure"
     }
 }

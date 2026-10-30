@@ -147,10 +147,23 @@ class Paths
      */
     protected static function parse(string $file): array
     {
+        $properties = [];
+
         if (is_file($file)) {
-            return parse_ini_file($file, false, INI_SCANNER_RAW) ?: [];
+            // Phing properties format, not ini: '#' and '!' start comments, which parse_ini_file() rejects
+            foreach (file($file, FILE_IGNORE_NEW_LINES) as $line) {
+                $line = trim($line);
+                if ($line === '' || $line[0] === '#' || $line[0] === '!') {
+                    continue;
+                }
+
+                $parts = preg_split('/\s*[=:]\s*/', $line, 2);
+                if (count($parts) == 2) {
+                    $properties[$parts[0]] = $parts[1];
+                }
+            }
         }
 
-        return [];
+        return $properties;
     }
 }

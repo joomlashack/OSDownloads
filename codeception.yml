@@ -10,4 +10,8 @@ actor_suffix: Tester
 bootstrap: bootstrap.php
 settings:
     colors: true
+    # Fail tests on any PHP error, deprecations included, so code that a newer PHP
+    # version deprecates is caught
+    error_level: E_ALL
+    convert_deprecations_to_exceptions: true
     memory_limit: 1024M

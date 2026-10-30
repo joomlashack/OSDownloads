@@ -166,7 +166,7 @@ class File
 
         // May not be a local file, try file extension
         $pathInfo  = pathinfo($filename);
-        $extension = $pathInfo['extension'] ?? null;
+        $extension = $pathInfo['extension'] ?? '';
 
         return static::$mimeTypes[$extension] ?? null;
     }

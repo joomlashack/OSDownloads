@@ -36,6 +36,9 @@ ShackFramework at runtime, so the tests load it from a ShackFramework checkout t
 ShackBuilder's `global.properties`). Fixture classes go in `tests/Support/Fixtures`,
 and data files go in `tests/Support/Data`.
 
+`codeception.yml` turns every PHP error, deprecations included, into a test failure. Run
+the tests on the newest PHP version too, so deprecations show up before sites upgrade.
+
 `Tests\Support\Paths` finds the external checkouts for both the tests and PHPStan. Each
 one comes from an environment variable, then `project.<Name>.path` in `build.properties`,
 then ShackBuilder's `global.properties`.

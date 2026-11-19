@@ -113,7 +113,8 @@ class Site extends AbstractBase
         $app       = Factory::getApplication();
         $component = FreeComponentSite::getInstance();
 
-        $email = trim($app->input->getString('require_email'));
+        $email = $app->input->getString('require_email');
+        $email = is_string($email) ? trim($email) : '';
 
         // Must verify the e-mail before download?
         if ($item->require_user_email == 1 || ($item->require_user_email == 2 && $email != '')) {
